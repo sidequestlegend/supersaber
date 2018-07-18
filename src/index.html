@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Supersaber</title>
+    <script src="vendor/aframe.dev.js"></script>
+    <script src="build/build.js"></script>
+  </head>
+
+  <body>
+    <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
+
+    <a-scene bind__challenge-loader="challengeId: challenge.id"
+             bind__embedded="embedded"
+             challenge-loader
+             console-shortcuts
+             search>
+      <a-assets timeout="10000">
+        <a-mixin id="raycaster"
+                 raycaster="objects: [raycastable], [data-ui]; far: 2"></a-mixin>
+        <img id="playImg" src="assets/img/play.png">
+        <img id="resultImg" src="assets/img/result.png">
+        <img id="resultIconsImg" src="assets/img/resulticons.png">
+        <img id="tubeImg" src="assets/img/tube.png">
+        <img id="gridImg" src="assets/img/grid.png">
+        <img id="sliceImg" src="assets/img/slice.png">
+        <a-mixin id="slice" slice9="color: #050505; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.04"></a-mixin>
+        <a-mixin id="font" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
+        <a-mixin id="textFont" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
+      </a-assets>
+
+      <a-entity id="dustParticles" particle-system="maxAge: 100; positionSpread: 5 5 5; type: 2; rotationAxis: x; rotationAngle: 0.001; accelerationValue: 0.001 0.001 0.001; accelerationSpread: 0.001 0.001 0.001; velocityValue: 0.001 0.001 0.001; velocitySpread: 0.0125 0.0125 0.0125; color: #ffffff; size: 0.1; opacity: 0.85; direction: 0; particleCount: 150; texture: assets/img/smokeparticle.png"></a-entity>
+
+      <a-entity id="container">
+        {% include './templates/environment.html' %}
+        {% include './templates/gameUi.html' %}
+        {% include './templates/menu.html' %}
+      </a-entity>
+
+      <a-entity id="cameraRig">
+        <a-entity id="camera" camera look-controls="enabled: false" orbit-controls="target: 0 1.6 -0.5; maxDistance: 20; initialPosition: 0 1.6 0"></a-entity>
+        <a-entity id="leftHand"></a-entity>
+        <a-entity id="rightHand"></a-entity>
+      </a-entity>
+
+      <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" bind__isPlaying="!inVR"></a-entity>
+    </a-scene>
+  </body>
+</html>

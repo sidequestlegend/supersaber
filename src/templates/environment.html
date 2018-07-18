@@ -1,0 +1,42 @@
+<a-entity id="sky"
+          cubemap="folder: /assets/img/env/space/"></a-entity>
+
+<a-entity id="skyFade"
+          bind__visible="menuActive"
+          bind__isPlaying="menuActive"
+          geometry="primitive: box; width: 50; height: 50; depth: 50"
+          material="shader: flat; color: #111; opacity: 0.6; side: back"></a-entity>
+
+<a-entity id="tube"
+          geometry="primitive:cylinder;radius:3;height:100;openEnded:true"
+          material="fog: false; depthWrite: false; src:#tubeImg;transparent:true;side:back;repeat:1 5"
+          position="0 1.5 -40"
+          rotation="90 0 0"
+          bind__discotube="speedX: discotube.speedX; speedY: discotube.speedY"></a-entity>
+
+<a-plane id="floor"
+         width="40"
+         height="40"
+         rotation="-90 0 0"
+         material="src:#gridImg; transparent: true; color: #f9e3fb; repeat: 80 80; depthWrite:false">
+  <a-plane position="0 0 -0.01"
+           width="2"
+           height="2"
+           material="color: #000; transparent: true; opacity: 0.7"></a-plane>
+</a-plane>
+
+<!-- Disco lights -->
+<a-entity light="type: directional; intensity: 1"
+          position="0 -2 1"
+          discolight="color: #fda6f7; speed: 2.0"
+          bind__visible="discoLightsOn"></a-entity>
+<a-entity light="type: directional; intensity: 1.6"
+          position="-0 2 .6"
+          discolight="color: #7a9efc; speed: 0.01"
+          bind__visible="discoLightsOn"></a-entity>
+<!-- Default lights -->
+<a-entity light="type: ambient; color: #BBB"
+          bind__visible="!discoLightsOn"></a-entity>
+<a-entity light="type: directional; color: #FFF; intensity: 0.6"
+          position="-0.5 1 1"
+          bind__visible="!discoLightsOn"></a-entity>
