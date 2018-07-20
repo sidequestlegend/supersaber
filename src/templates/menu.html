@@ -27,29 +27,13 @@
   {% endraw %}
 {% endmacro %}
 
-<a-entity id="menu" bind__visible="menu.active" position="0 1 -1">
+<a-entity id="menu" bind__visible="menu.active" position="0 1.775 -1">
   <a-entity id="menuBackground"
       geometry="primitive: plane; width: 2; height: 0.7"
       material="shader: flat; transparent: true; color: #000; opacity: 0.85"
-      position="0 0.775 -0.005"></a-entity>
+      position="0 0 -0.005"></a-entity>
 
-  <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.1" keyboard-raycastable search></a-entity>
-
-  <a-plane id="play"
-           play-button
-           play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
-           position="0 0.15 0"
-           material="shader: flat; src: #playImg; transparent: true; color: #BBB"
-           width="0.512"
-           height="0.256"
-           animation__mouseenter1="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-           animation__mouseleave1="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-           animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-           animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-           bind-toggle__raycastable="playButtonShowing"
-           bind__visible="playButtonShowing"></a-plane>
-
-  <a-entity id="searchResultsContainer" position="-0.495 0.706 0.001">
+  <a-entity id="searchResultsContainer" position="-0.495 -0.072 0.001">
     {{ searchResults() }}
   </a-entity>
 
@@ -58,7 +42,7 @@
     bind__visible="!!menuSelectedChallenge.id"
     menu-difficulty-select
     layout="type: box; columns: 1; marginRow: -0.1"
-    position="0.455 1.078 0">
+    position="0.455 .3 0">
     {% raw %}
       <template>
         <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
@@ -76,13 +60,38 @@
     {% endraw %}
   </a-entity>
 
-  <a-entity id="menuSelectedChallengeInfo" bind__visible="!!menuSelectedChallenge.id">
+  <a-entity id="menuSelectedChallengePanel" bind__visible="!!menuSelectedChallenge.id"
+            position="0.6 0 0.001">
     <a-entity id="menuSelectedChallengeImage"
               bind__material="src: menuSelectedChallenge.image"
               geometry="primitive: plane; height: 0.2; width: 0.2"
-              material="shader: flat"></a-entity>
+              material="shader: flat"
+              position="0 0.2 0"></a-entity>
+
+    <a-entity id="menuSelectedChallengeInfo" layout="type: box; columns: 1; marginRow: -0.0575" position="0 0.05 0">
+      <a-entity class="menuSelectedChallengeSongAuthor" mixin="textFont" text="wrapCount: 55; align: center; color: #54c2fd" position="0 -0.055 0" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+      <a-entity class="menuSelectedChallengeSongName" mixin="textFont" text="align: center; color: #FFF; wrapCount: 45" position="0 -0.09 0" bind__text="value: menuSelectedChallenge.songName"></a-entity>
+      <a-entity class="menuSelectedChallengeAuthor" mixin="textFont" text="align: center; color: #FFF; wrapCount: 45" position="0 -0.09 0" bind__text="value: menuSelectedChallenge.author"></a-entity>
+      <a-entity class="menuSelectedChallengeDownloads" mixin="textFont" text="align: center; color: #FFF; wrapCount: 45" position="0 -0.09 0" bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
+    </a-entity>
+
+    <a-plane id="play"
+             play-button
+             play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
+             position="0 -0.25 0"
+             material="shader: flat; src: #playImg; transparent: true; color: #BBB"
+             width="0.256"
+             height="0.128"
+             animation__mouseenter1="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+             animation__mouseleave1="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+             animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+             animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+             bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id"
+             bind__visible="menu.active && !!menuSelectedChallenge.id"></a-plane>
   </a-entity>
 </a-entity>
+
+<a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 -0.555 0.1" keyboard-raycastable search></a-entity>
 
 <a-entity id="songInfo"
           bind__visible="isChallengeScreen"

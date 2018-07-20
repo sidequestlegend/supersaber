@@ -7,9 +7,14 @@ var challengeDataStore = {};
 AFRAME.registerState({
   initialState: {
     challenge: {
+      author: '',
       difficulty: '',
+      downloads: '',
+      downloadsText: '',
       id: AFRAME.utils.getUrlParameter('challenge'),
-      isLoading: false
+      isLoading: false,
+      songName: '',
+      songSubName: '',
     },
     inVR: false,
     maxStreak: 0,
@@ -55,12 +60,14 @@ AFRAME.registerState({
      */
     menuchallengeselect: function (state, id) {
       let challengeData = challengeDataStore[id];
+      Object.assign(state.menuSelectedChallenge, challengeData);
       state.menuSelectedChallenge.id = id;
       state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
         state.menuDifficulties.push(challengeData.difficulties[i]);
       }
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
+      state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
     },
 
     menudifficultyselect: function (state, difficulty) {
