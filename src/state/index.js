@@ -1,16 +1,22 @@
 var hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 
+var challengeDataStore = {};
+
 AFRAME.registerState({
   initialState: {
     challenge: {
       id: AFRAME.utils.getUrlParameter('challenge'),
-      isLoading: false
+      isLoading: false,
     },
-    discoLightsOn: true,
-    discotube: {speedX: -0.05, speedY: -0.1},
     inVR: false,
     maxStreak: 0,
-    menuActive: true,
+    menu: {
+      active: true
+    },
+    menuSelectedChallenge: {
+      id: '',
+      difficulties: []
+    },
     playButtonText: 'Play',
     score: 0,
     scoreText: '',
@@ -35,8 +41,21 @@ AFRAME.registerState({
       state.score = 0;
       state.streak = 0;
       state.maxStreak = 0;
-      state.menuActive = false;
+      state.menu.active = false;
+      state.menuSelectedChallenge.id = '';
       setScreen(state, 'challenge');
+    },
+
+    /**
+     * Song clicked from menu.
+     */
+    menuchallengeclick: function (state, id) {
+      let challengeData = challengeDataStore[id];
+      state.menuSelectedChallenge.id = id;
+      state.menuSelectedChallenge.difficulties.length = 0;
+      for (let i = 0; i < challengeData.difficulties.length; i++) {
+        state.menuSelectedChallenge.difficulties.push(challengeData.difficulties[i]);
+      }
     },
 
     playbuttonclick: function (state) {
@@ -51,13 +70,10 @@ AFRAME.registerState({
       state.searchResults.length = 0;
       for (i = 0; i < 6; i++) {
         if (!payload.results[i]) { continue; }
+        challengeDataStore[payload.results[i].id] = payload.results[i];
         state.searchResults.push(payload.results[i]);
       }
       state.searchResults.__dirty = true;
-    },
-
-    togglediscolights: function (state, payload) {
-      state.discoLightsOn = !state.discoLightsOn;
     },
 
     togglemenu: function (state) {

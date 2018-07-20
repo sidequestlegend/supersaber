@@ -1,14 +1,13 @@
 {% macro searchResults () %}
   <a-entity id="searchResultList"
+            bind-for="for: item; in: searchResults; key: id; template: #searchResultTemplate"
             layout="type: box; columns: 1; marginRow: 0.125"
-            bind-for="for: item; in: searchResults; key: id; template: #searchResultTemplate">
+            search-result-list>
   </a-entity>
 
   {% raw %}
     <template id="searchResultTemplate">
-      <a-entity class="searchResult" search-result
-                data-id="{{ item.id }}" data-title="{{ item.songName }}"
-                data-preview-start-time="{{ item.previewStartTime }}">
+      <a-entity class="searchResult" data-id="{{ item.id }}">
         <a-entity class="searchResultSlice"
             geometry="primitive: plane; width: 0.8; height: 0.1"
             material="shader: flat; transparent: true; src: #resultImg; color: #BBB"
@@ -28,7 +27,7 @@
   {% endraw %}
 {% endmacro %}
 
-<a-entity id="menu" bind__visible="menuActive" position="0 1 -1">
+<a-entity id="menu" bind__visible="menu.active" position="0 1 -1">
   <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.02" keyboard-raycastable search></a-entity>
 
   <a-plane id="play"
