@@ -17,7 +17,7 @@
             animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
             raycastable></a-entity>
         <a-entity class="searchResultContent" position="0.125 -0.05 0">
-          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.58 -0.08 0.001"></a-entity>
+          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.575 -0.08 0.001"></a-entity>
           <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 55; align: left; color: #54c2fd; value: {{ item.songSubName }}" position="0 -0.055 0"></a-entity>
           <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 45; value: {{ item.songName }}" position="0 -0.09 0"></a-entity>
           <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.12 -0.09 0"></a-entity>
@@ -91,7 +91,7 @@
   </a-entity>
 </a-entity>
 
-<a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 -0.555 0.1" keyboard-raycastable search></a-entity>
+<a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 1.2 -0.8" rotation="-30 0 0" keyboard-raycastable search bind__visible="menu.active"></a-entity>
 
 <a-entity id="songInfo"
           bind__visible="isChallengeScreen"
