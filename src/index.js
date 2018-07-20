@@ -12,6 +12,7 @@ require('aframe-particle-system-component');
 require('aframe-proxy-event-component');
 require('aframe-state-component');
 require('aframe-slice9-component');
+require('aframe-super-keyboard');
 
 requireAll(require.context('./components/', true, /\.js$/));
 requireAll(require.context('./state/', true, /\.js$/));

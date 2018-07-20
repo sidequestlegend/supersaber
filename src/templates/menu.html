@@ -34,25 +34,9 @@
 <a-entity id="menu"
           bind__visible="menuActive"
           position="0 1 -1">
-  <a-input id="search"
-           event-set__1="_event: mouseenter; background-color: #333; placeholder-color: #FFF"
-           event-set__2="_event: mouseleave; background-color: #182029; placeholder-color: #F3D765"
-           event-set__3="_event: blur; value:"
-           event-set__4="_event: challengeset; value:"
-           position="-0.42 0.32 -0.1"
-           scale="0.65 0.65 0.65"
-           placeholder=" Search challenges..."
-           play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
-           color="#FFF"
-           cursorColor="#f3d765"
-           font="exo2semibold"
-           letter-spacing="-1"
-           placeholder-color="#f3d765"
-           background-color="#182029"
-           bind-toggle__raycastable="menuActive && !isSearchScreen"
-           proxy-event="event: click; to: a-scene; as: searchfocus; captureBubbles: true"
-           search
-           width="1.3"></a-input>
+
+  <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.02" keyboard-raycastable search></a-entity>
+
   <a-plane id="play"
            play-button
            play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
@@ -60,24 +44,12 @@
            material="shader: flat; src: #playImg; transparent: true; color: #BBB"
            width="0.512"
            height="0.256"
-           raycaster="far:2"
            animation__mouseenter1="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
            animation__mouseleave1="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
            animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
            animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
            bind-toggle__raycastable="playButtonShowing"
            bind__visible="playButtonShowing"></a-plane>
-  <a-entity id="keyboardContaner"
-            position="0 0 1"
-            scale="0.4 0.4 0.4"
-            bind__visible="isSearchScreen">
-    <a-keyboard id="kb"
-                bind__keyboard="isOpen: isSearchScreen"
-                bind__isPlaying="isSearchScreen"
-                event__set="_event: diddismiss; visible: false"
-                proxy-event="event: diddismiss; to: a-scene; as: searchblur"
-                keyboard-raycastable></a-keyboard>
-  </a-entity>
 
   <a-entity id="searchResultsContainer" position="-0.85 0.7 0">
     {{ searchResults() }}

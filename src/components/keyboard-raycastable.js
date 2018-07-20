@@ -1,10 +1,8 @@
 AFRAME.registerComponent('keyboard-raycastable', {
-  play: function() {
-    var els;
-    var i;
-    els = this.el.querySelectorAll('*');
-    for (i = 0; i < els.length; i++) {
-      els[i].setAttribute('bind-toggle__raycastable', 'isSearchScreen');
-    }
+  dependencies: ['super-keyboard'],
+
+  play: function () {
+    // TODO: bind-toggle__raycastable for when search is activated.
+    this.el.components['super-keyboard'].kbImg.setAttribute('raycastable', '');
   },
 });

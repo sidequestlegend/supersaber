@@ -19,6 +19,7 @@
     "aframe-proxy-event-component": "^1.1.1",
     "aframe-slice9-component": "^1.0.0",
     "aframe-state-component": "^4.1.0",
+    "aframe-super-keyboard": "^2.0.0",
     "algoliasearch": "^3.29.0",
     "ansi-html": "0.0.7",
     "autoprefixer": "^7.2.3",

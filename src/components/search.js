@@ -7,6 +7,7 @@ var index = client.initIndex('supersaber');
 
 /**
  * Search (including the initial list of popular searches).
+ * Attached to super-keyboard.
  */
 AFRAME.registerComponent('search', {
   init: function() {
@@ -16,6 +17,10 @@ AFRAME.registerComponent('search', {
     // Populate popular.
     this.search('');
   },
+
+  superkeyboardchange: bindEvent(function (evt) {
+    this.search(evt.detail.value);
+  }),
 
   search: function (query) {
     this.queryObject.query = query;
@@ -35,6 +40,7 @@ AFRAME.registerComponent('search-result', {
     this.audio = new Audio();
     this.audio.currentTime = el.getAttribute('data-preview-start-time');
     this.audio.src = utils.getS3FileUrl(el.getAttribute('data-id'), 'song.ogg');
+    this.audio.volume = 0.5;
     this.eventDetail = {};
   },
 

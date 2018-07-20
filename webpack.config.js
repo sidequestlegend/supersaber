@@ -10,11 +10,12 @@ var webpack = require('webpack');
 var nunjucks = Nunjucks.configure(path.resolve(__dirname, 'src'), {
   noCache: true,
 });
+nunjucks.addGlobal('DEBUG_KEYBOARD', !!process.env.DEBUG_KEYBOARD);
 nunjucks.addGlobal('HOST', ip.address());
+nunjucks.addGlobal('IS_PRODUCTION', process.env.NODE_ENV === 'production');
 
 // Initial Nunjucks render.
-var context = {IS_PRODUCTION: process.env.NODE_ENV === 'production'};
-fs.writeFileSync('index.html', nunjucks.render('index.html', context));
+fs.writeFileSync('index.html', nunjucks.render('index.html'));
 
 // For development, watch HTML for changes to compile Nunjucks.
 // The production Express server will handle Nunjucks by itself.
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
       return;
     }
     try {
-      fs.writeFileSync('index.html', nunjucks.render('index.html', context));
+      fs.writeFileSync('index.html', nunjucks.render('index.html'));
     } catch (e) {
       console.error(e);
     }
