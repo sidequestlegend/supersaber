@@ -35,7 +35,8 @@ AFRAME.registerComponent('search', {
  */
 AFRAME.registerComponent('search-result-list', {
   click: bindEvent(function (evt) {
-    this.el.sceneEl.emit('menuchallengeclick', evt.target.closest('.searchResult').dataset.id,
+    this.el.sceneEl.emit('menuchallengeselect',
+                         evt.target.closest('.searchResult').dataset.id,
                          false);
   }),
 });

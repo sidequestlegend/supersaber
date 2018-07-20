@@ -13,7 +13,7 @@
     "aframe-event-set-component": "^4.0.1",
     "aframe-gltf-part-component": "1.1.0",
     "aframe-haptics-component": "^1.4.1",
-    "aframe-layout-component": "^4.3.1",
+    "aframe-layout-component": "^5.0.1",
     "aframe-orbit-controls": "^1.2.0",
     "aframe-particle-system-component": "^1.0.11",
     "aframe-proxy-event-component": "^1.1.1",

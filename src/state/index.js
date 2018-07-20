@@ -5,17 +5,18 @@ var challengeDataStore = {};
 AFRAME.registerState({
   initialState: {
     challenge: {
+      difficulty: '',
       id: AFRAME.utils.getUrlParameter('challenge'),
-      isLoading: false,
+      isLoading: false
     },
     inVR: false,
     maxStreak: 0,
     menu: {
       active: true
     },
+    menuDifficulties: [],
     menuSelectedChallenge: {
       id: '',
-      difficulties: []
     },
     playButtonText: 'Play',
     score: 0,
@@ -49,17 +50,21 @@ AFRAME.registerState({
     /**
      * Song clicked from menu.
      */
-    menuchallengeclick: function (state, id) {
+    menuchallengeselect: function (state, id) {
       let challengeData = challengeDataStore[id];
       state.menuSelectedChallenge.id = id;
-      state.menuSelectedChallenge.difficulties.length = 0;
+      state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
-        state.menuSelectedChallenge.difficulties.push(challengeData.difficulties[i]);
+        state.menuDifficulties.push(challengeData.difficulties[i]);
       }
     },
 
+    menudifficultyselect: function (state, difficulty) {
+      state.menuSelectedChallenge.difficulty = difficulty;
+    },
+
     playbuttonclick: function (state) {
-      state.menuActive = false;
+      state.menu.active = false;
     },
 
     /**
@@ -71,13 +76,14 @@ AFRAME.registerState({
       for (i = 0; i < 6; i++) {
         if (!payload.results[i]) { continue; }
         challengeDataStore[payload.results[i].id] = payload.results[i];
+        payload.results[i].songSubName = payload.results[i].songSubName || 'Unknown Arist';
         state.searchResults.push(payload.results[i]);
       }
       state.searchResults.__dirty = true;
     },
 
     togglemenu: function (state) {
-      state.menuActive = !state.menuActive;
+      state.menu.active = !state.menu.active;
     },
 
     'enter-vr': function (state, payload) {
