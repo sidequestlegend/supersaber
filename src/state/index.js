@@ -1,3 +1,5 @@
+var utils = require('../utils');
+
 var hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 
 var challengeDataStore = {};
@@ -17,6 +19,7 @@ AFRAME.registerState({
     menuDifficulties: [],
     menuSelectedChallenge: {
       id: '',
+      image: ''
     },
     playButtonText: 'Play',
     score: 0,
@@ -57,6 +60,7 @@ AFRAME.registerState({
       for (let i = 0; i < challengeData.difficulties.length; i++) {
         state.menuDifficulties.push(challengeData.difficulties[i]);
       }
+      state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
     },
 
     menudifficultyselect: function (state, difficulty) {

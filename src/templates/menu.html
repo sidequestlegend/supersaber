@@ -8,13 +8,13 @@
   {% raw %}
     <template id="searchResultTemplate">
       <a-entity class="searchResult" data-id="{{ item.id }}">
-        <a-entity class="searchResultSlice"
+        <a-entity class="searchResultBackground"
             geometry="primitive: plane; width: 0.8; height: 0.1"
-            material="shader: flat; transparent: true; color: #111; opacity: 0.45"
+            material="shader: flat; color: #111"
             position="0 -0.13 -0.01"
             play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
-            animation__mouseenter="property: material.color; from: #111; to: #444; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-            animation__mouseleave="property: material.color; from: #444; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+            animation__mouseenter="property: material.color; from: #111; to: #666; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+            animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
             raycastable></a-entity>
         <a-entity class="searchResultContent" position="0.125 -0.05 0">
           <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.58 -0.08 0.001"></a-entity>
@@ -28,7 +28,12 @@
 {% endmacro %}
 
 <a-entity id="menu" bind__visible="menu.active" position="0 1 -1">
-  <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.02" keyboard-raycastable search></a-entity>
+  <a-entity id="menuBackground"
+      geometry="primitive: plane; width: 2; height: 0.7"
+      material="shader: flat; transparent: true; color: #000; opacity: 0.85"
+      position="0 0.775 -0.005"></a-entity>
+
+  <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.1" keyboard-raycastable search></a-entity>
 
   <a-plane id="play"
            play-button
@@ -44,7 +49,7 @@
            bind-toggle__raycastable="playButtonShowing"
            bind__visible="playButtonShowing"></a-plane>
 
-  <a-entity id="searchResultsContainer" position="0 0.7 0">
+  <a-entity id="searchResultsContainer" position="-0.495 0.706 0.001">
     {{ searchResults() }}
   </a-entity>
 
@@ -52,23 +57,30 @@
     bind-for="for: difficulty; in: menuDifficulties"
     bind__visible="!!menuSelectedChallenge.id"
     menu-difficulty-select
-    layout="type: box; columns: 1; marginRow: -0.125"
-    position="1 1 0">
+    layout="type: box; columns: 1; marginRow: -0.1"
+    position="0.455 1.078 0">
     {% raw %}
       <template>
         <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
-          <a-entity class="difficultySlice"
+          <a-entity class="difficultyBackground"
               geometry="primitive: plane; width: 0.3; height: 0.1"
-              material="shader: flat; transparent: true; color: #111; opacity: 0.45"
+              material="shader: flat; color: #111"
               position="-0.4 -0.005 0"
               play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
-              animation__mouseenter="property: material.color; from: #111; to: #444; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseleave="property: material.color; from: #444; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+              animation__mouseenter="property: material.color; from: #111; to: #666; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+              animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id"></a-entity>
           <a-entity mixin="textFont" text="value: {{ difficulty }}" position="0 0 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
+  </a-entity>
+
+  <a-entity id="menuSelectedChallengeInfo" bind__visible="!!menuSelectedChallenge.id">
+    <a-entity id="menuSelectedChallengeImage"
+              bind__material="src: menuSelectedChallenge.image"
+              geometry="primitive: plane; height: 0.2; width: 0.2"
+              material="shader: flat"></a-entity>
   </a-entity>
 </a-entity>
 
