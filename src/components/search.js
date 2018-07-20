@@ -1,4 +1,6 @@
 var algoliasearch = require('algoliasearch/lite');
+var bindEvent = require('aframe-event-decorators').bindEvent;
+var utils = require('../utils');
 
 var client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
 var index = client.initIndex('supersaber');
@@ -19,7 +21,6 @@ AFRAME.registerComponent('search', {
     this.queryObject.query = query;
     index.search(this.queryObject, (err, content) => {
       this.eventDetail.results = content.hits;
-      console.log(content.hits);
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
   }
@@ -31,12 +32,33 @@ AFRAME.registerComponent('search', {
 AFRAME.registerComponent('search-result', {
   init: function() {
     var el = this.el;
-
+    this.audio = new Audio();
+    this.audio.currentTime = el.getAttribute('data-preview-start-time');
+    this.audio.src = utils.getS3FileUrl(el.getAttribute('data-id'), 'song.ogg');
     this.eventDetail = {};
-    el.addEventListener('click', () => {
-      this.eventDetail.challengeId = el.getAttribute('data-song-id');
-      this.eventDetail.title = el.getAttribute('data-title');
-      el.sceneEl.emit('challengeset', this.eventDetail);
-    });
   },
+
+  remove: function () {
+    this.audio.pause();
+  },
+
+  /**
+   * Preview song.
+   */
+  mouseenter: bindEvent(function () {
+    this.audio.play();
+  }),
+
+  mouseleave: bindEvent(function () {
+    this.audio.pause();
+  }),
+
+  click: bindEvent(function () {
+    var el = this.el;
+    this.eventDetail.id = el.getAttribute('data-id');
+    this.eventDetail.title = el.getAttribute('data-title');
+
+    // Tell application we are starting a challenge and initiate beat-loader.
+    el.sceneEl.emit('challengeset', this.eventDetail);
+  }),
 });

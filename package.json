@@ -6,9 +6,10 @@
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
-    "aframe-animation-component": "^4.1.1",
+    "aframe-animation-component": "^5.0.0",
     "aframe-animation-timeline-component": "^1.3.1",
     "aframe-cubemap-component": "^0.1.2",
+    "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",
     "aframe-gltf-part-component": "1.1.0",
     "aframe-haptics-component": "^1.4.1",

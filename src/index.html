@@ -9,14 +9,13 @@
   <body>
     <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
 
-    <a-scene bind__challenge-loader="challengeId: challenge.id"
+    <a-scene bind__beat-loader="challengeId: challenge.id"
              bind__embedded="embedded"
              challenge-loader
              console-shortcuts
              search>
       <a-assets timeout="10000">
-        <a-mixin id="raycaster"
-                 raycaster="objects: [raycastable], [data-ui]; far: 2"></a-mixin>
+        <a-mixin id="raycaster" raycaster="objects: [raycastable], [data-ui]; far: 2"></a-mixin>
         <img id="playImg" src="assets/img/play.png">
         <img id="resultImg" src="assets/img/result.png">
         <img id="resultIconsImg" src="assets/img/resulticons.png">
@@ -42,7 +41,7 @@
         <a-entity id="rightHand"></a-entity>
       </a-entity>
 
-      <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" bind__isPlaying="!inVR"></a-entity>
+      <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" debug-cursor bind__isPlaying="!inVR"></a-entity>
     </a-scene>
   </body>
 </html>

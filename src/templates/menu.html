@@ -6,7 +6,9 @@
 
   {% raw %}
     <template id="searchResultTemplate">
-      <a-entity class="searchResult" search-result data-song-id="{{ item.id }}" data-title="{{ item.songName }}">
+      <a-entity class="searchResult" search-result
+                data-id="{{ item.id }}" data-title="{{ item.songName }}"
+                data-preview-start-time="{{ item.previewStartTime }}">
         <a-entity>
           <a-entity class="searchResultSlice"
               geometry="primitive: plane; width: 0.8; height: 0.2"
@@ -19,10 +21,9 @@
           <a-entity class="searchResultIcons"
               geometry="primitive: plane; width: 0.8; height: 0.2"
               material="shader: flat; transparent: true; src: #resultIconsImg; color: #FFF"
-              position="0 -0.13 -0.005"
-              raycastable></a-entity>
+              position="0 -0.13 -0.005"></a-entity>
         </a-entity>
-        <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 48; align: center; color: #54c2fd; value: {{ item.subSongName }}" position="0 -0.060 0"></a-entity>
+        <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 48; align: center; color: #54c2fd; value: {{ item.songSubName }}" position="0 -0.060 0"></a-entity>
         <a-entity class="searchResultTitle" mixin="textFont" text="align: center; color: #FFF; wrapCount: 35; value: {{ item.songName }}" position="0 -0.111 0"></a-entity>
         <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.192 -0.184 0"></a-entity>
       </a-entity>
