@@ -1,6 +1,6 @@
 {% macro searchResults () %}
   <a-entity id="searchResultList"
-            layout="type: box; columns: 3; marginRow: 0.25; marginColumn: 0.85"
+            layout="type: box; columns: 1; marginRow: 0.125"
             bind-for="for: item; in: searchResults; key: id; template: #searchResultTemplate">
   </a-entity>
 
@@ -9,32 +9,26 @@
       <a-entity class="searchResult" search-result
                 data-id="{{ item.id }}" data-title="{{ item.songName }}"
                 data-preview-start-time="{{ item.previewStartTime }}">
-        <a-entity>
-          <a-entity class="searchResultSlice"
-              geometry="primitive: plane; width: 0.8; height: 0.2"
-              material="shader:flat; transparent: true; src:#resultImg; color: #BBB"
-              position="0 -0.13 -0.01"
-              play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
-              animation__mouseenter="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseleave="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-              raycastable></a-entity>
-          <a-entity class="searchResultIcons"
-              geometry="primitive: plane; width: 0.8; height: 0.2"
-              material="shader: flat; transparent: true; src: #resultIconsImg; color: #FFF"
-              position="0 -0.13 -0.005"></a-entity>
+        <a-entity class="searchResultSlice"
+            geometry="primitive: plane; width: 0.8; height: 0.1"
+            material="shader: flat; transparent: true; src: #resultImg; color: #BBB"
+            position="0 -0.13 -0.01"
+            play-audio="event: mouseenter; audio: #hoverSound; volume: 0.03"
+            animation__mouseenter="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+            animation__mouseleave="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+            raycastable></a-entity>
+        <a-entity class="searchResultContent" position="0.125 -0.05 0">
+          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.6 -0.08 0.001"></a-entity>
+          <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 48; align: left; color: #54c2fd; value: {{ item.songSubName }}" position="0 -0.060 0"></a-entity>
+          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 35; value: {{ item.songName }}" position="0 -0.09 0"></a-entity>
+          <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.12 -0.09 0"></a-entity>
         </a-entity>
-        <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 48; align: center; color: #54c2fd; value: {{ item.songSubName }}" position="0 -0.060 0"></a-entity>
-        <a-entity class="searchResultTitle" mixin="textFont" text="align: center; color: #FFF; wrapCount: 35; value: {{ item.songName }}" position="0 -0.111 0"></a-entity>
-        <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.192 -0.184 0"></a-entity>
       </a-entity>
     </template>
   {% endraw %}
 {% endmacro %}
 
-<a-entity id="menu"
-          bind__visible="menuActive"
-          position="0 1 -1">
-
+<a-entity id="menu" bind__visible="menuActive" position="0 1 -1">
   <a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.2 0.02" keyboard-raycastable search></a-entity>
 
   <a-plane id="play"
