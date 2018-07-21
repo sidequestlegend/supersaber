@@ -1,9 +1,20 @@
 {% macro searchResults () %}
   <a-entity id="searchResultList"
-            bind-for="for: item; in: searchResults; key: id; template: #searchResultTemplate"
-            layout="type: box; columns: 1; marginRow: 0.1"
-            search-result-list>
+            bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate"
+            layout="type: box; columns: 1; marginRow: -0.1"
+            search-result-list
+            position="0 0.45 0">
   </a-entity>
+
+  <!-- TODO: Pagination icons. -->
+  <a-mixin id="searchPageButton"
+    animation__mouseenter="property: material.color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+    animation__mouseleave="property: material.color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+    geometry="primitive: plane; width: 0.9; height: 0.045"
+    material="color: #050505; shader: flat"
+    text="align: center; wrapCount: 40"></a-mixin>
+  <a-entity id="searchPrevPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasPrev && menu.active" text="value: ^" position="-0.05 0.39 0" proxy-event="event: click; to: a-scene; as: searchprevpage"></a-entity>
+  <a-entity id="searchNextPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasNext && menu.active" text="value: V" position="-0.05 -0.255 0" proxy-event="event: click; to: a-scene; as: searchnextpage"></a-entity>
 
   {% raw %}
     <template id="searchResultTemplate">
@@ -17,9 +28,9 @@
             animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
             raycastable></a-entity>
         <a-entity class="searchResultContent" position="0.125 -0.05 0">
-          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.575 -0.08 0.001"></a-entity>
-          <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 55; align: left; color: #54c2fd; value: {{ item.songSubName }}" position="0 -0.055 0"></a-entity>
-          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 45; value: {{ item.songName }}" position="0 -0.09 0"></a-entity>
+          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.576 -0.08 0.001"></a-entity>
+          <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 55; align: left; color: #54c2fd; value: {{ item.shortSongSubName }}" position="0 -0.055 0"></a-entity>
+          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 45; value: {{ item.shortSongName }}" position="0 -0.09 0"></a-entity>
           <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.12 -0.09 0"></a-entity>
         </a-entity>
       </a-entity>

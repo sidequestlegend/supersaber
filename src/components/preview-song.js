@@ -34,17 +34,19 @@ AFRAME.registerComponent('preview-song', {
     // Stop.
     if (oldData.challengeId && !this.data.challengeId) {
       if (this.animation) { this.animation.pause(); }
-      this.audio.pause();
+      if (!this.audio.paused) { this.audio.pause(); }
       this.audio.src = '';
       return;
     }
 
     // Play preview.
-    this.audio.currentTime = this.data.previewStartTime;
-    this.audio.src = utils.getS3FileUrl(this.data.challengeId, 'song.ogg');
-    this.audio.volume = 0;
-    this.volumeTarget.volume = 0;
-    this.audio.play();
-    this.animation.restart();
+    if (this.data.challengeId) {
+      this.audio.currentTime = this.data.previewStartTime;
+      this.audio.src = utils.getS3FileUrl(this.data.challengeId, 'song.ogg');
+      this.audio.volume = 0;
+      this.volumeTarget.volume = 0;
+      this.audio.play();
+      this.animation.restart();
+    }
   }
 });

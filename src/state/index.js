@@ -1,8 +1,8 @@
 var utils = require('../utils');
 
-var hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
-
-var challengeDataStore = {};
+const challengeDataStore = {};
+const hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
+const SEARCH_PER_PAGE = 6;
 
 AFRAME.registerState({
   initialState: {
@@ -39,7 +39,13 @@ AFRAME.registerState({
     // screen: keep track of layers or depth. Like breadcrumbs.
     screen: hasInitialChallenge ? 'challenge' : 'home',
     screenHistory: [],
-    searchResults: []
+    search: {
+      page: 0,
+      hasNext: false,
+      hasPrev: false,
+      results: [],
+    },
+    searchResultsPage: []
   },
 
   handlers: {
@@ -94,19 +100,35 @@ AFRAME.registerState({
       state.menuSelectedChallenge.id = '';
     },
 
+    searchprevpage: function (state) {
+      if (state.search.page === 0) { return; }
+      state.search.page--;
+      computeSearchPagination(state);
+    },
+
+    searchnextpage: function (state) {
+      if (state.search.page > Math.floor(state.search.results.length / SEARCH_PER_PAGE)) {
+        return;
+      }
+      state.search.page++;
+      computeSearchPagination(state);
+    },
+
     /**
      * Update search results. Will automatically render using `bind-for` (menu.html).
      */
     searchresults: (state, payload) => {
       var i;
-      state.searchResults.length = 0;
-      for (i = 0; i < 6; i++) {
-        if (!payload.results[i]) { continue; }
-        challengeDataStore[payload.results[i].id] = payload.results[i];
-        payload.results[i].songSubName = payload.results[i].songSubName || 'Unknown Arist';
-        state.searchResults.push(payload.results[i]);
+      state.search.page = 0;
+      state.search.results = payload.results;
+      for (i = 0; i < payload.results.length; i++) {
+        let result = payload.results[i];
+        result.songSubName = result.songSubName || 'Unknown Arist';
+        result.shortSongName = truncate(result.songName, 35);
+        result.shortSongSubName = truncate(result.songSubName, 35);
+        challengeDataStore[result.id] = result
       }
-      state.searchResults.__dirty = true;
+      computeSearchPagination(state);
     },
 
     togglemenu: (state) => {
@@ -125,8 +147,7 @@ AFRAME.registerState({
   /**
    * Post-process the state after each action.
    */
-  computeState: (state) => {
-  }
+  // computeState: (state) => { }
 });
 
 /**
@@ -150,4 +171,25 @@ function popScreen (state) {
     return;
   }
   state.screen = state.screenHistory[state.screenHistory.length - 1];
+}
+
+function computeSearchPagination (state) {
+  let numPages = Math.ceil(state.search.results.length / SEARCH_PER_PAGE);
+  state.search.hasPrev = state.search.page > 0;
+  state.search.hasNext = state.search.page < numPages - 1;
+
+  state.searchResultsPage.length = 0;
+  for (i = state.search.page * SEARCH_PER_PAGE;
+       i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
+    if (!state.search.results[i]) { break; }
+    state.searchResultsPage.push(state.search.results[i]);
+  }
+}
+
+function truncate (str, length) {
+  if (!str) { return ''; }
+  if (str.length >= length) {
+    return str.substring(0, length - 3) + '...';
+  }
+  return str;
 }
