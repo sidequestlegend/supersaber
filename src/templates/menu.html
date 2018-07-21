@@ -47,11 +47,13 @@
     {{ searchResults() }}
   </a-entity>
 
+  <template id="difficultyOptionTemplate">
+  </template>
   <a-entity id="menuDifficulties"
     bind-for="for: difficulty; in: menuDifficulties"
     bind__visible="!!menuSelectedChallenge.id"
     menu-difficulty-select
-    layout="type: box; columns: 1; marginRow: -0.1"
+    layout="type: box; columns: 1; marginRow: -0.1; orderAttribute: data-bind-for-key"
     position="0.455 .3 0">
     {% raw %}
       <template>

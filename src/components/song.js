@@ -25,11 +25,11 @@ AFRAME.registerComponent('song', {
       let songUrl = utils.getS3FileUrl(data.challengeId, 'song.ogg');
       this.audio.currentTime = 0;
       this.audio.src = data.challengeId ? songUrl : '';
-      console.log(`Playing ${songUrl}...`);
     }
 
     // Keep playback state up to date.
     if ((data.isPlaying && data.challengeId) && this.audio.paused) {
+      console.log(`Playing ${this.audio.src}...`);
       this.audio.play();
       return;
     } else if ((!data.isPlaying || !data.challengeId) && !this.audio.paused) {
