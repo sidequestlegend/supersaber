@@ -65,17 +65,17 @@ AFRAME.registerState({
       let challengeData = challengeDataStore[id];
       Object.assign(state.menuSelectedChallenge, challengeData);
 
+      // Populate difficulty options.
       state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
         state.menuDifficulties.push(challengeData.difficulties[i]);
       }
+      state.menuDifficulties.sort(difficultyComparator);
+      // Default to easiest difficulty.
+      state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
 
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
-
-      // Choose first difficulty.
-      // TODO: Default and order by easiest to hardest.
-      state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
     },
 
     menudifficultyselect: (state, difficulty) => {
@@ -192,4 +192,13 @@ function truncate (str, length) {
     return str.substring(0, length - 3) + '...';
   }
   return str;
+}
+
+const DIFFICULTIES = ['Easy', 'Normal', 'Hard', 'Expert', 'ExpertPlus'];
+function difficultyComparator (a, b) {
+  const aIndex = DIFFICULTIES.indexOf(a);
+  const bIndex = DIFFICULTIES.indexOf(b);
+  if (aIndex < bIndex) { return -1; }
+  if (aIndex > bIndex) { return 1; }
+  return 0;
 }
