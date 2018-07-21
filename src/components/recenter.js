@@ -14,9 +14,7 @@ AFRAME.registerComponent('recenter', {
     this.checkInViewAfterRecenter = this.checkInViewAfterRecenter.bind(this);
     // Delay to make sure we have a valid pose.
     sceneEl.addEventListener('enter-vr', () => {
-      setTimeout(() => {
-        this.recenter();
-      }, 100);
+      setTimeout(() => { this.recenter(); }, 100);
     });
     // User can also recenter the menu manually.
     sceneEl.addEventListener('menudown', () => {
@@ -49,7 +47,7 @@ AFRAME.registerComponent('recenter', {
   checkInViewAfterRecenter: function() {
     var camera = this.el.sceneEl.camera;
     var frustum = this.frustum;
-    var menu = document.querySelector('#menu');
+    var menu = this.el;
     var menuPosition = this.menuPosition;
     camera.updateMatrix();
     camera.updateMatrixWorld();

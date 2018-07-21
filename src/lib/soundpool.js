@@ -1,22 +1,27 @@
-module.exports = function SoundPool (src, volume, size) {
+module.exports = function SoundPool (src, volume) {
   var currSound = 0;
   var i;
   var pool = [];
   var sound;
 
-  for (i = 0; i < size; i++) {
-    sound = new Audio(src);
-    sound.volume = volume;
-    sound.load();
-    pool.push(sound);
-  }
+  sound = new Audio(src);
+  sound.volume = volume;
+  pool.push(sound);
 
   return {
     play: function () {
+      // Dynamic size pool.
+      if (pool[currSound].currentTime !== 0 || !pool[currSound].ended) {
+        sound = new Audio(src);
+        sound.volume = volume;
+        pool.push(sound);
+        currSound++;
+      }
+
       if (pool[currSound].currentTime === 0 || pool[currSound].ended) {
         pool[currSound].play();
       }
-      currSound = (currSound + 1) % size;
+      currSound = (currSound + 1) % pool.length;
     }
   };
 };

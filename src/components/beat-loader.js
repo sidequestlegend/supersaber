@@ -10,16 +10,23 @@ AFRAME.registerComponent('beat-loader', {
   },
 
   update: function () {
-    var challengeId = this.data.challengeId;
+    if (!this.data.challengeId || !this.data.difficulty) { return; }
+    this.loadBeats(this.data.challengeId, this.data.difficulty);
+  },
+
+  /**
+   * XHR.
+   */
+  loadBeats: function (id, difficulty) {
     var el = this.el;
     var xhr;
 
-    if (!challengeId || !diffjculty) { return; }
-
     // Load beats.
+    let url = utils.getS3FileUrl(this.data.challengeId, `${this.data.difficulty}.json`);
     xhr = new XMLHttpRequest();
     el.emit('beatloaderstart');
-    xhr.open('GET', utils.getS3FileUrl(challengeId, `${this.data.difficulty}.json`));
+    console.log(`Fetching ${url}...`);
+    xhr.open('GET', url);
     xhr.addEventListener('load', () => {
       this.handleBeats(JSON.parse(xhr.responseText));
     });
@@ -30,16 +37,7 @@ AFRAME.registerComponent('beat-loader', {
    * TODO: Load the beat data into the game.
    */
   handleBeats: function (beatData) {
-    var el = this.el;
-
-    history.pushState(
-      '',
-      challenge.songName,
-      updateQueryParam(window.location.href, 'challenge', this.data.challengeId)
-    );
-
-    document.title = `Super Saber - ${challenge.songName}`;
-    el.emit('beatloaderfinish');
+    this.el.sceneEl.emit('beatloaderfinish', beatData, false);
     console.log('Finished loading challenge data.');
   },
 });

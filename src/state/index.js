@@ -9,79 +9,95 @@ AFRAME.registerState({
     challenge: {
       author: '',
       difficulty: '',
-      downloads: '',
-      downloadsText: '',
       id: AFRAME.utils.getUrlParameter('challenge'),
+      image: '',
       isLoading: false,
       songName: '',
-      songSubName: '',
+      songSubName: ''
     },
     inVR: false,
-    maxStreak: 0,
     menu: {
-      active: true
+      active: true,
+      playButtonText: 'Play'
     },
     menuDifficulties: [],
     menuSelectedChallenge: {
+      author: '',
+      difficulty: '',
+      downloads: '',
+      downloadsText: '',
       id: '',
-      image: ''
+      image: '',
+      songName: '',
+      songSubName: ''
     },
-    playButtonText: 'Play',
-    score: 0,
-    scoreText: '',
+    score: {
+      maxStreak: 0,
+      score: 0,
+      streak: 0
+    },
     // screen: keep track of layers or depth. Like breadcrumbs.
     screen: hasInitialChallenge ? 'challenge' : 'home',
     screenHistory: [],
-    searchResults: [],
-    streak: 0
+    searchResults: []
   },
 
   handlers: {
-    beatloaderfinish: function (state, payload) {
+    beatloaderfinish: (state) => {
       state.challenge.isLoading = false;
     },
 
-    beatloaderstart: function (state, payload) {
+    beatloaderstart: (state) => {
       state.challenge.isLoading = true;
-    },
-
-    challengeset: function (state, payload) {
-      state.challenge.id = payload.challengeId;
-      state.score = 0;
-      state.streak = 0;
-      state.maxStreak = 0;
-      state.menu.active = false;
-      state.menuSelectedChallenge.id = '';
-      setScreen(state, 'challenge');
     },
 
     /**
      * Song clicked from menu.
      */
-    menuchallengeselect: function (state, id) {
+    menuchallengeselect: (state, id) => {
+      // Copy from challenge store populated from search results.
       let challengeData = challengeDataStore[id];
       Object.assign(state.menuSelectedChallenge, challengeData);
-      state.menuSelectedChallenge.id = id;
+
       state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
         state.menuDifficulties.push(challengeData.difficulties[i]);
       }
+
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
+
+      // Choose first difficulty.
+      // TODO: Default and order by easiest to hardest.
+      state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
     },
 
-    menudifficultyselect: function (state, difficulty) {
+    menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
     },
 
-    playbuttonclick: function (state) {
+    /**
+     * Start challenge.
+     * Transfer staged challenge to the active challenge.
+     */
+    playbuttonclick: (state) => {
+      // Reset score.
+      state.score.maxStreak = 0;
+      state.score.score = 0;
+      state.score.streak = 0;
+
+      // Set challenge. `beat-loader` is listening.
+      Object.assign(state.challenge, state.menuSelectedChallenge);
+
+      // Reset menu.
       state.menu.active = false;
+      state.menuSelectedChallenge.id = '';
     },
 
     /**
      * Update search results. Will automatically render using `bind-for` (menu.html).
      */
-    searchresults: function (state, payload) {
+    searchresults: (state, payload) => {
       var i;
       state.searchResults.length = 0;
       for (i = 0; i < 6; i++) {
@@ -93,21 +109,23 @@ AFRAME.registerState({
       state.searchResults.__dirty = true;
     },
 
-    togglemenu: function (state) {
+    togglemenu: (state) => {
       state.menu.active = !state.menu.active;
     },
 
-    'enter-vr': function (state, payload) {
+    'enter-vr': (state) => {
       state.inVR = true;
     },
 
-    'exit-vr': function (state, payload) {
+    'exit-vr': (state) => {
       state.inVR = false;
     }
   },
 
-  computeState: function (state) {
-    state.scoreText = `Streak: ${state.streak} / Max Streak: ${state.maxStreak} / Score: ${state.score}`;
+  /**
+   * Post-process the state after each action.
+   */
+  computeState: (state) => {
   }
 });
 

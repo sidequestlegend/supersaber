@@ -1,4 +1,4 @@
-<a-entity id="sky" cubemap="folder: /assets/img/env/space/"></a-entity>
+<a-entity id="sky" cubemap="folder: assets/img/env/space/"></a-entity>
 
 <a-entity id="skyFade"
           bind__visible="menu.active"
@@ -20,3 +20,5 @@
 <!-- Default lights -->
 <a-entity light="type: ambient; color: #BBB"></a-entity>
 <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
+
+<a-entity id="dustParticles" particle-system="maxAge: 100; positionSpread: 5 5 5; type: 2; rotationAxis: x; rotationAngle: 0.001; accelerationValue: 0.001 0.001 0.001; accelerationSpread: 0.001 0.001 0.001; velocityValue: 0.001 0.001 0.001; velocitySpread: 0.0125 0.0125 0.0125; color: #ffffff; size: 0.1; opacity: 0.85; direction: 0; particleCount: 150; texture: assets/img/smokeparticle.png"></a-entity>

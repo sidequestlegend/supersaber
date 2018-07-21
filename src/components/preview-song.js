@@ -31,6 +31,7 @@ AFRAME.registerComponent('preview-song', {
   },
 
   update: function (oldData) {
+    // Stop.
     if (oldData.challengeId && !this.data.challengeId) {
       if (this.animation) { this.animation.pause(); }
       this.audio.pause();
