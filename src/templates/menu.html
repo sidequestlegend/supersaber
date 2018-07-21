@@ -31,7 +31,6 @@
           <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.576 -0.08 0.001"></a-entity>
           <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 55; align: left; color: #54c2fd; value: {{ item.shortSongSubName }}" position="0 -0.055 0"></a-entity>
           <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 45; value: {{ item.shortSongName }}" position="0 -0.09 0"></a-entity>
-          <a-entity class="searchResultDownloads" mixin="textFont" text="color: #cc0856; anchor: left; value: {{ item.downloads }}" position="0.12 -0.09 0"></a-entity>
         </a-entity>
       </a-entity>
     </template>
