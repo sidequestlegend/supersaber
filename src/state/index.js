@@ -124,8 +124,8 @@ AFRAME.registerState({
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
         result.songSubName = result.songSubName || 'Unknown Arist';
-        result.shortSongName = truncate(result.songName, 35);
-        result.shortSongSubName = truncate(result.songSubName, 35);
+        result.shortSongName = truncate(result.songName, 32);
+        result.shortSongSubName = truncate(result.songSubName, 32);
         challengeDataStore[result.id] = result
       }
       computeSearchPagination(state);
