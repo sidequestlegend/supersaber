@@ -52,20 +52,21 @@
   <a-entity id="menuDifficulties"
     bind-for="for: difficulty; in: menuDifficulties"
     bind__visible="!!menuSelectedChallenge.id"
-    menu-difficulty-select
     layout="type: box; columns: 1; marginRow: -0.1; orderAttribute: data-bind-for-key"
+    menu-difficulty-select
     position="0.455 .3 0">
     {% raw %}
       <template>
         <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
           <a-entity class="difficultyBackground"
+              bind__menu-difficulty-option="activeDifficulty: menuSelectedChallenge.difficulty"
               geometry="primitive: plane; width: 0.3; height: 0.1"
               material="shader: flat; color: #111"
               position="-0.4 -0.005 0"
               play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
               animation__mouseenter="property: material.color; from: #111; to: #666; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
               animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-              bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id"></a-entity>
+              bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
           <a-entity mixin="textFont" text="value: {{ difficulty }}" position="0 0 0.001"></a-entity>
         </a-entity>
       </template>
