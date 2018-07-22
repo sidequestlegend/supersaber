@@ -2,7 +2,7 @@ var algoliasearch = require('algoliasearch/lite');
 var bindEvent = require('aframe-event-decorators').bindEvent;
 
 var client = algoliasearch('QULTOY3ZWU', 'be07164192471df7e97e6fa70c1d041d');
-var index = client.initIndex('supersaber');
+var algolia = client.initIndex('supersaber');
 
 /**
  * Search (including the initial list of popular searches).
@@ -11,7 +11,7 @@ var index = client.initIndex('supersaber');
 AFRAME.registerComponent('search', {
   init: function() {
     this.eventDetail = {results: []};
-    this.queryObject = {query: ''};
+    this.queryObject = {hitsPerPage: 30, query: ''};
 
     // Populate popular.
     this.search('');
@@ -23,7 +23,7 @@ AFRAME.registerComponent('search', {
 
   search: function (query) {
     this.queryObject.query = query;
-    index.search(this.queryObject, (err, content) => {
+    algolia.search(this.queryObject, (err, content) => {
       this.eventDetail.results = content.hits;
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });
