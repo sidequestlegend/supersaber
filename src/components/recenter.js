@@ -2,6 +2,10 @@
  * Pivot the scene when user enters VR to face the links.
  */
 AFRAME.registerComponent('recenter', {
+  schema: {
+    enabled: {default: true}
+  },
+
   init: function() {
     var sceneEl = this.el.sceneEl;
     this.matrix = new THREE.Matrix4();
@@ -18,9 +22,11 @@ AFRAME.registerComponent('recenter', {
     });
     // User can also recenter the menu manually.
     sceneEl.addEventListener('menudown', () => {
+      if (!this.data.enabled) { return; }
       this.recenter();
     });
     sceneEl.addEventListener('thumbstickdown', () => {
+      if (!this.data.enabled) { return; }
       this.recenter();
     });
   },

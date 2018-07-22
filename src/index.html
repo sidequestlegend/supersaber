@@ -23,7 +23,7 @@
         <a-mixin id="textFont" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
       </a-assets>
 
-      <a-entity id="container" recenter>
+      <a-entity id="container" bind__recenter="enabled: menu.active">
         {% include './templates/environment.html' %}
         {% include './templates/gameUi.html' %}
         {% include './templates/menu.html' %}
@@ -31,8 +31,16 @@
 
       <a-entity id="cameraRig">
         <a-entity id="camera" camera look-controls="enabled: false" orbit-controls="target: 0 1.6 -0.5; maxDistance: 20; initialPosition: 0 1.6 0"></a-entity>
-        <a-entity id="leftHand" controller="hand: left"></a-entity>
-        <a-entity id="rightHand" controller="hand: right"></a-entity>
+        <a-entity id="leftHand"
+          controller="hand: left"
+          proxy-event__pause="event: menudown; to: a-scene; as: pause"
+          proxy-event__pauserifta="event: abuttondown; to: a-scene; as: pause"
+          proxy-event__pauseriftb="event: bbuttondown; to: a-scene; as: pause"></a-entity>
+        <a-entity id="rightHand"
+          controller="hand: right"
+          proxy-event__pause="event: menudown; to: a-scene; as: pause"
+          proxy-event__pauseriftx="event: xbuttondown; to: a-scene; as: pause"
+          proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pause"></a-entity>
       </a-entity>
 
       <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" debug-cursor

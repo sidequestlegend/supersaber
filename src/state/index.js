@@ -82,6 +82,10 @@ AFRAME.registerState({
       state.menuSelectedChallenge.difficulty = difficulty;
     },
 
+    pause: (state) => {
+      state.menu.active = true;
+    },
+
     /**
      * Start challenge.
      * Transfer staged challenge to the active challenge.
@@ -129,10 +133,6 @@ AFRAME.registerState({
         challengeDataStore[result.id] = result
       }
       computeSearchPagination(state);
-    },
-
-    togglemenu: (state) => {
-      state.menu.active = !state.menu.active;
     },
 
     'enter-vr': (state) => {

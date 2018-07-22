@@ -47,7 +47,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.audioStore[challengeId] = audio;
 
     if (this.preloadQueue.length === 0) {
-      preloadMetatata(audio);
+      this.preloadMetadata(audio);
     } else {
       this.preloadQueue.push(audio);
     }
@@ -56,7 +56,7 @@ AFRAME.registerComponent('song-preview-system', {
   preloadMetadata: function (audio) {
     audio.addEventListener('loadedmetadata', () => {
       if (this.preloadQueue.length) {
-        preloadMetadata(this.preloadQueue[0]);
+        this.preloadMetadata(this.preloadQueue[0]);
       }
     });
     audio.preload = 'metadata';
