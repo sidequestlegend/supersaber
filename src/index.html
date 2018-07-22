@@ -7,8 +7,8 @@
   </head>
   <body>
     <a-scene bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
-             bind__preview-song="challengeId: menuSelectedChallenge.id; previewStartTime: menuSelectedChallenge.previewStartTime"
              bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
+             bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
              console-shortcuts
              search>
       <a-assets timeout="10000">

@@ -18,7 +18,7 @@
 
   {% raw %}
     <template id="searchResultTemplate">
-      <a-entity class="searchResult" data-id="{{ item.id }}">
+      <a-entity class="searchResult" data-id="{{ item.id }}" song-preview="challengeId: {{ item.id }}; previewStartTime: {{ item.previewStartTime }}">
         <a-entity class="searchResultBackground"
             bind__active-color="active: menuSelectedChallenge.id === '{{ item.id }}'"
             bind__animation__mouseenter="enabled: menuSelectedChallenge.id !== '{{ item.id }}'"
