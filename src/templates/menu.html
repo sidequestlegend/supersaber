@@ -20,6 +20,9 @@
     <template id="searchResultTemplate">
       <a-entity class="searchResult" data-id="{{ item.id }}">
         <a-entity class="searchResultBackground"
+            bind__active-color="active: menuSelectedChallenge.id === '{{ item.id }}'"
+            bind__animation__mouseenter="enabled: menuSelectedChallenge.id !== '{{ item.id }}'"
+            bind__animation__mouseleave="enabled: menuSelectedChallenge.id !== '{{ item.id }}'"
             geometry="primitive: plane; width: 0.8; height: 0.1"
             material="shader: flat; color: #111"
             position="0 -0.13 -0.01"
@@ -59,7 +62,9 @@
       <template>
         <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
           <a-entity class="difficultyBackground"
-              bind__menu-difficulty-option="activeDifficulty: menuSelectedChallenge.difficulty"
+              bind__active-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'"
+              bind__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
+              bind__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
               geometry="primitive: plane; width: 0.3; height: 0.1"
               material="shader: flat; color: #111"
               position="-0.4 -0.005 0"
