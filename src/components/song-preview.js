@@ -1,5 +1,8 @@
 var utils = require('../utils');
 
+/**
+ * Song preview when search result selected with smart logic for preloading.
+ */
 AFRAME.registerComponent('song-preview-system', {
   schema: {
     selectedChallengeId: {type: 'string'}
@@ -8,6 +11,7 @@ AFRAME.registerComponent('song-preview-system', {
   init: function () {
     this.audio = null;
     this.audioStore = {};
+    this.preloadedAudioIds = [];
     this.preloadQueue = [];
 
     // anime.js animation to fade in volume.
@@ -28,6 +32,8 @@ AFRAME.registerComponent('song-preview-system', {
 
   update: function (oldData) {
     const data = this.data;
+    const preloadQueue = this.preloadQueue;
+
     if (oldData.selectedChallengeId &&
         oldData.selectedChallengeId !== data.selectedChallengeId) {
       this.stopSong();
@@ -35,31 +41,79 @@ AFRAME.registerComponent('song-preview-system', {
 
     if (data.selectedChallengeId &&
         oldData.selectedChallengeId !== data.selectedChallengeId) {
+      if (!this.preloadedAudioIds.includes(data.selectedChallengeId)) {
+        // If not yet preloaded, pause the preload queue until this song is loaded.
+        console.log(`[song-preview] Prioritizing loading of ${data.selectedChallengeId}`);
+        this.loadingChallengeId = data.selectedChallengeId;
+        this.audioStore[data.selectedChallengeId].addEventListener('loadeddata', () => {
+          console.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
+          this.preloadedAudioIds.push(data.selectedChallengeId);
+          this.loadingChallengeId = '';
+          // Resume preloading queue.
+          if (preloadQueue.length) {
+            console.log(`[song-preview] Resuming queue with ${preloadQueue[0].challengeId}`);
+            this.preloadMetadata(preloadQueue[0]);
+          }
+        });
+
+        // Remove from preload queue.
+        for (let i = 0; i < preloadQueue.length; i++) {
+          if (preloadQueue[i].challengeId === data.selectedChallengeId) {
+            preloadQueue.splice(i, 1);
+            break;
+          }
+        }
+      }
+
       this.playSong(data.selectedChallengeId);
     }
   },
 
-  preloadSong: function (challengeId, previewStartTime) {
+  queuePreloadSong: function (challengeId, previewStartTime) {
+    if (this.audioStore[challengeId]) { return; }
     const audio = document.createElement('audio');
     audio.currentTime = previewStartTime;
-    audio.src = utils.getS3FileUrl(challengeId, 'song.ogg');
     audio.volume = 0;
     this.audioStore[challengeId] = audio;
 
-    if (this.preloadQueue.length === 0) {
-      this.preloadMetadata(audio);
+    let src = utils.getS3FileUrl(challengeId, 'song.ogg');
+    if (!this.currentLoadingId) {
+      this.preloadMetadata({
+        audio: audio,
+        challengeId: challengeId,
+        src: src
+      });
     } else {
-      this.preloadQueue.push(audio);
+      this.preloadQueue.push({
+        audio: audio,
+        challengeId: challengeId,
+        src: src
+      });
     }
   },
 
-  preloadMetadata: function (audio) {
+  /**
+   * Preload metadata of audio file for quick play.
+   * Set `src` and `preload`.
+   * A preload queue is set up so we only preload one at a time to not bog down
+   * the network. If a song is selected to preview, we can bump it to the front of the
+   * queue.
+   */
+  preloadMetadata: function (preloadItem) {
+    const audio = preloadItem.audio;
+    console.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
     audio.addEventListener('loadedmetadata', () => {
-      if (this.preloadQueue.length) {
-        this.preloadMetadata(this.preloadQueue[0]);
+      console.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
+      this.preloadedAudioIds.push(preloadItem.challengeId);
+      this.currentLoadingId = '';
+      console.log(`[song-preview] ${this.preloadQueue.length} in queue`);
+      if (this.preloadQueue.length && !this.loadingChallengeId) {
+        this.preloadMetadata(this.preloadQueue.shift());
       }
     });
     audio.preload = 'metadata';
+    audio.src = preloadItem.src;
+    this.currentLoadingId = preloadItem.challengeId;
   },
 
   stopSong: function () {
@@ -71,6 +125,7 @@ AFRAME.registerComponent('song-preview-system', {
   playSong: function (challengeId) {
     if (!challengeId) { return; }
     this.audio = this.audioStore[challengeId];
+    this.audio.src = utils.getS3FileUrl(challengeId, 'song.ogg');
     this.audio.volume = 0;
     this.volumeTarget.volume = 0;
     this.audio.play();
@@ -80,14 +135,13 @@ AFRAME.registerComponent('song-preview-system', {
   clearSong: function (challengeId) {
     let audio = this.audioStore[challengeId];
     audio.preload = 'none';
-    delete this.audioStore[challengeId];
-    audio = null;
+    // Assume that paginating, clear the queue.
     this.preloadQueue.length = 0;
   }
 });
 
 /**
- * Handle song preview play, pause, fades.
+ * Data component attached to search result for song preview system.
  */
 AFRAME.registerComponent('song-preview', {
   schema: {
@@ -96,7 +150,7 @@ AFRAME.registerComponent('song-preview', {
   },
 
   play: function () {
-    this.el.sceneEl.components['song-preview-system'].preloadSong(
+    this.el.sceneEl.components['song-preview-system'].queuePreloadSong(
       this.data.challengeId, this.data.previewStartTime
     );
   },

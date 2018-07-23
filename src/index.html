@@ -23,7 +23,7 @@
         <a-mixin id="textFont" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
       </a-assets>
 
-      <a-entity id="container" bind__recenter="enabled: menu.active">
+      <a-entity id="container" bind__recenter="enabled: menu.active" recenter="target: #menu">
         {% include './templates/environment.html' %}
         {% include './templates/gameUi.html' %}
         {% include './templates/menu.html' %}
