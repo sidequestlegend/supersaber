@@ -41,14 +41,15 @@ AFRAME.registerComponent('song-preview-system', {
 
     if (data.selectedChallengeId &&
         oldData.selectedChallengeId !== data.selectedChallengeId) {
-      if (!this.preloadedAudioIds.includes(data.selectedChallengeId)) {
+      if (!this.preloadedAudioIds.includes(data.selectedChallengeId) &&
+          data.selectedChallengeId !== this.currentLoadingId) {
         // If not yet preloaded, pause the preload queue until this song is loaded.
         console.log(`[song-preview] Prioritizing loading of ${data.selectedChallengeId}`);
-        this.loadingChallengeId = data.selectedChallengeId;
+        this.priorityLoadingChallengeId = data.selectedChallengeId;
         this.audioStore[data.selectedChallengeId].addEventListener('loadeddata', () => {
           console.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
           this.preloadedAudioIds.push(data.selectedChallengeId);
-          this.loadingChallengeId = '';
+          this.priorityLoadingChallengeId = '';
           // Resume preloading queue.
           if (preloadQueue.length) {
             console.log(`[song-preview] Resuming queue with ${preloadQueue[0].challengeId}`);
@@ -107,7 +108,7 @@ AFRAME.registerComponent('song-preview-system', {
       this.preloadedAudioIds.push(preloadItem.challengeId);
       this.currentLoadingId = '';
       console.log(`[song-preview] ${this.preloadQueue.length} in queue`);
-      if (this.preloadQueue.length && !this.loadingChallengeId) {
+      if (this.preloadQueue.length && !this.priorityLoadingChallengeId) {
         this.preloadMetadata(this.preloadQueue.shift());
       }
     });
