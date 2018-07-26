@@ -1,20 +1,20 @@
 {% macro searchResults () %}
   <a-entity id="searchResultList"
             bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate"
-            layout="type: box; columns: 1; marginRow: -0.1"
+            layout="type: box; columns: 1; marginRow: -0.2"
             search-result-list
-            position="0 0.45 0">
+            position="0 0.644 0">
   </a-entity>
 
   <!-- TODO: Pagination icons. -->
   <a-mixin id="searchPageButton"
     animation__mouseenter="property: material.color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
     animation__mouseleave="property: material.color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-    geometry="primitive: plane; width: 0.9; height: 0.045"
-    material="color: #050505; shader: flat"
+    mixin="slice"
+    slice9="width: 0.5; height: 0.08; padding: 0.03"
     text="align: center; wrapCount: 40"></a-mixin>
-  <a-entity id="searchPrevPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasPrev && menu.active" text="value: prev" position="-0.05 0.39 0" proxy-event="event: click; to: a-scene; as: searchprevpage" bind__visible="search.hasPrev"></a-entity>
-  <a-entity id="searchNextPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasNext && menu.active" text="value: next" position="-0.05 -0.255 0" proxy-event="event: click; to: a-scene; as: searchnextpage" bind__visible="search.hasNext"></a-entity>
+  <a-entity id="searchPrevPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasPrev && menu.active" text="value: prev" position="-0.05 0.65 0" proxy-event="event: click; to: a-scene; as: searchprevpage" bind__visible="search.hasPrev"></a-entity>
+  <a-entity id="searchNextPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasNext && menu.active" text="value: next" position="-0.05 -0.634 0" proxy-event="event: click; to: a-scene; as: searchnextpage" bind__visible="search.hasNext"></a-entity>
 
   {% raw %}
     <template id="searchResultTemplate">
@@ -23,30 +23,47 @@
             bind__active-color="active: menuSelectedChallenge.id === '{{ item.id }}'"
             bind__animation__mouseenter="enabled: menuSelectedChallenge.id !== '{{ item.id }}'"
             bind__animation__mouseleave="enabled: menuSelectedChallenge.id !== '{{ item.id }}'"
-            geometry="primitive: plane; width: 0.8; height: 0.1"
-            material="shader: flat; color: #111"
-            position="0 -0.13 -0.01"
+            geometry="primitive: plane; width: 1.1; height: 0.2"
+            material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
+            position="0 -0.13 -0.002"
             play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-            animation__mouseenter="property: material.color; from: #111; to: #666; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-            animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+            animation__mouseenter="property: material.opacity; from: 0.0; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+            animation__mouseleave="property: material.opacity; from: 1.0; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
             raycastable></a-entity>
         <a-entity class="searchResultContent" position="0.125 -0.05 0">
-          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.1; height: 0.1" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.576 -0.08 0.001" visible="false" event-set__materialtextureloaded="visible: true"></a-entity>
-          <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 55; align: left; color: #54c2fd; value: {{ item.shortSongSubName }}" position="0 -0.055 0"></a-entity>
-          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 45; value: {{ item.shortSongName }}" position="0 -0.09 0"></a-entity>
+          <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.2; height: 0.2" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.576 -0.08 0.001" visible="false" event-set__materialtextureloaded="visible: true"></a-entity>
+          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #333; wrapCount: 28; value: {{ item.shortSongName }}" position="0.064 -0.091 0" bind__visible="menuSelectedChallenge.id === '{{ item.id }}'"></a-entity>
+          <a-entity class="searchResultTitle" mixin="textFont" text="align: left; color: #FFF; wrapCount: 28; value: {{ item.shortSongName }}" position="0.064 -0.091 0" bind__visible="menuSelectedChallenge.id !== '{{ item.id }}'"></a-entity>
+          <a-entity class="searchResultAuthor" mixin="textFont" text="wrapCount: 42; align: left; color: #999; value: {{ item.shortSongSubName }}" position="0.064 -0.147 0"></a-entity>
         </a-entity>
       </a-entity>
     </template>
   {% endraw %}
 {% endmacro %}
 
-<a-entity id="menu" bind__visible="menu.active" position="0 1.775 -1">
+<a-entity id="menu" bind__visible="menu.active" position="0 1.6 -2.3">
   <a-entity id="menuBackground"
-      geometry="primitive: plane; width: 2; height: 0.7"
-      material="shader: flat; transparent: true; color: #000; opacity: 0.85"
+      mixin="slice"
+      slice9="width: 2.5; height: 1.4"
       position="0 0 -0.005"></a-entity>
 
-  <a-entity id="searchResultsContainer" position="-0.495 -0.072 0.001">
+
+
+  <a-entity id="searchResultsContainer" position="0 0 0.001"
+    animation__toleft="property: position.x;  to: -0.59; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
+    animation__toright="property: position.x; to: 0; dur: 200; easing: easeOutCubic; startEvents: menuback"
+    proxy-event__divisor1="event: menuchallengeselect; to: #divisor-a"
+    proxy-event__divisor2="event: menuback; to: #divisor-a"
+    >
+    
+    <a-entity id="divisor-a" 
+      position="0.566 0 -0.0025" 
+      geometry="primitive:plane; height:1.17; width:0.02" 
+      material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
+      animation__fadein ="property: material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
+      animation__fadeout="property: material.opacity; to: 0.0; startEvents: menuback; dur: 200"
+      ></a-entity>
+
     {{ searchResults() }}
   </a-entity>
 
@@ -55,9 +72,13 @@
   <a-entity id="menuDifficulties"
     bind-for="for: difficulty; in: menuDifficulties"
     bind__visible="!!menuSelectedChallenge.id"
-    layout="type: box; columns: 1; marginRow: -0.1; orderAttribute: data-bind-for-key"
+    layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-bind-for-key"
     menu-difficulty-select
-    position="0.455 .3 0">
+    position="0.35 0.180 0"
+    animation__toleft="property: position;  to: 0.195 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
+    animation__toright="property: position; to: 0.35 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuback"
+
+    >
     {% raw %}
       <template>
         <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
@@ -65,14 +86,14 @@
               bind__active-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'"
               bind__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
               bind__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
-              geometry="primitive: plane; width: 0.3; height: 0.1"
-              material="shader: flat; color: #111"
-              position="-0.4 -0.005 0"
+              geometry="primitive: plane; width: 0.4; height: 0.2"
+              material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
+              position="0 -0.005 0"
               play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-              animation__mouseenter="property: material.color; from: #111; to: #666; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseleave="property: material.color; from: #666; to: #111; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+              animation__mouseenter="property: material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+              animation__mouseleave="property: material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
-          <a-entity mixin="textFont" text="value: {{ difficulty }}" position="0 0 0.001"></a-entity>
+          <a-entity mixin="textFont" text="value: {{ difficulty }}; wrapCount: 28; align: center" position="0 -0.057 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
@@ -110,7 +131,7 @@
   </a-entity>
 </a-entity>
 
-<a-entity id="keyboard" super-keyboard="hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 1.2 -0.8" rotation="-30 0 0" keyboard-raycastable search bind__visible="menu.active"></a-entity>
+<a-entity id="keyboard" super-keyboard="width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.8 -1" rotation="-40 0 0" keyboard-raycastable search bind__visible="menu.active"></a-entity>
 
 <a-entity id="songInfo"
           bind__visible="isChallengeScreen"

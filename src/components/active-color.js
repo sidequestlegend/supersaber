@@ -6,7 +6,7 @@ AFRAME.registerComponent('active-color', {
 
   schema: {
     active: {default: false},
-    color: {default: '#4BF'}
+    color: {default: '#ffffff'}
   },
 
   init: function () {

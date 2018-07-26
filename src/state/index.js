@@ -68,7 +68,7 @@ AFRAME.registerState({
       // Populate difficulty options.
       state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
-        state.menuDifficulties.push(challengeData.difficulties[i]);
+        state.menuDifficulties.unshift(challengeData.difficulties[i].toUpperCase());
       }
       state.menuDifficulties.sort(difficultyComparator);
       // Default to easiest difficulty.
@@ -127,8 +127,8 @@ AFRAME.registerState({
       state.search.results = payload.results;
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
-        result.songSubName = result.songSubName || 'Unknown Arist';
-        result.shortSongName = truncate(result.songName, 32);
+        result.songSubName = result.songSubName || 'Unknown Artist';
+        result.shortSongName = truncate(result.songName, 26).toUpperCase();
         result.shortSongSubName = truncate(result.songSubName, 32);
         challengeDataStore[result.id] = result
       }

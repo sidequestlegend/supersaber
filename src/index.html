@@ -10,6 +10,7 @@
              bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
              bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
              console-shortcuts
+             proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficulties"
              search>
       <a-assets timeout="10000">
         <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
@@ -17,10 +18,10 @@
         <img id="playImg" src="assets/img/play.png">
         <img id="resultImg" src="assets/img/result.png">
         <img id="sliceImg" src="assets/img/slice.png">
-        <a-mixin id="font" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
         <a-mixin id="raycaster" raycaster="objects: [raycastable]; far: 2"></a-mixin>
-        <a-mixin id="slice" slice9="color: #050505; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.04"></a-mixin>
-        <a-mixin id="textFont" text="font: exo2semibold; letterSpacing: -1"></a-mixin>
+        <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
+        <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
+        <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
 
       <a-entity id="container" bind__recenter="enabled: menu.active" recenter="target: #menu">
@@ -30,7 +31,9 @@
       </a-entity>
 
       <a-entity id="cameraRig">
-        <a-entity id="camera" camera look-controls="enabled: false" orbit-controls="target: 0 1.6 -0.5; maxDistance: 20; initialPosition: 0 1.6 0"></a-entity>
+        <a-entity id="camera" camera look-controls wasd-controls 
+          position="0 1.6 0"
+         ></a-entity>
         <a-entity id="leftHand"
           controller="hand: left"
           proxy-event__pause="event: menudown; to: a-scene; as: pause"
