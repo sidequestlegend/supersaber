@@ -12,9 +12,9 @@
     animation__mouseleave="property: material.color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
     mixin="slice"
     slice9="width: 0.5; height: 0.08; padding: 0.03"
-    text="align: center; wrapCount: 40"></a-mixin>
-  <a-entity id="searchPrevPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasPrev && menu.active" text="value: prev" position="-0.05 0.65 0" proxy-event="event: click; to: a-scene; as: searchprevpage" bind__visible="search.hasPrev"></a-entity>
-  <a-entity id="searchNextPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasNext && menu.active" text="value: next" position="-0.05 -0.634 0" proxy-event="event: click; to: a-scene; as: searchnextpage" bind__visible="search.hasNext"></a-entity>
+    text="align: center; wrapCount: 40; zOffset: 0.001"></a-mixin>
+  <a-entity id="searchPrevPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasPrev && menu.active" text="value: PREV" position="-0.05 0.65 0" proxy-event="event: click; to: a-scene; as: searchprevpage" bind__visible="search.hasPrev"></a-entity>
+  <a-entity id="searchNextPage" mixin="searchPageButton" bind-toggle__raycastable="search.hasNext && menu.active" text="value: NEXT" position="-0.05 -0.634 0" proxy-event="event: click; to: a-scene; as: searchnextpage" bind__visible="search.hasNext"></a-entity>
 
   {% raw %}
     <template id="searchResultTemplate">
@@ -55,10 +55,10 @@
     proxy-event__divisor1="event: menuchallengeselect; to: #divisor-a"
     proxy-event__divisor2="event: menuback; to: #divisor-a"
     >
-    
-    <a-entity id="divisor-a" 
-      position="0.566 0 -0.0025" 
-      geometry="primitive:plane; height:1.17; width:0.02" 
+
+    <a-entity id="divisor-a"
+      position="0.566 0 -0.0025"
+      geometry="primitive:plane; height:1.17; width:0.02"
       material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
       animation__fadein ="property: material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
       animation__fadeout="property: material.opacity; to: 0.0; startEvents: menuback; dur: 200"
