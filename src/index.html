@@ -2,16 +2,18 @@
 <html>
   <head>
     <title>Supersaber</title>
-    <script src="vendor/aframe.pr3701.js"></script>
+    <script src="vendor/aframe.effects.js"></script>
     <script src="build/build.js"></script>
   </head>
   <body>
-    <a-scene bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
-             bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
-             bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
-             console-shortcuts
-             proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficulties"
-             search>
+    <a-scene
+      effect-bloom="strength: 0.7"
+      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
+      bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
+      bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
+      console-shortcuts
+      proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficulties"
+      search>
       <a-assets timeout="10000">
         <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
         <img id="gridImg" src="assets/img/grid.png">
@@ -30,7 +32,7 @@
       </a-entity>
 
       <a-entity id="cameraRig">
-        <a-entity id="camera" camera look-controls="enabled: false" orbit-controls="target: 0 1.6 -0.5; maxDistance: 20; initialPosition: 0 1.6 0"></a-entity>
+        <a-entity id="camera" position="0 1.6 0.5" camera look-controls></a-entity>
         <a-entity id="leftHand"
           controller="hand: left"
           proxy-event__pause="event: menudown; to: a-scene; as: pause"
