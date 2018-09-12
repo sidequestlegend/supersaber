@@ -81688,7 +81688,6 @@ THREE.VREffect = function( renderer, onError ) {
       }
 
       if ( renderer.autoClear || forceClear ) {
-        debugger;
         renderer.clear();
       }
 

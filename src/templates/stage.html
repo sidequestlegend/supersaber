@@ -1,0 +1,54 @@
+<a-sky id="sky" src="#skyTexture" material="fog: false"></a-sky>
+
+<a-entity id="stage">
+    <a-entity id="backglow" obj-model="obj: #backglow-obj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
+
+    <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0"></a-entity>
+
+    <a-entity audioanalyser="src: #song; fftSize: 128; enableBeatDetection: false; enableLevels: false; enableWaveform: false" analyser="height: 28; mirror: 10; scale: 10; thickness: 0.4; separation: 0.45" position="0 -17 4"></a-entity>
+
+    <!-- corridor -->
+    <a-entity geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85" materials="black"></a-entity>
+
+    <a-entity geometry="height:20; depth:0.3; width:0.3" materials="black" position="1.9 -9.97 -7"></a-entity>
+    <a-entity geometry="height:20; depth:0.3; width:0.3" materials="black" position="-1.9 -9.97 -7"></a-entity>
+
+    <a-entity geometry="height: 0.3; depth: 50; width: 0.3" position="1.9 -1 -31.85" materials="black"></a-entity>
+    <a-entity geometry="height: 0.3; depth: 50; width: 0.3" position="-1.9 -1 -31.85" materials="black"></a-entity>
+
+    <!-- corridor handrail -->
+    <a-entity geometry="height:21.5; depth:0.2; width:0.2" materials="black" position="3.5 -10 -7"></a-entity>
+    <a-entity geometry="height:21.5; depth:0.2; width:0.2" materials="black" position="-3.5 -10 -7"></a-entity>
+
+    <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="3.5 0.65 -32" materials="neon"></a-entity>
+    <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="-3.5 0.65 -32" materials="neon"></a-entity>
+
+    <!-- neons on sides -->
+    <a-entity geometry="height: 0.05; depth: 100; width: 0.05" position="4.5 0.65 -32" materials="neon"></a-entity>
+    <a-entity geometry="height: 0.05; depth: 100; width: 0.05" position="-4.5 0.65 -32" materials="neon"></a-entity>
+
+    <!-- lasers left -->
+    <a-entity class="laser" mixin="laser" position=" -6 2.3 -40"></a-entity>
+    <a-entity class="laser" mixin="laser" position="-10 0 -38"></a-entity>
+    <a-entity class="laser" mixin="laser" position="-14 -3 -36"></a-entity>
+    <!-- lasers right -->
+    <a-entity class="laser" mixin="laser" position=" 6 4 -40"></a-entity>
+    <a-entity class="laser" mixin="laser" position="10 2 -38"></a-entity>
+    <a-entity class="laser" mixin="laser" position="14 -1.5 -36"></a-entity>
+
+    <a-entity geometry="primitive: cylinder; radius: 10; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: false; depthTest: false; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.4 0">
+      <a-animation attribute="rotation" from="0 0 0" to="0 360 0" dur="200000" easing="linear" repeat="indefinite"></a-animation>
+    </a-entity>
+    <a-entity geometry="primitive: cylinder; radius: 20; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: false; depthTest: false; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.8 0">
+      <a-animation attribute="rotation" from="0 0 0" to="0 -360 0" dur="243000" easing="linear" repeat="indefinite"></a-animation>
+    </a-entity>
+
+    <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
+    </a-entity>
+
+    <a-entity id="logo" position="0 5.0 -7.5">
+      <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #ff666a"></a-entity>
+      <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #ff1a1f" position="0 0 -0.1"></a-entity>
+      <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #0a0228" position="0 0 -0.2">
+    </a-entity>
+</a-entity>

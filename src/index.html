@@ -7,14 +7,22 @@
   </head>
   <body>
     <a-scene
-      effect-bloom="strength: 0.7"
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
       bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       console-shortcuts
+      effect-bloom="strength: 0.7"
       proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficulties"
-      search>
+      search
+      stage-colors="blue">
       <a-assets timeout="10000">
+        <!-- Stage -->
+        <a-image id="skyTexture" src="assets/img/stage/sky.jpg"></a-image>
+        <a-image id="smokeTexture" src="assets/img/stage/smoke.png"></a-image>
+        <a-image id="backglowTexture" src="assets/img/stage/backglow.png"></a-image>
+        <a-asset-item id="backglow-obj" src="assets/models/backglow.obj"></a-asset-item>
+        <a-mixin id="laser" laser geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
+
         <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
         <img id="gridImg" src="assets/img/grid.png">
         <img id="playImg" src="assets/img/play.png">
@@ -26,7 +34,7 @@
       </a-assets>
 
       <a-entity id="container" bind__recenter="enabled: menu.active" recenter="target: #menu">
-        {% include './templates/environment.html' %}
+        {% include './templates/stage.html' %}
         {% include './templates/gameUi.html' %}
         {% include './templates/menu.html' %}
       </a-entity>
