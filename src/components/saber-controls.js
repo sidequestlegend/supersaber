@@ -1,6 +1,7 @@
 AFRAME.registerComponent('saber-controls', {
   schema: {
-    hand: {default: 'left', oneOf: ['left', 'right']}
+    hand: {default: 'left', oneOf: ['left', 'right']},
+    bladeEnabled: {default: true}
   },
 
   colors: {
@@ -17,20 +18,20 @@ AFRAME.registerComponent('saber-controls', {
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
   },
   
-
   initSaber: function () {
     var el = this.el;
     var saberHandleEl = document.createElement('a-entity');
-    var saberEl = this.saberEl = document.createElement('a-entity');
+    var bladeEl = this.bladeEl = document.createElement('a-entity');
     var saberPivotEl = document.createElement('a-entity');
     var highlightTop = document.createElement('a-entity');
     var highlightBottom = document.createElement('a-entity');
 
     this.boundingBox = new THREE.Box3();
 
-    saberEl.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
-    saberEl.setAttribute('geometry', {primitive: 'box', height: 0.9, depth: 0.020, width: 0.020});
-    saberEl.setAttribute('position', '0 -0.55 0');
+    bladeEl.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
+    bladeEl.setAttribute('geometry', {primitive: 'box', height: 0.9, depth: 0.020, width: 0.020});
+    bladeEl.setAttribute('position', '0 -0.55 0');
+    bladeEl.object3D.visible = this.data.bladeEnabled;
 
     saberHandleEl.setAttribute('material', {shader: 'flat', color: '#151515'});
     saberHandleEl.setAttribute('geometry', {primitive: 'box', height: 0.2, depth: 0.025, width: 0.025});
@@ -49,13 +50,18 @@ AFRAME.registerComponent('saber-controls', {
 
     saberPivotEl.setAttribute('rotation', '90 0 0');
     saberPivotEl.appendChild(saberHandleEl);
-    saberPivotEl.appendChild(saberEl);
+    saberPivotEl.appendChild(bladeEl);
     el.appendChild(saberPivotEl);
   },
 
+  update: function () {
+    if (!this.bladeEl) { return; }
+    this.bladeEl.object3D.visible = this.data.bladeEnabled;
+  },
+
   tick: function () {
-    if (!this.saberEl) { return; }
-    this.boundingBox.setFromObject(this.saberEl.getObject3D('mesh'));
+    if (!this.bladeEl) { return; }
+    this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
   }
 
 });

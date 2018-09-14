@@ -49,12 +49,14 @@
           saber-controls="hand: left"
           proxy-event__pause="event: menudown; to: a-scene; as: pause"
           proxy-event__pauserifta="event: abuttondown; to: a-scene; as: pause"
-          proxy-event__pauseriftb="event: bbuttondown; to: a-scene; as: pause"></a-entity>
+          proxy-event__pauseriftb="event: bbuttondown; to: a-scene; as: pause"
+          bind__saber-controls="bladeEnabled: !menu.active"></a-entity>
         <a-entity id="rightHand"
           saber-controls="hand: right"
           proxy-event__pause="event: menudown; to: a-scene; as: pause"
           proxy-event__pauseriftx="event: xbuttondown; to: a-scene; as: pause"
-          proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pause"></a-entity>
+          proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pause"
+          bind__saber-controls="bladeEnabled: !menu.active"></a-entity>
       </a-entity>
 
       <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" debug-cursor
