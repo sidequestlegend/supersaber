@@ -131,7 +131,7 @@
   </a-entity>
 </a-entity>
 
-<a-entity id="keyboard" super-keyboard="width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.8 -1" rotation="-40 0 0" keyboard-raycastable search bind__visible="menu.active"></a-entity>
+<a-entity id="keyboard" super-keyboard="width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.8 -1" rotation="-40 0 0" keyboard-raycastable search bind__visible="search.active"></a-entity>
 
 <a-entity id="songInfo"
           bind__visible="isChallengeScreen"
