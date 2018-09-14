@@ -3,6 +3,11 @@ AFRAME.registerComponent('saber-controls', {
     hand: {default: 'left', oneOf: ['left', 'right']}
   },
 
+  colors: {
+    right: '#78aaff', // Blue
+    left: '#ffa8a8' // Red
+  },
+
   init: function () {
     var el = this.el;
     var data = this.data;
@@ -18,12 +23,12 @@ AFRAME.registerComponent('saber-controls', {
     var saberHandleEl = document.createElement('a-entity');
     var saberEl = this.saberEl = document.createElement('a-entity');
     var saberPivotEl = document.createElement('a-entity');
-    var saberColor = this.data.hand === 'left' ? '#fdccd1' : '#b0ecfd';
-    //saberColor = '#ffffff';
+    var highlightTop = document.createElement('a-entity');
+    var highlightBottom = document.createElement('a-entity');
 
     this.boundingBox = new THREE.Box3();
 
-    saberEl.setAttribute('material', {shader: 'flat', color: saberColor});
+    saberEl.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
     saberEl.setAttribute('geometry', {primitive: 'box', height: 0.9, depth: 0.020, width: 0.020});
     saberEl.setAttribute('position', '0 -0.55 0');
 
@@ -31,7 +36,18 @@ AFRAME.registerComponent('saber-controls', {
     saberHandleEl.setAttribute('geometry', {primitive: 'box', height: 0.2, depth: 0.025, width: 0.025});
     saberHandleEl.setAttribute('position', '0 0 0');
 
-    saberPivotEl.setAttribute('rotation', '70 0 0');
+    highlightTop.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
+    highlightTop.setAttribute('geometry', {primitive: 'box', height: 0.18, depth: 0.005, width: 0.005});
+    highlightTop.setAttribute('position', '0 0 0.0125');
+
+    highlightBottom.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
+    highlightBottom.setAttribute('geometry', {primitive: 'box', height: 0.18, depth: 0.005, width: 0.005});
+    highlightBottom.setAttribute('position', '0 0 -0.0125');
+
+    saberHandleEl.appendChild(highlightTop);
+    saberHandleEl.appendChild(highlightBottom)
+
+    saberPivotEl.setAttribute('rotation', '90 0 0');
     saberPivotEl.appendChild(saberHandleEl);
     saberPivotEl.appendChild(saberEl);
     el.appendChild(saberPivotEl);
