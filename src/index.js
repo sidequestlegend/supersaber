@@ -3,6 +3,7 @@ require('babel-polyfill');
 function requireAll (req) { req.keys().forEach(req); }
 
 require('aframe-animation-component');
+require('aframe-audioanalyser-component');
 require('aframe-cubemap-component');
 require('aframe-event-set-component');
 require('aframe-haptics-component');
