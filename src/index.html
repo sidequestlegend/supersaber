@@ -37,7 +37,7 @@
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
 
-      <a-entity id="container" bind__recenter="enabled: menu.active" recenter="target: #menu">
+      <a-entity id="container">
         {% include './templates/stage.html' %}
         {% include './templates/gameUi.html' %}
         {% include './templates/menu.html' %}
