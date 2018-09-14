@@ -10,8 +10,8 @@ AFRAME.registerComponent('stage-colors', {
     this.defaultRed  = new THREE.Color(0xff0000);
     this.defaultBlue = new THREE.Color(0x0000ff);
     this.mineEnvMap = {
-      red:  new THREE.TextureLoader().load('images/mineenviro-red.jpg'),
-      blue: new THREE.TextureLoader().load('images/mineenviro-blue.jpg')
+      red:  new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg'),
+      blue: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg')
     };
     this.mineColor = { red: new THREE.Color(0x070304), blue: new THREE.Color(0x030407) };
     this.mineEmission = { red: new THREE.Color(0x090707), blue: new THREE.Color(0x070709) };
