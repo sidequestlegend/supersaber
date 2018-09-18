@@ -12,19 +12,20 @@ AFRAME.registerComponent('saber-controls', {
   init: function () {
     var el = this.el;
     var data = this.data;
+    el.addEventListener('controllerconnected', this.initSaber.bind(this));
     el.setAttribute('oculus-touch-controls', {hand: data.hand, model: false});
     el.setAttribute('vive-controls', {hand: data.hand, model: true});
     el.setAttribute('windows-motion-controls', {hand: data.hand, model: false});
-    el.addEventListener('controllerconnected', this.initSaber.bind(this));
   },
   
-  initSaber: function () {
+  initSaber: function (evt) {
     var el = this.el;
     var saberHandleEl = document.createElement('a-entity');
     var bladeEl = this.bladeEl = document.createElement('a-entity');
     var saberPivotEl = document.createElement('a-entity');
     var highlightTop = document.createElement('a-entity');
     var highlightBottom = document.createElement('a-entity');
+    var controllerConfig = this.config[evt.detail.name];
 
     this.boundingBox = new THREE.Box3();
 
@@ -52,6 +53,13 @@ AFRAME.registerComponent('saber-controls', {
     saberPivotEl.appendChild(saberHandleEl);
     saberPivotEl.appendChild(bladeEl);
     el.appendChild(saberPivotEl);
+
+    this.controllerConnected = true;
+    this.controllerType = evt.detail.name;
+    if (this.data.hand === 'left') { return; }
+    el.setAttribute('cursor', controllerConfig.cursor || {});
+    el.setAttribute('raycaster', 'objects: [raycastable]; far: 20; enabled: true');
+    el.setAttribute('line', {opacity: 0.75, color: 'pink', end: {x: 0, y: 0, z: -20}});
   },
 
   update: function () {
@@ -62,6 +70,43 @@ AFRAME.registerComponent('saber-controls', {
   tick: function () {
     if (!this.bladeEl) { return; }
     this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
+  },
+
+  config: {
+    'oculus-touch-controls': {
+      cursor: {
+        downEvents: [
+          'triggerdown',
+          'gripdown',
+          'abuttondown',
+          'bbuttondown',
+          'xbuttondown',
+          'ybuttondown',
+        ],
+        upEvents: [
+          'triggerup',
+          'gripup',
+          'abuttonup',
+          'bbuttonup',
+          'xbuttonup',
+          'ybuttonup',
+        ],
+      },
+    },
+
+    'vive-controls': {
+      cursor: {
+        downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
+        upEvents: ['trackpadup', 'triggerup', 'gripup'],
+      },
+    },
+
+    'windows-motion-controls': {
+      cursor: {
+        downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
+        upEvents: ['trackpadup', 'triggerup', 'gripup'],
+      },
+    }
   }
 
 });
