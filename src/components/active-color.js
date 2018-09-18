@@ -19,6 +19,9 @@ AFRAME.registerComponent('active-color', {
       el.setAttribute('material', 'color', this.data.color);
     } else {
       el.setAttribute('material', 'color', this.defaultColor);
+      if (el.components.animation__mouseleave) {
+        setTimeout(() => { el.emit('mouseleave', null, false); });
+      }
     }
   },
 });
