@@ -26,7 +26,6 @@
         <a-mixin id="laser" laser geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
 
         <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
-        <audio id="introSong" src="/assets/sounds/introSong.ogg" autoplay></audio>
 
         <img id="gridImg" src="assets/img/grid.png">
         <img id="playImg" src="assets/img/play.png">
@@ -36,6 +35,8 @@
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
+
+      <audio id="introSong" src="/assets/sounds/introSong.ogg" autoplay loop></audio>
 
       <a-entity id="container">
         {% include './templates/stage.html' %}
