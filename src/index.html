@@ -56,7 +56,8 @@
           proxy-event__pause="event: menudown; to: a-scene; as: pause"
           proxy-event__pauseriftx="event: xbuttondown; to: a-scene; as: pause"
           proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pause"
-          bind__saber-controls="bladeEnabled: !menu.active"></a-entity>
+          bind__saber-controls="bladeEnabled: !menu.active"
+          bind__line="visible: menu.active"></a-entity>
       </a-entity>
 
       <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse" debug-cursor
