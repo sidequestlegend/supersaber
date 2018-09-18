@@ -9,7 +9,7 @@ AFRAME.registerSystem('materials', {
 AFRAME.registerComponent('materials', {
   schema: {
     default: 'black',
-    oneOf: ['black', 'red', 'blueneon']
+    oneOf: ['black', 'default', 'neon']
   },
   update: function () {
     this.el.object3D.traverse(o => o.material = this.system[this.data]);
