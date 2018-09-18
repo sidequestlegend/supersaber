@@ -73,6 +73,7 @@ AFRAME.registerComponent('song-preview-system', {
   queuePreloadSong: function (challengeId, previewStartTime) {
     if (this.audioStore[challengeId]) { return; }
     const audio = document.createElement('audio');
+    audio.crossOrigin = 'anonymous';
     audio.currentTime = previewStartTime;
     audio.volume = 0;
     this.audioStore[challengeId] = audio;
@@ -135,10 +136,8 @@ AFRAME.registerComponent('song-preview-system', {
   },
 
   updateAnalyser: function () {
-    var introSongEl = document.getElementById('introSong');
-    var audioAnalyserEl = document.getElementById('audioanalyser');
-    introSongEl.pause();
-    //audioAnalyserEl.setAttribute('audioanalyser', 'src', this.audio);
+    document.getElementById('introSong').pause();
+    document.getElementById('audioanalyser').setAttribute('audioanalyser', 'src', this.audio);
   },
 
   clearSong: function (challengeId) {
