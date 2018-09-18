@@ -69,7 +69,7 @@ AFRAME.registerState({
       // Populate difficulty options.
       state.menuDifficulties.length = 0;
       for (let i = 0; i < challengeData.difficulties.length; i++) {
-        state.menuDifficulties.unshift(challengeData.difficulties[i].toUpperCase());
+        state.menuDifficulties.unshift(challengeData.difficulties[i]);
       }
       state.menuDifficulties.sort(difficultyComparator);
       // Default to easiest difficulty.

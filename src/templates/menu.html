@@ -85,7 +85,7 @@
               animation__mouseenter="property: material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
               animation__mouseleave="property: material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
-          <a-entity mixin="textFont" text="value: {{ difficulty }}; wrapCount: 28; align: center" position="0 -0.057 0.001"></a-entity>
+          <a-entity mixin="textFont" bind__active-text-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'" active-text-color="activeColor: #333" text-uppercase="value: {{ difficulty }}" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
