@@ -129,7 +129,7 @@ AFRAME.registerState({
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
         result.songSubName = result.songSubName || 'Unknown Artist';
-        result.shortSongName = truncate(result.songName, 26).toUpperCase();
+        result.shortSongName = truncate(result.songName, 24).toUpperCase();
         result.shortSongSubName = truncate(result.songSubName, 32);
         challengeDataStore[result.id] = result
       }
