@@ -40,7 +40,7 @@ AFRAME.registerState({
     screen: hasInitialChallenge ? 'challenge' : 'home',
     screenHistory: [],
     search: {
-      active: false,
+      active: true,
       page: 0,
       hasNext: false,
       hasPrev: false,
