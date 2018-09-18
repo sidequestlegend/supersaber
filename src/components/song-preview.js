@@ -131,6 +131,14 @@ AFRAME.registerComponent('song-preview-system', {
     this.volumeTarget.volume = 0;
     this.audio.play();
     this.animation.restart();
+    this.updateAnalyser();
+  },
+
+  updateAnalyser: function () {
+    var introSongEl = document.getElementById('introSong');
+    var audioAnalyserEl = document.getElementById('audioanalyser');
+    introSongEl.pause();
+    //audioAnalyserEl.setAttribute('audioanalyser', 'src', this.audio);
   },
 
   clearSong: function (challengeId) {
