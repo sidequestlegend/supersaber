@@ -12,7 +12,7 @@
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       console-shortcuts
       effect-bloom="strength: 0.7"
-      proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficulties"
+      proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
       overlay="object: #menu"
       search
       stage-colors="blue"
@@ -32,6 +32,7 @@
         <img id="gridImg" src="assets/img/grid.png">
         <img id="playImg" src="assets/img/play.png">
         <img id="sliceImg" src="assets/img/slice.png">
+        <img id="downIconImg" src="assets/img/downIcon.png">
         <a-mixin id="raycaster" raycaster="objects: [raycastable]; far: 2"></a-mixin>
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
