@@ -1,3 +1,4 @@
+<!-- Macro is a templating function. It is rendered into the HTML below with {{ searchResults() }}. -->
 {% macro searchResults () %}
   <a-entity id="searchResultList"
             bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate"
