@@ -69540,9 +69540,9 @@ module.exports.Component = register('overlay', {
     var scene = object && new THREE.Scene();
     this.el.overlayScene = scene;
     if (!scene) { return; }
+    this.el.object3D.remove(object.object3D);
     scene.add(object.object3D);
     this.el.overlayObject = object.object3D;
-    object.object3D.visible = false;
   }
 });
 
@@ -76337,10 +76337,8 @@ module.exports.AScene = registerElement('a-scene', {
 
         if (overlayScene) {
           this.renderer.autoClear = false;
-          this.overlayObject.visible = true;
           this.renderer.clearDepth();
           effect.render(overlayScene, this.camera);
-          this.overlayObject.visible = false;
           this.renderer.autoClear = autoClear;
         }
 
@@ -78182,7 +78180,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-09-18, Commit #b2131c876)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-09-19, Commit #b2131c876)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -84055,4 +84053,4 @@ module.exports = getWakeLock();
 
 },{"./util.js":199}]},{},[155])(155)
 });
-//# sourceMappingURL=aframe-effects.js.map
+//# sourceMappingURL=aframe.effects.js.map
