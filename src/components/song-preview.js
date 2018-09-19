@@ -107,7 +107,6 @@ AFRAME.registerComponent('song-preview-system', {
     const audio = preloadItem.audio;
     console.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
     audio.addEventListener('loadedmetadata', () => {
-      if (this.preloadedAudioIds.indexOf(preloadItem.challengeId) !== -1) { return; }
       console.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
       this.preloadedAudioIds.push(preloadItem.challengeId);
       this.currentLoadingId = '';
