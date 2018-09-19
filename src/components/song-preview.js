@@ -107,6 +107,7 @@ AFRAME.registerComponent('song-preview-system', {
     const audio = preloadItem.audio;
     console.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
     audio.addEventListener('loadedmetadata', () => {
+      if (this.preloadedAudioIds.indexOf(preloadItem.challengeId) !== -1) { return; }
       console.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
       this.preloadedAudioIds.push(preloadItem.challengeId);
       this.currentLoadingId = '';
@@ -129,7 +130,6 @@ AFRAME.registerComponent('song-preview-system', {
   playSong: function (challengeId) {
     if (!challengeId) { return; }
     this.audio = this.audioStore[challengeId];
-    this.audio.src = utils.getS3FileUrl(challengeId, 'song.ogg');
     this.audio.volume = 0;
     this.volumeTarget.volume = 0;
     this.audio.play();

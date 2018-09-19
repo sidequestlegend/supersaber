@@ -48,13 +48,13 @@
           class="searchResultTitleActive"
           mixin="textFont"
           bind-item__text="value: item.shortSongName"
-          bind-visible="value: menuSelectedChallenge.id === item.id"
+          bind-item__visible="menuSelectedChallenge.id === item.id"
           text="align: left; color: #333; wrapCount: 28"
           position="0.064 -0.091 0"></a-entity>
         <a-entity
           class="searchResultTitle"
           bind-item__text="value: item.shortSongName"
-          bind-visible="value: menuSelectedChallenge.id !== item.id"
+          bind-item__visible="menuSelectedChallenge.id !== item.id"
           mixin="textFont"
           text="align: left; color: #FFF; wrapCount: 28"
           position="0.064 -0.091 0"></a-entity>
@@ -114,7 +114,7 @@
               animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
               animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
-          <a-entity mixin="textFont" bind__active-text-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'" active-text-color="activeColor: #333" text-uppercase="value: {{ difficulty }}" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
+          <a-entity mixin="textFont" bind__active-text-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'" active-text-color="color: #333" text-uppercase="value: {{ difficulty }}" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
