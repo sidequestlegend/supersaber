@@ -74,7 +74,9 @@ AFRAME.registerComponent('song-preview-system', {
     if (this.audioStore[challengeId]) { return; }
     const audio = document.createElement('audio');
     audio.crossOrigin = 'anonymous';
-    audio.currentTime = previewStartTime;
+    audio.addEventListener('canplaythrough', () => {
+      audio.currentTime = previewStartTime;
+    }, false);
     audio.volume = 0;
     this.audioStore[challengeId] = audio;
 

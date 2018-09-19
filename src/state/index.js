@@ -83,7 +83,7 @@ AFRAME.registerState({
       state.menuSelectedChallenge.difficulty = difficulty;
     },
 
-    pause: (state) => {
+    pausegame: (state) => {
       state.menu.active = true;
     },
 

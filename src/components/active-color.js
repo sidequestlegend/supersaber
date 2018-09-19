@@ -15,6 +15,7 @@ AFRAME.registerComponent('active-color', {
 
   update: function () {
     var el = this.el;
+
     if (this.data.active) {
       el.setAttribute('material', 'color', this.data.color);
       el.setAttribute('material', 'opacity', 1);
