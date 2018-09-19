@@ -74,9 +74,7 @@ AFRAME.registerComponent('song-preview-system', {
     if (this.audioStore[challengeId]) { return; }
     const audio = document.createElement('audio');
     audio.crossOrigin = 'anonymous';
-    audio.addEventListener('canplaythrough', () => {
-      audio.currentTime = previewStartTime;
-    }, false);
+    // audio.currentTime = previewStartTime;
     audio.volume = 0;
     this.audioStore[challengeId] = audio;
 
@@ -158,13 +156,13 @@ AFRAME.registerComponent('song-preview', {
     previewStartTime: {type: 'number'}
   },
 
-  play: function () {
+  update: function (oldData) {
+    if (oldData.challengeId && this.data.challengeId !== oldData.challengeId) {
+      this.el.sceneEl.components['song-preview-system'].clearSong(oldData.challengeId);
+    }
+
     this.el.sceneEl.components['song-preview-system'].queuePreloadSong(
       this.data.challengeId, this.data.previewStartTime
     );
-  },
-
-  remove: function () {
-    this.el.sceneEl.components['song-preview-system'].clearSong(this.data.challengeId);
   }
 });
