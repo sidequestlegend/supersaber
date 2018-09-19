@@ -42,6 +42,7 @@
   {% endraw %}
 {% endmacro %}
 
+<!-- Menu container begins here. -->
 <a-entity id="menu" bind__visible="menu.active" position="0 1.6 -2.3">
   <a-entity id="menuBackground"
       mixin="slice"
@@ -126,6 +127,8 @@
 
 <a-entity id="keyboard" super-keyboard="width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false" position="0 0.8 -1" rotation="-40 0 0" keyboard-raycastable search bind__super-keyboard="show: search.active"></a-entity>
 
+<!-- Representation of the song information during play mode. Not part of menu.
+     TODO: Move to different template along with score and such. -->
 <a-entity id="songInfo"
           bind__visible="isChallengeScreen"
           position="0 -0.25 0">
