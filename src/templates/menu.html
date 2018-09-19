@@ -8,8 +8,8 @@
 
   <!-- TODO: Pagination icons. -->
   <a-mixin id="searchPageButton"
-    animation__mouseenter="property: material.color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-    animation__mouseleave="property: material.color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+    animation__mouseenter="property: components.material.material.color; type: color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+    animation__mouseleave="property: components.material.material.color; type: color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
     mixin="slice"
     slice9="width: 0.5; height: 0.08; padding: 0.03"
     text="align: center; wrapCount: 40; zOffset: 0.001"></a-mixin>
@@ -27,8 +27,8 @@
             material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
             position="0 -0.13 -0.002"
             play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-            animation__mouseenter="property: material.opacity; from: 0.0; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-            animation__mouseleave="property: material.opacity; from: 1.0; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+            animation__mouseenter="property: components.material.material.opacity; from: 0.0; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+            animation__mouseleave="property: components.material.material.opacity; from: 1.0; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
             raycastable></a-entity>
         <a-entity class="searchResultContent" position="0.125 -0.05 0">
           <a-entity class="searchResultImage" geometry="primitive: plane; width: 0.2; height: 0.2" material="shader: flat; src: url(https://s3-us-west-2.amazonaws.com/supersaber/{{ item.id }}-image.jpg)" position="-0.576 -0.08 0.001" visible="false" event-set__materialtextureloaded="visible: true"></a-entity>
@@ -57,8 +57,8 @@
       position="0.566 0 -0.0025"
       geometry="primitive:plane; height:1.17; width:0.02"
       material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
-      animation__fadein ="property: material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
-      animation__fadeout="property: material.opacity; to: 0.0; startEvents: menuback; dur: 200"></a-entity>
+      animation__fadein ="property: components.material.material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
+      animation__fadeout="property: components.material.material.opacity; to: 0.0; startEvents: menuback; dur: 200"></a-entity>
 
     {{ searchResults() }}
   </a-entity>
@@ -82,8 +82,8 @@
               material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
               position="0 -0.005 0"
               play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-              animation__mouseenter="property: material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseleave="property: material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+              animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+              animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
           <a-entity mixin="textFont" bind__active-text-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'" active-text-color="activeColor: #333" text-uppercase="value: {{ difficulty }}" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
         </a-entity>
@@ -114,8 +114,8 @@
              material="shader: flat; src: #playImg; transparent: true; color: #BBB"
              width="0.256"
              height="0.128"
-             animation__mouseenter1="property: material.color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-             animation__mouseleave1="property: material.color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+             animation__mouseenter1="property: components.material.material.color; type: color; from: #BBB; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+             animation__mouseleave1="property: components.material.material.color; type: color; from: #FFF; to: #BBB; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
              animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
              animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
              bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id"
