@@ -45,9 +45,20 @@
   </a-entity>
 
   <a-entity id="logo" position="0 5.0 -7.5">
-    <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #ff666a"></a-entity>
-    <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #ff1a1f" position="0 0 -0.1"></a-entity>
-    <a-entity mixin="font" text="width: 35; value: SUPER SABER; align: center; color: #0a0228" position="0 0 -0.2"></a-entity>
+    <a-entity id="logosparks" particleplayer="src:#logoSparks; scale: 1.4; pscale: 0.4; count: 10; dur: 600; on:flicker" position="-3.8 0.5 0.05"></a-entity>
+
+    <a-entity mixin="font" text="width: 35; value: PER SABER; align: center; color: #ff666a" position="0.974 0 0"></a-entity>
+    <a-entity mixin="font" text="width: 35; value: PER SABER; align: center; color: #ff1a1f" position="0.974 0 -0.1"></a-entity>
+    <a-entity mixin="font" text="width: 35; value: PER SABER; align: center; color: #0a0228" position="0.974 0 -0.2"></a-entity>
+
+    <a-entity mixin="font" text="width: 35; value: S; align: center; color: #ff666a" position="-4.601 0 0"></a-entity>
+    <a-entity mixin="font" text="width: 35; value: U; align: center; color: #ff666a" position="-3.632 0 0" logoflicker="1200"></a-entity>
+
+    <a-entity mixin="font" text="width: 35; value: S; align: center; color: #ff1a1f" position="-4.601 0 -0.1"></a-entity>
+    <a-entity mixin="font" text="width: 35; value: U; align: center; color: #ff1a1f" position="-3.632 0 -0.1"></a-entity>
+
+    <a-entity mixin="font" text="width: 35; value: S; align: center; color: #0a0228" position="-4.601 0 -0.2"></a-entity>
+    <a-entity mixin="font" text="width: 35; value: U; align: center; color: #0a0228" position="-3.632 0 -0.2"></a-entity>
   </a-entity>
 
   <a-entity geometry="primitive: plane; width: 3; height: 3" material="shader: flat; src: #floor" position="0 0 0" rotation="-90 0 0"></a-entity>

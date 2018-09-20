@@ -13,7 +13,7 @@
       bind-toggle__overlay="menu.active"
       console-shortcuts
       debug-controller
-      effect-bloom="strength: 0.7"
+      effect-bloom="strength: 1"
       proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
       overlay="object: #menu, #keyboard, #rightHand, #leftHand"
       search
@@ -36,6 +36,9 @@
         <img id="playImg" src="assets/img/play.png">
         <img id="sliceImg" src="assets/img/slice.png">
         <img id="downIconImg" src="assets/img/downIcon.png">
+
+        <a-asset-item src="assets/models/logosparks.json" id="logoSparks"></a-asset-item>
+
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
