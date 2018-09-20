@@ -55,34 +55,25 @@
         line="opacity: 0.75"></a-mixin>
       <a-entity id="cameraRig">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
-        <a-entity id="leftHand"
-          bind__hand-swapper="enabled: menu.active && activeHand === 'right'"
-          bind__pauser="enabled: !menu.active"
-          bind__saber-controls="bladeEnabled: !menu.active"
-          saber-controls="hand: left"
-          haptics="events: mouseenter; dur: 35; force: 0.075">
-          <a-entity
-            id="leftRaycaster"
-            class="raycaster"
-            mixin="raycaster"
-            bind__raycaster="enabled: menu.active && activeHand === 'left'; showLine: menu.active && activeHand === 'left'"
-            cursor
-            line="color: pink"></a-entity>
-        </a-entity>
-        <a-entity id="rightHand"
-          bind__hand-swapper="enabled: menu.active && activeHand === 'left'"
-          bind__pauser="enabled: !menu.active"
-          bind__saber-controls="bladeEnabled: !menu.active"
-          saber-controls="hand: right"
-          haptics="events: mouseenter; dur: 35; force: 0.075">
-          <a-entity
-            id="rightRaycaster"
-            class="raycaster"
-            mixin="raycaster"
-            bind__raycaster="enabled: menu.active && activeHand === 'right'; showLine: menu.active && activeHand === 'right'"
-            cursor
-            line="color: cyan"></a-entity>
-        </a-entity>
+
+        {% macro saber (hand, otherHand, color) %}
+          <a-entity id="{{ hand }}Hand"
+            bind__hand-swapper="enabled: menu.active && activeHand === '{{ otherHand }}'"
+            bind__pauser="enabled: !menu.active"
+            bind__saber-controls="bladeEnabled: !menu.active"
+            saber-controls="hand: {{ hand }}"
+            haptics="events: mouseenter; dur: 35; force: 0.075">
+            <a-entity
+              class="raycaster"
+              mixin="raycaster"
+              bind__raycaster="enabled: menu.active && activeHand === '{{ hand }}'; showLine: menu.active && activeHand === '{{ hand }}'"
+              cursor
+              line="color: {{ color }}"></a-entity>
+          </a-entity>
+        {% endmacro %}
+
+        {{ saber('left', 'right', 'pink') }}
+        {{ saber('right', 'left', 'cyan') }}
       </a-entity>
 
       {% if not IS_PRODUCTION %}

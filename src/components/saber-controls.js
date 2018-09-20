@@ -1,6 +1,5 @@
 AFRAME.registerComponent('saber-controls', {
   schema: {
-    activeHand: {default: 'right'},
     hand: {default: 'right', oneOf: ['left', 'right']},
     bladeEnabled: {default: true}
   },
