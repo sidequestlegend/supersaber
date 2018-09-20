@@ -1,7 +1,7 @@
 <!-- Macro is a templating function. It is rendered into the HTML below with searchResults(). -->
 {% macro searchResults () %}
   <a-entity id="searchResultList"
-            bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate; updateInPlace: true; pool: 6"
+            bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate; updateInPlace: true; pool: 6; delay: 25"
             layout="type: box; columns: 1; marginRow: -0.2"
             search-result-list
             position="0 0.644 0"></a-entity>
