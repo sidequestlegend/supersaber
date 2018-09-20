@@ -52,12 +52,14 @@
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
         <a-entity id="leftHand"
           saber-controls="hand: left"
+          haptics="events: mouseenter; dur: 35; force: 0.075"
           proxy-event__pause="event: menudown; to: a-scene; as: pausegame"
           proxy-event__pauserifta="event: abuttondown; to: a-scene; as: pausegame"
           proxy-event__pauseriftb="event: bbuttondown; to: a-scene; as: pausegame"
           bind__saber-controls="bladeEnabled: !menu.active"></a-entity>
         <a-entity id="rightHand"
           saber-controls="hand: right"
+          haptics="events: mouseenter; dur: 35; force: 0.075"
           proxy-event__pause="event: menudown; to: a-scene; as: pausegame"
           proxy-event__pauseriftx="event: xbuttondown; to: a-scene; as: pausegame"
           proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pausegame"

@@ -13,7 +13,9 @@ AFRAME.registerSystem('play-sound', {
   },
 
   playSound: function (sound, volume) {
-    this.createPool(sound, volume);
+    if (!this.pools[sound]) {
+      this.createPool(sound, volume);
+    }
     this.pools[sound].play();
 
     this.lastSoundPlayed = sound;
