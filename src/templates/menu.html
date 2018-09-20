@@ -1,7 +1,7 @@
 <!-- Macro is a templating function. It is rendered into the HTML below with searchResults(). -->
 {% macro searchResults () %}
   <a-entity id="searchResultList"
-            bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate; updateInPlace: true"
+            bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate; updateInPlace: true; pool: 6"
             layout="type: box; columns: 1; marginRow: -0.2"
             search-result-list
             position="0 0.644 0"></a-entity>
@@ -101,34 +101,35 @@
     animation__toleft="property: position;  to: 0.195 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
     animation__toright="property: position; to: 0.35 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuback">
 
-    <a-entity id="divisorB" 
-      position="0.218 -0.179 -0.003" 
-      geometry="primitive:plane; height:1.17; width:0.005" 
+    <a-entity id="divisorB"
+      position="0.218 -0.179 -0.003"
+      geometry="primitive: plane; height: 1.17; width: 0.005"
       material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
       animation__fadein ="property: material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
       animation__fadeout="property: material.opacity; to: 0.0; startEvents: menuback; dur: 200"
       ></a-entity>
 
     <a-entity id="menuDifficulties"
-      bind-for="for: difficulty; in: menuDifficulties"
+      bind-for="for: item; in: menuDifficulties; updateInPlace: true; pool: 5"
       bind__visible="!!menuSelectedChallenge.id"
       layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-bind-for-key"
       menu-difficulty-select>
       {% raw %}
       <template>
-        <a-entity class="difficultyOption" data-difficulty="{{ difficulty }}">
+        <!-- Item is a string representing the difficulty. -->
+        <a-entity class="difficultyOption" bind-item__data-difficulty="item">
           <a-entity class="difficultyBackground"
-              bind__active-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'"
-              bind__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
-              bind__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== '{{ difficulty }}'"
+              bind-item__active-color="active: menuSelectedChallenge.difficulty === item"
+              bind-item__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== item"
+              bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
+              bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
               geometry="primitive: plane; width: 0.4; height: 0.2"
               material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
               position="0 -0.005 0"
               play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
               animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-              bind-toggle__raycastable="menu.active && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== '{{ difficulty }}'"></a-entity>
-          <a-entity mixin="textFont" bind__active-text-color="active: menuSelectedChallenge.difficulty === '{{ difficulty }}'" active-text-color="color: #333" text-uppercase="value: {{ difficulty }}" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
+              animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"></a-entity>
+          <a-entity class="difficultyText" mixin="textFont" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #333" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
@@ -147,11 +148,11 @@
       <a-entity class="menuSelectedChallengeSongAuthor" position="0 0.058 0"
         mixin="textFont" text="wrapCount: 40; align: center; color: #FF185B" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
       <a-entity class="menuSelectedChallengeSongName" position="0 -0.031 0"
-        mixin="textFont" text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81" 
+        mixin="textFont" text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
       <a-entity class="menuSelectedChallengeAuthor" position="0 -0.257 0"
         mixin="textFont" text="align: center; color: #FFF; wrapCount: 33; width: 0.78; baseline: bottom" bind__text="value: menuSelectedChallenge.author"></a-entity>
-      <a-entity class="menuSelectedChallengeDownloads" position="0 -0.325 0" 
+      <a-entity class="menuSelectedChallengeDownloads" position="0 -0.325 0"
         mixin="textFont" text="align: center; color: #FFF; wrapCount: 35" bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
     </a-entity>
 
