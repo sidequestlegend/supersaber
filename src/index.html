@@ -10,10 +10,11 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
       bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
+      bind-toggle__overlay="menu.active"
       console-shortcuts
       effect-bloom="strength: 0.7"
       proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
-      overlay="object: #menu"
+      overlay="object: #menu, #keyboard, #rightHand, #leftHand"
       search
       stage-colors="blue"
       fog="color: #a00; density: 0.035; type: exponential">

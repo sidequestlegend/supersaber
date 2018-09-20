@@ -69532,17 +69532,55 @@ var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('overlay', {
   schema: {
-    object: {type: 'selector'}
+    objects: {default: ''}
+  },
+
+  init: function () {
+    this.objectsVisibility = [];
   },
 
   update: function () {
-    var object = this.data.object;
-    var scene = object && new THREE.Scene();
-    this.el.overlayScene = scene;
+    var objects = this.data.object;
+    var el = this.el;
+    var els;
+    var i;
+    var scene;
+    scene = this.scene = objects && new THREE.Scene();
+    this.restoreObjects();
     if (!scene) { return; }
-    this.el.object3D.remove(object.object3D);
-    scene.add(object.object3D);
-    this.el.overlayObject = object.object3D;
+    els = this.els = this.el.sceneEl.querySelectorAll(objects);
+    for (i = 0; i < els.length; ++i) {
+      if (!els[i].object3D) { continue; }
+      scene.add(els[i].object3D);
+    } 
+  },
+
+  render: function () {
+    var renderer = this.el.renderer;
+    var autoClear = renderer.autoClear;
+    renderer.autoClear = false;
+    renderer.clearDepth();
+    this.scene.visible = true;
+    this.el.effect.render(this.scene, this.el.camera);
+    // Hide objects so they are not rendered on first pass.
+    this.scene.visible = false;
+    renderer.autoClear = autoClear;
+  }, 
+
+  /* Return ownership to the a-scene THREE.Scene */
+  restoreObjects: function () {
+    var els = this.els;
+    var scene = this.scene;
+    var i;
+    if (!this.els) { return; }
+    for (i = 0; i < els.length; ++i) {
+      scene && scene.remove(els[i].object3D);
+      this.el.object3D.add(els[i].object3D);
+    } 
+  }, 
+
+  remove: function () {
+    this.restoreObjects();
   }
 });
 
@@ -76318,9 +76356,7 @@ module.exports.AScene = registerElement('a-scene', {
      */
     render: {
       value: function () {
-        var autoClear = this.renderer.autoClear;
         var effectComposer = this.effectComposer;
-        var overlayScene = this.overlayScene;
         var effect = this.effect;
 
         this.delta = this.clock.getDelta() * 1000;
@@ -76335,14 +76371,9 @@ module.exports.AScene = registerElement('a-scene', {
           effect.render(this.object3D, this.camera, this.renderTarget);
         }
 
-        if (overlayScene) {
-          this.renderer.autoClear = false;
-          this.renderer.clearDepth();
-          effect.render(overlayScene, this.camera);
-          this.renderer.autoClear = autoClear;
-        }
-
         if (this.isPlaying) { this.tock(this.time, this.delta, this.camera); }
+
+        this.components.overlay && this.components.overlay.render();
 
         effect.submitFrame();
       },
@@ -78180,7 +78211,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-09-19, Commit #b2131c876)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-09-20, Commit #b2131c876)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
