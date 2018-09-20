@@ -1,6 +1,7 @@
 AFRAME.registerComponent('saber-controls', {
   schema: {
-    hand: {default: 'left', oneOf: ['left', 'right']},
+    activeHand: {default: 'right'},
+    hand: {default: 'right', oneOf: ['left', 'right']},
     bladeEnabled: {default: true}
   },
 
@@ -13,11 +14,26 @@ AFRAME.registerComponent('saber-controls', {
     var el = this.el;
     var data = this.data;
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
-    el.setAttribute('oculus-touch-controls', {hand: data.hand, model: false});
-    el.setAttribute('vive-controls', {hand: data.hand, model: true});
-    el.setAttribute('windows-motion-controls', {hand: data.hand, model: false});
+
+    const hand = {hand: data.hand, model: false};
+    el.setAttribute('oculus-touch-controls', hand);
+    el.setAttribute('vive-controls', hand);
+    el.setAttribute('windows-motion-controls', hand);
   },
-  
+
+  update: function () {
+    if (!this.bladeEl) { return; }
+    this.bladeEl.object3D.visible = this.data.bladeEnabled;
+    if (this.data.bladeEnabled) {
+      this.bladeEl.emit('drawblade');
+    }
+  },
+
+  tick: function () {
+    if (!this.bladeEl || !this.bladeEl.getObject3D('mesh')) { return; }
+    this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
+  },
+
   initSaber: function (evt) {
     var el = this.el;
     var saberHandleEl = document.createElement('a-entity');
@@ -33,12 +49,12 @@ AFRAME.registerComponent('saber-controls', {
     bladeEl.setAttribute('material', {shader: 'flat', color: this.colors[this.data.hand]});
     bladeEl.setAttribute('geometry', {primitive: 'box', height: 0.9, depth: 0.020, width: 0.020});
     bladeEl.setAttribute('position', '0 -0.55 0');
-    bladeEl.setAttribute('play-sound', {event: 'draw', sound: "#saberDraw"});
+    bladeEl.setAttribute('play-sound', {event: 'drawblade', sound: "#saberDraw"});
     bladeEl.object3D.visible = this.data.bladeEnabled;
 
-    // For blade saber draw animation
+    // For blade saber draw animation.
     bladeElPivot.appendChild(bladeEl);
-    bladeElPivot.setAttribute('animation', 'property: scale;  from: 0 0 0; to: 1.0 1.0 1.0; dur: 2000; easing: easeOutCubic; startEvents: draw');
+    bladeElPivot.setAttribute('animation', 'property: scale; from: 0 0 0; to: 1.0 1.0 1.0; dur: 2000; easing: easeOutCubic; startEvents: drawblade');
 
     saberHandleEl.setAttribute('material', {shader: 'flat', color: '#151515'});
     saberHandleEl.setAttribute('geometry', {primitive: 'box', height: 0.2, depth: 0.025, width: 0.025});
@@ -62,23 +78,8 @@ AFRAME.registerComponent('saber-controls', {
 
     this.controllerConnected = true;
     this.controllerType = evt.detail.name;
-    if (this.data.hand === 'left') { return; }
-    el.setAttribute('cursor', controllerConfig.cursor || {});
-    el.setAttribute('raycaster', 'objects: [raycastable]; far: 20; enabled: true');
-    el.setAttribute('line', {opacity: 0.75, color: 'pink', end: {x: 0, y: 0, z: -20}});
-  },
 
-  update: function () {
-    if (!this.bladeEl) { return; }
-    this.bladeEl.object3D.visible = this.data.bladeEnabled;
-    if (this.data.bladeEnabled) {
-      this.bladeEl.emit('draw');
-    }
-  },
-
-  tick: function () {
-    if (!this.bladeEl) { return; }
-    this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
+    el.querySelector('.raycaster').setAttribute('cursor', controllerConfig.cursor || {});
   },
 
   config: {
@@ -117,5 +118,4 @@ AFRAME.registerComponent('saber-controls', {
       },
     }
   }
-
 });

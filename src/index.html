@@ -12,6 +12,7 @@
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind-toggle__overlay="menu.active"
       console-shortcuts
+      debug-controller
       effect-bloom="strength: 0.7"
       proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
       overlay="object: #menu, #keyboard, #rightHand, #leftHand"
@@ -27,20 +28,19 @@
         <a-asset-item id="backglow-obj" src="assets/models/backglow.obj"></a-asset-item>
         <a-mixin id="laser" laser geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
 
-        <audio id="hoverSound" src="/assets/sounds/hover.ogg"></audio>
-        <audio id="saberDraw" src="/assets/sounds/saberDraw.wav"></audio>
+        <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
+        <audio id="saberDraw" src="assets/sounds/saberDraw.wav"></audio>
 
         <img id="gridImg" src="assets/img/grid.png">
         <img id="playImg" src="assets/img/play.png">
         <img id="sliceImg" src="assets/img/slice.png">
         <img id="downIconImg" src="assets/img/downIcon.png">
-        <a-mixin id="raycaster" raycaster="objects: [raycastable]; far: 2"></a-mixin>
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
 
-      <audio id="introSong" src="/assets/sounds/introSong.ogg" autoplay loop></audio>
+      <audio id="introSong" src="assets/sounds/introSong.ogg" autoplay loop></audio>
 
       <a-entity id="container">
         {% include './templates/stage.html' %}
@@ -48,27 +48,47 @@
         {% include './templates/menu.html' %}
       </a-entity>
 
+      <!-- Player. -->
+      <a-mixin
+        id="raycaster"
+        raycaster="objects: [raycastable]; far: 3"
+        line="opacity: 0.75"></a-mixin>
       <a-entity id="cameraRig">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
         <a-entity id="leftHand"
-          saber-controls="hand: left"
-          haptics="events: mouseenter; dur: 35; force: 0.075"
-          proxy-event__pause="event: menudown; to: a-scene; as: pausegame"
-          proxy-event__pauserifta="event: abuttondown; to: a-scene; as: pausegame"
-          proxy-event__pauseriftb="event: bbuttondown; to: a-scene; as: pausegame"
-          bind__saber-controls="bladeEnabled: !menu.active"></a-entity>
-        <a-entity id="rightHand"
-          saber-controls="hand: right"
-          haptics="events: mouseenter; dur: 35; force: 0.075"
-          proxy-event__pause="event: menudown; to: a-scene; as: pausegame"
-          proxy-event__pauseriftx="event: xbuttondown; to: a-scene; as: pausegame"
-          proxy-event__pauserifty="event: ybuttondown; to: a-scene; as: pausegame"
+          bind__hand-swapper="enabled: menu.active && activeHand === 'right'"
+          bind__pauser="enabled: !menu.active"
           bind__saber-controls="bladeEnabled: !menu.active"
-          bind__line="visible: menu.active"></a-entity>
+          saber-controls="hand: left"
+          haptics="events: mouseenter; dur: 35; force: 0.075">
+          <a-entity
+            id="leftRaycaster"
+            class="raycaster"
+            mixin="raycaster"
+            bind__raycaster="enabled: menu.active && activeHand === 'left'; showLine: menu.active && activeHand === 'left'"
+            cursor
+            line="color: pink"></a-entity>
+        </a-entity>
+        <a-entity id="rightHand"
+          bind__hand-swapper="enabled: menu.active && activeHand === 'left'"
+          bind__pauser="enabled: !menu.active"
+          bind__saber-controls="bladeEnabled: !menu.active"
+          saber-controls="hand: right"
+          haptics="events: mouseenter; dur: 35; force: 0.075">
+          <a-entity
+            id="rightRaycaster"
+            class="raycaster"
+            mixin="raycaster"
+            bind__raycaster="enabled: menu.active && activeHand === 'right'; showLine: menu.active && activeHand === 'right'"
+            cursor
+            line="color: cyan"></a-entity>
+        </a-entity>
       </a-entity>
 
-      <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
-                bind__raycaster="enabled: !inVR" raycaster="far: 20"></a-entity>
+      {% if not IS_PRODUCTION %}
+        <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
+                  bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>
+      {% endif %}
     </a-scene>
   </body>
 </html>

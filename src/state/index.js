@@ -4,8 +4,19 @@ const challengeDataStore = {};
 const hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 const SEARCH_PER_PAGE = 6;
 
+/**
+ * State handler.
+ *
+ * 1. `handlers` is an object of events that when emitted to the scene will run the handler.
+ *
+ * 2. The handler function modifies the state.
+ *
+ * 3. Entities and components that are `bind`ed automatically update:
+ *    `bind__<componentName>="<propertyName>: some.item.in.state"`
+ */
 AFRAME.registerState({
   initialState: {
+    activeHand: localStorage.getItem('hand') || 'right',
     challenge: {
       author: '',
       difficulty: '',
@@ -36,9 +47,6 @@ AFRAME.registerState({
       score: 0,
       streak: 0
     },
-    // screen: keep track of layers or depth. Like breadcrumbs.
-    screen: hasInitialChallenge ? 'challenge' : 'home',
-    screenHistory: [],
     search: {
       active: true,
       page: 0,
@@ -50,6 +58,14 @@ AFRAME.registerState({
   },
 
   handlers: {
+    /**
+     * Swap left-handed or right-handed mode.
+     */
+    activehandswap: state => {
+      state.activeHand = state.activeHand === 'right' ? 'left' : 'right';
+      localStorage.setItem('activeHand', state.activeHand);
+    },
+
     beatloaderfinish: (state) => {
       state.challenge.isLoading = false;
     },
@@ -150,29 +166,6 @@ AFRAME.registerState({
    */
   // computeState: (state) => { }
 });
-
-/**
- * Push screen onto history and set to current.
- */
-function setScreen (state, screen) {
-  if (state.screen === screen) { return; }
-  state.screenHistory.push(screen);
-  state.screen = screen;
-}
-
-/**
- * Pop screen off history.
- * Set new current screen if any.
- */
-function popScreen (state) {
-  var prevScreen;
-  prevScreen = state.screenHistory.pop();
-  if (state.screenHistory.length === 0) {
-    state.screen = '';
-    return;
-  }
-  state.screen = state.screenHistory[state.screenHistory.length - 1];
-}
 
 function computeSearchPagination (state) {
   let numPages = Math.ceil(state.search.results.length / SEARCH_PER_PAGE);
