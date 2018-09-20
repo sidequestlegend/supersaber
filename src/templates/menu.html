@@ -98,22 +98,24 @@
   </a-entity>
 
   <a-entity id="menuDifficultiesGroup"
-    position="0.35 0.180 0"
-    animation__toleft="property: position;  to: 0.195 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
-    animation__toright="property: position; to: 0.35 0.18 0; dur: 200; easing: easeOutCubic; startEvents: menuback">
+    position="0.35 0.18 0"
+    animation__toleft="property: position.x; to: 0.195; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
+    animation__toright="property: position.x; to: 0.35; dur: 200; easing: easeOutCubic; startEvents: menuback">
 
     <a-entity id="divisorB"
       position="0.218 -0.179 -0.003"
       geometry="primitive: plane; height: 1.17; width: 0.005"
       material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
-      animation__fadein ="property: material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
-      animation__fadeout="property: material.opacity; to: 0.0; startEvents: menuback; dur: 200"
+      animation__fadein="property: components.material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
+      animation__fadeout="property: components.material.opacity; to: 0.0; startEvents: menuback; dur: 200"
       ></a-entity>
 
+    <!-- Top-aligned. TODO: Smart-centering. -->
     <a-entity id="menuDifficulties"
       bind-for="for: item; in: menuDifficulties; updateInPlace: true; pool: 5"
       bind__visible="!!menuSelectedChallenge.id"
       layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-bind-for-key"
+      position="0 0.52 0"
       menu-difficulty-select>
       {% raw %}
       <template>
