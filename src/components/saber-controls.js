@@ -25,6 +25,7 @@ AFRAME.registerComponent('saber-controls', {
     if (!this.bladeEl) { return; }
     this.bladeEl.object3D.visible = this.data.bladeEnabled;
     if (this.data.bladeEnabled) {
+      this.bladeElPivot.object3D.scale.set(0.0001, 0.001, 0.0001);
       this.bladeEl.emit('drawblade');
     }
   },
@@ -38,7 +39,7 @@ AFRAME.registerComponent('saber-controls', {
     var el = this.el;
     var saberHandleEl = document.createElement('a-entity');
     var bladeEl = this.bladeEl = document.createElement('a-entity');
-    var bladeElPivot = document.createElement('a-entity');
+    var bladeElPivot = this.bladeElPivot = document.createElement('a-entity');
     var saberPivotEl = document.createElement('a-entity');
     var highlightTop = document.createElement('a-entity');
     var highlightBottom = document.createElement('a-entity');
@@ -54,7 +55,7 @@ AFRAME.registerComponent('saber-controls', {
 
     // For blade saber draw animation.
     bladeElPivot.appendChild(bladeEl);
-    bladeElPivot.setAttribute('animation', 'property: scale; from: 0 0 0; to: 1.0 1.0 1.0; dur: 2000; easing: easeOutCubic; startEvents: drawblade');
+    bladeElPivot.setAttribute('animation', 'property: scale; from: 0 0 0; to: 1.0 1.0 1.0; dur: 750; easing: linear; startEvents: drawblade');
 
     saberHandleEl.setAttribute('material', {shader: 'flat', color: '#151515'});
     saberHandleEl.setAttribute('geometry', {primitive: 'box', height: 0.2, depth: 0.025, width: 0.025});
