@@ -69540,7 +69540,7 @@ module.exports.Component = register('overlay', {
   },
 
   update: function () {
-    var objects = this.data.object;
+    var objects = this.data.objects;
     var el = this.el;
     var els;
     var i;
@@ -78211,7 +78211,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-09-20, Commit #b2131c876)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-09-21, Commit #b2131c876)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
