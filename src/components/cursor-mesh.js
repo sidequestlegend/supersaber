@@ -35,6 +35,8 @@ AFRAME.registerComponent('cursor-mesh', {
 
     // Update cursor mesh.
     intersection = cursorEl.components.raycaster.getIntersection(intersectedEl);
+    if (!intersection) { return; }
+
     el.object3D.position.copy(intersection.point);
 
     if (scenePivotEl) {

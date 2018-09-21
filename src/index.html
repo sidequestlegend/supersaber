@@ -60,28 +60,58 @@
       <a-entity id="cameraRig">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
 
-        {% macro saber (hand, otherHand, color) %}
+        {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
             mixin="raycaster"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__pauser="enabled: !menu.active"
             bind__raycaster="enabled: {{ hand }}RaycasterActive; showLine: {{ hand }}RaycasterActive"
-            bind__saber-controls="bladeEnabled: !menu.active"
             cursor
-            saber-controls="hand: {{ hand }}"
             haptics="events: mouseenter; dur: 35; force: 0.075"
-            line="color: {{ color }}">
+            line="color: {{ color }}"
+            saber-controls="hand: {{ hand }}">
+
+            <a-entity class="saberContainer" rotation="90 0 0">
+              <a-entity
+                class="bladeContainer"
+                bind__visible="!menu.active"
+                animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
+                scale="0.001 0.001 0.001">
+                <a-entity
+                  class="blade"
+                  geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
+                  material="shader: flat; color: {{ bladeColor }}"
+                  play-sound="event: drawblade; sound: #saberDraw"
+                  position="0 -0.55 0"></a-entity>
+              </a-entity>
+              <a-entity
+                class="saberHandle"
+                geometry="primitive: box; height: 0.2; depth: 0.025; width: 0.025"
+                material="shader: flat; color: #151515">
+                <a-entity
+                  class="highlightTop"
+                  geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                  material="shader: flat; color: {{ bladeColor }}"
+                  position="0 0 0.0125"></a-entity>
+                <a-entity
+                  class="highlightBottom"
+                  geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                  material="shader: flat; color: {{ bladeColor }}"
+                  position="0 0 -0.0125"></a-entity>
+              </a-entity>
+            </a-entity>
+
             <a-entity class="fakeGlow" rotation="90 0 0" position="0 0.01 0" bind__visible="menu.active">
-              <a-entity geometry="primitive: cylinder; height: 0.1831; radius: 0.0055" material="color: {{ color }}; shader: flat; opacity: 0.11"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1832; radius: 0.0065" material="color: {{ color }}; shader: flat; opacity: 0.09"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1833; radius: 0.0075" material="color: {{ color }}; shader: flat; opacity: 0.06"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1834; radius: 0.0085" material="color: {{ color }}; shader: flat; opacity: 0.04"></a-entity>
+              <a-entity geometry="primitive: cylinder; height: 0.1831; radius: 0.0055" material="color: {{ beamColor }}; shader: flat; opacity: 0.11"></a-entity>
+              <a-entity geometry="primitive: cylinder; height: 0.1832; radius: 0.0065" material="color: {{ beamColor }}; shader: flat; opacity: 0.09"></a-entity>
+              <a-entity geometry="primitive: cylinder; height: 0.1833; radius: 0.0075" material="color: {{ beamColor }}; shader: flat; opacity: 0.06"></a-entity>
+              <a-entity geometry="primitive: cylinder; height: 0.1834; radius: 0.0085" material="color: {{ beamColor }}; shader: flat; opacity: 0.04"></a-entity>
             </a-entity>
           </a-entity>
         {% endmacro %}
 
-        {{ saber('left', 'right', 'pink') }}
-        {{ saber('right', 'left', 'cyan') }}
+        {{ saber('left', 'right', '#FFA8A8', 'pink') }}
+        {{ saber('right', 'left', '#78AAFF', 'cyan') }}
       </a-entity>
 
       <a-mixin
