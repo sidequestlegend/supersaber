@@ -1,5 +1,3 @@
-require('babel-polyfill');
-
 function requireAll (req) { req.keys().forEach(req); }
 
 require('aframe-animation-component');
