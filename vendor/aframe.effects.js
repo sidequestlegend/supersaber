@@ -75379,6 +75379,7 @@ var proto = {
       if (!passes[effect]) { return; }
       effectComposer.addPass(passes[effect]);
     });
+    effectComposer.reset();
   },
 
   remove: function () {
@@ -76091,7 +76092,7 @@ module.exports.AScene = registerElement('a-scene', {
         // Entering VR.
         if (display.isPresenting) {
           this.enterVR(true);
-          this.effectComposer.reset();
+          this.effectComposer && this.effectComposer.reset();
           return;
         }
         // Exiting VR.
