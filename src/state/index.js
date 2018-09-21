@@ -164,7 +164,12 @@ AFRAME.registerState({
   /**
    * Post-process the state after each action.
    */
-  // computeState: (state) => { }
+  computeState: (state) => {
+    state.leftRaycasterActive = state.menu.active && state.activeHand === 'left' &&
+                                state.inVR;
+    state.rightRaycasterActive = state.menu.active && state.activeHand === 'right' &&
+                                 state.inVR;
+  }
 });
 
 function computeSearchPagination (state) {

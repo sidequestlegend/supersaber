@@ -30,6 +30,9 @@ AFRAME.registerComponent('debug-controller', {
       secondaryHand.setAttribute('controller', 'controllerType', 'vive-controls');
     }
 
+    // Enable raycaster.
+    this.el.emit('enter-vr', null, false);
+
     document.addEventListener('keydown', evt => {
       var primaryPosition;
       var primaryRotation;

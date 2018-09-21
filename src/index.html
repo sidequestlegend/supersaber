@@ -63,9 +63,9 @@
         {% macro saber (hand, otherHand, color) %}
           <a-entity id="{{ hand }}Hand"
             mixin="raycaster"
-            bind__hand-swapper="enabled: menu.active && activeHand === '{{ otherHand }}'"
+            bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__pauser="enabled: !menu.active"
-            bind__raycaster="enabled: menu.active && activeHand === '{{ hand }}'; showLine: menu.active && activeHand === '{{ hand }}'"
+            bind__raycaster="enabled: {{ hand }}RaycasterActive; showLine: {{ hand }}RaycasterActive"
             bind__saber-controls="bladeEnabled: !menu.active"
             cursor
             saber-controls="hand: {{ hand }}"
