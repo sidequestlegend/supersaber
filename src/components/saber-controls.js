@@ -79,7 +79,7 @@ AFRAME.registerComponent('saber-controls', {
     this.controllerConnected = true;
     this.controllerType = evt.detail.name;
 
-    el.querySelector('.raycaster').setAttribute('cursor', controllerConfig.cursor || {});
+    el.setAttribute('cursor', controllerConfig.cursor || {});
   },
 
   config: {

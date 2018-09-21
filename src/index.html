@@ -62,24 +62,21 @@
 
         {% macro saber (hand, otherHand, color) %}
           <a-entity id="{{ hand }}Hand"
+            mixin="raycaster"
             bind__hand-swapper="enabled: menu.active && activeHand === '{{ otherHand }}'"
             bind__pauser="enabled: !menu.active"
+            bind__raycaster="enabled: menu.active && activeHand === '{{ hand }}'; showLine: menu.active && activeHand === '{{ hand }}'"
             bind__saber-controls="bladeEnabled: !menu.active"
+            cursor
             saber-controls="hand: {{ hand }}"
-            haptics="events: mouseenter; dur: 35; force: 0.075">
+            haptics="events: mouseenter; dur: 35; force: 0.075"
+            line="color: {{ color }}">
             <a-entity class="fakeGlow" rotation="90 0 0" position="0 0.01 0" bind__visible="menu.active">
               <a-entity geometry="primitive: cylinder; height: 0.1831; radius: 0.0055" material="color: {{ color }}; shader: flat; opacity: 0.11"></a-entity>
               <a-entity geometry="primitive: cylinder; height: 0.1832; radius: 0.0065" material="color: {{ color }}; shader: flat; opacity: 0.09"></a-entity>
               <a-entity geometry="primitive: cylinder; height: 0.1833; radius: 0.0075" material="color: {{ color }}; shader: flat; opacity: 0.06"></a-entity>
               <a-entity geometry="primitive: cylinder; height: 0.1834; radius: 0.0085" material="color: {{ color }}; shader: flat; opacity: 0.04"></a-entity>
             </a-entity>
-            <a-entity
-              id="{{ hand }}Cursor"
-              class="raycaster"
-              mixin="raycaster"
-              bind__raycaster="enabled: menu.active && activeHand === '{{ hand }}'; showLine: menu.active && activeHand === '{{ hand }}'"
-              cursor
-              line="color: {{ color }}"></a-entity>
           </a-entity>
         {% endmacro %}
 
@@ -91,8 +88,8 @@
         id="cursorMesh"
         geometry="primitive: plane; width: 0.26; height: 0.26"
         material="shader: flat; color: white; transparent: true; src: #cursorMeshImage; side: both; depthTest: false"></a-mixin>
-      <a-entity id="leftCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #leftCursor"></a-entity>
-      <a-entity id="rightCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #rightCursor"></a-entity>
+      <a-entity id="leftCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #leftHand"></a-entity>
+      <a-entity id="rightCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #rightHand"></a-entity>
       {% if not IS_PRODUCTION %}
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
                   bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>
