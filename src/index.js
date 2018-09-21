@@ -1,5 +1,7 @@
 function requireAll (req) { req.keys().forEach(req); }
 
+require('../vendor/BufferGeometryUtils');
+
 require('aframe-animation-component');
 require('aframe-audioanalyser-component');
 require('aframe-cubemap-component');

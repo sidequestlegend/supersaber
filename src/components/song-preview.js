@@ -162,7 +162,7 @@ AFRAME.registerComponent('song-preview-system', {
 
   updateAnalyser: function () {
     document.getElementById('introSong').pause();
-    document.getElementById('audioanalyser').setAttribute('audioanalyser', 'src', this.audio);
+    document.getElementById('audioColumns').setAttribute('audioanalyser', 'src', this.audio);
   },
 
   /**
