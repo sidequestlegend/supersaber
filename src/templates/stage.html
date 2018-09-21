@@ -37,9 +37,9 @@
   <a-entity class="laser" mixin="laser" position="10 2 -38"></a-entity>
   <a-entity class="laser" mixin="laser" position="14 -1.5 -36"></a-entity>
 
-  <a-entity id="smoke1" geometry="primitive: cylinder; radius: 10; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.4 0" animation="property: rotation.y; from: 0; to: 360; dur: 200000; easing: linear; loop: true"></a-entity>
+  <a-entity id="smoke1" geometry="primitive: cylinder; radius: 10; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.4 0" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 200000; easing: linear; loop: true"></a-entity>
 
-  <a-entity id="smoke2" geometry="primitive: cylinder; radius: 20; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.8 0" animation="property: rotation.y; from: 0; to: 360; dur: 243000; easing: linear; loop: true"></a-entity>
+  <a-entity id="smoke2" geometry="primitive: cylinder; radius: 20; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.8 0" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 243000; easing: linear; loop: true"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
   </a-entity>
