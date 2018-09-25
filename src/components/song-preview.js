@@ -93,7 +93,7 @@ AFRAME.registerComponent('song-preview-system', {
 
     const audio = document.createElement('audio');
     audio.crossOrigin = 'anonymous';
-    // audio.currentTime = previewStartTime;
+    audio.dataset.previewStartTime = previewStartTime;
     audio.volume = 0;
     this.audioStore[challengeId] = audio;
 
@@ -155,6 +155,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.audio = this.audioStore[challengeId];
     this.audio.volume = 0;
     this.volumeTarget.volume = 0;
+    this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.play();
     this.animation.restart();
     this.updateAnalyser();
