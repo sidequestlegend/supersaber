@@ -1,11 +1,19 @@
 <a-sky id="sky" src="#skyTexture" material="fog: false"></a-sky>
 
+<a-entity
+  id="audioAnalyser"
+  audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000"
+  proxy-event="event: audioanalyser-beat; to: #logolight, #floor"></a-entity>
+
 <a-entity id="stage">
   <a-entity id="backglow" obj-model="obj: #backglow-obj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
 
   <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0"></a-entity>
 
-  <a-entity id="audioColumns" audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000" audio-columns="height: 28; mirror: 10; scale: 10; thickness: 0.4; separation: 0.45" position="0 -17 1" proxy-event="event: audioanalyser-beat; to: #logolight"></a-entity>
+  <a-entity
+    id="audioColumns"
+    audio-columns="analyser: #audioAnalyser; height: 28; mirror: 10; scale: 10; thickness: 0.4; separation: 0.45"
+    position="0 -17 1"></a-entity>
 
   <!-- Corridor. -->
   <a-entity geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85" materials="black"></a-entity>
@@ -46,14 +54,19 @@
   <a-entity id="logolight"
     position="0 6 0"
     light="type: spot; penumbra: 1; intensity: 5; angle: 20"
-    animation="property: rotation; from: 0 50 0; to: 0 -50 0; dur:300; easing: linear; startEvents: audioanalyser-beat"
-  ></a-entity>
+    animation="property: rotation; from: 0 50 0; to: 0 -50 0; dur:300; easing: linear; startEvents: audioanalyser-beat"></a-entity>
   <a-entity id="logosparks" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 600; on: logoflicker" position="-2.8 5.5 -7.2"></a-entity>
   <a-entity id="logo" position="0 6 -7.5" rotation="90 0 0">
-    <a-entity obj-model="obj:#logoback-obj"    material="color: #001B29"></a-entity>
-    <a-entity obj-model="obj:#logofront-obj"   material="color: #e81e23"></a-entity>
-    <a-entity obj-model="obj:#logofront-u-obj" material="color: #e81e23" logoflicker="delay: 1200"></a-entity>
+    <a-entity obj-model="obj: #logoback-obj" material="color: #001B29"></a-entity>
+    <a-entity obj-model="obj: #logofront-obj"  material="color: #e81e23"></a-entity>
+    <a-entity obj-model="obj: #logofront-u-obj" material="color: #e81e23" logoflicker="delay: 1200"></a-entity>
   </a-entity>
 
-  <a-entity geometry="primitive: plane; width: 3; height: 3" material="shader: flat; src: #floor" rotation="-90 0 0"></a-entity>
+  <a-entity
+    id="floor"
+    animation__beat="property: components.material.material.color; type: color; to: #FFF; dur: 250; easing: linear; startEvents: audioanalyser-beat"
+    animation="property: components.material.material.color; type: color; to: #BBB; dur: 250; easing: linear; startEvents: animationcomplete__beat"
+    geometry="primitive: plane; width: 3; height: 3"
+    material="color: #BBB; shader: flat; src: #floorImg"
+    rotation="-90 0 0"></a-entity>
 </a-entity>

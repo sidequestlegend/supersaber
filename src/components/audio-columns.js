@@ -12,6 +12,7 @@ AFRAME.registerComponent('audio-columns', {
   dependencies: ['audioanalyser'],
 
   schema: {
+    analyser: {type: 'selector', default: '#audioanalyser'},
     height: {default: 1.0},
     mirror: {default: 3},
     scale: {default: 4.0},
@@ -20,7 +21,7 @@ AFRAME.registerComponent('audio-columns', {
   },
 
   init: function () {
-    this.analyser = this.el.components.audioanalyser;
+    this.analyser = this.data.analyser.components.audioanalyser;
 
     // Number of levels is half the FFT size.
     this.frequencyBinCount = this.analyser.data.fftSize / 2;

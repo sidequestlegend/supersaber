@@ -6,7 +6,7 @@
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
-    "aframe-animation-component": "^5.1.1",
+    "aframe-animation-component": "^5.1.2",
     "aframe-animation-timeline-component": "^1.3.1",
     "aframe-audioanalyser-component": "^4.0.0",
     "aframe-cubemap-component": "^0.1.2",
@@ -18,7 +18,7 @@
     "aframe-orbit-controls": "^1.2.0",
     "aframe-particle-system-component": "^1.0.11",
     "aframe-particleplayer-component": "github:supermedium/aframe-particleplayer-component#master",
-    "aframe-proxy-event-component": "^1.1.1",
+    "aframe-proxy-event-component": "^2.1.0",
     "aframe-slice9-component": "^1.0.0",
     "aframe-state-component": "^5.0.0-beta6",
     "aframe-super-keyboard": "2.0.2",
