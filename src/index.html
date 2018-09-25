@@ -10,7 +10,7 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
       bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
-      bind-toggle__overlay="menu.active"
+      bind__overlay="enabled: !menu.active"
       console-shortcuts
       debug-controller
       effect-bloom="strength: 1"

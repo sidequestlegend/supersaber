@@ -69532,6 +69532,7 @@ var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('overlay', {
   schema: {
+    enabled: {default: true},
     objects: {default: ''}
   },
 
@@ -69540,19 +69541,22 @@ module.exports.Component = register('overlay', {
   },
 
   update: function () {
-    var objects = this.data.objects;
-    var el = this.el;
-    var els;
-    var i;
-    var scene;
-    scene = this.scene = objects && new THREE.Scene();
+    var data = this.data;
+    this.scene = data.objects && new THREE.Scene();
     this.restoreObjects();
+    if (!data.enabled) { return; }
+    this.initObjects();
+  },
+
+  initObjects: function () {
+    var els;
+    var scene = this.scene;
     if (!scene) { return; }
-    els = this.els = this.el.sceneEl.querySelectorAll(objects);
+    els = this.els = this.el.sceneEl.querySelectorAll(this.data.objects);
     for (i = 0; i < els.length; ++i) {
       if (!els[i].object3D) { continue; }
       scene.add(els[i].object3D);
-    } 
+    }
   },
 
   render: function () {
@@ -78212,7 +78216,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-09-21, Commit #b2131c876)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-09-25, Commit #b2131c876)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
