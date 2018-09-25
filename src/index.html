@@ -27,11 +27,14 @@
         <a-asset-item id="logofront-obj" src="assets/models/logofront.obj"></a-asset-item>
         <a-asset-item id="logoback-obj" src="assets/models/logoback.obj"></a-asset-item>
         <a-asset-item id="logofront-u-obj" src="assets/models/logofront-u.obj"></a-asset-item>
+        <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
+        <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
+
         <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
         <audio id="saberDraw" src="assets/sounds/saberDraw.wav"></audio>
 
         <img id="backglowTexture" src="assets/img/stage/backglow.png">
-        <img id="cursorMeshImg" src="assets/img/cursor-mesh.png">
+        <img id="cursorMeshImg" src="assets/models/laser/laser.png">
         <img id="downIconImg" src="assets/img/downIcon.png">
         <img id="floor" src="assets/img/stage/floor.png">
         <img id="gridImg" src="assets/img/grid.png">
@@ -40,13 +43,13 @@
         <img id="sliceImg" src="assets/img/slice.png">
         <img id="smokeTexture" src="assets/img/stage/smoke.png">
 
-        <a-asset-item src="assets/models/logosparks.json" id="logoSparks"></a-asset-item>
-
-        <a-mixin id="laser" laser geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
+        <a-mixin id="stageLaser" geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
+
+      <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
       <a-entity id="container">
         {% include './templates/stage.html' %}
@@ -59,6 +62,10 @@
         id="raycaster"
         raycaster="objects: [raycastable]; far: 3"
         line="opacity: 0.75"></a-mixin>
+      <a-mixin
+        id="cursorMesh"
+        material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
+        sub-object="from: #cursorLaser; name: glow"></a-mixin>
       <a-entity id="cameraRig">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
 
@@ -67,10 +74,16 @@
             mixin="raycaster"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__pauser="enabled: !menu.active"
-            bind__raycaster="enabled: {{ hand }}RaycasterActive; showLine: {{ hand }}RaycasterActive"
+            bind__raycaster="enabled: {{ hand }}RaycasterActive"
             haptics="events: mouseenter; dur: 35; force: 0.075"
-            line="color: {{ color }}"
             saber-controls="hand: {{ hand }}">
+
+            <a-entity
+              id="{{ hand }}Laser"
+              bind__visible="activeHand === '{{ hand }}'"
+              cursor-laser="hand: {{ hand }}"
+              sub-object="from: #cursorLaser; name: beam"
+              material="color: {{ beamColor }}; shader: flat; transparent: true; opacity: 0.04"></a-entity>
 
             <a-entity class="saberContainer" rotation="90 0 0">
               <a-entity
@@ -109,18 +122,19 @@
               <a-entity geometry="primitive: cylinder; height: 0.1834; radius: 0.0085" material="color: {{ beamColor }}; shader: flat; opacity: 0.04"></a-entity>
             </a-entity>
           </a-entity>
+
+          <a-entity
+            id="{{ hand }}CursorMesh"
+            mixin="cursorMesh"
+            cursor-mesh="cursorEl: #{{ hand }}Hand"
+            material="color: {{ beamColor }}"
+            scale="1.3 1.3 1.3"></a-entity>
         {% endmacro %}
 
         {{ saber('left', 'right', '#FFA8A8', 'pink') }}
         {{ saber('right', 'left', '#78AAFF', 'cyan') }}
       </a-entity>
 
-      <a-mixin
-        id="cursorMesh"
-        geometry="primitive: plane; width: 0.26; height: 0.26"
-        material="shader: flat; color: white; transparent: true; src: #cursorMeshImg; side: both; depthTest: false"></a-mixin>
-      <a-entity id="leftCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #leftHand"></a-entity>
-      <a-entity id="rightCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #rightHand"></a-entity>
       {% if not IS_PRODUCTION %}
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
                   bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>

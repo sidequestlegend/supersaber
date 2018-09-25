@@ -20,7 +20,7 @@
     "aframe-particleplayer-component": "github:supermedium/aframe-particleplayer-component#master",
     "aframe-proxy-event-component": "^1.1.1",
     "aframe-slice9-component": "^1.0.0",
-    "aframe-state-component": "5.0.0-beta6",
+    "aframe-state-component": "^5.0.0-beta6",
     "aframe-super-keyboard": "2.0.2",
     "algoliasearch": "^3.29.0",
     "ansi-html": "0.0.7",
