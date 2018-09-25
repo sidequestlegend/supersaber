@@ -6,6 +6,9 @@
     <script src="build/build.js"></script>
   </head>
   <body>
+    <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
+    <script>document.getElementById('introSong').volume = 0.5;</script>
+
     <a-scene
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
       bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
@@ -14,6 +17,7 @@
       console-shortcuts
       debug-controller
       effect-bloom="strength: 1"
+      intro-song
       proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
       overlay="objects: #menu, #keyboard, #rightHand, #leftHand"
       search
@@ -46,8 +50,6 @@
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
         <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
       </a-assets>
-
-      <audio id="introSong" src="assets/sounds/introSong.ogg" autoplay loop></audio>
 
       <a-entity id="container">
         {% include './templates/stage.html' %}
