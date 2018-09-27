@@ -18,7 +18,31 @@ body{
   background-size: contain;
   z-index: -1;
 }
-
+#lightbox{
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999999;
+  opacity: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 3s;
+}
+#lightbox.opened{
+  display: flex;
+  opacity: 1;
+}
+#lightbox img{
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid #005a83;
+  box-shadow: 0 0 25px rgba(144, 226, 222, 0.6);
+}
 #all{
   width: 95%;
   min-width: 360px;
@@ -191,6 +215,9 @@ footer{
   width: 100%;
   transition: box-shadow 120ms, border-color 120ms, transform 120ms;
 }
+.screenshots>img{
+  width: 30%;
+}
 .screenshots img:hover{
   box-shadow: 0 0 30px rgba(144, 226, 222, 0.8);
   border-color: white;
@@ -245,7 +272,7 @@ h1 span{
   h3{
     margin-bottom: 3%;
   }
-  .screenshots a{
+  .screenshots>img, .screenshots>a{
     display: block;
     width: 100%;
     margin: 5% 0;

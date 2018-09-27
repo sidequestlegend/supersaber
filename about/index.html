@@ -28,14 +28,28 @@
 <link rel="preload" href="assets/sslogo.png" as="image">
 <link rel="preload" href="assets/steamhover.png" as="image">
 <link rel="preload" href="assets/oculushover.png" as="image">
-<!--
+
 <script type="text/javascript">
-  // preload
-  (() => ['grid.jpg', 'sslogo.png', 'steamhover.png', 'oculushover.png'].forEach((i) => new Image().src = 'assets/'+i))() 
-</script> -->
+var lb;
+function setupLb(){
+  lb = document.getElementById('lightbox');
+  var sshots = document.querySelectorAll('.screenshots>img');
+  for (var i = 0; i < sshots.length; i++){
+    sshots[i].addEventListener('click', showImg);
+  }
+}
+function showImg(ev){
+  lb.querySelector('img').src = ev.target.src;
+  lb.classList.add('opened');
+}
+function closeLb(){
+  lb.classList.remove('opened')
+}
+</script>
 </head>
-<body>
+<body onload="setupLb()">
 <div class="laser"></div>
+<div id="lightbox" onclick="closeLb()"><img src=""></div>
 <div id="all">
   <img src="assets/supermedium-logo.png" class="imgfill headerglow">  
   <img src="assets/sslogo.png" class="imgfill">  
@@ -58,9 +72,9 @@
       <img src="assets/sslogosmall.png">is a lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc efficitur et libero id interdum. Aenean id mauris cursus, fermentum lorem nec, congue nisi. Suspendisse semper vitae nisi a interdum. In finibus magna mi. Pellentesque sit amet diam dolor. Sed in venenatis magna. 
     </p>
     <div class="screenshots">
-      <a href="javascript:;"><img src="assets/sshot1.jpg"></a>
-      <a href="javascript:;"><img src="assets/sshot2.jpg"></a>
-      <a href="javascript:;"><img src="assets/sshot3.jpg"></a>
+      <img src="assets/sshot1.jpg">
+      <img src="assets/sshot2.jpg">
+      <img src="assets/sshot3.jpg">
     </div>
   </section>
 
@@ -81,9 +95,9 @@
       </div>
     </div>
     <div class="screenshots">
-      <a href="javascript:;"><img src="assets/sshot4.jpg"></a>
-      <a href="javascript:;"><img src="assets/sshot5.jpg"></a>
-      <a href="javascript:;"><img src="assets/sshot6.jpg"></a>
+      <img src="assets/sshot4.jpg">
+      <img src="assets/sshot5.jpg">
+      <img src="assets/sshot6.jpg">
     </div>
   </section>
 
