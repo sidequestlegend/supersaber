@@ -1,7 +1,6 @@
 AFRAME.registerComponent('saber-controls', {
   schema: {
     bladeEnabled: {default: false},
-    enabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']}
   },
 
@@ -28,7 +27,7 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   tick: function () {
-    if (!this.data.enabled) { return; }
+    if (!this.data.bladeEnabled) { return; }
     this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
   },
 
