@@ -8,6 +8,7 @@ AFRAME.registerComponent('saber-controls', {
     var el = this.el;
     var data = this.data;
 
+    this.boundingBox = new THREE.Box3();
     this.controllerType = '';
 
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
@@ -32,7 +33,6 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   initSaber: function (evt) {
-    this.boundingBox = new THREE.Box3();
     this.controllerType = evt.detail.name;
     this.el.setAttribute('cursor', this.config[this.controllerType].cursor || {});
   },
