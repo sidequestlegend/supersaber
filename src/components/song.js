@@ -5,6 +5,7 @@ const utils = require('../utils');
  */
 AFRAME.registerComponent('song', {
   schema: {
+    analyserEl: {type: 'selector', default: '#audioAnalyser'},
     challengeId: {default: ''},
     isPlaying: {default: false}
   },
@@ -13,6 +14,7 @@ AFRAME.registerComponent('song', {
     // Use audio element for audioanalyser.
     this.audio = document.createElement('audio');
     this.audio.setAttribute('id', 'song');
+    this.audio.crossOrigin = 'anonymous';
     this.el.sceneEl.appendChild(this.audio);
   },
 
@@ -23,12 +25,13 @@ AFRAME.registerComponent('song', {
     // Changed challenge.
     if (data.challengeId !== oldData.challengeId) {
       let songUrl = utils.getS3FileUrl(data.challengeId, 'song.ogg');
-      this.audio.src = data.challengeId ? songUrl : '';
+      this.audio.setAttribute('src', data.challengeId ? songUrl : '');
     }
 
     // Keep playback state up to date.
     if ((data.isPlaying && data.challengeId) && this.audio.paused) {
       console.log(`Playing ${this.audio.src}...`);
+      this.data.analyserEl.setAttribute('audioanalyser', 'src', this.audio);
       this.audio.play();
       return;
     } else if ((!data.isPlaying || !data.challengeId) && !this.audio.paused) {

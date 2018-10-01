@@ -2,7 +2,7 @@
 
 <a-entity
   id="audioAnalyser"
-  audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000"
+  audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
   proxy-event="event: audioanalyser-beat; to: #logolight, #floor"></a-entity>
 
 <a-entity id="stage">

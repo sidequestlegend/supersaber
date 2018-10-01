@@ -9,10 +9,8 @@ const NUM_VALUES_PER_BOX = 72;
  * Column bars moving in sync to the audio via audio analyser.
  */
 AFRAME.registerComponent('audio-columns', {
-  dependencies: ['audioanalyser'],
-
   schema: {
-    analyser: {type: 'selector', default: '#audioanalyser'},
+    analyser: {type: 'selector', default: '#audioAnalyser'},
     height: {default: 1.0},
     mirror: {default: 3},
     scale: {default: 4.0},
