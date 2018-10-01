@@ -19,23 +19,24 @@ AFRAME.registerComponent('song', {
   },
 
   update: function (oldData) {
+    var audio =  this.audio;
     var el = this.el;
     var data = this.data;
 
     // Changed challenge.
     if (data.challengeId !== oldData.challengeId) {
       let songUrl = utils.getS3FileUrl(data.challengeId, 'song.ogg');
-      this.audio.setAttribute('src', data.challengeId ? songUrl : '');
+      audio.setAttribute('src', data.challengeId ? songUrl : '');
     }
 
     // Keep playback state up to date.
     if ((data.isPlaying && data.challengeId) && this.audio.paused) {
       console.log(`Playing ${this.audio.src}...`);
-      this.data.analyserEl.setAttribute('audioanalyser', 'src', this.audio);
-      this.audio.play();
+      this.data.analyserEl.setAttribute('audioanalyser', 'src', audio);
+      audio.play();
       return;
-    } else if ((!data.isPlaying || !data.challengeId) && !this.audio.paused) {
-      this.audio.pause();
+    } else if ((!data.isPlaying || !data.challengeId) && !audio.paused) {
+      audio.pause();
     }
   }
 });
