@@ -11,13 +11,15 @@ AFRAME.registerComponent('active-color', {
 
   init: function () {
     this.defaultColor = this.el.getAttribute('material').color;
+    this.materialObj = {color: this.data.color, opacity: 1};
   },
 
   update: function () {
     var el = this.el;
 
     if (this.data.active) {
-      el.setAttribute('material', {'color': this.data.color, 'opacity': 1});
+      el.setAttribute('material', this.materialObj);
+      el.object3D.visible = true;
     } else {
       el.setAttribute('material', 'color', this.defaultColor);
       if (el.components.animation__mouseleave) {
