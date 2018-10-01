@@ -1,13 +1,14 @@
 AFRAME.registerComponent('trail', {
   schema: {
-    color: {type: 'color'}
+    color: {type: 'color'},
+    enabled: {default: false}
   },
 
   init: function () {
     var geometry = this.geometry = new THREE.BufferGeometry();
     var steps = 10;
     var maxPoints = this.maxPoints = 12;
-    var vertices = this.vertices = new Float32Array(36 * maxPoints); 
+    var vertices = this.vertices = new Float32Array(36 * maxPoints);
     var colors = this.colors = new Float32Array(48 * maxPoints);
     var bladeColor = this.bladeColor = new THREE.Color(this.data.color);
     this.bladeColor = {
@@ -20,15 +21,15 @@ AFRAME.registerComponent('trail', {
 
     this.layers = 0;
     this.saberTrajectory = [
-      {top: {x:-0.5, y: 0, z: 0}, center: {x: 0, y: 0, z: 0}, bottom: {x: 0.5, y: 0, z: 0}},
-      {top: {x:-0.5, y: 0.5, z: 0}, center: {x:0, y: 0.5, z: 0}, bottom: {x: 0.5, y: 0.5, z: 0}},
-      {top: {x:-0.5, y: 1.0, z: 0}, center: {x:0, y: 1.0, z: 0}, bottom: {x: 0.5, y: 1.0, z: 0}}
+      {top: new THREE.Vector3(-0.5, 0, 0), center: new THREE.Vector3(0, 0, 0), bottom: new THREE.Vector3(0.5, 0, 0)},
+      {top: new THREE.Vector3(-0.5, 0.5, 0), center: new THREE.Vector3(0, 0.5, 0), bottom: new THREE.Vector3(0.5, 0.5, 0)},
+      {top: new THREE.Vector3(-0.5, 1.0, 0), center: new THREE.Vector3(0, 1.0, 0), bottom: new THREE.Vector3(0.5, 1.0, 0)}
     ];
 
     //geometry.setDrawRange(0, 0);
     geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3).setDynamic(true));
     geometry.addAttribute('vertexColor', new THREE.BufferAttribute(colors, 4).setDynamic(true));
-    
+
     var material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
       vertexColors: THREE.VertexColors,
@@ -295,6 +296,7 @@ AFRAME.registerComponent('trail', {
   },
 
   tock: function (time, delta) {
+    if (!this.data.enabled) { return; }
     this.sampleSaberPosition();
   },
 
@@ -310,7 +312,7 @@ AFRAME.registerComponent('trail', {
       sample = this.saberTrajectory.shift();
       sample.top.set(0, -0.4, 0);
       sample.center.set(0, 0, 0);
-      sample.bottom.set(0, 0.4, 0) 
+      sample.bottom.set(0, 0.4, 0);
     } else {
       sample = {
         top: new THREE.Vector3(0, -0.4, 0),
