@@ -23,9 +23,6 @@ AFRAME.registerComponent('song', {
     // Changed challenge.
     if (data.challengeId !== oldData.challengeId) {
       let songUrl = utils.getS3FileUrl(data.challengeId, 'song.ogg');
-      this.audio.addEventListener('canplaythrough', () => {
-        this.audio.currentTime = 0;
-      }, false);
       this.audio.src = data.challengeId ? songUrl : '';
     }
 
