@@ -15,6 +15,8 @@ AFRAME.registerComponent('debug-controller', {
     this.isDeleting = false;
     this.isTriggerDown = false;
 
+    window.addEventListener('mousemove', this.onMouseMove.bind(this));
+
     primaryHand = document.getElementById('rightHand');
     secondaryHand = document.getElementById('leftHand');
 
@@ -136,6 +138,8 @@ AFRAME.registerComponent('debug-controller', {
     var primaryHand;
     var secondaryHand;
 
+    this.bounds = document.body.getBoundingClientRect();
+
     if (!AFRAME.utils.getUrlParameter('debug')) { return; }
 
     primaryHand = document.getElementById('rightHand');
@@ -144,6 +148,28 @@ AFRAME.registerComponent('debug-controller', {
     secondaryHand.object3D.position.set(-0.2, 1.5, -0.5);
     primaryHand.object3D.position.set(0.2, 1.5, -0.5);
     secondaryHand.setAttribute('rotation', {x: 35, y: 0, z: 0});
-    primaryHand.setAttribute('rotation', {x: 35, y: 0, z: 0});
-  }
+  },
+
+  onMouseMove: (function () {
+    const direction = new THREE.Vector3();
+    const mouse = new THREE.Vector2();
+    const cameraPos = new THREE.Vector3();
+
+    return function (evt) {
+      const bounds = this.bounds;
+      const camera = this.el.sceneEl.camera;
+      const left = evt.clientX - bounds.left;
+      const top = evt.clientY - bounds.top
+      mouse.x = (left / bounds.width) * 2 - 1;
+      mouse.y = (-top / bounds.height) * 2 - 1;
+
+      document.getElementById('camera').object3D.getWorldPosition(cameraPos);
+      direction.set(mouse.x, mouse.y, 0.5).unproject(camera).sub(cameraPos).normalize();
+
+      const handPos = document.getElementById('rightHand').object3D.position;
+      const distance = -cameraPos.z / direction.z;
+      camera.getWorldPosition(handPos).add(direction.multiplyScalar(distance));
+      handPos.y += 0.8;
+    };
+  })()
 });
