@@ -43,9 +43,9 @@ AFRAME.registerState({
       songSubName: ''
     },
     score: {
-      maxStreak: 0,
+      combo: 0,
       score: 0,
-      streak: 0
+      multiplier: 0
     },
     search: {
       active: true,
