@@ -109,9 +109,9 @@ AFRAME.registerState({
      */
     playbuttonclick: (state) => {
       // Reset score.
-      state.score.maxStreak = 0;
+      state.score.combo = 0;
       state.score.score = 0;
-      state.score.streak = 0;
+      state.score.multiplier = 0;
 
       // Set challenge. `beat-loader` is listening.
       Object.assign(state.challenge, state.menuSelectedChallenge);
