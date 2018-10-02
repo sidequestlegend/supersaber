@@ -46,6 +46,7 @@ AFRAME.registerComponent('beat', {
     this.boundingBox = new THREE.Box3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.backToPool = false;
+    this.gravityVelocity = 0;
     this.returnToPoolTimer = 800;
     this.rightCutPlanePoints = [];
     this.leftCutPlanePoints = [];
@@ -299,6 +300,7 @@ AFRAME.registerComponent('beat', {
       this.el.sceneEl.renderer.localClippingEnabled = true;
       this.destroyed = true;
       this.el.sceneEl.emit('beatdestroyed', null, false);
+      this.gravityVelocity = 0.1;
 
       this.rotationAxis.copy(this.rightCutPlanePoints[0]).sub(this.rightCutPlanePoints[1]);
 
@@ -410,12 +412,18 @@ AFRAME.registerComponent('beat', {
         this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
         this.backToPool = this.el.object3D.position.z >= 2;
       } else {
+        // Update gravity velocity.
+        this.gravityVelocity = getGravityVelocity(this.gravityVelocity, timeDelta);
+        this.el.object3D.position.y += this.gravityVelocity * (timeDelta / 1000);
+
         rightCutNormal.copy(this.rightCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+        rightCutNormal.y = 0;  // Y handled by gravity.
         this.partRightEl.object3D.position.add(rightCutNormal);
         this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
         rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
 
         leftCutNormal.copy(this.leftCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+        leftCutNormal.y = 0;  // Y handled by gravity.
         this.partLeftEl.object3D.position.add(leftCutNormal);
         this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
         leftRotation = leftRotation >= 2 * Math.PI ? 0 : leftRotation + rotationStep;
@@ -430,3 +438,11 @@ AFRAME.registerComponent('beat', {
     };
   })()
 });
+
+/**
+ * Get velocity given current velocity using gravity acceleration.
+ */
+function getGravityVelocity (velocity, timeDelta) {
+  const GRAVITY = -9.8;
+  return velocity + (GRAVITY * (timeDelta / 1000));
+}
