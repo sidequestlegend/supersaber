@@ -20,6 +20,12 @@ AFRAME.registerComponent('debug-controller', {
     primaryHand = document.getElementById('rightHand');
     secondaryHand = document.getElementById('leftHand');
 
+    window.addEventListener('click', evt => {
+      if (!evt.isTrusted) { return; }
+      primaryHand.emit('triggerdown');
+      primaryHand.emit('triggerup');
+    });
+
     if (AFRAME.utils.getUrlParameter('debug') === 'oculus') {
       primaryHand.emit('controllerconnected', {name: 'oculus-touch-controls'});
       secondaryHand.emit('controllerconnected', {name: 'oculus-touch-controls'});

@@ -1,9 +1,12 @@
+/**
+ * Create beat from pool, collision detection, clipping planes.
+ */
 AFRAME.registerComponent('beat', {
   schema: {
-    speed: {default: 1.0},
     color: {default: 'red', oneOf: ['red', 'blue']},
-    size: {default: 0.30},
     debug: {default: false},
+    size: {default: 0.30},
+    speed: {default: 1.0},
     type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']}
   },
 
@@ -18,14 +21,14 @@ AFRAME.registerComponent('beat', {
   },
 
   models: {
-    arrow:  "#beat-obj", 
-    dot:  "#beat-obj", 
-    mine: "#mine-obj"
+    arrow: {obj: '#beat-obj'},
+    dot: {obj: '#beat-obj'},
+    mine: {obj: '#mine-obj'}
   },
 
   signModels: {
-    arrow: "#arrow-obj",
-    dot: "#dot-obj"
+    arrow: {obj: '#arrow-obj'},
+    dot: {obj: '#dot-obj'}
   },
 
   init: function () {
@@ -44,6 +47,8 @@ AFRAME.registerComponent('beat', {
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.backToPool = false;
     this.returnToPoolTimer = 800;
+    this.rightCutPlanePoints = [];
+    this.leftCutPlanePoints = [];
     this.initBlock();
     this.initColliders();
     this.initFragments();
@@ -58,8 +63,8 @@ AFRAME.registerComponent('beat', {
     var el = this.el;
     var blockEl = this.blockEl = document.createElement('a-entity');
     var signEl = this.signEl = document.createElement('a-entity');
-   
-    // Small offset to prevent z-fighting when the blocks are far away 
+
+    // Small offset to prevent z-fighting when the blocks are far away
     signEl.object3D.position.z += 0.02;
     blockEl.appendChild(signEl);
     el.appendChild(blockEl);
@@ -68,28 +73,27 @@ AFRAME.registerComponent('beat', {
   updateBlock: function () {
     var blockEl = this.blockEl;
     var signEl = this.signEl;
-    blockEl.setAttribute('obj-model', {obj: this.models[this.data.type]});
+
+    blockEl.setAttribute('obj-model', this.models[this.data.type]);
     blockEl.setAttribute('material', {
       metalness: 0.6,
       roughness: 0.12,
       sphericalEnvMap: '#envmapTexture',
       color: this.materialColor[this.data.color]
     });
+
     // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
     blockEl.object3D.scale.multiplyScalar(3.45).multiplyScalar(this.data.size);
 
     if (this.data.type === 'mine') {
-      blockEl.addEventListener('model-loaded', (evt) => {
+      blockEl.addEventListener('model-loaded', evt => {
         var model = evt.detail.model.children[0];
         model.material = this.el.sceneEl.components.stagecolors.mineMaterial;
       });
     }
 
-    signEl.setAttribute('obj-model', {obj: this.signModels[this.data.type]});
-    signEl.setAttribute('material', {
-      shader: 'flat',
-      color: '#88f'
-    });
+    signEl.setAttribute('obj-model', this.signModels[this.data.type]);
+    signEl.setAttribute('material', {shader: 'flat', color: '#88f'});
   },
 
   initColliders: function () {
@@ -98,6 +102,7 @@ AFRAME.registerComponent('beat', {
     var beatCollidersEls = this.beatCollidersEls = [];
     var i;
     var size;
+
     for (i = 0; i < 6; i++) {
       beatColliderEl = document.createElement('a-entity');
       size = beatCollidersConfiguration[i].size;
@@ -107,17 +112,17 @@ AFRAME.registerComponent('beat', {
         width: size.width,
         depth: size.depth
       });
-      beatColliderEl.setAttribute('position', beatCollidersConfiguration[i].position);
-      beatColliderEl.setAttribute('visible', false);
+      beatColliderEl.object3D.position.copy(beatCollidersConfiguration[i].position);
+      beatColliderEl.object3D.visible = false;
       beatCollidersEls.push(beatColliderEl);
       if (i == 2) { this.correctBeatColliderEl = beatColliderEl; }
       this.el.appendChild(beatColliderEl);
       if (this.data.debug) {
-        beatColliderEl.setAttribute('visible', true);
-        if (i == 2) { 
-          beatColliderEl.setAttribute('material', 'color: yellow');
+        beatColliderEl.object3D.visible = true;
+        if (i == 2) {
+          beatColliderEl.setAttribute('material', 'color', 'yellow');
         } else {
-          beatColliderEl.setAttribute('material', 'color: purple');
+          beatColliderEl.setAttribute('material', 'color', 'purple');
         }
       }
     }
@@ -132,10 +137,10 @@ AFRAME.registerComponent('beat', {
 
     this.cutDirection = new THREE.Vector3();
     this.rotationAxis = new THREE.Vector3();
-    
+
     partEl = this.partLeftEl = document.createElement('a-entity');
     cutEl = this.cutLeftEl = document.createElement('a-entity');
-  
+
     partEl.appendChild(cutEl);
     this.el.appendChild(partEl);
 
@@ -154,7 +159,7 @@ AFRAME.registerComponent('beat', {
     var partLeftEl = this.partLeftEl;
     var partRightEl = this.partRightEl;
 
-    partLeftEl.setAttribute('obj-model', 'obj: #beat-obj');
+    partLeftEl.setAttribute('obj-model', this.models.dot);
     partLeftEl.setAttribute('material', {
       metalness: 0.8,
       roughness: 0.12,
@@ -162,16 +167,16 @@ AFRAME.registerComponent('beat', {
       color: this.materialColor[this.data.color],
       side: 'double'
     });
-    partLeftEl.setAttribute('visible', false);
+    partLeftEl.object3D.visible = false;
 
-    cutLeftEl.setAttribute('obj-model', 'obj: #beat-obj');
+    cutLeftEl.setAttribute('obj-model', this.models.dot);
     cutLeftEl.setAttribute('material', {
       shader: 'flat',
       color: this.data.cutColor,
       side: 'double'
     });
 
-    partRightEl.setAttribute('obj-model', 'obj: #beat-obj');
+    partRightEl.setAttribute('obj-model', this.models.dot);
     partRightEl.setAttribute('material', {
       metalness: 0.8,
       roughness: 0.12,
@@ -179,9 +184,9 @@ AFRAME.registerComponent('beat', {
       color: this.materialColor[this.data.color],
       side: 'double'
     });
-    partRightEl.setAttribute('visible', false);
+    partRightEl.object3D.visible = false;
 
-    cutRightEl.setAttribute('obj-model', 'obj: #beat-obj');
+    cutRightEl.setAttribute('obj-model', this.models.dot);
     cutRightEl.setAttribute('material', {
       shader: 'flat',
       color: this.data.cutColor,
@@ -190,35 +195,34 @@ AFRAME.registerComponent('beat', {
   },
 
   destroyBeat: (function () {
+    var parallelPlaneMaterial = new THREE.MeshBasicMaterial({color: '#00008b', side: THREE.DoubleSide});
+    var planeMaterial = new THREE.MeshBasicMaterial({color: 'grey', side: THREE.DoubleSide});
     var point1 = new THREE.Vector3();
     var point2 = new THREE.Vector3();
     var point3 = new THREE.Vector3();
-    var planeMaterial = new THREE.MeshBasicMaterial({color: 'grey', side: THREE.DoubleSide});
-    var parallelPlaneMaterial = new THREE.MeshBasicMaterial({color: '#00008b', side: THREE.DoubleSide});
+
     return function (saberEl) {
-      var i;
-      var trailPoints = saberEl.components.trail.saberTrajectory;
+      var coplanarPoint;
+      var cutThickness = this.cutThickness = 0.02;
       var direction = this.cutDirection;
+      var focalPoint;
+      var i;
+      var leftBorderInnerPlane = this.leftBorderInnerPlane;
+      var leftBorderOuterPlane = this.leftBorderOuterPlane;
+      var leftCutPlane = this.leftCutPlane;
+      var parallelPlane2;
+      var parallelPlane;
+      var planeGeometry;
+      var planeMesh;
+      var rightBorderInnerPlane = this.rightBorderInnerPlane;
+      var rightBorderOuterPlane = this.rightBorderOuterPlane;
+      var rightCutPlane = this.rightCutPlane;
+      var trailPoints = saberEl.components.trail.saberTrajectory;
+
       point1.copy(trailPoints[0].top);
       point2.copy(trailPoints[0].center);
       point3.copy(trailPoints[trailPoints.length - 1].top);
       direction.copy(point1).sub(point3);
-      var parallelPlane;
-      var parallelPlane2;
-      var planeGeometry;
-      var planeMesh;
-      var coplanarPoint;
-      var focalPoint;
-      var cutThickness = this.cutThickness = 0.02;
-
-      var rightCutPlane = this.rightCutPlane;
-      var rightBorderOuterPlane = this.rightBorderOuterPlane;
-
-      var leftCutPlane = this.leftCutPlane;
-      var leftBorderOuterPlane = this.leftBorderOuterPlane;
-      
-      var rightBorderInnerPlane = this.rightBorderInnerPlane;
-      var leftBorderInnerPlane = this.leftBorderInnerPlane;
 
       this.partLeftEl.object3D.position.set(0, 0, 0);
       this.partLeftEl.object3D.rotation.set(0, 0, 0)
@@ -227,19 +231,17 @@ AFRAME.registerComponent('beat', {
       this.partRightEl.object3D.position.set(0, 0, 0);
       this.partRightEl.object3D.rotation.set(0, 0, 0);
       this.partRightEl.object3D.updateMatrixWorld();
-      
-      this.rightCutPlanePoints = [
-        this.partRightEl.object3D.worldToLocal(point1.clone()),
-        this.partRightEl.object3D.worldToLocal(point2.clone()),
-        this.partRightEl.object3D.worldToLocal(point3.clone()),
-      ];
 
-      this.leftCutPlanePoints = [
-        this.partLeftEl.object3D.worldToLocal(point3.clone()),
-        this.partLeftEl.object3D.worldToLocal(point2.clone()),
-        this.partLeftEl.object3D.worldToLocal(point1.clone()),
-      ];
-    
+      this.rightCutPlanePoints.length = 0;
+      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point1.clone()));
+      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point2.clone()));
+      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point3.clone()));
+
+      this.leftCutPlanePoints.length = 0;
+      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point3.clone()));
+      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point2.clone()));
+      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point1.clone()));
+
       this.generateCutClippingPlanes();
 
       if (this.data.debug) {
@@ -262,30 +264,47 @@ AFRAME.registerComponent('beat', {
         parallelPlaneMesh = new THREE.Mesh(planeGeometry, parallelPlaneMaterial);
         this.el.sceneEl.setObject3D('planeParallel', parallelPlaneMesh);
       }
-      
+
       this.blockEl.object3D.visible = false;
-      this.partRightEl.getObject3D('mesh').material.clippingPlanes = [rightCutPlane];
-      this.cutRightEl.getObject3D('mesh').material.clippingPlanes = [rightBorderOuterPlane, rightBorderInnerPlane];
 
-      this.partLeftEl.getObject3D('mesh').material.clippingPlanes = [leftCutPlane];
-      this.cutLeftEl.getObject3D('mesh').material.clippingPlanes = [leftBorderInnerPlane, leftBorderOuterPlane];
+      const partRightMaterial = this.partRightEl.getObject3D('mesh').material;
+      partRightMaterial.clippingPlanes = partRightMaterial.clippingPlanes || [];
+      partRightMaterial.clippingPlanes.length = 0;
+      partRightMaterial.clippingPlanes.push(rightCutPlane);
 
-      for (i = 0; i < 6; i++) { 
-        this.beatCollidersEls[i].setAttribute('visible', false);
+      const cutRightMaterial = this.cutRightEl.getObject3D('mesh').material;
+      cutRightMaterial.clippingPlanes = cutRightMaterial.clippingPlanes || [];
+      cutRightMaterial.clippingPlanes.length  = 0
+      cutRightMaterial.clippingPlanes.push(rightBorderOuterPlane)
+      cutRightMaterial.clippingPlanes.push(rightBorderInnerPlane)
+
+      const partLeftMaterial = this.partLeftEl.getObject3D('mesh').material;
+      partLeftMaterial.clippingPlanes = partLeftMaterial.clippingPlanes || [];
+      partLeftMaterial.clippingPlanes.length = 0;
+      partLeftMaterial.clippingPlanes.push(leftCutPlane);
+
+      const cutLeftMaterial = this.cutLeftEl.getObject3D('mesh').material;
+      cutLeftMaterial.clippingPlanes = cutLeftMaterial.clippingPlanes || [];
+      cutLeftMaterial.clippingPlanes.length = 0;
+      cutLeftMaterial.clippingPlanes.push(leftBorderInnerPlane)
+      cutLeftMaterial.clippingPlanes.push(leftBorderOuterPlane)
+
+      for (i = 0; i < 6; i++) {
+        this.beatCollidersEls[i].object3D.visible = false;
       }
 
       this.partLeftEl.object3D.visible = true;
       this.partRightEl.object3D.visible = true;
-      
+
       this.el.sceneEl.renderer.localClippingEnabled = true;
       this.destroyed = true;
-      this.el.emit('beatdestroyed');
+      this.el.sceneEl.emit('beatdestroyed', null, false);
 
-      this.rotationAxis = this.rightCutPlanePoints[0].clone().sub(this.rightCutPlanePoints[1]);
-      
+      this.rotationAxis.copy(this.rightCutPlanePoints[0]).sub(this.rightCutPlanePoints[1]);
+
       this.returnToPoolTimer = 800;
 
-      //this.el.sceneEl.components['json-particles__hit'].explode(this.el.object3D.position, rightCutPlane.normal, direction, this.data.color);
+      // this.el.sceneEl.components['json-particles__hit'].explode(this.el.object3D.position, rightCutPlane.normal, direction, this.data.color);
     }
   })(),
 
@@ -319,20 +338,20 @@ AFRAME.registerComponent('beat', {
 
     this.leftCutPlane = new THREE.Plane();
     this.leftBorderOuterPlane = new THREE.Plane();
-    this.leftBorderInnerPlane = new THREE.Plane(); 
+    this.leftBorderInnerPlane = new THREE.Plane();
   },
 
   generateCutClippingPlanes: function () {
-    var leftCutPlanePointsWorld = this.leftCutPlanePointsWorld;
-    var rightCutPlanePointsWorld = this.rightCutPlanePointsWorld;
-    var rightCutPlane = this.rightCutPlane;
-    var rightBorderOuterPlane = this.rightBorderOuterPlane;
-    var rightBorderInnerPlane = this.rightBorderInnerPlane;
-    var leftCutPlane = this.leftCutPlane;
-    var leftBorderOuterPlane = this.leftBorderOuterPlane;
     var leftBorderInnerPlane = this.leftBorderInnerPlane;
+    var leftBorderOuterPlane = this.leftBorderOuterPlane;
+    var leftCutPlane = this.leftCutPlane;
+    var leftCutPlanePointsWorld = this.leftCutPlanePointsWorld;
     var partLeftEl = this.partLeftEl;
     var partRightEl = this.partRightEl;
+    var rightBorderInnerPlane = this.rightBorderInnerPlane;
+    var rightBorderOuterPlane = this.rightBorderOuterPlane;
+    var rightCutPlane = this.rightCutPlane;
+    var rightCutPlanePointsWorld = this.rightCutPlanePointsWorld;
 
     partRightEl.object3D.updateMatrixWorld();
     partRightEl.object3D.localToWorld(rightCutPlanePointsWorld[0].copy(this.rightCutPlanePoints[0]));
@@ -362,21 +381,22 @@ AFRAME.registerComponent('beat', {
     poolName = 'pool__beat-' + type;
     if (type !== 'mine') { poolName  += '-' + this.data.color; }
     this.el.sceneEl.components[poolName].returnEntity(this.el);
-    this.el.pause();
   },
 
   tock: (function () {
-    var rightCutNormal = new THREE.Vector3();
     var leftCutNormal = new THREE.Vector3();
     var leftRotation = 0;
+    var rightCutNormal = new THREE.Vector3();
     var rightRotation = 0;
     var rotationStep = 2 * Math.PI / 150;
+
     return function (time, timeDelta) {
-      var i;
-      var saberEls = this.saberEls;
       var boundingBox;
-      var saberBoundingBox;
+      var i;
       var plane;
+      var saberBoundingBox;
+      var saberEls = this.saberEls;
+
       if (!this.destroyed) {
         if (!this.correctBeatColliderEl.getObject3D('mesh')) { return; }
         boundingBox = this.boundingBox.setFromObject(this.correctBeatColliderEl.getObject3D('mesh'));
@@ -405,6 +425,7 @@ AFRAME.registerComponent('beat', {
         this.returnToPoolTimer -= timeDelta;
         this.backToPool = this.returnToPoolTimer <= 0;
       }
+
       this.returnToPool();
     };
   })()
