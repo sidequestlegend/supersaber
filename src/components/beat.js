@@ -193,10 +193,9 @@ AFRAME.registerComponent('beat', {
     var wrongEl = hand === 'left' ? this.wrongElLeft : this.wrongElRight;
     if (!wrongEl) { return; }
     wrongEl.object3D.position.copy(this.el.object3D.position);
-    wrongEl.object3D.position.y += 0.5;
+    wrongEl.object3D.position.y += 0.2;
     wrongEl.object3D.position.z -= 0.5;
     wrongEl.object3D.visible = true;
-    wrongEl.object3D.material.opacity = 1;
     wrongEl.emit('beatwrong');
     this.destroyed = true;
   },

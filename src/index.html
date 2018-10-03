@@ -66,12 +66,12 @@
         <a-mixin id="arrow-red-beat" beat="color: red; type: arrow"></a-mixin>
         <a-mixin id="dot-blue-beat" beat="color: blue; type: dot"></a-mixin>
 
-        <a-mixin id="bad-beat-anims"
+        <a-mixin id="bad-beat"
           geometry="primitive: plane"
           material="shader: flat; transparent: true"
           visible="false"
-          animation__posz="property: object3D.position.z; to: -15; startEvents: beatwrong; easing: easeOutQuint"
-          animation__alpha="property: material.opacity; from: 1; to: 0; startEvents: beatwrong; delay: 200; easing: easeOutQuint"
+          animation__posz="property: object3D.position.z; to: -8; startEvents: beatwrong; easing: easeOutQuart; duration: 4000"
+          animation__alpha="property: material.opacity; from: 1; to: 0; startEvents: beatwrong; easing: easeOutQuart; duration: 4000"></a-mixin>
       </a-assets>
 
 
@@ -86,10 +86,10 @@
       </a-entity>
 
       <!-- Wrong + miss beat visual indicators. -->
-      <a-entity id="wrongLeft" mixin='bad-beat' geometry="height: 0.2; width: 0.2" material="src: #wrongRedImg"></a-entity>
-      <a-entity id="wrongRight" mixin='bad-beat' geometry="height: 0.2; width: 0.2" material="src: #wrongBlueImg"></a-entity>
-      <a-entity id="missLeft" mixin='bad-beat' geometry="height: 0.15; width: 0.3" material="src: #missRedImg"></a-entity>
-      <a-entity id="missRight" mixin='bad-beat' geometry="height: 0.15; width: 0.3" material="src: #missBlueImg"></a-entity>
+      <a-entity id="wrongLeft" mixin='bad-beat' geometry="height: 0.3; width: 0.3" material="src: #wrongRedImg"></a-entity>
+      <a-entity id="wrongRight" mixin='bad-beat' geometry="height: 0.3; width: 0.3" material="src: #wrongBlueImg"></a-entity>
+      <a-entity id="missLeft" mixin='bad-beat' geometry="height: 0.25; width: 0.5" material="src: #missRedImg"></a-entity>
+      <a-entity id="missRight" mixin='bad-beat' geometry="height: 0.25; width: 0.5" material="src: #missBlueImg"></a-entity>
 
       <!-- Player. -->
       <a-mixin
