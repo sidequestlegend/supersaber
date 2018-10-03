@@ -43,8 +43,12 @@ AFRAME.registerComponent('beat', {
     this.returnToPoolTimer = 800;
     this.rightCutPlanePoints = [];
     this.leftCutPlanePoints = [];
-    this.missElLeft = document.querySelector('#missLeft'); 
+
+    this.wrongElLeft = document.querySelector('#wrongLeft');
+    this.wrongElRight = document.querySelector('#wrongRight');
+    this.missElLeft = document.querySelector('#missLeft');
     this.missElRight = document.querySelector('#missRight');
+
     this.initBlock();
     this.initColliders();
     this.initFragments();
@@ -97,7 +101,7 @@ AFRAME.registerComponent('beat', {
     var i;
     var size;
     var hitColliderConfiguration =  {
-      position: {x: 0, y: data.size / 2, z: 0}, 
+      position: {x: 0, y: data.size / 2, z: 0},
       size: {width: data.size, height: data.size / 5.0, depth: data.size}
     };
 
@@ -112,7 +116,7 @@ AFRAME.registerComponent('beat', {
     hitColliderEl.object3D.position.copy(hitColliderConfiguration.position);
     hitColliderEl.object3D.visible = false;
     this.el.appendChild(hitColliderEl);
-    
+
     if (data.debug) {
       hitColliderEl.object3D.visible = true;
       hitColliderEl.setAttribute('material', 'color', 'purple');
@@ -185,16 +189,15 @@ AFRAME.registerComponent('beat', {
     });
   },
 
-  missBeat: function (hand) {
-    var missEl = hand === 'left' ? this.missElLeft : this.missElRight;
-    if (!missEl) { return; }
-    missEl.object3D.position.copy(this.el.object3D.position);
-    missEl.object3D.position.y += 0.5;
-    missEl.object3D.position.z -= 0.5;
-    missEl.object3D.visible = true;
-    setTimeout(function () {
-      missEl.object3D.visible = false;
-    }, 3000);
+  wrongCut: function (hand) {
+    var wrongEl = hand === 'left' ? this.wrongElLeft : this.wrongElRight;
+    if (!wrongEl) { return; }
+    wrongEl.object3D.position.copy(this.el.object3D.position);
+    wrongEl.object3D.position.y += 0.5;
+    wrongEl.object3D.position.z -= 0.5;
+    wrongEl.object3D.visible = true;
+    wrongEl.object3D.material.opacity = 1;
+    wrongEl.emit('beatwrong');
     this.destroyed = true;
   },
 
@@ -404,7 +407,7 @@ AFRAME.registerComponent('beat', {
         beatBoundingBox = this.beatBoundingBox.setFromObject(this.blockEl.getObject3D('mesh'));
         for (i = 0; i < saberEls.length; i++) {
           saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
-          if (!boundingBox || !saberBoundingBox) { break; } 
+          if (!boundingBox || !saberBoundingBox) { break; }
           if (saberBoundingBox.intersectsBox(boundingBox)) {
             this.destroyBeat(saberEls[i]);
             this.el.sceneEl.emit('beathit', null, false);
@@ -412,8 +415,8 @@ AFRAME.registerComponent('beat', {
           }
           if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
             this.destroyBeat(saberEls[i]);
-            this.missBeat(saberEls[i].getAttribute('saber-controls').hand);
-            this.el.sceneEl.emit('beatmissed', null, false);
+            this.wrongCut(saberEls[i].getAttribute('saber-controls').hand);
+            this.el.sceneEl.emit('beatwrong', null, false);
             break;
           }
         }

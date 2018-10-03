@@ -71,7 +71,7 @@ AFRAME.registerState({
       state.score.combo += 1;
     },
 
-    beatmissed: state => {
+    beatwrong: state => {
       state.score.combo = 0;
     },
 

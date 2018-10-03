@@ -49,8 +49,12 @@
         <img id="playImg" src="assets/img/play.png">
         <img id="skyTexture" src="assets/img/stage/sky.jpg">
         <img id="sliceImg" src="assets/img/slice.png">
-        <img id="beamImg" src="assets/img/beam.png">
         <img id="smokeTexture" src="assets/img/stage/smoke.png">
+        <img id="beamImg" src="assets/img/beam.png">
+        <img id="wrongBlueImg" src="assets/img/wrongblue.png">
+        <img id="wrongRedImg" src="assets/img/wrongred.png">
+        <img id="missBlueImg" src="assets/img/missblue.png">
+        <img id="missRedImg" src="assets/img/missred.png">
 
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
         <a-mixin id="stageLaser" geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
@@ -61,11 +65,15 @@
         <a-mixin id="arrow-blue-beat" beat="color: blue; type: arrow"></a-mixin>
         <a-mixin id="arrow-red-beat" beat="color: red; type: arrow"></a-mixin>
         <a-mixin id="dot-blue-beat" beat="color: blue; type: dot"></a-mixin>
+
+        <a-mixin id="bad-beat-anims"
+          geometry="primitive: plane"
+          material="shader: flat; transparent: true"
+          visible="false"
+          animation__posz="property: object3D.position.z; to: -15; startEvents: beatwrong; easing: easeOutQuint"
+          animation__alpha="property: material.opacity; from: 1; to: 0; startEvents: beatwrong; delay: 200; easing: easeOutQuint"
       </a-assets>
 
-      <!-- Missed beat visual indicators. -->
-      <a-entity id="missLeft" geometry="primitive: box; height: 0.2; width: 0.2; depth: 0.2" material="color: red" visible="false"></a-entity>
-      <a-entity id="missRight" geometry="primitive: box; height: 0.2; width: 0.2; depth: 0.2" material="color: red" visible="false"></a-entity>
 
       <a-entity id="beatContainer"></a-entity>
 
@@ -76,6 +84,12 @@
         {% include './templates/gameUi.html' %}
         {% include './templates/menu.html' %}
       </a-entity>
+
+      <!-- Wrong + miss beat visual indicators. -->
+      <a-entity id="wrongLeft" mixin='bad-beat' geometry="height: 0.2; width: 0.2" material="src: #wrongRedImg"></a-entity>
+      <a-entity id="wrongRight" mixin='bad-beat' geometry="height: 0.2; width: 0.2" material="src: #wrongBlueImg"></a-entity>
+      <a-entity id="missLeft" mixin='bad-beat' geometry="height: 0.15; width: 0.3" material="src: #missRedImg"></a-entity>
+      <a-entity id="missRight" mixin='bad-beat' geometry="height: 0.15; width: 0.3" material="src: #missBlueImg"></a-entity>
 
       <!-- Player. -->
       <a-mixin
