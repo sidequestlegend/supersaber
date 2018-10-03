@@ -107,14 +107,16 @@
           <a-entity id="{{ hand }}Hand"
             mixin="raycaster"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
+            bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
             bind__pauser="enabled: !menu.active"
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
             bind__saber-controls="bladeEnabled: !menu.active"
             bind__trail="enabled: !menu.active"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             saber-controls="hand: {{ hand }}"
+            thumb-controls
+            thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
             trail="color: {{ bladeColor }}">
-
             <a-entity
               id="{{ hand }}Laser"
               bind__visible="activeHand === '{{ hand }}'"
