@@ -35,14 +35,7 @@ AFRAME.registerComponent('beat', {
     var el = this.el;
     var color;
     var size = this.data.size;
-    this.beatCollidersConfiguration = [
-      {position: {x: size / 2, y: 0, z: 0}, size: {width: size / 5.0, height: size, depth: size}},
-      {position: {x: -size / 2, y: 0, z: 0}, size: {width: size / 5.0, height: size, depth: size}},
-      {position: {x: 0, y: size / 2, z: 0}, size: {width: size, height: size / 5.0, depth: size}},
-      {position: {x: 0, y: -size / 2, z: 0}, size: {width: size, height: size / 5.0, depth: size}},
-      {position: {x: 0, y: 0, z: size / 2}, size: {width: size, height: size, depth: size / 5.0}},
-      {position: {x: 0, y: 0, z: -size / 2}, size: {width: size, height: size, depth: size / 5.0}}
-    ];
+    this.beatBoundingBox = new THREE.Box3();
     this.boundingBox = new THREE.Box3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.backToPool = false;
@@ -50,6 +43,8 @@ AFRAME.registerComponent('beat', {
     this.returnToPoolTimer = 800;
     this.rightCutPlanePoints = [];
     this.leftCutPlanePoints = [];
+    this.missElLeft = document.querySelector('#missLeft'); 
+    this.missElRight = document.querySelector('#missRight');
     this.initBlock();
     this.initColliders();
     this.initFragments();
@@ -98,34 +93,29 @@ AFRAME.registerComponent('beat', {
   },
 
   initColliders: function () {
-    var beatColliderEl;
-    var beatCollidersConfiguration = this.beatCollidersConfiguration;
-    var beatCollidersEls = this.beatCollidersEls = [];
+    var data = this.data;
     var i;
     var size;
+    var hitColliderConfiguration =  {
+      position: {x: 0, y: data.size / 2, z: 0}, 
+      size: {width: data.size, height: data.size / 5.0, depth: data.size}
+    };
 
-    for (i = 0; i < 6; i++) {
-      beatColliderEl = document.createElement('a-entity');
-      size = beatCollidersConfiguration[i].size;
-      beatColliderEl.setAttribute('geometry', {
-        primitive: 'box',
-        height: size.height,
-        width: size.width,
-        depth: size.depth
-      });
-      beatColliderEl.object3D.position.copy(beatCollidersConfiguration[i].position);
-      beatColliderEl.object3D.visible = false;
-      beatCollidersEls.push(beatColliderEl);
-      if (i == 2) { this.correctBeatColliderEl = beatColliderEl; }
-      this.el.appendChild(beatColliderEl);
-      if (this.data.debug) {
-        beatColliderEl.object3D.visible = true;
-        if (i == 2) {
-          beatColliderEl.setAttribute('material', 'color', 'yellow');
-        } else {
-          beatColliderEl.setAttribute('material', 'color', 'purple');
-        }
-      }
+    var hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
+    hitColliderEl.setAttribute('geometry', {
+      primitive: 'box',
+      height: hitColliderConfiguration.size.height,
+      width: hitColliderConfiguration.size.width,
+      depth: hitColliderConfiguration.size.depth
+    });
+
+    hitColliderEl.object3D.position.copy(hitColliderConfiguration.position);
+    hitColliderEl.object3D.visible = false;
+    this.el.appendChild(hitColliderEl);
+    
+    if (data.debug) {
+      hitColliderEl.object3D.visible = true;
+      hitColliderEl.setAttribute('material', 'color', 'purple');
     }
   },
 
@@ -193,6 +183,19 @@ AFRAME.registerComponent('beat', {
       color: this.data.cutColor,
       side: 'double'
     });
+  },
+
+  missBeat: function (hand) {
+    var missEl = hand === 'left' ? this.missElLeft : this.missElRight;
+    if (!missEl) { return; }
+    missEl.object3D.position.copy(this.el.object3D.position);
+    missEl.object3D.position.y += 0.5;
+    missEl.object3D.position.z -= 0.5;
+    missEl.object3D.visible = true;
+    setTimeout(function () {
+      missEl.object3D.visible = false;
+    }, 3000);
+    this.destroyed = true;
   },
 
   destroyBeat: (function () {
@@ -290,16 +293,11 @@ AFRAME.registerComponent('beat', {
       cutLeftMaterial.clippingPlanes.push(leftBorderInnerPlane)
       cutLeftMaterial.clippingPlanes.push(leftBorderOuterPlane)
 
-      for (i = 0; i < 6; i++) {
-        this.beatCollidersEls[i].object3D.visible = false;
-      }
-
       this.partLeftEl.object3D.visible = true;
       this.partRightEl.object3D.visible = true;
 
       this.el.sceneEl.renderer.localClippingEnabled = true;
       this.destroyed = true;
-      this.el.sceneEl.emit('beatdestroyed', null, false);
       this.gravityVelocity = 0.1;
 
       this.rotationAxis.copy(this.rightCutPlanePoints[0]).sub(this.rightCutPlanePoints[1]);
@@ -393,6 +391,7 @@ AFRAME.registerComponent('beat', {
     var rotationStep = 2 * Math.PI / 150;
 
     return function (time, timeDelta) {
+      var beatBoundingBox;
       var boundingBox;
       var i;
       var plane;
@@ -400,15 +399,25 @@ AFRAME.registerComponent('beat', {
       var saberEls = this.saberEls;
 
       if (!this.destroyed) {
-        if (!this.correctBeatColliderEl.getObject3D('mesh')) { return; }
-        boundingBox = this.boundingBox.setFromObject(this.correctBeatColliderEl.getObject3D('mesh'));
+        if (!this.hitColliderEl.getObject3D('mesh')) { return; }
+        boundingBox = this.boundingBox.setFromObject(this.hitColliderEl.getObject3D('mesh'));
+        beatBoundingBox = this.beatBoundingBox.setFromObject(this.blockEl.getObject3D('mesh'));
         for (i = 0; i < saberEls.length; i++) {
           saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
-          if (boundingBox && saberBoundingBox && saberBoundingBox.intersectsBox(boundingBox)) {
+          if (!boundingBox || !saberBoundingBox) { break; } 
+          if (saberBoundingBox.intersectsBox(boundingBox)) {
             this.destroyBeat(saberEls[i]);
+            this.el.sceneEl.emit('beathit', null, false);
+            break;
+          }
+          if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
+            this.destroyBeat(saberEls[i]);
+            this.missBeat(saberEls[i].getAttribute('saber-controls').hand);
+            this.el.sceneEl.emit('beatmissed', null, false);
             break;
           }
         }
+
         this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
         this.backToPool = this.el.object3D.position.z >= 2;
       } else {

@@ -66,6 +66,15 @@ AFRAME.registerState({
       localStorage.setItem('activeHand', state.activeHand);
     },
 
+    beathit: state => {
+      state.score.score += 1;
+      state.score.combo += 1;
+    },
+
+    beatmissed: state => {
+      state.score.combo = 0;
+    },
+
     beatloaderfinish: (state) => {
       state.challenge.isLoading = false;
     },

@@ -63,6 +63,10 @@
         <a-mixin id="dot-blue-beat" beat="color: blue; type: dot"></a-mixin>
       </a-assets>
 
+      <!-- Missed beat visual indicators. -->
+      <a-entity id="missLeft" geometry="primitive: box; height: 0.2; width: 0.2; depth: 0.2" material="color: red" visible="false"></a-entity>
+      <a-entity id="missRight" geometry="primitive: box; height: 0.2; width: 0.2; depth: 0.2" material="color: red" visible="false"></a-entity>
+
       <a-entity id="beatContainer"></a-entity>
 
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
