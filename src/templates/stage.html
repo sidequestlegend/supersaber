@@ -57,11 +57,12 @@
     position="0 6 0"
     light="type: spot; penumbra: 1; intensity: 5; angle: 20"
     animation="property: rotation; from: 0 50 0; to: 0 -50 0; dur:300; easing: linear; startEvents: audioanalyser-beat"></a-entity>
-  <a-entity id="logosparks" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 600; on: logoflicker" position="-2.8 5.5 -7.2"></a-entity>
-  <a-entity id="logo" position="0 6 -7.5" rotation="90 0 0">
+
+  <a-entity id="logosparks" bind__visible="menu.active" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 600; on: logoflicker" position="-2.8 5.5 -7.2"></a-entity>
+  <a-entity id="logo" bind__visible="menu.active" position="0 6 -7.5" rotation="90 0 0">
     <a-entity obj-model="obj: #logoback-obj" material="color: #001B29"></a-entity>
     <a-entity obj-model="obj: #logofront-obj"  material="color: #e81e23"></a-entity>
-    <a-entity obj-model="obj: #logofront-u-obj" material="color: #e81e23" logoflicker="delay: 1200"></a-entity>
+    <a-entity obj-model="obj: #logofront-u-obj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menu.active"></a-entity>
   </a-entity>
 
   <a-entity

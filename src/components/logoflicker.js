@@ -3,11 +3,13 @@ AFRAME.registerComponent('logoflicker', {
 
   schema: {
     delay: {default: 1000.0},
+    active: {default: true}
   },
 
   init: function () {
     this.setOff = this.setOff.bind(this);
     this.setOn = this.setOn.bind(this);
+    this.timeout = 0;
 
     this.sparks = document.getElementById('logosparks');
     this.sparkPositions = [
@@ -15,8 +17,16 @@ AFRAME.registerComponent('logoflicker', {
       {position: new THREE.Vector3(0.3, 0.8, 0)},
       {position: new THREE.Vector3(-0.3, 0.8, 0)}
     ];
+  },
 
-    this.setOn();
+  update: function (oldData) {
+    if (this.data.active !== oldData.active){
+      if (this.data.active) {
+        this.setOn();
+      } else {
+        clearTimeout(this.timeout);
+      }
+    }
   },
 
   setOff: function () {
@@ -25,13 +35,13 @@ AFRAME.registerComponent('logoflicker', {
       this.sparkPositions[Math.floor(Math.random() * this.sparkPositions.length)],
       false);
 
-    setTimeout(this.setOn,
+    this.timeout = setTimeout(this.setOn,
                50 + Math.floor(Math.random() * 100));
   },
 
   setOn: function () {
     this.el.object3D.visible = true;
-    setTimeout(this.setOff,
+    this.timeout = setTimeout(this.setOff,
                Math.floor((this.data.delay * 3 / 10) + Math.random() * this.data.delay));
   }
 });
