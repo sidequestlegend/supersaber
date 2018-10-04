@@ -15,10 +15,6 @@ AFRAME.registerComponent('beat-loader', {
   horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
   verticalPositions: [1.00, 1.35, 1.70],
 
-  init: function () {
-    this.beams = document.getElementById('beams').components['beams'];
-  },
-
   update: function () {
     if (!this.data.challengeId || !this.data.difficulty) { return; }
     this.loadBeats();
@@ -125,8 +121,6 @@ AFRAME.registerComponent('beat-loader', {
       );
       el.object3D.rotation.z = THREE.Math.degToRad(this.orientations[noteInfo._cutDirection]);
       el.play();
-
-      this.beams.newBeam(color, el.object3D.position);
 
       if (this.first) { return; }
 

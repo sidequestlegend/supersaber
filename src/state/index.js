@@ -27,6 +27,7 @@ AFRAME.registerState({
       songSubName: ''
     },
     inVR: false,
+    isPaused: false,
     menu: {
       active: true,
       playButtonText: 'Play'

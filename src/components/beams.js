@@ -1,6 +1,6 @@
 AFRAME.registerComponent('beams', {
   schema: {
-    poolSize: {default: 10}
+    poolSize: {default: 4}
   },
   init: function () {
     var redMaterial;

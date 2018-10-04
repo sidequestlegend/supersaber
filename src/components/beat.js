@@ -49,6 +49,8 @@ AFRAME.registerComponent('beat', {
     this.missElLeft = document.querySelector('#missLeft');
     this.missElRight = document.querySelector('#missRight');
 
+    this.beams = document.getElementById('beams').components['beams'];
+
     this.initBlock();
     this.initColliders();
     this.initFragments();
@@ -320,6 +322,7 @@ AFRAME.registerComponent('beat', {
     this.destroyed = false;
     this.el.object3D.visible = true;
     this.blockEl.object3D.visible = true;
+    this.beams.newBeam(this.data.color, this.el.object3D.position);
   },
 
   initCuttingClippingPlanes: function () {

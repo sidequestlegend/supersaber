@@ -1,13 +1,13 @@
-<a-entity id="pauseDialog" position="0 1.6 -2" bind__visible="pause.active">
+<a-entity id="pauseDialog" position="0 1.6 -2" bind__visible="isPaused">
     <a-entity position="0 0.35 0"
-      bind-toggle__raycastable="pause.active"
+      bind-toggle__raycastable="isPaused"
       animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #067197; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
       animation__mouseleave="property: components.slice9.material.color; type: color; from: #067197; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
       mixin="slice" slice9="width: 1; height: 0.27; padding: 0.04">
       <a-entity mixin="font" text="align: center; wrapCount: 17; value: CONTINUE; color: #AAA" position="0 -0.070 0.01"></a-entity>
     </a-entity>
     <a-entity
-      bind-toggle__raycastable="pause.active"
+      bind-toggle__raycastable="isPaused"
       animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #067197; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
       animation__mouseleave="property: components.slice9.material.color; type: color; from: #067197; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
       mixin="slice" slice9="width: 1; height: 0.27; padding: 0.04">
@@ -15,7 +15,7 @@
     </a-entity>
 
     <a-entity position="0 -0.35 0"
-      bind-toggle__raycastable="pause.active"
+      bind-toggle__raycastable="isPaused"
       animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #067197; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
       animation__mouseleave="property: components.slice9.material.color; type: color; from: #067197; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
       mixin="slice" slice9="width: 1; height: 0.27; padding: 0.04">
