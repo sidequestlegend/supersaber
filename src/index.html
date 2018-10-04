@@ -27,10 +27,10 @@
       stage-colors="blue"
       fog="color: #a00; density: 0.035; type: exponential" debug>
       <a-assets timeout="10000">
-        <a-asset-item id="arrow-obj" src="assets/models/arrow.obj"></a-asset-item>
+        <a-asset-item id="arrowObj" src="assets/models/arrow.obj"></a-asset-item>
         <a-asset-item id="backglow-obj" src="assets/models/backglow.obj"></a-asset-item>
-        <a-asset-item id="beat-obj" src="assets/models/beat.obj"></a-asset-item>
-        <a-asset-item id="dot-obj" src="assets/models/dot.obj"></a-asset-item>
+        <a-asset-item id="beatObj" src="assets/models/beat.obj"></a-asset-item>
+        <a-asset-item id="dotObj" src="assets/models/dot.obj"></a-asset-item>
         <a-asset-item id="logofront-obj" src="assets/models/logofront.obj"></a-asset-item>
         <a-asset-item id="logoback-obj" src="assets/models/logoback.obj"></a-asset-item>
         <a-asset-item id="logofront-u-obj" src="assets/models/logofront-u.obj"></a-asset-item>
@@ -74,6 +74,9 @@
           animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatwrong; easing: easeOutQuart; duration: 4000"></a-mixin>
       </a-assets>
 
+      <a-entity id="arrowObjTemplate" obj-model="obj: #arrowObj" visible="false"></a-entity>
+      <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
+      <a-entity id="dotObjTemplate" obj-model="obj: #dotObj" visible="false"></a-entity>
 
       <a-entity id="beatContainer"></a-entity>
 

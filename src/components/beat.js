@@ -1,3 +1,5 @@
+var SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
+
 /**
  * Create beat from pool, collision detection, clipping planes.
  */
@@ -21,14 +23,14 @@ AFRAME.registerComponent('beat', {
   },
 
   models: {
-    arrow: {obj: '#beat-obj'},
-    dot: {obj: '#beat-obj'},
-    mine: {obj: '#mine-obj'}
+    arrow: 'beatObjTemplate',
+    dot: 'beatObjTemplate',
+    mine: 'mineObjTemplate'
   },
 
   signModels: {
-    arrow: {obj: '#arrow-obj'},
-    dot: {obj: '#dot-obj'}
+    arrow: 'arrowObjTemplate',
+    dot: 'dotObjTemplate'
   },
 
   init: function () {
@@ -44,10 +46,10 @@ AFRAME.registerComponent('beat', {
     this.rightCutPlanePoints = [];
     this.leftCutPlanePoints = [];
 
-    this.wrongElLeft = document.querySelector('#wrongLeft');
-    this.wrongElRight = document.querySelector('#wrongRight');
-    this.missElLeft = document.querySelector('#missLeft');
-    this.missElRight = document.querySelector('#missRight');
+    this.wrongElLeft = document.getElementById('wrongLeft');
+    this.wrongElRight = document.getElementById('wrongRight');
+    this.missElLeft = document.getElementById('missLeft');
+    this.missElRight = document.getElementById('missRight');
 
     this.beams = document.getElementById('beams').components['beams'];
 
@@ -76,26 +78,24 @@ AFRAME.registerComponent('beat', {
     var blockEl = this.blockEl;
     var signEl = this.signEl;
 
-    blockEl.setAttribute('obj-model', this.models[this.data.type]);
     blockEl.setAttribute('material', {
       metalness: 0.6,
       roughness: 0.12,
       sphericalEnvMap: '#envmapTexture',
       color: this.materialColor[this.data.color]
     });
+    this.setObjModelFromTemplate(blockEl, this.models[this.data.type]);
 
     // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
     blockEl.object3D.scale.multiplyScalar(3.45).multiplyScalar(this.data.size);
 
     if (this.data.type === 'mine') {
-      blockEl.addEventListener('model-loaded', evt => {
-        var model = evt.detail.model.children[0];
-        model.material = this.el.sceneEl.components.stagecolors.mineMaterial;
-      });
+      let model = evt.detail.model.children[0];
+      model.material = this.el.sceneEl.components.stagecolors.mineMaterial;
     }
 
-    signEl.setAttribute('obj-model', this.signModels[this.data.type]);
-    signEl.setAttribute('material', {shader: 'flat', color: '#88f'});
+    signEl.setAttribute('material', SIGN_MATERIAL);
+    this.setObjModelFromTemplate(signEl, this.signModels[this.data.type]);
   },
 
   initColliders: function () {
@@ -156,7 +156,6 @@ AFRAME.registerComponent('beat', {
     var partLeftEl = this.partLeftEl;
     var partRightEl = this.partRightEl;
 
-    partLeftEl.setAttribute('obj-model', this.models.dot);
     partLeftEl.setAttribute('material', {
       metalness: 0.8,
       roughness: 0.12,
@@ -164,16 +163,16 @@ AFRAME.registerComponent('beat', {
       color: this.materialColor[this.data.color],
       side: 'double'
     });
+    this.setObjModelFromTemplate(partLeftEl, this.models.dot);
     partLeftEl.object3D.visible = false;
 
-    cutLeftEl.setAttribute('obj-model', this.models.dot);
     cutLeftEl.setAttribute('material', {
       shader: 'flat',
       color: this.data.cutColor,
       side: 'double'
     });
+    this.setObjModelFromTemplate(cutLeftEl, this.models.dot);
 
-    partRightEl.setAttribute('obj-model', this.models.dot);
     partRightEl.setAttribute('material', {
       metalness: 0.8,
       roughness: 0.12,
@@ -181,14 +180,15 @@ AFRAME.registerComponent('beat', {
       color: this.materialColor[this.data.color],
       side: 'double'
     });
+    this.setObjModelFromTemplate(partRightEl, this.models.dot);
     partRightEl.object3D.visible = false;
 
-    cutRightEl.setAttribute('obj-model', this.models.dot);
     cutRightEl.setAttribute('material', {
       shader: 'flat',
       color: this.data.cutColor,
       side: 'double'
     });
+    this.setObjModelFromTemplate(cutRightEl, this.models.dot);
   },
 
   wrongCut: function (hand) {
@@ -449,6 +449,28 @@ AFRAME.registerComponent('beat', {
       }
 
       this.returnToPool();
+    };
+  })(),
+
+  setObjModelFromTemplate: (function () {
+    const geometries = {};
+
+    return function (el, templateId) {
+      if (!geometries[templateId]) {
+        const templateEl = document.getElementById(templateId);
+        if (templateEl.getObject3D('mesh')) {
+          geometries[templateId] = templateEl.getObject3D('mesh').children[0].geometry;
+        } else {
+          templateEl.addEventListener('model-loaded', () => {
+            geometries[templateId] = templateEl.getObject3D('mesh').children[0].geometry;
+            this.setObjModelFromTemplate(el, templateId);
+          });
+          return;
+        }
+      }
+
+      if (!el.getObject3D('mesh')) { el.setObject3D('mesh', new THREE.Mesh()); }
+      el.getObject3D('mesh').geometry = geometries[templateId];
     };
   })()
 });
