@@ -28,7 +28,7 @@ AFRAME.registerComponent('search', {
   search: function (query) {
     // Use cached for popular hits.
     if (!query && this.popularHits) {
-      this.eventDetail.results = popularHits;
+      this.eventDetail.results = this.popularHits;
       this.el.sceneEl.emit('searchresults', this.eventDetail);
       return;
     }
