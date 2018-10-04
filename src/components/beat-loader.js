@@ -16,6 +16,17 @@ AFRAME.registerComponent('beat-loader', {
   horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
   verticalPositions: [1.00, 1.35, 1.70],
 
+  init: function () {
+    this.audioSync = undefined;
+    this.beatData = null;
+    this.beatContainer = document.getElementById('beatContainer');
+    this.bpm = undefined;
+    this.first = null;
+    this.lastTime = undefined;
+
+    this.el.addEventListener('pausemenurestart', this.restart.bind(this));
+  },
+
   update: function () {
     if (!this.data.challengeId || !this.data.difficulty) { return; }
     this.loadBeats();
@@ -51,6 +62,7 @@ AFRAME.registerComponent('beat-loader', {
     this.beatData = beatData;
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
+    this.bpm = this.beatData._beatsPerMinute;
     console.log('Finished loading challenge data.');
   },
 
@@ -59,6 +71,7 @@ AFRAME.registerComponent('beat-loader', {
    */
   tick: function (time, delta) {
     var audioEl = this.el.components.song.audio;
+    var bpm;
     var i;
     var notes;
     var obstacles;
@@ -70,7 +83,7 @@ AFRAME.registerComponent('beat-loader', {
 
     notes = this.beatData._notes;
     obstacles = this.beatData._obstacles;
-    this.bpm = this.beatData._beatsPerMinute;
+    bpm = this.beatData._beatsPerMinute;
     msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     for (i = 0; i < notes.length; ++i) {
       noteTime = notes[i]._time * msPerBeat;
@@ -161,22 +174,21 @@ AFRAME.registerComponent('beat-loader', {
   requestBeat: function (type, color) {
     var beatPoolName = 'pool__beat-' + type;
     var pool;
-    if (color) {beatPoolName += '-' + color; }
+    if (color) { beatPoolName += '-' + color; }
     pool = this.el.sceneEl.components[beatPoolName];
     if (!pool) {
-      console.warn('Poo ' + beatPoolName + ' unavailable');
+      console.warn('Pool ' + beatPoolName + ' unavailable');
       return;
     }
     return pool.requestEntity();
+  },
+
+  restart: function () {
+    this.audioSync = null;
+    this.first = null;
+    this.lastTime = 0;
+    for (let i = 0; i < this.beatContainer.children.length; i++) {
+      this.beatContainer.children[i].components.beat.returnToPool();
+    }
   }
 });
-
-function updateQueryParam(uri, key, value) {
-  var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
-  var separator = uri.indexOf('?') !== -1 ? '&' : '?';
-  if (uri.match(re)) {
-    return uri.replace(re, '$1' + key + '=' + value + '$2');
-  } else {
-    return uri + separator + key + '=' + value;
-  }
-}

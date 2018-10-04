@@ -45,10 +45,11 @@ AFRAME.registerState({
       songName: '',
       songSubName: ''
     },
+    multiplierText: '1x',
     score: {
       combo: 0,
       score: 0,
-      multiplier: 0
+      multiplier: 1
     },
     search: {
       active: true,
@@ -128,10 +129,12 @@ AFRAME.registerState({
     },
 
     pausemenurestart: (state) => {
+      resetScore(state);
       state.isPaused = false;
     },
 
     pausemenuexit: (state) => {
+      resetScore(state);
       state.isPaused = false;
       state.menu.active = true;
     },
@@ -141,10 +144,7 @@ AFRAME.registerState({
      * Transfer staged challenge to the active challenge.
      */
     playbuttonclick: (state) => {
-      // Reset score.
-      state.score.combo = 0;
-      state.score.score = 0;
-      state.score.multiplier = 0;
+      resetScore(state);
 
       // Set challenge. `beat-loader` is listening.
       Object.assign(state.challenge, state.menuSelectedChallenge);
@@ -201,6 +201,7 @@ AFRAME.registerState({
     state.isPlaying = !state.menu.active && !state.isPaused;
     state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
+    state.multiplierText = `${state.score.multiplier}x`;
   }
 });
 
@@ -232,4 +233,10 @@ function difficultyComparator (a, b) {
   if (aIndex < bIndex) { return -1; }
   if (aIndex > bIndex) { return 1; }
   return 0;
+}
+
+function resetScore (state) {
+  state.score.combo = 0;
+  state.score.score = 0;
+  state.score.multiplier = 1;
 }
