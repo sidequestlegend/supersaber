@@ -28,6 +28,7 @@ AFRAME.registerState({
     },
     inVR: false,
     isPaused: false,
+    showKeyboard: false,
     menu: {
       active: true,
       playButtonText: 'Play'
@@ -84,6 +85,10 @@ AFRAME.registerState({
       state.challenge.isLoading = true;
     },
 
+    closekeyboard: (state) => {
+      state.showKeyboard = false;
+    },
+
     /**
      * Song clicked from menu.
      */
@@ -107,6 +112,10 @@ AFRAME.registerState({
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
+    },
+
+    openkeyboard: (state) => {
+      state.showKeyboard = true;
     },
 
     pausegame: (state) => {

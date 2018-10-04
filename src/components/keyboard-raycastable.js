@@ -4,6 +4,6 @@ AFRAME.registerComponent('keyboard-raycastable', {
   play: function () {
     // TODO: bind-toggle__raycastable for when search is activated.
     this.el.components['super-keyboard'].kbImg.setAttribute('bind-toggle__raycastable',
-                                                            'menu.active');
+                                                            'showKeyboard');
   },
 });
