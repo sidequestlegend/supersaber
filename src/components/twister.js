@@ -1,5 +1,6 @@
 AFRAME.registerComponent('twister', {
   schema: {
+    enabled: {default: false},
     twist: {default: 0},
     vertices: {default: 4, type: 'int'},
     count: {default: 20, type: 'int'},
@@ -11,6 +12,12 @@ AFRAME.registerComponent('twister', {
   init: function () {
     this.currentTwist = 0;
     this.animate = false;
+    this.el.addEventListener('audioanalyser-beat', this.pulse.bind(this));
+  },
+
+  pulse: function () {
+    if (!this.data.enabled) { return; }
+    this.el.setAttribute('twister', {twist: Math.random() * 0.5 - 0.25});
   },
 
   update: function (oldData) {
@@ -20,6 +27,7 @@ AFRAME.registerComponent('twister', {
 
     if (Math.abs(this.data.twist - this.currentTwist) > 0.001){
       this.animate = true;
+      return;
     }
 
     this.clearSegments();

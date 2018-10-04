@@ -3,12 +3,12 @@
 <a-entity
   id="audioAnalyser"
   audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
-  proxy-event="event: audioanalyser-beat; to: #logolight, #floor"></a-entity>
+  proxy-event="event: audioanalyser-beat; to: #logolight, #floor, #twister"></a-entity>
 
 <a-entity id="stage">
   <a-entity id="backglow" obj-model="obj: #backglowObj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
 
-  <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0"></a-entity>
+  <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
 
   <a-entity
     id="audioColumns"
