@@ -51,6 +51,8 @@
 
   <a-entity id="beams" beams></a-entity>
 
+  <a-entity mixin="textFont" text="value: READY, STEADY...; align: center; color: #aaf; wrapCount: 18; width: 2" position="0 1.5 -2.5" bind__visible="challenge.isLoading"></a-entity>
+
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
   <a-entity id="logolight"
