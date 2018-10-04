@@ -16,8 +16,10 @@
   <a-entity
     id="resumeButton"
     mixin="dialogButton"
+    bind-toggle__raycastable="isPaused && !isGameOver"
     position="0 0.35 0"
-    proxy-event="event: click; to: a-scene; as: pausemenuresume">
+    proxy-event="event: click; to: a-scene; as: pausemenuresume"
+    bind__visible="!isGameOver">
     <a-entity mixin="dialogButtonText" text="value: RESUME" position="0 -0.070 0.01"></a-entity>
   </a-entity>
 
