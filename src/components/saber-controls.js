@@ -1,7 +1,8 @@
 AFRAME.registerComponent('saber-controls', {
   schema: {
     bladeEnabled: {default: false},
-    hand: {default: 'right', oneOf: ['left', 'right']}
+    hand: {default: 'right', oneOf: ['left', 'right']},
+    isPaused: {default: false}
   },
 
   init: function () {
@@ -24,6 +25,9 @@ AFRAME.registerComponent('saber-controls', {
   update: function (oldData) {
     if (!oldData.bladeEnabled  && this.data.bladeEnabled) {
       this.bladeEl.emit('drawblade');
+      if (!oldData.isPaused) {
+        this.bladeEl.emit('drawbladesound');
+      }
     }
   },
 

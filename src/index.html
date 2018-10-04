@@ -9,7 +9,7 @@
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
     <a-scene
-      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: isPaused"
+      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: !isPlaying"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind__overlay="enabled: !isPlaying"
@@ -79,7 +79,7 @@
       <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
       <a-entity id="dotObjTemplate" obj-model="obj: #dotObj" visible="false"></a-entity>
 
-      <a-entity id="beatContainer" bind__pause="isPaused: isPaused" beat-pauser></a-entity>
+      <a-entity id="beatContainer" bind__pause="isPaused: !isPlaying"></a-entity>
 
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
@@ -116,7 +116,7 @@
             bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
             bind__pauser="enabled: isPlaying"
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
-            bind__saber-controls="bladeEnabled: isPlaying"
+            bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             saber-controls="hand: {{ hand }}"
@@ -140,7 +140,7 @@
                   class="blade"
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: {{ bladeColor }}"
-                  play-sound="event: drawblade; sound: #saberDraw"
+                  play-sound="event: drawbladesound; sound: #saberDraw"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity

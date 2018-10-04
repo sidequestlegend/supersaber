@@ -12,10 +12,17 @@ AFRAME.registerComponent('song', {
 
   init: function () {
     // Use audio element for audioanalyser.
-    this.audio = document.createElement('audio');
-    this.audio.setAttribute('id', 'song');
-    this.audio.crossOrigin = 'anonymous';
-    this.el.sceneEl.appendChild(this.audio);
+    const audio = this.audio = document.createElement('audio');
+    audio.setAttribute('id', 'song');
+    audio.crossOrigin = 'anonymous';
+    this.el.sceneEl.appendChild(audio);
+
+    this.el.addEventListener('pausemenurestart', () => {
+      if (audio.paused) {
+        audio.currentTime = 0;
+        audio.play();
+      }
+    });
   },
 
   update: function (oldData) {

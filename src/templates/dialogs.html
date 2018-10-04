@@ -13,15 +13,26 @@
   text="align: center; wrapCount: 17; color: #AAA"></a-mixin>
 
 <a-entity id="pauseDialog" position="0 1.6 -2" bind__visible="isPaused">
-  <a-entity id="continueButton" mixin="dialogButton" position="0 0.35 0">
-    <a-entity mixin="dialogButtonText" text="value: CONTINUE" position="0 -0.070 0.01"></a-entity>
+  <a-entity
+    id="resumeButton"
+    mixin="dialogButton"
+    position="0 0.35 0"
+    proxy-event="event: click; to: a-scene; as: pausemenuresume">
+    <a-entity mixin="dialogButtonText" text="value: RESUME" position="0 -0.070 0.01"></a-entity>
   </a-entity>
 
-  <a-entity id="restartButton" mixin="dialogButton">
+  <a-entity
+    id="restartButton"
+    mixin="dialogButton"
+    proxy-event="event: click; to: a-scene; as: pausemenurestart">
     <a-entity mixin="dialogButtonText" text="value: RESTART SONG"></a-entity>
   </a-entity>
 
-  <a-entity id="exitButton" mixin="dialogButton" position="0 -0.35 0">
+  <a-entity
+    id="exitButton"
+    mixin="dialogButton"
+    position="0 -0.35 0"
+    proxy-event="event: click; to: a-scene; as: pausemenuexit">
     <a-entity mixin="dialogButtonText" text="value: EXIT TO MENU" position="0 -0.070 0.01"></a-entity>
   </a-entity>
 </a-entity>

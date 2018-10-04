@@ -123,6 +123,19 @@ AFRAME.registerState({
       state.isPaused = true;
     },
 
+    pausemenuresume: (state) => {
+      state.isPaused = false;
+    },
+
+    pausemenurestart: (state) => {
+      state.isPaused = false;
+    },
+
+    pausemenuexit: (state) => {
+      state.isPaused = false;
+      state.menu.active = true;
+    },
+
     /**
      * Start challenge.
      * Transfer staged challenge to the active challenge.
@@ -186,10 +199,8 @@ AFRAME.registerState({
    */
   computeState: (state) => {
     state.isPlaying = !state.menu.active && !state.isPaused;
-    state.leftRaycasterActive = state.menu.active && state.activeHand === 'left' &&
-                                state.inVR;
-    state.rightRaycasterActive = state.menu.active && state.activeHand === 'right' &&
-                                 state.inVR;
+    state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
+    state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
   }
 });
 
