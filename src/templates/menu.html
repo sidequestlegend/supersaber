@@ -197,14 +197,14 @@
   bind-toggle__raycastable="menu.active && !keyboardActive"
   bind__visible="menu.active && !keyboardActive"
   proxy-event="event: click; to: a-scene; as: keyboardopen">
-  <a-entity mixin="textFont" text="align: center; color: #AAA; wrapCount: 20; value:SEARCH SONG" position="0 -0.07 0.01"></a-entity>
+  <a-entity mixin="textFont" text="align: center; color: #AAA; wrapCount: 20; value: SEARCH SONGS" position="0 -0.07 0.01"></a-entity>
 </a-entity>
 
 
 <a-entity
   id="keyboard"
   bind__super-keyboard="show: keyboardActive"
-  super-keyboard="label: Search song name or author:; width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false"
+  super-keyboard="label: Search from over 2500 songs!; width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false"
   position="0 0.8 -1"
   rotation="-40 0 0"
   keyboard-raycastable
