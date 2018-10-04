@@ -6,7 +6,7 @@
   proxy-event="event: audioanalyser-beat; to: #logolight, #floor"></a-entity>
 
 <a-entity id="stage">
-  <a-entity id="backglow" obj-model="obj: #backglow-obj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
+  <a-entity id="backglow" obj-model="obj: #backglowObj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
 
   <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0"></a-entity>
 
@@ -60,9 +60,9 @@
 
   <a-entity id="logosparks" bind__visible="menu.active" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 600; on: logoflicker" position="-2.8 5.5 -7.2"></a-entity>
   <a-entity id="logo" bind__visible="menu.active" position="0 6 -7.5" rotation="90 0 0">
-    <a-entity obj-model="obj: #logoback-obj" material="color: #001B29"></a-entity>
-    <a-entity obj-model="obj: #logofront-obj"  material="color: #e81e23"></a-entity>
-    <a-entity obj-model="obj: #logofront-u-obj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menu.active"></a-entity>
+    <a-entity obj-model="obj: #logobackObj" material="color: #001b29"></a-entity>
+    <a-entity obj-model="obj: #logofrontObj"  material="color: #e81e23"></a-entity>
+    <a-entity obj-model="obj: #logofrontUObj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menu.active"></a-entity>
   </a-entity>
 
   <a-entity
