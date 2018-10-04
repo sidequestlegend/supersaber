@@ -9,15 +9,15 @@
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
     <a-scene
-      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty"
-      bind__song="challengeId: challenge.id; isPlaying: !menu.active && !challenge.isLoading"
+      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: isPaused"
+      bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
-      bind__overlay="enabled: menu.active"
+      bind__overlay="enabled: !isPlaying"
       console-shortcuts
       debug-controller
       effect-bloom="strength: 1"
       intro-song
-      overlay="objects: #menu, #keyboard, #rightHand, #leftHand, [mixin~='cursorMesh']"
+      overlay="objects: #menu, #keyboard, #rightHand, #leftHand, [mixin~='cursorMesh'], #pauseDialog"
       pool__beat-arrow-blue="mixin: beat arrow-blue-beat; size: 5; container: #beatContainer"
       pool__beat-arrow-red="mixin: beat arrow-red-beat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: beat dot-blue-beat; size: 10; container: #beatContainer"
@@ -79,7 +79,7 @@
       <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
       <a-entity id="dotObjTemplate" obj-model="obj: #dotObj" visible="false"></a-entity>
 
-      <a-entity id="beatContainer"></a-entity>
+      <a-entity id="beatContainer" bind__pause="isPaused: isPaused" beat-pauser></a-entity>
 
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
@@ -114,10 +114,10 @@
             mixin="raycaster"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
-            bind__pauser="enabled: !menu.active"
+            bind__pauser="enabled: isPlaying"
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
-            bind__saber-controls="bladeEnabled: !menu.active"
-            bind__trail="enabled: !menu.active"
+            bind__saber-controls="bladeEnabled: isPlaying"
+            bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             saber-controls="hand: {{ hand }}"
             thumb-controls
@@ -133,7 +133,7 @@
             <a-entity class="saberContainer" rotation="90 0 0">
               <a-entity
                 class="bladeContainer"
-                bind__visible="!menu.active"
+                bind__visible="isPlaying"
                 animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
                 scale="0.001 0.001 0.001">
                 <a-entity
@@ -160,7 +160,7 @@
               </a-entity>
             </a-entity>
 
-            <a-entity class="fakeGlow" rotation="90 0 0" position="0 0.01 0" bind__visible="menu.active">
+            <a-entity class="fakeGlow" rotation="90 0 0" position="0 0.01 0" bind__visible="!isPlaying">
               <a-entity geometry="primitive: cylinder; height: 0.1831; radius: 0.0055" material="color: {{ beamColor }}; shader: flat; opacity: 0.11"></a-entity>
               <a-entity geometry="primitive: cylinder; height: 0.1832; radius: 0.0065" material="color: {{ beamColor }}; shader: flat; opacity: 0.09"></a-entity>
               <a-entity geometry="primitive: cylinder; height: 0.1833; radius: 0.0075" material="color: {{ beamColor }}; shader: flat; opacity: 0.06"></a-entity>

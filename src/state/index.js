@@ -27,8 +27,8 @@ AFRAME.registerState({
       songSubName: ''
     },
     inVR: false,
-    isPaused: false,
-    showKeyboard: false,
+    isPaused: false,  // Playing, but paused. Not active during menu.
+    isPlaying: false,  // Not in the menu AND not paused.
     menu: {
       active: true,
       playButtonText: 'Play'
@@ -56,7 +56,8 @@ AFRAME.registerState({
       hasPrev: false,
       results: [],
     },
-    searchResultsPage: []
+    searchResultsPage: [],
+    showKeyboard: false
   },
 
   handlers: {
@@ -184,6 +185,7 @@ AFRAME.registerState({
    * Post-process the state after each action.
    */
   computeState: (state) => {
+    state.isPlaying = !state.menu.active && !state.isPaused;
     state.leftRaycasterActive = state.menu.active && state.activeHand === 'left' &&
                                 state.inVR;
     state.rightRaycasterActive = state.menu.active && state.activeHand === 'right' &&

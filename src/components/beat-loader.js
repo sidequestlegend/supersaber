@@ -8,7 +8,8 @@ AFRAME.registerComponent('beat-loader', {
     beatAnticipationTime: {default: 2.0},
     beatSpeed: {default: 4.0},
     challengeId: {type: 'string'},
-    difficulty: {type: 'string'}
+    difficulty: {type: 'string'},
+    isPaused: {default: false}
   },
 
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
@@ -53,6 +54,9 @@ AFRAME.registerComponent('beat-loader', {
     console.log('Finished loading challenge data.');
   },
 
+  /**
+   * Generate beats and stuff according to timestamp.
+   */
   tick: function (time, delta) {
     var audioEl = this.el.components.song.audio;
     var i;
@@ -62,7 +66,7 @@ AFRAME.registerComponent('beat-loader', {
     var msPerBeat;
     var noteTime;
 
-    if (!this.data.challengeId || !this.beatData || !audioEl) { return; }
+    if (this.data.isPaused || !this.data.challengeId || !this.beatData || !audioEl) { return; }
 
     notes = this.beatData._notes;
     obstacles = this.beatData._obstacles;

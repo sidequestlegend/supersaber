@@ -30,7 +30,7 @@ AFRAME.registerComponent('song', {
     }
 
     // Keep playback state up to date.
-    if ((data.isPlaying && data.challengeId) && this.audio.paused) {
+    if (data.isPlaying && data.challengeId && this.audio.paused) {
       console.log(`Playing ${this.audio.src}...`);
       this.data.analyserEl.setAttribute('audioanalyser', 'src', audio);
       audio.play();
