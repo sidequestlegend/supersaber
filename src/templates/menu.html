@@ -93,40 +93,32 @@
 
 <!-- Menu container begins here. -->
 <a-entity id="menu" bind__visible="menu.active" position="0 1.6 -2">
-  <a-entity id="menuBackground"
+  <a-entity id="menuchallengeunselectground"
       mixin="slice"
       slice9="width: 2.5; height: 1.4"
       position="0 0 -0.005"
       raycastable></a-entity>
 
   <a-entity id="searchResultsContainer" position="0 0 0.001"
-    animation__toleft="property: object3D.position.x;  to: -0.59; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
-    animation__toright="property: object3D.position.x; to: 0; dur: 200; easing: easeOutCubic; startEvents: menuback"
-    proxy-event__divisor1="event: menuchallengeselect; to: #divisorA, #divisorB"
-    proxy-event__divisor2="event: menuback; to: #divisorA, #divisorB">
+    class="menuAnimation"
+    animation__menuleft="property: object3D.position.x;  to: -0.59; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
+    animation__menuright="property: object3D.position.x; to: 0; dur: 200; easing: easeOutCubic; startEvents: menuchallengeunselect">
 
     <a-entity id="divisorA"
+      class="menuAnimation"
       position="0.566 0 -0.0025"
       geometry="primitive:plane; height:1.17; width:0.005"
-      material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
-      animation__fadein ="property: components.material.material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
-      animation__fadeout="property: components.material.material.opacity; to: 0.0; startEvents: menuback; dur: 200"></a-entity>
+      material="shader: flat; color: #fff; transparent: true; opacity: 0"></a-entity>
 
     {{ searchResults() }}
   </a-entity>
 
-  <a-entity id="menuDifficultiesGroup"
-    position="0.35 0.18 0"
-    animation__toleft="property: object3D.position.x; to: 0.195; dur: 200; easing: easeOutCubic; startEvents: menuchallengeselect"
-    animation__toright="property: object3D.position.x; to: 0.35; dur: 200; easing: easeOutCubic; startEvents: menuback">
-
+  <a-entity id="menuDifficultiesGroup" position="0.195 0.18 0">
     <a-entity id="divisorB"
+      class="menuAnimation"
       position="0.218 -0.179 -0.003"
       geometry="primitive: plane; height: 1.17; width: 0.005"
-      material="shader: flat; color: #fff; transparent: true; opacity: 0.0"
-      animation__fadein="property: components.material.opacity; to: 1.0; startEvents: menuchallengeselect; dur: 200"
-      animation__fadeout="property: components.material.opacity; to: 0.0; startEvents: menuback; dur: 200"
-      ></a-entity>
+      material="shader: flat; color: #fff; transparent: true; opacity: 0.0"></a-entity>
 
     <!-- Top-aligned. TODO: Smart-centering. -->
     <!-- Uses bind-for and bind-item to render difficulties. -->

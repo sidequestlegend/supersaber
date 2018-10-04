@@ -9,6 +9,7 @@ AFRAME.registerComponent('song-preview-system', {
   },
 
   init: function () {
+    this.analyserEl = document.getElementById('audioAnalyser');
     this.audio = null;
     this.audioStore = {};
     this.preloadedAudioIds = [];
@@ -162,8 +163,7 @@ AFRAME.registerComponent('song-preview-system', {
   },
 
   updateAnalyser: function () {
-    document.getElementById('audioAnalyser').setAttribute('audioanalyser', 'src', this.audio);
-    document.getElementById('introSong').pause();
+    this.analyserEl.setAttribute('audioanalyser', 'src', this.audio);
   },
 
   /**

@@ -10,19 +10,20 @@
 
     <a-scene
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: !isPlaying"
+      bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind__overlay="enabled: !isPlaying"
       console-shortcuts
       debug-controller
       effect-bloom="strength: 1"
-      intro-song
       overlay="objects: #menu, #keyboard, #rightHand, #leftHand, [mixin~='cursorMesh'], #pauseDialog"
       pool__beat-arrow-blue="mixin: beat arrow-blue-beat; size: 5; container: #beatContainer"
       pool__beat-arrow-red="mixin: beat arrow-red-beat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: beat dot-blue-beat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: beat dot-red-beat; size: 10; container: #beatContainer"
-      proxy-event="event: menuchallengeselect; to: #searchResultsContainer, #menuDifficultiesGroup"
+      proxy-event__menuleft="event: menuchallengeunselect; to: .menuAnimation"
+      proxy-event__menuright="event: menuchallengeselect; to: .menuAnimation"
       search
       stage-colors="blue"
       fog="color: #a00; density: 0.035; type: exponential">

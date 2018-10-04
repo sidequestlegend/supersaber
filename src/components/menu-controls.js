@@ -111,7 +111,9 @@ AFRAME.registerComponent('menu-controls', {
 
   unselect: function () {
     if (!this.data.enabled) { return; }
-    this.el.sceneEl.emit('menuunselect', null, false);
+    if (this.data.selectedChallengeId) {
+      this.el.sceneEl.emit('menuchallengeunselect', null, false);
+    }
   },
 
   hoverResult: function (i) {

@@ -131,6 +131,10 @@ AFRAME.registerState({
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
     },
 
+    menuchallengeunselect: () => {
+      state.menuSelectedChallenge.id = '';
+    },
+
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
     },
