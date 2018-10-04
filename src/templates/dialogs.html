@@ -9,8 +9,10 @@
 <a-mixin
   id="dialogButtonText"
   mixin="font"
-  position="0 -0.070 0.01"
+  position="0 -0.07 0.01"
   text="align: center; wrapCount: 17; color: #AAA"></a-mixin>
+
+<a-entity mixin="dialogButtonText" text="value: GAME OVER; color: #ff7171; width: 4" bind__visible="isGameOver" position="0 1.8 -2.3"></a-entity>
 
 <a-entity id="pauseDialog" position="0 1.6 -2" bind__visible="isPaused">
   <a-entity
@@ -20,7 +22,7 @@
     position="0 0.35 0"
     proxy-event="event: click; to: a-scene; as: pausemenuresume"
     bind__visible="!isGameOver">
-    <a-entity mixin="dialogButtonText" text="value: RESUME" position="0 -0.070 0.01"></a-entity>
+    <a-entity mixin="dialogButtonText" text="value: RESUME"></a-entity>
   </a-entity>
 
   <a-entity
@@ -35,6 +37,6 @@
     mixin="dialogButton"
     position="0 -0.35 0"
     proxy-event="event: click; to: a-scene; as: pausemenuexit">
-    <a-entity mixin="dialogButtonText" text="value: EXIT TO MENU" position="0 -0.070 0.01"></a-entity>
+    <a-entity mixin="dialogButtonText" text="value: EXIT TO MENU"></a-entity>
   </a-entity>
 </a-entity>
