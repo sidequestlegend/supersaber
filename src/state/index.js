@@ -4,6 +4,9 @@ const challengeDataStore = {};
 const hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 const SEARCH_PER_PAGE = 6;
 
+const DAMAGE_DECAY = 0.25;
+const DAMAGE_MAX = 10;
+
 /**
  * State handler.
  *
@@ -26,7 +29,9 @@ AFRAME.registerState({
       songName: '',
       songSubName: ''
     },
+    damage: 0,
     inVR: false,
+    isGameOver: false,
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Not in the menu AND not paused.
     keyboardActive: false,
@@ -71,12 +76,22 @@ AFRAME.registerState({
     },
 
     beathit: state => {
+      if (state.damage > DAMAGE_DECAY) {
+        state.damage -= DAMAGE_DECAY;
+      }
       state.score.score += 1;
       state.score.combo += 1;
     },
 
+    /**
+     * Not implemented.
+     */
+    beatmiss: state => {
+      takeDamage(state);
+    },
+
     beatwrong: state => {
-      state.score.combo = 0;
+      takeDamage(state);
     },
 
     beatloaderfinish: (state) => {
@@ -130,11 +145,13 @@ AFRAME.registerState({
 
     pausemenurestart: (state) => {
       resetScore(state);
+      state.isGameOver = false;
       state.isPaused = false;
     },
 
     pausemenuexit: (state) => {
       resetScore(state);
+      state.isGameOver = false;
       state.isPaused = false;
       state.menu.active = true;
     },
@@ -235,7 +252,22 @@ function difficultyComparator (a, b) {
   return 0;
 }
 
+function takeDamage (state) {
+  state.damage++;
+  state.score.combo = 0;
+  checkGameOver(state);
+}
+
+function checkGameOver (state) {
+  if (state.damage >= DAMAGE_MAX) {
+    state.damage = 0;
+    state.isGameOver = true;
+    state.isPaused = true;
+  }
+}
+
 function resetScore (state) {
+  state.damage = 0;
   state.score.combo = 0;
   state.score.score = 0;
   state.score.multiplier = 1;
