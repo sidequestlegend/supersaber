@@ -1,3 +1,4 @@
+const ANIME = AFRAME.ANIME || AFRAME.anime;
 var utils = require('../utils');
 
 /**
@@ -17,7 +18,7 @@ AFRAME.registerComponent('song-preview-system', {
 
     // anime.js animation to fade in volume.
     this.volumeTarget = {volume: 0};
-    this.animation = AFRAME.anime({
+    this.animation = ANIME({
       targets: this.volumeTarget,
       delay: 250,
       duration: 1500,

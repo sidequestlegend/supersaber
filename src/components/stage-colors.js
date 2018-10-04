@@ -13,8 +13,8 @@ AFRAME.registerComponent('stage-colors', {
       red:  new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg'),
       blue: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg')
     };
-    this.mineColor = { red: new THREE.Color(0x070304), blue: new THREE.Color(0x030407) };
-    this.mineEmission = { red: new THREE.Color(0x090707), blue: new THREE.Color(0x070709) };
+    this.mineColor = {red: new THREE.Color(0x070304), blue: new THREE.Color(0x030407)};
+    this.mineEmission = {red: new THREE.Color(0x090707), blue: new THREE.Color(0x070709)};
     this.mineMaterial = new THREE.MeshStandardMaterial({
       roughness: 0.38,
       metalness: 0.48,
@@ -25,10 +25,11 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   update: function () {
-    var red = (this.data == 'red');
-    document.getElementById('backglow').setAttribute('material', {color: red ? '#f10' : '#00acfc'});
-    document.getElementById('sky').setAttribute('material', {color: red ? '#770100': '#15252d'});
-    this.el.sceneEl.setAttribute('fog', {color: red ? '#a00' : '#007cb9'});
+    const red = this.data === 'red';
+    document.getElementById('backglow').setAttribute('material', 'color', red ? '#f10' : '#00acfc');
+    document.getElementById('sky').setAttribute('material', 'color', red ? '#f10' : '#00acfc');
+    this.el.setAttribute('background', 'color', red ? '#770100': '#15252d');
+    this.el.sceneEl.setAttribute('fog', 'color', red ? '#a00' : '#007cb9');
     this.el.sceneEl.systems.materials.neon.color = red ? this.neonRed : this.neonBlue;
     this.el.sceneEl.systems.materials.default.color = red ? this.defaultRed : this.defaultBlue;
     this.mineMaterial.color = this.mineColor[this.data];

@@ -1,4 +1,6 @@
-<a-sky id="sky" src="#skyTexture" material="fog: false"></a-sky>
+<a-mixin id="stageLaser" geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
+
+<a-sky id="sky" geometry="segmentsHeight: 16; segmentsWidth: 32" material="fog: false; src: #skyTexture"></a-sky>
 
 <a-entity
   id="audioAnalyser"

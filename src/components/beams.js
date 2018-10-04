@@ -1,3 +1,5 @@
+const ANIME = AFRAME.ANIME || AFRAME.anime;
+
 AFRAME.registerComponent('beams', {
   schema: {
     poolSize: {default: 3}
@@ -29,7 +31,7 @@ AFRAME.registerComponent('beams', {
       for (var i = 0; i < this.data.poolSize; i++) {
         beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
         beam.visible = false;
-        beam.anim = AFRAME.anime({
+        beam.anim = ANIME({
           targets: beam.scale,
           x: 0.00001,
           autoplay: false,
