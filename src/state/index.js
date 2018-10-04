@@ -110,7 +110,7 @@ AFRAME.registerState({
     },
 
     pausegame: (state) => {
-      state.menu.active = true;
+      state.isPaused = true;
     },
 
     /**
