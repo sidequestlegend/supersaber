@@ -29,6 +29,7 @@ AFRAME.registerState({
     inVR: false,
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Not in the menu AND not paused.
+    keyboardActive: false,
     menu: {
       active: true,
       playButtonText: 'Play'
@@ -56,8 +57,7 @@ AFRAME.registerState({
       hasPrev: false,
       results: [],
     },
-    searchResultsPage: [],
-    showKeyboard: false
+    searchResultsPage: []
   },
 
   handlers: {
@@ -86,8 +86,12 @@ AFRAME.registerState({
       state.challenge.isLoading = true;
     },
 
-    closekeyboard: (state) => {
-      state.showKeyboard = false;
+    keyboardclose: (state) => {
+      state.keyboardActive = false;
+    },
+
+    keyboardopen: (state) => {
+      state.keyboardActive = true;
     },
 
     /**
@@ -113,10 +117,6 @@ AFRAME.registerState({
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
-    },
-
-    openkeyboard: (state) => {
-      state.showKeyboard = true;
     },
 
     pausegame: (state) => {
