@@ -1,6 +1,6 @@
 AFRAME.registerComponent('beams', {
   schema: {
-    poolSize: {default: 4}
+    poolSize: {default: 3}
   },
   init: function () {
     var redMaterial;
@@ -29,6 +29,15 @@ AFRAME.registerComponent('beams', {
       for (var i = 0; i < this.data.poolSize; i++) {
         beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
         beam.visible = false;
+        beam.anim = AFRAME.anime({
+          targets: beam.scale,
+          x: 0,
+          autoplay: false,
+          duration: 300,
+          easing: 'easeInCubic',
+          complete: (anim) => { beam.visible = false; }
+        });
+
         this.el.object3D.add(beam);
         this[j === 0 ? 'redBeams' : 'blueBeams'].push(beam);
       }
@@ -49,14 +58,7 @@ AFRAME.registerComponent('beams', {
 
     beam.visible = true;
     beam.scale.x = 1;
-
-    AFRAME.anime({
-      targets: beam.scale,
-      x: 0,
-      duration: 300,
-      easing: 'easeInCubic',
-      complete: (anim) => { beam.visible = false; }
-    });
+    beam.anim.restart();
   }
 
 });
