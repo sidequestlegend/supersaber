@@ -198,7 +198,7 @@ AFRAME.registerComponent('beat', {
     wrongEl.object3D.position.y += 0.2;
     wrongEl.object3D.position.z -= 0.5;
     wrongEl.object3D.visible = true;
-    wrongEl.emit('beatwrong');
+    wrongEl.emit('beatwrong', null, false);
     this.destroyed = true;
   },
 
