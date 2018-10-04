@@ -31,7 +31,7 @@ AFRAME.registerComponent('beams', {
         beam.visible = false;
         beam.anim = AFRAME.anime({
           targets: beam.scale,
-          x: 0,
+          x: 0.00001,
           autoplay: false,
           duration: 300,
           easing: 'easeInCubic',
