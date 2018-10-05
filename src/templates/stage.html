@@ -8,7 +8,7 @@
   proxy-event="event: audioanalyser-beat; to: #logolight, #floor, #twister"></a-entity>
 
 <a-entity id="stage">
-  <a-entity id="backglow" obj-model="obj: #backglowObj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src:#backglowTexture; opacity: 0.8"></a-entity>
+  <a-entity id="backglow" obj-model="obj: #backglowObj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src: #backglowTexture; opacity: 0.8"></a-entity>
 
   <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
 
@@ -17,8 +17,8 @@
     audio-columns="analyser: #audioAnalyser; height: 28; mirror: 10; scale: 10; thickness: 0.4; separation: 0.45"
     position="0 -17 1"></a-entity>
 
-  <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101"></a-mixin>
-  <a-entity id="stageCorridor" buffer-geometry-merger material="shader: flat; vertexColors: vertex">
+  <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101" visible="false"></a-mixin>
+  <a-entity id="stageCorridor" buffer-geometry-merger material="shader: flat; flatShading: true; vertexColors: vertex">
     <!-- Corridor. -->
     <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85"></a-entity>
     <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="1.9 -9.97 -7"></a-entity>
@@ -30,12 +30,14 @@
     <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
   </a-entity>
 
-  <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="3.5 0.65 -32" materials="neon"></a-entity>
-  <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="-3.5 0.65 -32" materials="neon"></a-entity>
-
-  <!-- Neons on sides. -->
-  <a-entity geometry="height: 0.05; depth: 100; width: 0.05" position="4.5 0.65 -32" materials="neon"></a-entity>
-  <a-entity geometry="height: 0.05; depth: 100; width: 0.05" position="-4.5 0.65 -32" materials="neon"></a-entity>
+  <a-mixin id="neon" geometry="skipCache: true" vertex-colors-buffer="baseColor: #9999ff" visible="false"></a-mixin>
+  <a-entity id="stageNeon" buffer-geometry-merger material="shader: flat; fog: false; vertexColors: vertex">
+    <a-entity mixin="neon" geometry="height: 0.05; depth: 50; width: 0.05" position="3.5 0.65 -32"></a-entity>
+    <a-entity mixin="neon" geometry="height: 0.05; depth: 50; width: 0.05" position="-3.5 0.65 -32"></a-entity>
+    <!-- Neons on sides. -->
+    <a-entity mixin="neon" geometry="height: 0.05; depth: 100; width: 0.05" position="4.5 0.65 -32"></a-entity>
+    <a-entity mixin="neon" geometry="height: 0.05; depth: 100; width: 0.05" position="-4.5 0.65 -32"></a-entity>
+  </a-entity>
 
   <!-- Lasers left. -->
   <a-entity class="stageLaser" mixin="stageLaser" position=" -6 2.3 -40"></a-entity>
