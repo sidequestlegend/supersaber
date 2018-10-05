@@ -17,18 +17,18 @@
     audio-columns="analyser: #audioAnalyser; height: 28; mirror: 10; scale: 10; thickness: 0.4; separation: 0.45"
     position="0 -17 1"></a-entity>
 
-  <!-- Corridor. -->
-  <a-entity geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85" materials="black"></a-entity>
-
-  <a-entity geometry="height:20; depth:0.3; width:0.3" materials="black" position="1.9 -9.97 -7"></a-entity>
-  <a-entity geometry="height:20; depth:0.3; width:0.3" materials="black" position="-1.9 -9.97 -7"></a-entity>
-
-  <a-entity geometry="height: 0.3; depth: 50; width: 0.3" position="1.9 -1 -31.85" materials="black"></a-entity>
-  <a-entity geometry="height: 0.3; depth: 50; width: 0.3" position="-1.9 -1 -31.85" materials="black"></a-entity>
-
-  <!-- Corridor handrail. -->
-  <a-entity geometry="height:21.5; depth:0.2; width:0.2" materials="black" position="3.5 -10 -7"></a-entity>
-  <a-entity geometry="height:21.5; depth:0.2; width:0.2" materials="black" position="-3.5 -10 -7"></a-entity>
+  <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101"></a-mixin>
+  <a-entity id="stageCorridor" buffer-geometry-merger material="shader: flat; vertexColors: vertex">
+    <!-- Corridor. -->
+    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85"></a-entity>
+    <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="1.9 -9.97 -7"></a-entity>
+    <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="-1.9 -9.97 -7"></a-entity>
+    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="1.9 -1 -31.85"></a-entity>
+    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="-1.9 -1 -31.85"></a-entity>
+    <!-- Corridor handrail. -->
+    <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="3.5 -10 -7"></a-entity>
+    <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
+  </a-entity>
 
   <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="3.5 0.65 -32" materials="neon"></a-entity>
   <a-entity geometry="height: 0.05; depth: 50; width: 0.05" position="-3.5 0.65 -32" materials="neon"></a-entity>

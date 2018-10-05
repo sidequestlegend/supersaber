@@ -6,6 +6,7 @@ require('aframe-animation-component');
 require('aframe-audioanalyser-component');
 require('aframe-cubemap-component');
 require('aframe-event-set-component');
+require('aframe-geometry-merger-component');
 require('aframe-haptics-component');
 require('aframe-layout-component');
 require('aframe-orbit-controls');

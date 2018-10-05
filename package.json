@@ -12,6 +12,7 @@
     "aframe-cubemap-component": "^0.1.2",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",
+    "aframe-geometry-merger-component": "^2.0.0-beta1",
     "aframe-gltf-part-component": "1.1.0",
     "aframe-haptics-component": "^1.4.2",
     "aframe-layout-component": "^5.2.0",

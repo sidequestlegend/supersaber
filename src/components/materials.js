@@ -11,6 +11,7 @@ AFRAME.registerComponent('materials', {
     default: 'black',
     oneOf: ['black', 'default', 'neon']
   },
+
   update: function () {
     this.el.object3D.traverse(o => o.material = this.system[this.data]);
   }
