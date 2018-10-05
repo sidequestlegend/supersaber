@@ -1,5 +1,7 @@
 var SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
+var auxObj3D = new THREE.Object3D();
+
 /**
  * Create beat from pool, collision detection, clipping planes.
  */
@@ -52,6 +54,7 @@ AFRAME.registerComponent('beat', {
     this.missElRight = document.getElementById('missRight');
 
     this.beams = document.getElementById('beams').components['beams'];
+    this.particles = document.getElementById('saberParticles');
 
     this.initBlock();
     this.initColliders();
@@ -308,7 +311,12 @@ AFRAME.registerComponent('beat', {
 
       this.returnToPoolTimer = 800;
 
-      // this.el.sceneEl.components['json-particles__hit'].explode(this.el.object3D.position, rightCutPlane.normal, direction, this.data.color);
+      auxObj3D.up.copy(rightCutPlane.normal);
+      auxObj3D.lookAt(direction);
+      this.particles.emit('explode', {
+        position: this.el.object3D.position,
+        rotation: auxObj3D.rotation
+      });
     }
   })(),
 

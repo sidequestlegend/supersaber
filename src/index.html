@@ -35,8 +35,9 @@
         <a-asset-item id="logofrontObj" src="assets/models/logofront.obj"></a-asset-item>
         <a-asset-item id="logobackObj" src="assets/models/logoback.obj"></a-asset-item>
         <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
-        <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
         <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
+        <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
+        <a-asset-item id="sabercutParticles" src="assets/models/sabercut.json"></a-asset-item>
 
         <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
         <audio id="saberDraw" src="assets/sounds/saberDraw.wav"></audio>
@@ -57,6 +58,7 @@
         <img id="wrongRedImg" src="assets/img/wrongred.png">
         <img id="missBlueImg" src="assets/img/missblue.png">
         <img id="missRedImg" src="assets/img/missred.png">
+        <img id="sparkImg" src="assets/img/spark.png">
 
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
         <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
@@ -95,6 +97,8 @@
       <a-entity id="wrongRight" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongBlueImg"></a-entity>
       <a-entity id="missLeft" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missRedImg"></a-entity>
       <a-entity id="missRight" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missBlueImg"></a-entity>
+
+      <a-entity id="saberParticles" particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"> </a-entity>
 
       <!-- Player. -->
       <a-mixin
