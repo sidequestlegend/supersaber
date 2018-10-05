@@ -78,3 +78,19 @@ AFRAME.registerComponent('search-result-image', {
     this.el.setAttribute('material', this.materialUpdateObj);
   },
 });
+
+AFRAME.registerComponent('search-song-name-selected', {
+  schema: {
+    anchor: {default: 0},
+    index: {default: 0},
+    offset: {default: 0},
+    selectedChallengeId: {default: ''}
+  },
+
+  update: function () {
+    const data = this.data;
+    const el = this.el;
+    el.object3D.visible = !!data.selectedChallengeId && data.index !== -1;
+    el.object3D.position.y = data.index * data.offset + data.anchor;
+  }
+});

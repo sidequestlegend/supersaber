@@ -6,6 +6,31 @@
             search-result-list
             position="0 0.644 0"></a-entity>
 
+  <!-- All search result text merged and spaced out. -->
+  <a-entity
+    id="searchSongNameTexts"
+    mixin="textFont"
+    bind__text="value: search.songNameTexts"
+    text="align: left; color: #FAFAFA; wrapCount: 28; lineHeight: 112"
+    position="0.181 0 0.001">
+  </a-entity>
+  <a-entity
+    id="searchSongSubNameTexts"
+    mixin="textFont"
+    bind__text="value: search.songSubNameTexts"
+    text="align: left; color: #999; wrapCount: 42; lineHeight: 166"
+    position="0.181 -0.055 0.001">
+  </a-entity>
+
+  <a-entity
+    id="searchSongNameTextSelected"
+    mixin="textFont"
+    bind__search-song-name-selected="index: menuSelectedChallenge.index; selectedChallengeId: menuSelectedChallenge.id"
+    bind__text="value: menuSelectedChallenge.shortSongName"
+    text="align: left; color: #333; wrapCount: 28"
+    position="0.181 0 0.004"
+    search-song-name-selected="anchor: 0.5; offset: -0.2"></a-entity>
+
   <a-mixin id="searchPageButton"
     animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
     animation__mouseleave="property: components.slice9.material.color; type: color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
@@ -66,26 +91,6 @@
           geometry="primitive: plane; width: 0.2; height: 0.2"
           material="shader: flat; color: #223"
           position="-0.576 -0.08 0.001"></a-entity>
-        <a-entity
-          class="searchResultTitleActive"
-          mixin="textFont"
-          bind-item__text="value: item.shortSongName"
-          bind-item__visible="menuSelectedChallenge.id === item.id"
-          text="align: left; color: #333; wrapCount: 28"
-          position="0.064 -0.091 0"></a-entity>
-        <a-entity
-          class="searchResultTitle"
-          bind-item__text="value: item.shortSongName"
-          bind-item__visible="menuSelectedChallenge.id !== item.id"
-          mixin="textFont"
-          text="align: left; color: #FFF; wrapCount: 28"
-          position="0.064 -0.091 0"></a-entity>
-        <a-entity
-          class="searchResultAuthor"
-          mixin="textFont"
-          bind-item__text="value: item.shortSongSubName"
-          text="wrapCount: 42; align: left; color: #999"
-          position="0.064 -0.147 0"></a-entity>
       </a-entity>
     </a-entity>
   </template>

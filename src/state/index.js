@@ -3,6 +3,8 @@ var utils = require('../utils');
 const challengeDataStore = {};
 const hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 const SEARCH_PER_PAGE = 6;
+const SONG_NAME_TRUNCATE = 24;
+const SONG_SUB_NAME_TRUNCATE = 32;
 
 const DAMAGE_DECAY = 0.25;
 const DAMAGE_MAX = 10;
@@ -46,6 +48,7 @@ AFRAME.registerState({
       downloads: '',
       downloadsText: '',
       id: '',
+      index: '',
       image: '',
       songName: '',
       songSubName: ''
@@ -62,6 +65,8 @@ AFRAME.registerState({
       hasNext: false,
       hasPrev: false,
       results: [],
+      songNameTexts: '',
+      songSubNameTexts: ''
     },
     searchResultsPage: []
   },
@@ -129,6 +134,7 @@ AFRAME.registerState({
 
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
+      computeMenuSelectedChallengeIndex(state);
     },
 
     menuchallengeunselect: () => {
@@ -201,8 +207,8 @@ AFRAME.registerState({
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
         result.songSubName = result.songSubName || 'Unknown Artist';
-        result.shortSongName = truncate(result.songName, 24).toUpperCase();
-        result.shortSongSubName = truncate(result.songSubName, 32);
+        result.shortSongName = truncate(result.songName, SONG_NAME_TRUNCATE).toUpperCase();
+        result.shortSongSubName = truncate(result.songSubName, SONG_SUB_NAME_TRUNCATE);
         challengeDataStore[result.id] = result
       }
       computeSearchPagination(state);
@@ -233,12 +239,22 @@ function computeSearchPagination (state) {
   state.search.hasPrev = state.search.page > 0;
   state.search.hasNext = state.search.page < numPages - 1;
 
+  state.search.songNameTexts = '';
+  state.search.songSubNameTexts = '';
+
   state.searchResultsPage.length = 0;
   for (i = state.search.page * SEARCH_PER_PAGE;
        i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
     if (!state.search.results[i]) { break; }
     state.searchResultsPage.push(state.search.results[i]);
+
+    state.search.songNameTexts +=
+      truncate(state.search.results[i].songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';
+    state.search.songSubNameTexts +=
+      truncate(state.search.results[i].songSubName, SONG_SUB_NAME_TRUNCATE) + '\n';
   }
+
+  computeMenuSelectedChallengeIndex(state);
 }
 
 function truncate (str, length) {
@@ -277,4 +293,14 @@ function resetScore (state) {
   state.score.combo = 0;
   state.score.score = 0;
   state.score.multiplier = 1;
+}
+
+function computeMenuSelectedChallengeIndex (state) {
+  state.menuSelectedChallenge.index = -1;
+  for (let i = 0; i < state.searchResultsPage.length; i++) {
+    if (state.searchResultsPage[i].id === state.menuSelectedChallenge.id) {
+      state.menuSelectedChallenge.index = i;
+      break;
+    }
+  }
 }
