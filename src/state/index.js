@@ -173,6 +173,8 @@ AFRAME.registerState({
       // Reset menu.
       state.menu.active = false;
       state.menuSelectedChallenge.id = '';
+
+      state.keyboardActive = false;
     },
 
     searchprevpage: function (state) {
