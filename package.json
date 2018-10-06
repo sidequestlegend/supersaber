@@ -6,7 +6,6 @@
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
-    "aframe-animation-component": "^5.1.2",
     "aframe-audioanalyser-component": "^4.0.1",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",

@@ -1,919 +1,4 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AFRAME = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
-(function (process){
-/**
- * Tween.js - Licensed under the MIT license
- * https://github.com/tweenjs/tween.js
- * ----------------------------------------------
- *
- * See https://github.com/tweenjs/tween.js/graphs/contributors for the full list of contributors.
- * Thank you all, you're awesome!
- */
-
-
-var _Group = function () {
-  this._tweens = {};
-  this._tweensAddedDuringUpdate = {};
-};
-
-_Group.prototype = {
-  getAll: function () {
-
-    return Object.keys(this._tweens).map(function (tweenId) {
-      return this._tweens[tweenId];
-    }.bind(this));
-
-  },
-
-  removeAll: function () {
-
-    this._tweens = {};
-
-  },
-
-  add: function (tween) {
-
-    this._tweens[tween.getId()] = tween;
-    this._tweensAddedDuringUpdate[tween.getId()] = tween;
-
-  },
-
-  remove: function (tween) {
-
-    delete this._tweens[tween.getId()];
-    delete this._tweensAddedDuringUpdate[tween.getId()];
-
-  },
-
-  update: function (time, preserve) {
-
-    var tweenIds = Object.keys(this._tweens);
-
-    if (tweenIds.length === 0) {
-      return false;
-    }
-
-    time = time !== undefined ? time : TWEEN.now();
-
-    // Tweens are updated in "batches". If you add a new tween during an update, then the
-    // new tween will be updated in the next batch.
-    // If you remove a tween during an update, it will normally still be updated. However,
-    // if the removed tween was added during the current batch, then it will not be updated.
-    while (tweenIds.length > 0) {
-      this._tweensAddedDuringUpdate = {};
-
-      for (var i = 0; i < tweenIds.length; i++) {
-
-        if (this._tweens[tweenIds[i]].update(time) === false) {
-          this._tweens[tweenIds[i]]._isPlaying = false;
-
-          if (!preserve) {
-            delete this._tweens[tweenIds[i]];
-          }
-        }
-      }
-
-      tweenIds = Object.keys(this._tweensAddedDuringUpdate);
-    }
-
-    return true;
-
-  }
-};
-
-var TWEEN = new _Group();
-
-TWEEN.Group = _Group;
-TWEEN._nextId = 0;
-TWEEN.nextId = function () {
-  return TWEEN._nextId++;
-};
-
-
-// Include a performance.now polyfill.
-// In node.js, use process.hrtime.
-if (typeof (window) === 'undefined' && typeof (process) !== 'undefined') {
-  TWEEN.now = function () {
-    var time = process.hrtime();
-
-    // Convert [seconds, nanoseconds] to milliseconds.
-    return time[0] * 1000 + time[1] / 1000000;
-  };
-}
-// In a browser, use window.performance.now if it is available.
-else if (typeof (window) !== 'undefined' &&
-         window.performance !== undefined &&
-     window.performance.now !== undefined) {
-  // This must be bound, because directly assigning this function
-  // leads to an invocation exception in Chrome.
-  TWEEN.now = window.performance.now.bind(window.performance);
-}
-// Use Date.now if it is available.
-else if (Date.now !== undefined) {
-  TWEEN.now = Date.now;
-}
-// Otherwise, use 'new Date().getTime()'.
-else {
-  TWEEN.now = function () {
-    return new Date().getTime();
-  };
-}
-
-
-TWEEN.Tween = function (object, group) {
-  this._object = object;
-  this._valuesStart = {};
-  this._valuesEnd = {};
-  this._valuesStartRepeat = {};
-  this._duration = 1000;
-  this._repeat = 0;
-  this._repeatDelayTime = undefined;
-  this._yoyo = false;
-  this._isPlaying = false;
-  this._reversed = false;
-  this._delayTime = 0;
-  this._startTime = null;
-  this._easingFunction = TWEEN.Easing.Linear.None;
-  this._interpolationFunction = TWEEN.Interpolation.Linear;
-  this._chainedTweens = [];
-  this._onStartCallback = null;
-  this._onStartCallbackFired = false;
-  this._onUpdateCallback = null;
-  this._onCompleteCallback = null;
-  this._onStopCallback = null;
-  this._group = group || TWEEN;
-  this._id = TWEEN.nextId();
-
-};
-
-TWEEN.Tween.prototype = {
-  getId: function getId() {
-    return this._id;
-  },
-
-  isPlaying: function isPlaying() {
-    return this._isPlaying;
-  },
-
-  to: function to(properties, duration) {
-
-    this._valuesEnd = properties;
-
-    if (duration !== undefined) {
-      this._duration = duration;
-    }
-
-    return this;
-
-  },
-
-  start: function start(time) {
-
-    this._group.add(this);
-
-    this._isPlaying = true;
-
-    this._onStartCallbackFired = false;
-
-    this._startTime = time !== undefined ? time : TWEEN.now();
-    this._startTime += this._delayTime;
-
-    for (var property in this._valuesEnd) {
-
-      // Check if an Array was provided as property value
-      if (this._valuesEnd[property] instanceof Array) {
-
-        if (this._valuesEnd[property].length === 0) {
-          continue;
-        }
-
-        // Create a local copy of the Array with the start value at the front
-        this._valuesEnd[property] = [this._object[property]].concat(this._valuesEnd[property]);
-
-      }
-
-      // If `to()` specifies a property that doesn't exist in the source object,
-      // we should not set that property in the object
-      if (this._object[property] === undefined) {
-        continue;
-      }
-
-      // Save the starting value.
-      this._valuesStart[property] = this._object[property];
-
-      if ((this._valuesStart[property] instanceof Array) === false) {
-        this._valuesStart[property] *= 1.0; // Ensures we're using numbers, not strings
-      }
-
-      this._valuesStartRepeat[property] = this._valuesStart[property] || 0;
-
-    }
-
-    return this;
-
-  },
-
-  stop: function stop() {
-
-    if (!this._isPlaying) {
-      return this;
-    }
-
-    this._group.remove(this);
-    this._isPlaying = false;
-
-    if (this._onStopCallback !== null) {
-      this._onStopCallback.call(this._object, this._object);
-    }
-
-    this.stopChainedTweens();
-    return this;
-
-  },
-
-  end: function end() {
-
-    this.update(this._startTime + this._duration);
-    return this;
-
-  },
-
-  stopChainedTweens: function stopChainedTweens() {
-
-    for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
-      this._chainedTweens[i].stop();
-    }
-
-  },
-
-  delay: function delay(amount) {
-
-    this._delayTime = amount;
-    return this;
-
-  },
-
-  repeat: function repeat(times) {
-
-    this._repeat = times;
-    return this;
-
-  },
-
-  repeatDelay: function repeatDelay(amount) {
-
-    this._repeatDelayTime = amount;
-    return this;
-
-  },
-
-  yoyo: function yoyo(yoyo) {
-
-    this._yoyo = yoyo;
-    return this;
-
-  },
-
-  easing: function easing(easing) {
-
-    this._easingFunction = easing;
-    return this;
-
-  },
-
-  interpolation: function interpolation(interpolation) {
-
-    this._interpolationFunction = interpolation;
-    return this;
-
-  },
-
-  chain: function chain() {
-
-    this._chainedTweens = arguments;
-    return this;
-
-  },
-
-  onStart: function onStart(callback) {
-
-    this._onStartCallback = callback;
-    return this;
-
-  },
-
-  onUpdate: function onUpdate(callback) {
-
-    this._onUpdateCallback = callback;
-    return this;
-
-  },
-
-  onComplete: function onComplete(callback) {
-
-    this._onCompleteCallback = callback;
-    return this;
-
-  },
-
-  onStop: function onStop(callback) {
-
-    this._onStopCallback = callback;
-    return this;
-
-  },
-
-  update: function update(time) {
-
-    var property;
-    var elapsed;
-    var value;
-
-    if (time < this._startTime) {
-      return true;
-    }
-
-    if (this._onStartCallbackFired === false) {
-
-      if (this._onStartCallback !== null) {
-        this._onStartCallback.call(this._object, this._object);
-      }
-
-      this._onStartCallbackFired = true;
-    }
-
-    elapsed = (time - this._startTime) / this._duration;
-    elapsed = elapsed > 1 ? 1 : elapsed;
-
-    value = this._easingFunction(elapsed);
-
-    for (property in this._valuesEnd) {
-
-      // Don't update properties that do not exist in the source object
-      if (this._valuesStart[property] === undefined) {
-        continue;
-      }
-
-      var start = this._valuesStart[property] || 0;
-      var end = this._valuesEnd[property];
-
-      if (end instanceof Array) {
-
-        this._object[property] = this._interpolationFunction(end, value);
-
-      } else {
-
-        // Parses relative end values with start as base (e.g.: +10, -3)
-        if (typeof (end) === 'string') {
-
-          if (end.charAt(0) === '+' || end.charAt(0) === '-') {
-            end = start + parseFloat(end);
-          } else {
-            end = parseFloat(end);
-          }
-        }
-
-        // Protect against non numeric properties.
-        if (typeof (end) === 'number') {
-          this._object[property] = start + (end - start) * value;
-        }
-
-      }
-
-    }
-
-    if (this._onUpdateCallback !== null) {
-      this._onUpdateCallback.call(this._object, value);
-    }
-
-    if (elapsed === 1) {
-
-      if (this._repeat > 0) {
-
-        if (isFinite(this._repeat)) {
-          this._repeat--;
-        }
-
-        // Reassign starting values, restart by making startTime = now
-        for (property in this._valuesStartRepeat) {
-
-          if (typeof (this._valuesEnd[property]) === 'string') {
-            this._valuesStartRepeat[property] = this._valuesStartRepeat[property] + parseFloat(this._valuesEnd[property]);
-          }
-
-          if (this._yoyo) {
-            var tmp = this._valuesStartRepeat[property];
-
-            this._valuesStartRepeat[property] = this._valuesEnd[property];
-            this._valuesEnd[property] = tmp;
-          }
-
-          this._valuesStart[property] = this._valuesStartRepeat[property];
-
-        }
-
-        if (this._yoyo) {
-          this._reversed = !this._reversed;
-        }
-
-        if (this._repeatDelayTime !== undefined) {
-          this._startTime = time + this._repeatDelayTime;
-        } else {
-          this._startTime = time + this._delayTime;
-        }
-
-        return true;
-
-      } else {
-
-        if (this._onCompleteCallback !== null) {
-
-          this._onCompleteCallback.call(this._object, this._object);
-        }
-
-        for (var i = 0, numChainedTweens = this._chainedTweens.length; i < numChainedTweens; i++) {
-          // Make the chained tweens start exactly at the time they should,
-          // even if the `update()` method was called way past the duration of the tween
-          this._chainedTweens[i].start(this._startTime + this._duration);
-        }
-
-        return false;
-
-      }
-
-    }
-
-    return true;
-
-  }
-};
-
-
-TWEEN.Easing = {
-
-  Linear: {
-
-    None: function (k) {
-
-      return k;
-
-    }
-
-  },
-
-  Quadratic: {
-
-    In: function (k) {
-
-      return k * k;
-
-    },
-
-    Out: function (k) {
-
-      return k * (2 - k);
-
-    },
-
-    InOut: function (k) {
-
-      if ((k *= 2) < 1) {
-        return 0.5 * k * k;
-      }
-
-      return - 0.5 * (--k * (k - 2) - 1);
-
-    }
-
-  },
-
-  Cubic: {
-
-    In: function (k) {
-
-      return k * k * k;
-
-    },
-
-    Out: function (k) {
-
-      return --k * k * k + 1;
-
-    },
-
-    InOut: function (k) {
-
-      if ((k *= 2) < 1) {
-        return 0.5 * k * k * k;
-      }
-
-      return 0.5 * ((k -= 2) * k * k + 2);
-
-    }
-
-  },
-
-  Quartic: {
-
-    In: function (k) {
-
-      return k * k * k * k;
-
-    },
-
-    Out: function (k) {
-
-      return 1 - (--k * k * k * k);
-
-    },
-
-    InOut: function (k) {
-
-      if ((k *= 2) < 1) {
-        return 0.5 * k * k * k * k;
-      }
-
-      return - 0.5 * ((k -= 2) * k * k * k - 2);
-
-    }
-
-  },
-
-  Quintic: {
-
-    In: function (k) {
-
-      return k * k * k * k * k;
-
-    },
-
-    Out: function (k) {
-
-      return --k * k * k * k * k + 1;
-
-    },
-
-    InOut: function (k) {
-
-      if ((k *= 2) < 1) {
-        return 0.5 * k * k * k * k * k;
-      }
-
-      return 0.5 * ((k -= 2) * k * k * k * k + 2);
-
-    }
-
-  },
-
-  Sinusoidal: {
-
-    In: function (k) {
-
-      return 1 - Math.cos(k * Math.PI / 2);
-
-    },
-
-    Out: function (k) {
-
-      return Math.sin(k * Math.PI / 2);
-
-    },
-
-    InOut: function (k) {
-
-      return 0.5 * (1 - Math.cos(Math.PI * k));
-
-    }
-
-  },
-
-  Exponential: {
-
-    In: function (k) {
-
-      return k === 0 ? 0 : Math.pow(1024, k - 1);
-
-    },
-
-    Out: function (k) {
-
-      return k === 1 ? 1 : 1 - Math.pow(2, - 10 * k);
-
-    },
-
-    InOut: function (k) {
-
-      if (k === 0) {
-        return 0;
-      }
-
-      if (k === 1) {
-        return 1;
-      }
-
-      if ((k *= 2) < 1) {
-        return 0.5 * Math.pow(1024, k - 1);
-      }
-
-      return 0.5 * (- Math.pow(2, - 10 * (k - 1)) + 2);
-
-    }
-
-  },
-
-  Circular: {
-
-    In: function (k) {
-
-      return 1 - Math.sqrt(1 - k * k);
-
-    },
-
-    Out: function (k) {
-
-      return Math.sqrt(1 - (--k * k));
-
-    },
-
-    InOut: function (k) {
-
-      if ((k *= 2) < 1) {
-        return - 0.5 * (Math.sqrt(1 - k * k) - 1);
-      }
-
-      return 0.5 * (Math.sqrt(1 - (k -= 2) * k) + 1);
-
-    }
-
-  },
-
-  Elastic: {
-
-    In: function (k) {
-
-      if (k === 0) {
-        return 0;
-      }
-
-      if (k === 1) {
-        return 1;
-      }
-
-      return -Math.pow(2, 10 * (k - 1)) * Math.sin((k - 1.1) * 5 * Math.PI);
-
-    },
-
-    Out: function (k) {
-
-      if (k === 0) {
-        return 0;
-      }
-
-      if (k === 1) {
-        return 1;
-      }
-
-      return Math.pow(2, -10 * k) * Math.sin((k - 0.1) * 5 * Math.PI) + 1;
-
-    },
-
-    InOut: function (k) {
-
-      if (k === 0) {
-        return 0;
-      }
-
-      if (k === 1) {
-        return 1;
-      }
-
-      k *= 2;
-
-      if (k < 1) {
-        return -0.5 * Math.pow(2, 10 * (k - 1)) * Math.sin((k - 1.1) * 5 * Math.PI);
-      }
-
-      return 0.5 * Math.pow(2, -10 * (k - 1)) * Math.sin((k - 1.1) * 5 * Math.PI) + 1;
-
-    }
-
-  },
-
-  Back: {
-
-    In: function (k) {
-
-      var s = 1.70158;
-
-      return k * k * ((s + 1) * k - s);
-
-    },
-
-    Out: function (k) {
-
-      var s = 1.70158;
-
-      return --k * k * ((s + 1) * k + s) + 1;
-
-    },
-
-    InOut: function (k) {
-
-      var s = 1.70158 * 1.525;
-
-      if ((k *= 2) < 1) {
-        return 0.5 * (k * k * ((s + 1) * k - s));
-      }
-
-      return 0.5 * ((k -= 2) * k * ((s + 1) * k + s) + 2);
-
-    }
-
-  },
-
-  Bounce: {
-
-    In: function (k) {
-
-      return 1 - TWEEN.Easing.Bounce.Out(1 - k);
-
-    },
-
-    Out: function (k) {
-
-      if (k < (1 / 2.75)) {
-        return 7.5625 * k * k;
-      } else if (k < (2 / 2.75)) {
-        return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75;
-      } else if (k < (2.5 / 2.75)) {
-        return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375;
-      } else {
-        return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;
-      }
-
-    },
-
-    InOut: function (k) {
-
-      if (k < 0.5) {
-        return TWEEN.Easing.Bounce.In(k * 2) * 0.5;
-      }
-
-      return TWEEN.Easing.Bounce.Out(k * 2 - 1) * 0.5 + 0.5;
-
-    }
-
-  }
-
-};
-
-TWEEN.Interpolation = {
-
-  Linear: function (v, k) {
-
-    var m = v.length - 1;
-    var f = m * k;
-    var i = Math.floor(f);
-    var fn = TWEEN.Interpolation.Utils.Linear;
-
-    if (k < 0) {
-      return fn(v[0], v[1], f);
-    }
-
-    if (k > 1) {
-      return fn(v[m], v[m - 1], m - f);
-    }
-
-    return fn(v[i], v[i + 1 > m ? m : i + 1], f - i);
-
-  },
-
-  Bezier: function (v, k) {
-
-    var b = 0;
-    var n = v.length - 1;
-    var pw = Math.pow;
-    var bn = TWEEN.Interpolation.Utils.Bernstein;
-
-    for (var i = 0; i <= n; i++) {
-      b += pw(1 - k, n - i) * pw(k, i) * v[i] * bn(n, i);
-    }
-
-    return b;
-
-  },
-
-  CatmullRom: function (v, k) {
-
-    var m = v.length - 1;
-    var f = m * k;
-    var i = Math.floor(f);
-    var fn = TWEEN.Interpolation.Utils.CatmullRom;
-
-    if (v[0] === v[m]) {
-
-      if (k < 0) {
-        i = Math.floor(f = m * (1 + k));
-      }
-
-      return fn(v[(i - 1 + m) % m], v[i], v[(i + 1) % m], v[(i + 2) % m], f - i);
-
-    } else {
-
-      if (k < 0) {
-        return v[0] - (fn(v[0], v[0], v[1], v[1], -f) - v[0]);
-      }
-
-      if (k > 1) {
-        return v[m] - (fn(v[m], v[m], v[m - 1], v[m - 1], f - m) - v[m]);
-      }
-
-      return fn(v[i ? i - 1 : 0], v[i], v[m < i + 1 ? m : i + 1], v[m < i + 2 ? m : i + 2], f - i);
-
-    }
-
-  },
-
-  Utils: {
-
-    Linear: function (p0, p1, t) {
-
-      return (p1 - p0) * t + p0;
-
-    },
-
-    Bernstein: function (n, i) {
-
-      var fc = TWEEN.Interpolation.Utils.Factorial;
-
-      return fc(n) / fc(i) / fc(n - i);
-
-    },
-
-    Factorial: (function () {
-
-      var a = [1];
-
-      return function (n) {
-
-        var s = 1;
-
-        if (a[n]) {
-          return a[n];
-        }
-
-        for (var i = n; i > 1; i--) {
-          s *= i;
-        }
-
-        a[n] = s;
-        return s;
-
-      };
-
-    })(),
-
-    CatmullRom: function (p0, p1, p2, p3, t) {
-
-      var v0 = (p2 - p0) * 0.5;
-      var v1 = (p3 - p1) * 0.5;
-      var t2 = t * t;
-      var t3 = t * t2;
-
-      return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (- 3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
-
-    }
-
-  }
-
-};
-
-// UMD (Universal Module Definition)
-(function (root) {
-
-  if (typeof define === 'function' && define.amd) {
-
-    // AMD
-    define([], function () {
-      return TWEEN;
-    });
-
-  } else if (typeof module !== 'undefined' && typeof exports === 'object') {
-
-    // Node.js
-    module.exports = TWEEN;
-
-  } else if (root !== undefined) {
-
-    // Global variable
-    root.TWEEN = TWEEN;
-
-  }
-
-})(this);
-
-}).call(this,_dereq_('_process'))
-
-},{"_process":6}],2:[function(_dereq_,module,exports){
 var str = Object.prototype.toString
 
 module.exports = anArray
@@ -925,6 +10,43 @@ function anArray(arr) {
     || Array.isArray(arr)
   )
 }
+
+},{}],2:[function(_dereq_,module,exports){
+(function (global){
+/*
+ 2017 Julian Garnier
+ Released under the MIT license
+*/
+var $jscomp={scope:{}};$jscomp.defineProperty="function"==typeof Object.defineProperties?Object.defineProperty:function(e,r,p){if(p.get||p.set)throw new TypeError("ES3 does not support getters and setters.");e!=Array.prototype&&e!=Object.prototype&&(e[r]=p.value)};$jscomp.getGlobal=function(e){return"undefined"!=typeof window&&window===e?e:"undefined"!=typeof global&&null!=global?global:e};$jscomp.global=$jscomp.getGlobal(this);$jscomp.SYMBOL_PREFIX="jscomp_symbol_";
+$jscomp.initSymbol=function(){$jscomp.initSymbol=function(){};$jscomp.global.Symbol||($jscomp.global.Symbol=$jscomp.Symbol)};$jscomp.symbolCounter_=0;$jscomp.Symbol=function(e){return $jscomp.SYMBOL_PREFIX+(e||"")+$jscomp.symbolCounter_++};
+$jscomp.initSymbolIterator=function(){$jscomp.initSymbol();var e=$jscomp.global.Symbol.iterator;e||(e=$jscomp.global.Symbol.iterator=$jscomp.global.Symbol("iterator"));"function"!=typeof Array.prototype[e]&&$jscomp.defineProperty(Array.prototype,e,{configurable:!0,writable:!0,value:function(){return $jscomp.arrayIterator(this)}});$jscomp.initSymbolIterator=function(){}};$jscomp.arrayIterator=function(e){var r=0;return $jscomp.iteratorPrototype(function(){return r<e.length?{done:!1,value:e[r++]}:{done:!0}})};
+$jscomp.iteratorPrototype=function(e){$jscomp.initSymbolIterator();e={next:e};e[$jscomp.global.Symbol.iterator]=function(){return this};return e};$jscomp.array=$jscomp.array||{};$jscomp.iteratorFromArray=function(e,r){$jscomp.initSymbolIterator();e instanceof String&&(e+="");var p=0,m={next:function(){if(p<e.length){var u=p++;return{value:r(u,e[u]),done:!1}}m.next=function(){return{done:!0,value:void 0}};return m.next()}};m[Symbol.iterator]=function(){return m};return m};
+$jscomp.polyfill=function(e,r,p,m){if(r){p=$jscomp.global;e=e.split(".");for(m=0;m<e.length-1;m++){var u=e[m];u in p||(p[u]={});p=p[u]}e=e[e.length-1];m=p[e];r=r(m);r!=m&&null!=r&&$jscomp.defineProperty(p,e,{configurable:!0,writable:!0,value:r})}};$jscomp.polyfill("Array.prototype.keys",function(e){return e?e:function(){return $jscomp.iteratorFromArray(this,function(e){return e})}},"es6-impl","es3");var $jscomp$this=this;
+(function(e,r){"function"===typeof define&&define.amd?define([],r):"object"===typeof module&&module.exports?module.exports=r():e.anime=r()})(this,function(){function e(a){if(!h.col(a))try{return document.querySelectorAll(a)}catch(c){}}function r(a,c){for(var d=a.length,b=2<=arguments.length?arguments[1]:void 0,f=[],n=0;n<d;n++)if(n in a){var k=a[n];c.call(b,k,n,a)&&f.push(k)}return f}function p(a){return a.reduce(function(a,d){return a.concat(h.arr(d)?p(d):d)},[])}function m(a){if(h.arr(a))return a;
+h.str(a)&&(a=e(a)||a);return a instanceof NodeList||a instanceof HTMLCollection?[].slice.call(a):[a]}function u(a,c){return a.some(function(a){return a===c})}function C(a){var c={},d;for(d in a)c[d]=a[d];return c}function D(a,c){var d=C(a),b;for(b in a)d[b]=c.hasOwnProperty(b)?c[b]:a[b];return d}function z(a,c){var d=C(a),b;for(b in c)d[b]=h.und(a[b])?c[b]:a[b];return d}function T(a){a=a.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,function(a,c,d,k){return c+c+d+d+k+k});var c=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(a);
+a=parseInt(c[1],16);var d=parseInt(c[2],16),c=parseInt(c[3],16);return"rgba("+a+","+d+","+c+",1)"}function U(a){function c(a,c,b){0>b&&(b+=1);1<b&&--b;return b<1/6?a+6*(c-a)*b:.5>b?c:b<2/3?a+(c-a)*(2/3-b)*6:a}var d=/hsl\((\d+),\s*([\d.]+)%,\s*([\d.]+)%\)/g.exec(a)||/hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*([\d.]+)\)/g.exec(a);a=parseInt(d[1])/360;var b=parseInt(d[2])/100,f=parseInt(d[3])/100,d=d[4]||1;if(0==b)f=b=a=f;else{var n=.5>f?f*(1+b):f+b-f*b,k=2*f-n,f=c(k,n,a+1/3),b=c(k,n,a);a=c(k,n,a-1/3)}return"rgba("+
+255*f+","+255*b+","+255*a+","+d+")"}function y(a){if(a=/([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(a))return a[2]}function V(a){if(-1<a.indexOf("translate")||"perspective"===a)return"px";if(-1<a.indexOf("rotate")||-1<a.indexOf("skew"))return"deg"}function I(a,c){return h.fnc(a)?a(c.target,c.id,c.total):a}function E(a,c){if(c in a.style)return getComputedStyle(a).getPropertyValue(c.replace(/([a-z])([A-Z])/g,"$1-$2").toLowerCase())||"0"}function J(a,c){if(h.dom(a)&&
+u(W,c))return"transform";if(h.dom(a)&&(a.getAttribute(c)||h.svg(a)&&a[c]))return"attribute";if(h.dom(a)&&"transform"!==c&&E(a,c))return"css";if(null!=a[c])return"object"}function X(a,c){var d=V(c),d=-1<c.indexOf("scale")?1:0+d;a=a.style.transform;if(!a)return d;for(var b=[],f=[],n=[],k=/(\w+)\((.+?)\)/g;b=k.exec(a);)f.push(b[1]),n.push(b[2]);a=r(n,function(a,b){return f[b]===c});return a.length?a[0]:d}function K(a,c){switch(J(a,c)){case "transform":return X(a,c);case "css":return E(a,c);case "attribute":return a.getAttribute(c)}return a[c]||
+0}function L(a,c){var d=/^(\*=|\+=|-=)/.exec(a);if(!d)return a;var b=y(a)||0;c=parseFloat(c);a=parseFloat(a.replace(d[0],""));switch(d[0][0]){case "+":return c+a+b;case "-":return c-a+b;case "*":return c*a+b}}function F(a,c){return Math.sqrt(Math.pow(c.x-a.x,2)+Math.pow(c.y-a.y,2))}function M(a){a=a.points;for(var c=0,d,b=0;b<a.numberOfItems;b++){var f=a.getItem(b);0<b&&(c+=F(d,f));d=f}return c}function N(a){if(a.getTotalLength)return a.getTotalLength();switch(a.tagName.toLowerCase()){case "circle":return 2*
+Math.PI*a.getAttribute("r");case "rect":return 2*a.getAttribute("width")+2*a.getAttribute("height");case "line":return F({x:a.getAttribute("x1"),y:a.getAttribute("y1")},{x:a.getAttribute("x2"),y:a.getAttribute("y2")});case "polyline":return M(a);case "polygon":var c=a.points;return M(a)+F(c.getItem(c.numberOfItems-1),c.getItem(0))}}function Y(a,c){function d(b){b=void 0===b?0:b;return a.el.getPointAtLength(1<=c+b?c+b:0)}var b=d(),f=d(-1),n=d(1);switch(a.property){case "x":return b.x;case "y":return b.y;
+case "angle":return 180*Math.atan2(n.y-f.y,n.x-f.x)/Math.PI}}function O(a,c){var d=/-?\d*\.?\d+/g,b;b=h.pth(a)?a.totalLength:a;if(h.col(b))if(h.rgb(b)){var f=/rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(b);b=f?"rgba("+f[1]+",1)":b}else b=h.hex(b)?T(b):h.hsl(b)?U(b):void 0;else f=(f=y(b))?b.substr(0,b.length-f.length):b,b=c&&!/\s/g.test(b)?f+c:f;b+="";return{original:b,numbers:b.match(d)?b.match(d).map(Number):[0],strings:h.str(a)||c?b.split(d):[]}}function P(a){a=a?p(h.arr(a)?a.map(m):m(a)):[];return r(a,
+function(a,d,b){return b.indexOf(a)===d})}function Z(a){var c=P(a);return c.map(function(a,b){return{target:a,id:b,total:c.length}})}function aa(a,c){var d=C(c);if(h.arr(a)){var b=a.length;2!==b||h.obj(a[0])?h.fnc(c.duration)||(d.duration=c.duration/b):a={value:a}}return m(a).map(function(a,b){b=b?0:c.delay;a=h.obj(a)&&!h.pth(a)?a:{value:a};h.und(a.delay)&&(a.delay=b);return a}).map(function(a){return z(a,d)})}function ba(a,c){var d={},b;for(b in a){var f=I(a[b],c);h.arr(f)&&(f=f.map(function(a){return I(a,
+c)}),1===f.length&&(f=f[0]));d[b]=f}d.duration=parseFloat(d.duration);d.delay=parseFloat(d.delay);return d}function ca(a){return h.arr(a)?A.apply(this,a):Q[a]}function da(a,c){var d;return a.tweens.map(function(b){b=ba(b,c);var f=b.value,e=K(c.target,a.name),k=d?d.to.original:e,k=h.arr(f)?f[0]:k,w=L(h.arr(f)?f[1]:f,k),e=y(w)||y(k)||y(e);b.from=O(k,e);b.to=O(w,e);b.start=d?d.end:a.offset;b.end=b.start+b.delay+b.duration;b.easing=ca(b.easing);b.elasticity=(1E3-Math.min(Math.max(b.elasticity,1),999))/
+1E3;b.isPath=h.pth(f);b.isColor=h.col(b.from.original);b.isColor&&(b.round=1);return d=b})}function ea(a,c){return r(p(a.map(function(a){return c.map(function(b){var c=J(a.target,b.name);if(c){var d=da(b,a);b={type:c,property:b.name,animatable:a,tweens:d,duration:d[d.length-1].end,delay:d[0].delay}}else b=void 0;return b})})),function(a){return!h.und(a)})}function R(a,c,d,b){var f="delay"===a;return c.length?(f?Math.min:Math.max).apply(Math,c.map(function(b){return b[a]})):f?b.delay:d.offset+b.delay+
+b.duration}function fa(a){var c=D(ga,a),d=D(S,a),b=Z(a.targets),f=[],e=z(c,d),k;for(k in a)e.hasOwnProperty(k)||"targets"===k||f.push({name:k,offset:e.offset,tweens:aa(a[k],d)});a=ea(b,f);return z(c,{children:[],animatables:b,animations:a,duration:R("duration",a,c,d),delay:R("delay",a,c,d)})}function q(a){function c(){return window.Promise&&new Promise(function(a){return p=a})}function d(a){return g.reversed?g.duration-a:a}function b(a){for(var b=0,c={},d=g.animations,f=d.length;b<f;){var e=d[b],
+k=e.animatable,h=e.tweens,n=h.length-1,l=h[n];n&&(l=r(h,function(b){return a<b.end})[0]||l);for(var h=Math.min(Math.max(a-l.start-l.delay,0),l.duration)/l.duration,w=isNaN(h)?1:l.easing(h,l.elasticity),h=l.to.strings,p=l.round,n=[],m=void 0,m=l.to.numbers.length,t=0;t<m;t++){var x=void 0,x=l.to.numbers[t],q=l.from.numbers[t],x=l.isPath?Y(l.value,w*x):q+w*(x-q);p&&(l.isColor&&2<t||(x=Math.round(x*p)/p));n.push(x)}if(l=h.length)for(m=h[0],w=0;w<l;w++)p=h[w+1],t=n[w],isNaN(t)||(m=p?m+(t+p):m+(t+" "));
+else m=n[0];ha[e.type](k.target,e.property,m,c,k.id);e.currentValue=m;b++}if(b=Object.keys(c).length)for(d=0;d<b;d++)H||(H=E(document.body,"transform")?"transform":"-webkit-transform"),g.animatables[d].target.style[H]=c[d].join(" ");g.currentTime=a;g.progress=a/g.duration*100}function f(a){if(g[a])g[a](g)}function e(){g.remaining&&!0!==g.remaining&&g.remaining--}function k(a){var k=g.duration,n=g.offset,w=n+g.delay,r=g.currentTime,x=g.reversed,q=d(a);if(g.children.length){var u=g.children,v=u.length;
+if(q>=g.currentTime)for(var G=0;G<v;G++)u[G].seek(q);else for(;v--;)u[v].seek(q)}if(q>=w||!k)g.began||(g.began=!0,f("begin")),f("run");if(q>n&&q<k)b(q);else if(q<=n&&0!==r&&(b(0),x&&e()),q>=k&&r!==k||!k)b(k),x||e();f("update");a>=k&&(g.remaining?(t=h,"alternate"===g.direction&&(g.reversed=!g.reversed)):(g.pause(),g.completed||(g.completed=!0,f("complete"),"Promise"in window&&(p(),m=c()))),l=0)}a=void 0===a?{}:a;var h,t,l=0,p=null,m=c(),g=fa(a);g.reset=function(){var a=g.direction,c=g.loop;g.currentTime=
+0;g.progress=0;g.paused=!0;g.began=!1;g.completed=!1;g.reversed="reverse"===a;g.remaining="alternate"===a&&1===c?2:c;b(0);for(a=g.children.length;a--;)g.children[a].reset()};g.tick=function(a){h=a;t||(t=h);k((l+h-t)*q.speed)};g.seek=function(a){k(d(a))};g.pause=function(){var a=v.indexOf(g);-1<a&&v.splice(a,1);g.paused=!0};g.play=function(){g.paused&&(g.paused=!1,t=0,l=d(g.currentTime),v.push(g),B||ia())};g.reverse=function(){g.reversed=!g.reversed;t=0;l=d(g.currentTime)};g.restart=function(){g.pause();
+g.reset();g.play()};g.finished=m;g.reset();g.autoplay&&g.play();return g}var ga={update:void 0,begin:void 0,run:void 0,complete:void 0,loop:1,direction:"normal",autoplay:!0,offset:0},S={duration:1E3,delay:0,easing:"easeOutElastic",elasticity:500,round:0},W="translateX translateY translateZ rotate rotateX rotateY rotateZ scale scaleX scaleY scaleZ skewX skewY perspective".split(" "),H,h={arr:function(a){return Array.isArray(a)},obj:function(a){return-1<Object.prototype.toString.call(a).indexOf("Object")},
+pth:function(a){return h.obj(a)&&a.hasOwnProperty("totalLength")},svg:function(a){return a instanceof SVGElement},dom:function(a){return a.nodeType||h.svg(a)},str:function(a){return"string"===typeof a},fnc:function(a){return"function"===typeof a},und:function(a){return"undefined"===typeof a},hex:function(a){return/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(a)},rgb:function(a){return/^rgb/.test(a)},hsl:function(a){return/^hsl/.test(a)},col:function(a){return h.hex(a)||h.rgb(a)||h.hsl(a)}},A=function(){function a(a,
+d,b){return(((1-3*b+3*d)*a+(3*b-6*d))*a+3*d)*a}return function(c,d,b,f){if(0<=c&&1>=c&&0<=b&&1>=b){var e=new Float32Array(11);if(c!==d||b!==f)for(var k=0;11>k;++k)e[k]=a(.1*k,c,b);return function(k){if(c===d&&b===f)return k;if(0===k)return 0;if(1===k)return 1;for(var h=0,l=1;10!==l&&e[l]<=k;++l)h+=.1;--l;var l=h+(k-e[l])/(e[l+1]-e[l])*.1,n=3*(1-3*b+3*c)*l*l+2*(3*b-6*c)*l+3*c;if(.001<=n){for(h=0;4>h;++h){n=3*(1-3*b+3*c)*l*l+2*(3*b-6*c)*l+3*c;if(0===n)break;var m=a(l,c,b)-k,l=l-m/n}k=l}else if(0===
+n)k=l;else{var l=h,h=h+.1,g=0;do m=l+(h-l)/2,n=a(m,c,b)-k,0<n?h=m:l=m;while(1e-7<Math.abs(n)&&10>++g);k=m}return a(k,d,f)}}}}(),Q=function(){function a(a,b){return 0===a||1===a?a:-Math.pow(2,10*(a-1))*Math.sin(2*(a-1-b/(2*Math.PI)*Math.asin(1))*Math.PI/b)}var c="Quad Cubic Quart Quint Sine Expo Circ Back Elastic".split(" "),d={In:[[.55,.085,.68,.53],[.55,.055,.675,.19],[.895,.03,.685,.22],[.755,.05,.855,.06],[.47,0,.745,.715],[.95,.05,.795,.035],[.6,.04,.98,.335],[.6,-.28,.735,.045],a],Out:[[.25,
+.46,.45,.94],[.215,.61,.355,1],[.165,.84,.44,1],[.23,1,.32,1],[.39,.575,.565,1],[.19,1,.22,1],[.075,.82,.165,1],[.175,.885,.32,1.275],function(b,c){return 1-a(1-b,c)}],InOut:[[.455,.03,.515,.955],[.645,.045,.355,1],[.77,0,.175,1],[.86,0,.07,1],[.445,.05,.55,.95],[1,0,0,1],[.785,.135,.15,.86],[.68,-.55,.265,1.55],function(b,c){return.5>b?a(2*b,c)/2:1-a(-2*b+2,c)/2}]},b={linear:A(.25,.25,.75,.75)},f={},e;for(e in d)f.type=e,d[f.type].forEach(function(a){return function(d,f){b["ease"+a.type+c[f]]=h.fnc(d)?
+d:A.apply($jscomp$this,d)}}(f)),f={type:f.type};return b}(),ha={css:function(a,c,d){return a.style[c]=d},attribute:function(a,c,d){return a.setAttribute(c,d)},object:function(a,c,d){return a[c]=d},transform:function(a,c,d,b,f){b[f]||(b[f]=[]);b[f].push(c+"("+d+")")}},v=[],B=0,ia=function(){function a(){B=requestAnimationFrame(c)}function c(c){var b=v.length;if(b){for(var d=0;d<b;)v[d]&&v[d].tick(c),d++;a()}else cancelAnimationFrame(B),B=0}return a}();q.version="2.2.0";q.speed=1;q.running=v;q.remove=
+function(a){a=P(a);for(var c=v.length;c--;)for(var d=v[c],b=d.animations,f=b.length;f--;)u(a,b[f].animatable.target)&&(b.splice(f,1),b.length||d.pause())};q.getValue=K;q.path=function(a,c){var d=h.str(a)?e(a)[0]:a,b=c||100;return function(a){return{el:d,property:a,totalLength:N(d)*(b/100)}}};q.setDashoffset=function(a){var c=N(a);a.setAttribute("stroke-dasharray",c);return c};q.bezier=A;q.easings=Q;q.timeline=function(a){var c=q(a);c.pause();c.duration=0;c.add=function(d){c.children.forEach(function(a){a.began=
+!0;a.completed=!0});m(d).forEach(function(b){var d=z(b,D(S,a||{}));d.targets=d.targets||a.targets;b=c.duration;var e=d.offset;d.autoplay=!1;d.direction=c.direction;d.offset=h.und(e)?b:L(e,b);c.began=!0;c.completed=!0;c.seek(d.offset);d=q(d);d.began=!0;d.completed=!0;d.duration>b&&(c.duration=d.duration);c.children.push(d)});c.seek(0);c.reset();c.autoplay&&c.restart();return c};return c};q.random=function(a,c){return Math.floor(Math.random()*(c-a+1))+a};return q});
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],3:[function(_dereq_,module,exports){
 module.exports = function numtype(num, def) {
@@ -5021,138 +4143,7 @@ module.exports = function createQuadElements(array, opt) {
     }
     return indices
 }
-},{"an-array":2,"dtype":14,"is-buffer":20}],35:[function(_dereq_,module,exports){
-
-
-/*:: type Attr = { [key: string]: string | number } */
-/*:: type Opts = { preserveNumbers: ?boolean } */
-
-/*
-
-style-attr
-====
-
-Very simple parsing and stringifying of style attributes.
-
-`parse`
-----
-
-Convert a style attribute string to an object.
-
-*/
-
-/*:: declare function parse (raw: string, opts: ?Opts): Attr */
-function parse(raw, opts) {
-  opts = opts || {};
-
-  var preserveNumbers = opts.preserveNumbers;
-  var trim = function (s) {
-    return s.trim();
-  };
-  var obj = {};
-
-  getKeyValueChunks(raw).map(trim).filter(Boolean).forEach(function (item) {
-    // split with `.indexOf` rather than `.split` because the value may also contain colons.
-    var pos = item.indexOf(':');
-    var key = item.substr(0, pos).trim();
-    var val = item.substr(pos + 1).trim();
-    if (preserveNumbers && isNumeric(val)) {
-      val = Number(val);
-    }
-
-    obj[key] = val;
-  });
-
-  return obj;
-}
-
-/*
-
-`isNumeric`
-----
-
-Check if a value is numeric.
-Via: https://stackoverflow.com/a/1830844/9324
-
-*/
-
-/*:: declare function isNumeric (n: any): boolean */
-
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-/*
-
-`getKeyValueChunks`
-----
-
-Split a string into chunks matching `<key>: <value>`
-
-*/
-/*:: declare function getKeyValueChunks (raw: string): Array<string> */
-function getKeyValueChunks(raw) {
-  var chunks = [];
-  var offset = 0;
-  var sep = ';';
-  var hasUnclosedUrl = /url\([^\)]+$/;
-  var chunk = '';
-  var nextSplit;
-  while (offset < raw.length) {
-    nextSplit = raw.indexOf(sep, offset);
-    if (nextSplit === -1) {
-      nextSplit = raw.length;
-    }
-
-    chunk += raw.substring(offset, nextSplit);
-
-    // data URIs can contain semicolons, so make sure we get the whole thing
-    if (hasUnclosedUrl.test(chunk)) {
-      chunk += ';';
-      offset = nextSplit + 1;
-      continue;
-    }
-
-    chunks.push(chunk);
-    chunk = '';
-    offset = nextSplit + 1;
-  }
-
-  return chunks;
-}
-
-/*
-
-`stringify`
-----
-
-Convert an object into an attribute string
-
-*/
-/*:: declare function stringify (obj: Attr): string */
-function stringify(obj) {
-  return Object.keys(obj).map(function (key) {
-    return key + ':' + obj[key];
-  }).join(';');
-}
-
-/*
-
-`normalize`
-----
-
-Normalize an attribute string (eg. collapse duplicates)
-
-*/
-/*:: declare function normalize (str: string, opts: ?Opts): string */
-function normalize(str, opts) {
-  return stringify(parse(str, opts));
-}
-
-module.exports.parse = parse;
-module.exports.stringify = stringify;
-module.exports.normalize = normalize;
-},{}],36:[function(_dereq_,module,exports){
+},{"an-array":1,"dtype":14,"is-buffer":20}],35:[function(_dereq_,module,exports){
 var createLayout = _dereq_('layout-bmfont-text')
 var inherits = _dereq_('inherits')
 var createIndices = _dereq_('quad-indices')
@@ -5278,7 +4269,7 @@ TextGeometry.prototype.computeBoundingBox = function () {
   utils.computeBox(positions, bbox)
 }
 
-},{"./lib/utils":37,"./lib/vertices":38,"inherits":19,"layout-bmfont-text":23,"object-assign":26,"quad-indices":34,"three-buffer-vertex-data":39}],37:[function(_dereq_,module,exports){
+},{"./lib/utils":36,"./lib/vertices":37,"inherits":19,"layout-bmfont-text":23,"object-assign":26,"quad-indices":34,"three-buffer-vertex-data":38}],36:[function(_dereq_,module,exports){
 var itemSize = 2
 var box = { min: [0, 0], max: [0, 0] }
 
@@ -5318,7 +4309,7 @@ module.exports.computeSphere = function (positions, output) {
   output.radius = length / 2
 }
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 module.exports.pages = function pages (glyphs) {
   var pages = new Float32Array(glyphs.length * 4 * 1)
   var i = 0
@@ -5397,7 +4388,7 @@ module.exports.positions = function positions (glyphs) {
   return positions
 }
 
-},{}],39:[function(_dereq_,module,exports){
+},{}],38:[function(_dereq_,module,exports){
 var flatten = _dereq_('flatten-vertex-data')
 var warned = false;
 
@@ -5497,7 +4488,7 @@ function rebuildAttribute (attrib, data, itemSize) {
   return false
 }
 
-},{"flatten-vertex-data":15}],40:[function(_dereq_,module,exports){
+},{"flatten-vertex-data":15}],39:[function(_dereq_,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -52848,7 +51839,7 @@ function rebuildAttribute (attrib, data, itemSize) {
 
 })));
 
-},{}],41:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author Mugen87 / https://github.com/Mugen87
@@ -56736,6 +55727,520 @@ THREE.ColladaLoader.prototype = {
 
   }
 
+};
+
+},{}],41:[function(_dereq_,module,exports){
+// Copyright 2016 The Draco Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+'use strict';
+
+/**
+ * @param {THREE.LoadingManager} manager
+ */
+THREE.DRACOLoader = function(manager) {
+    this.timeLoaded = 0;
+    this.manager = manager || THREE.DefaultLoadingManager;
+    this.materials = null;
+    this.verbosity = 0;
+    this.attributeOptions = {};
+    this.drawMode = THREE.TrianglesDrawMode;
+    // Native Draco attribute type to Three.JS attribute type.
+    this.nativeAttributeMap = {
+      'position' : 'POSITION',
+      'normal' : 'NORMAL',
+      'color' : 'COLOR',
+      'uv' : 'TEX_COORD'
+    };
+};
+
+THREE.DRACOLoader.prototype = {
+
+    constructor: THREE.DRACOLoader,
+
+    load: function(url, onLoad, onProgress, onError) {
+        var scope = this;
+        var loader = new THREE.FileLoader(scope.manager);
+        loader.setPath(this.path);
+        loader.setResponseType('arraybuffer');
+        loader.load(url, function(blob) {
+            scope.decodeDracoFile(blob, onLoad);
+        }, onProgress, onError);
+    },
+
+    setPath: function(value) {
+        this.path = value;
+        return this;
+    },
+
+    setVerbosity: function(level) {
+        this.verbosity = level;
+        return this;
+    },
+
+    /**
+     *  Sets desired mode for generated geometry indices.
+     *  Can be either:
+     *      THREE.TrianglesDrawMode
+     *      THREE.TriangleStripDrawMode
+     */
+    setDrawMode: function(drawMode) {
+        this.drawMode = drawMode;
+        return this;
+    },
+
+    /**
+     * Skips dequantization for a specific attribute.
+     * |attributeName| is the THREE.js name of the given attribute type.
+     * The only currently supported |attributeName| is 'position', more may be
+     * added in future.
+     */
+    setSkipDequantization: function(attributeName, skip) {
+        var skipDequantization = true;
+        if (typeof skip !== 'undefined')
+          skipDequantization = skip;
+        this.getAttributeOptions(attributeName).skipDequantization =
+            skipDequantization;
+        return this;
+    },
+
+    /**
+     * |attributeUniqueIdMap| specifies attribute unique id for an attribute in
+     * the geometry to be decoded. The name of the attribute must be one of the
+     * supported attribute type in Three.JS, including:
+     *     'position',
+     *     'color',
+     *     'normal',
+     *     'uv',
+     *     'uv2',
+     *     'skinIndex',
+     *     'skinWeight'.
+     * The format is:
+     *     attributeUniqueIdMap[attributeName] = attributeId
+     */
+    decodeDracoFile: function(rawBuffer, callback, attributeUniqueIdMap,
+                              attributeTypeMap) {
+      var scope = this;
+      THREE.DRACOLoader.getDecoderModule()
+          .then( function ( module ) {
+            scope.decodeDracoFileInternal( rawBuffer, module.decoder, callback,
+              attributeUniqueIdMap || {}, attributeTypeMap || {});
+          });
+    },
+
+    decodeDracoFileInternal: function(rawBuffer, dracoDecoder, callback,
+                                      attributeUniqueIdMap, attributeTypeMap) {
+      /*
+       * Here is how to use Draco Javascript decoder and get the geometry.
+       */
+      var buffer = new dracoDecoder.DecoderBuffer();
+      buffer.Init(new Int8Array(rawBuffer), rawBuffer.byteLength);
+      var decoder = new dracoDecoder.Decoder();
+
+      /*
+       * Determine what type is this file: mesh or point cloud.
+       */
+      var geometryType = decoder.GetEncodedGeometryType(buffer);
+      if (geometryType == dracoDecoder.TRIANGULAR_MESH) {
+        if (this.verbosity > 0) {
+          console.log('Loaded a mesh.');
+        }
+      } else if (geometryType == dracoDecoder.POINT_CLOUD) {
+        if (this.verbosity > 0) {
+          console.log('Loaded a point cloud.');
+        }
+      } else {
+        var errorMsg = 'THREE.DRACOLoader: Unknown geometry type.'
+        console.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+      callback(this.convertDracoGeometryTo3JS(dracoDecoder, decoder,
+          geometryType, buffer, attributeUniqueIdMap, attributeTypeMap));
+    },
+
+    addAttributeToGeometry: function(dracoDecoder, decoder, dracoGeometry,
+                                     attributeName, attributeType, attribute,
+                                     geometry, geometryBuffer) {
+      if (attribute.ptr === 0) {
+        var errorMsg = 'THREE.DRACOLoader: No attribute ' + attributeName;
+        console.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      var numComponents = attribute.num_components();
+      var numPoints = dracoGeometry.num_points();
+      var numValues = numPoints * numComponents;
+      var attributeData;
+      var TypedBufferAttribute;
+
+      switch ( attributeType ) {
+
+        case Float32Array:
+          attributeData = new dracoDecoder.DracoFloat32Array();
+          decoder.GetAttributeFloatForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Float32Array( numValues );
+          TypedBufferAttribute = THREE.Float32BufferAttribute;
+          break;
+
+        case Int8Array:
+          attributeData = new dracoDecoder.DracoInt8Array();
+          decoder.GetAttributeInt8ForAllPoints(
+            dracoGeometry, attribute, attributeData );
+          geometryBuffer[ attributeName ] = new Int8Array( numValues );
+          TypedBufferAttribute = THREE.Int8BufferAttribute;
+          break;
+
+        case Int16Array:
+          attributeData = new dracoDecoder.DracoInt16Array();
+          decoder.GetAttributeInt16ForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Int16Array( numValues );
+          TypedBufferAttribute = THREE.Int16BufferAttribute;
+          break;
+
+        case Int32Array:
+          attributeData = new dracoDecoder.DracoInt32Array();
+          decoder.GetAttributeInt32ForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Int32Array( numValues );
+          TypedBufferAttribute = THREE.Int32BufferAttribute;
+          break;
+
+        case Uint8Array:
+          attributeData = new dracoDecoder.DracoUInt8Array();
+          decoder.GetAttributeUInt8ForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Uint8Array( numValues );
+          TypedBufferAttribute = THREE.Uint8BufferAttribute;
+          break;
+
+        case Uint16Array:
+          attributeData = new dracoDecoder.DracoUInt16Array();
+          decoder.GetAttributeUInt16ForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Uint16Array( numValues );
+          TypedBufferAttribute = THREE.Uint16BufferAttribute;
+          break;
+
+        case Uint32Array:
+          attributeData = new dracoDecoder.DracoUInt32Array();
+          decoder.GetAttributeUInt32ForAllPoints(
+            dracoGeometry, attribute, attributeData);
+          geometryBuffer[ attributeName ] = new Uint32Array( numValues );
+          TypedBufferAttribute = THREE.Uint32BufferAttribute;
+          break;
+
+        default:
+          var errorMsg = 'THREE.DRACOLoader: Unexpected attribute type.';
+          console.error( errorMsg );
+          throw new Error( errorMsg );
+
+      }
+
+      // Copy data from decoder.
+      for (var i = 0; i < numValues; i++) {
+        geometryBuffer[attributeName][i] = attributeData.GetValue(i);
+      }
+      // Add attribute to THREEJS geometry for rendering.
+      geometry.addAttribute(attributeName,
+          new TypedBufferAttribute(geometryBuffer[attributeName],
+            numComponents));
+      dracoDecoder.destroy(attributeData);
+    },
+
+    convertDracoGeometryTo3JS: function(dracoDecoder, decoder, geometryType,
+                                        buffer, attributeUniqueIdMap,
+                                        attributeTypeMap) {
+        if (this.getAttributeOptions('position').skipDequantization === true) {
+          decoder.SkipAttributeTransform(dracoDecoder.POSITION);
+        }
+        var dracoGeometry;
+        var decodingStatus;
+        const start_time = performance.now();
+        if (geometryType === dracoDecoder.TRIANGULAR_MESH) {
+          dracoGeometry = new dracoDecoder.Mesh();
+          decodingStatus = decoder.DecodeBufferToMesh(buffer, dracoGeometry);
+        } else {
+          dracoGeometry = new dracoDecoder.PointCloud();
+          decodingStatus =
+              decoder.DecodeBufferToPointCloud(buffer, dracoGeometry);
+        }
+        if (!decodingStatus.ok() || dracoGeometry.ptr == 0) {
+          var errorMsg = 'THREE.DRACOLoader: Decoding failed: ';
+          errorMsg += decodingStatus.error_msg();
+          console.error(errorMsg);
+          dracoDecoder.destroy(decoder);
+          dracoDecoder.destroy(dracoGeometry);
+          throw new Error(errorMsg);
+        }
+
+        var decode_end = performance.now();
+        dracoDecoder.destroy(buffer);
+        /*
+         * Example on how to retrieve mesh and attributes.
+         */
+        var numFaces;
+        if (geometryType == dracoDecoder.TRIANGULAR_MESH) {
+          numFaces = dracoGeometry.num_faces();
+          if (this.verbosity > 0) {
+            console.log('Number of faces loaded: ' + numFaces.toString());
+          }
+        } else {
+          numFaces = 0;
+        }
+
+        var numPoints = dracoGeometry.num_points();
+        var numAttributes = dracoGeometry.num_attributes();
+        if (this.verbosity > 0) {
+          console.log('Number of points loaded: ' + numPoints.toString());
+          console.log('Number of attributes loaded: ' +
+              numAttributes.toString());
+        }
+
+        // Verify if there is position attribute.
+        var posAttId = decoder.GetAttributeId(dracoGeometry,
+                                              dracoDecoder.POSITION);
+        if (posAttId == -1) {
+          var errorMsg = 'THREE.DRACOLoader: No position attribute found.';
+          console.error(errorMsg);
+          dracoDecoder.destroy(decoder);
+          dracoDecoder.destroy(dracoGeometry);
+          throw new Error(errorMsg);
+        }
+        var posAttribute = decoder.GetAttribute(dracoGeometry, posAttId);
+
+        // Structure for converting to THREEJS geometry later.
+        var geometryBuffer = {};
+        // Import data to Three JS geometry.
+        var geometry = new THREE.BufferGeometry();
+
+        // Add native Draco attribute type to geometry.
+        for (var attributeName in this.nativeAttributeMap) {
+          // The native attribute type is only used when no unique Id is
+          // provided. For example, loading .drc files.
+          if (attributeUniqueIdMap[attributeName] === undefined) {
+            var attId = decoder.GetAttributeId(dracoGeometry,
+                dracoDecoder[this.nativeAttributeMap[attributeName]]);
+            if (attId !== -1) {
+              if (this.verbosity > 0) {
+                console.log('Loaded ' + attributeName + ' attribute.');
+              }
+              var attribute = decoder.GetAttribute(dracoGeometry, attId);
+              this.addAttributeToGeometry(dracoDecoder, decoder, dracoGeometry,
+                  attributeName, Float32Array, attribute, geometry, geometryBuffer);
+            }
+          }
+        }
+
+        // Add attributes of user specified unique id. E.g. GLTF models.
+        for (var attributeName in attributeUniqueIdMap) {
+          var attributeType = attributeTypeMap[attributeName] || Float32Array;
+          var attributeId = attributeUniqueIdMap[attributeName];
+          var attribute = decoder.GetAttributeByUniqueId(dracoGeometry,
+                                                         attributeId);
+          this.addAttributeToGeometry(dracoDecoder, decoder, dracoGeometry,
+              attributeName, attributeType, attribute, geometry, geometryBuffer);
+        }
+
+        // For mesh, we need to generate the faces.
+        if (geometryType == dracoDecoder.TRIANGULAR_MESH) {
+          if (this.drawMode === THREE.TriangleStripDrawMode) {
+            var stripsArray = new dracoDecoder.DracoInt32Array();
+            var numStrips = decoder.GetTriangleStripsFromMesh(
+                dracoGeometry, stripsArray);
+            geometryBuffer.indices = new Uint32Array(stripsArray.size());
+            for (var i = 0; i < stripsArray.size(); ++i) {
+              geometryBuffer.indices[i] = stripsArray.GetValue(i);
+            }
+            dracoDecoder.destroy(stripsArray);
+          } else {
+            var numIndices = numFaces * 3;
+            geometryBuffer.indices = new Uint32Array(numIndices);
+            var ia = new dracoDecoder.DracoInt32Array();
+            for (var i = 0; i < numFaces; ++i) {
+              decoder.GetFaceFromMesh(dracoGeometry, i, ia);
+              var index = i * 3;
+              geometryBuffer.indices[index] = ia.GetValue(0);
+              geometryBuffer.indices[index + 1] = ia.GetValue(1);
+              geometryBuffer.indices[index + 2] = ia.GetValue(2);
+            }
+            dracoDecoder.destroy(ia);
+         }
+        }
+
+        geometry.drawMode = this.drawMode;
+        if (geometryType == dracoDecoder.TRIANGULAR_MESH) {
+          geometry.setIndex(new(geometryBuffer.indices.length > 65535 ?
+                THREE.Uint32BufferAttribute : THREE.Uint16BufferAttribute)
+              (geometryBuffer.indices, 1));
+        }
+        var posTransform = new dracoDecoder.AttributeQuantizationTransform();
+        if (posTransform.InitFromAttribute(posAttribute)) {
+          // Quantized attribute. Store the quantization parameters into the
+          // THREE.js attribute.
+          geometry.attributes['position'].isQuantized = true;
+          geometry.attributes['position'].maxRange = posTransform.range();
+          geometry.attributes['position'].numQuantizationBits =
+              posTransform.quantization_bits();
+          geometry.attributes['position'].minValues = new Float32Array(3);
+          for (var i = 0; i < 3; ++i) {
+            geometry.attributes['position'].minValues[i] =
+                posTransform.min_value(i);
+          }
+        }
+        dracoDecoder.destroy(posTransform);
+        dracoDecoder.destroy(decoder);
+        dracoDecoder.destroy(dracoGeometry);
+
+        this.decode_time = decode_end - start_time;
+        this.import_time = performance.now() - decode_end;
+
+        if (this.verbosity > 0) {
+          console.log('Decode time: ' + this.decode_time);
+          console.log('Import time: ' + this.import_time);
+        }
+        return geometry;
+    },
+
+    isVersionSupported: function(version, callback) {
+        THREE.DRACOLoader.getDecoderModule()
+            .then( function ( module ) {
+              callback( module.decoder.isVersionSupported( version ) );
+            });
+    },
+
+    getAttributeOptions: function(attributeName) {
+        if (typeof this.attributeOptions[attributeName] === 'undefined')
+          this.attributeOptions[attributeName] = {};
+        return this.attributeOptions[attributeName];
+    }
+};
+
+THREE.DRACOLoader.decoderPath = './';
+THREE.DRACOLoader.decoderConfig = {};
+THREE.DRACOLoader.decoderModulePromise = null;
+
+/**
+ * Sets the base path for decoder source files.
+ * @param {string} path
+ */
+THREE.DRACOLoader.setDecoderPath = function ( path ) {
+  THREE.DRACOLoader.decoderPath = path;
+};
+
+/**
+ * Sets decoder configuration and releases singleton decoder module. Module
+ * will be recreated with the next decoding call.
+ * @param {Object} config
+ */
+THREE.DRACOLoader.setDecoderConfig = function ( config ) {
+  var wasmBinary = THREE.DRACOLoader.decoderConfig.wasmBinary;
+  THREE.DRACOLoader.decoderConfig = config || {};
+  THREE.DRACOLoader.releaseDecoderModule();
+
+  // Reuse WASM binary.
+  if ( wasmBinary ) THREE.DRACOLoader.decoderConfig.wasmBinary = wasmBinary;
+};
+
+/**
+ * Releases the singleton DracoDecoderModule instance. Module will be recreated
+ * with the next decoding call.
+ */
+THREE.DRACOLoader.releaseDecoderModule = function () {
+  THREE.DRACOLoader.decoderModulePromise = null;
+};
+
+/**
+ * Gets WebAssembly or asm.js singleton instance of DracoDecoderModule
+ * after testing for browser support. Returns Promise that resolves when
+ * module is available.
+ * @return {Promise<{decoder: DracoDecoderModule}>}
+ */
+THREE.DRACOLoader.getDecoderModule = function () {
+  var scope = this;
+  var path = THREE.DRACOLoader.decoderPath;
+  var config = THREE.DRACOLoader.decoderConfig;
+  var promise = THREE.DRACOLoader.decoderModulePromise;
+
+  if ( promise ) return promise;
+
+  // Load source files.
+  if ( typeof DracoDecoderModule !== 'undefined' ) {
+    // Loaded externally.
+    promise = Promise.resolve();
+  } else if ( typeof WebAssembly !== 'object' || config.type === 'js' ) {
+    // Load with asm.js.
+    promise = THREE.DRACOLoader._loadScript( path + 'draco_decoder.js' );
+  } else {
+    // Load with WebAssembly.
+    config.wasmBinaryFile = path + 'draco_decoder.wasm';
+    promise = THREE.DRACOLoader._loadScript( path + 'draco_wasm_wrapper.js' )
+        .then( function () {
+          return THREE.DRACOLoader._loadArrayBuffer( config.wasmBinaryFile );
+        } )
+        .then( function ( wasmBinary ) {
+          config.wasmBinary = wasmBinary;
+        } );
+  }
+
+  // Wait for source files, then create and return a decoder.
+  promise = promise.then( function () {
+    return new Promise( function ( resolve ) {
+      config.onModuleLoaded = function ( decoder ) {
+        scope.timeLoaded = performance.now();
+        // Module is Promise-like. Wrap before resolving to avoid loop.
+        resolve( { decoder: decoder } );
+      };
+      DracoDecoderModule( config );
+    } );
+  } );
+
+  THREE.DRACOLoader.decoderModulePromise = promise;
+  return promise;
+};
+
+/**
+ * @param {string} src
+ * @return {Promise}
+ */
+THREE.DRACOLoader._loadScript = function ( src ) {
+  var prevScript = document.getElementById( 'decoder_script' );
+  if ( prevScript !== null ) {
+    prevScript.parentNode.removeChild( prevScript );
+  }
+  var head = document.getElementsByTagName( 'head' )[ 0 ];
+  var script = document.createElement( 'script' );
+  script.id = 'decoder_script';
+  script.type = 'text/javascript';
+  script.src = src;
+  return new Promise( function ( resolve ) {
+    script.onload = resolve;
+    head.appendChild( script );
+  });
+};
+
+/**
+ * @param {string} src
+ * @return {Promise}
+ */
+THREE.DRACOLoader._loadArrayBuffer = function ( src ) {
+  var loader = new THREE.FileLoader();
+  loader.setResponseType( 'arraybuffer' );
+  return new Promise( function( resolve, reject ) {
+    loader.load( src, resolve, undefined, reject );
+  });
 };
 
 },{}],42:[function(_dereq_,module,exports){
@@ -65199,21 +64704,23 @@ module.exports={
   "license": "MIT",
   "files": [
     "dist/*",
-    "docs/**/*"
+    "docs/**/*",
+    "src/**/*",
+    "vendor/**/*"
   ],
   "dependencies": {
-    "@tweenjs/tween.js": "^16.8.0",
+    "animejs": "^2.2.0",
     "browserify-css": "^0.8.2",
     "debug": "ngokevin/debug#noTimestamp",
     "deep-assign": "^2.0.0",
-    "document-register-element": "dmarcos/document-register-element#8ccc532b7",
+    "document-register-element": "dmarcos/document-register-element#8ccc532b7f3744be954574caf3072a5fd260ca90",
     "envify": "^3.4.1",
     "load-bmfont": "^1.2.3",
     "object-assign": "^4.0.1",
     "present": "0.0.6",
     "promise-polyfill": "^3.1.0",
     "style-attr": "^1.0.2",
-    "three": "0.94.0",
+    "three": "0.95.0",
     "three-bmfont-text": "^2.1.0",
     "webvr-polyfill": "^0.10.5"
   },
@@ -65299,6 +64806,622 @@ module.exports={
 }
 
 },{}],52:[function(_dereq_,module,exports){
+var anime = _dereq_('animejs');
+var components = _dereq_('../core/component').components;
+var registerComponent = _dereq_('../core/component').registerComponent;
+var THREE = _dereq_('../lib/three');
+var utils = _dereq_('../utils');
+
+var colorHelperFrom = new THREE.Color();
+var colorHelperTo = new THREE.Color();
+
+var getComponentProperty = utils.entity.getComponentProperty;
+var setComponentProperty = utils.entity.setComponentProperty;
+var splitCache = {};
+
+var TYPE_COLOR = 'color';
+var PROP_POSITION = 'position';
+var PROP_ROTATION = 'rotation';
+var PROP_SCALE = 'scale';
+var STRING_COMPONENTS = 'components';
+var STRING_OBJECT3D = 'object3D';
+
+/**
+ * Animation component for A-Frame using anime.js.
+ *
+ * The component manually controls the tick by setting `autoplay: false` on anime.js and
+ * manually * calling `animation.tick()` in the tick handler. To pause or resume, we toggle a
+ * boolean * flag * `isAnimationPlaying`.
+ *
+ * anime.js animation config for tweenining Javascript objects and values works as:
+ *
+ *  config = {
+ *    targets: {foo: 0.0, bar: '#000'},
+ *    foo: 1.0,
+ *    bar: '#FFF'
+ *  }
+ *
+ * The above will tween each property in `targets`. The `to` values are set in the root of
+ * the config.
+ *
+ * @member {object} animation - anime.js instance.
+ * @member {boolean} animationIsPlaying - Control if animation is playing.
+ */
+module.exports.Component = registerComponent('animation', {
+  schema: {
+    autoplay: {default: true},
+    delay: {default: 0},
+    dir: {default: ''},
+    dur: {default: 1000},
+    easing: {default: 'easeInQuad'},
+    elasticity: {default: 400},
+    enabled: {default: true},
+    from: {default: ''},
+    loop: {
+      default: 0,
+      parse: function (value) {
+        // Boolean or integer.
+        if (value === true || value === 'true') { return true; }
+        if (value === false || value === 'false') { return false; }
+        return parseInt(value, 10);
+      }
+    },
+    property: {default: ''},
+    startEvents: {type: 'array'},
+    pauseEvents: {type: 'array'},
+    resumeEvents: {type: 'array'},
+    round: {default: false},
+    to: {default: ''},
+    type: {default: ''},
+    isRawProperty: {default: false}
+  },
+
+  multiple: true,
+
+  init: function () {
+    var self = this;
+
+    this.eventDetail = {name: this.attrName};
+    this.time = 0;
+
+    this.animation = null;
+    this.animationIsPlaying = false;
+    this.onStartEvent = this.onStartEvent.bind(this);
+    this.beginAnimation = this.beginAnimation.bind(this);
+    this.pauseAnimation = this.pauseAnimation.bind(this);
+    this.resumeAnimation = this.resumeAnimation.bind(this);
+
+    this.fromColor = {};
+    this.toColor = {};
+    this.targets = {};
+    this.targetsArray = [];
+
+    this.updateConfigForDefault = this.updateConfigForDefault.bind(this);
+    this.updateConfigForRawColor = this.updateConfigForRawColor.bind(this);
+
+    this.config = {
+      complete: function () {
+        self.animationIsPlaying = false;
+        self.el.emit('animationcomplete', self.eventDetail, false);
+        if (self.id) {
+          self.el.emit('animationcomplete__' + self.id, self.eventDetail, false);
+        }
+      }
+    };
+  },
+
+  update: function (oldData) {
+    var config = this.config;
+    var data = this.data;
+
+    this.animationIsPlaying = false;
+
+    if (oldData.enabled && !this.data.enabled) { return; }
+
+    if (!data.property) { return; }
+
+    // Base config.
+    config.autoplay = false;
+    config.direction = data.dir;
+    config.duration = data.dur;
+    config.easing = data.easing;
+    config.elasticity = data.elasticity;
+    config.loop = data.loop;
+    config.round = data.round;
+
+    // Start new animation.
+    this.createAndStartAnimation();
+  },
+
+  tick: function (t, dt) {
+    if (!this.animationIsPlaying) { return; }
+    this.time += dt;
+    this.animation.tick(this.time);
+  },
+
+  remove: function () {
+    this.pauseAnimation();
+    this.removeEventListeners();
+  },
+
+  pause: function () {
+    this.paused = true;
+    this.pausedWasPlaying = this.animationIsPlaying;
+    this.pauseAnimation();
+    this.removeEventListeners();
+  },
+
+  /**
+   * `play` handler only for resuming scene.
+   */
+  play: function () {
+    if (!this.paused) { return; }
+    this.paused = false;
+    this.addEventListeners();
+    if (this.pausedWasPlaying) {
+      this.resumeAnimation();
+      this.pausedWasPlaying = false;
+    }
+  },
+
+  /**
+   * Start animation from scratch.
+   */
+  createAndStartAnimation: function () {
+    var data = this.data;
+
+    this.updateConfig();
+    this.animationIsPlaying = false;
+    this.animation = anime(this.config);
+
+    this.removeEventListeners();
+    this.addEventListeners();
+
+    // Wait for start events for animation.
+    if (!data.autoplay || data.startEvents && data.startEvents.length) { return; }
+
+    // Delay animation.
+    if (data.delay) {
+      setTimeout(this.beginAnimation, data.delay);
+      return;
+    }
+
+    // Play animation.
+    this.beginAnimation();
+  },
+
+  /**
+   * This is before animation start (including from startEvents).
+   * Set to initial state (config.from, time = 0, seekTime = 0).
+   */
+  beginAnimation: function () {
+    this.updateConfig();
+    this.time = 0;
+    this.animationIsPlaying = true;
+    this.stopRelatedAnimations();
+    this.el.emit('animationbegin', this.eventDetail);
+  },
+
+  pauseAnimation: function () {
+    this.animationIsPlaying = false;
+  },
+
+  resumeAnimation: function () {
+    this.animationIsPlaying = true;
+  },
+
+  /**
+   * startEvents callback.
+   */
+  onStartEvent: function () {
+    if (!this.data.enabled) { return; }
+
+    this.updateConfig();
+    if (this.animation) {
+      this.animation.pause();
+    }
+    this.animation = anime(this.config);
+
+    // Include the delay before each start event.
+    if (this.data.delay) {
+      setTimeout(this.beginAnimation, this.data.delay);
+      return;
+    }
+    this.beginAnimation();
+  },
+
+  /**
+   * rawProperty: true and type: color;
+   */
+  updateConfigForRawColor: function () {
+    var config = this.config;
+    var data = this.data;
+    var el = this.el;
+    var from;
+    var key;
+    var to;
+
+    if (this.waitComponentInitRawProperty(this.updateConfigForRawColor)) {
+      return;
+    }
+
+    from = data.from === '' ? getRawProperty(el, data.property) : data.from;
+    to = data.to;
+
+    // Use r/g/b vector for color type.
+    this.setColorConfig(from, to);
+    from = this.fromColor;
+    to = this.toColor;
+
+    this.targetsArray.length = 0;
+    this.targetsArray.push(from);
+    config.targets = this.targetsArray;
+    for (key in to) { config[key] = to[key]; }
+
+    config.update = (function () {
+      var lastValue = {};
+      return function (anim) {
+        var value;
+        value = anim.animatables[0].target;
+        // For animation timeline.
+        if (value.r === lastValue.r &&
+            value.g === lastValue.g &&
+            value.b === lastValue.b) { return; }
+
+        setRawProperty(el, data.property, value, data.type);
+      };
+    })();
+  },
+
+  /**
+   * Stuff property into generic `property` key.
+   */
+  updateConfigForDefault: function () {
+    var config = this.config;
+    var data = this.data;
+    var el = this.el;
+    var from;
+    var isBoolean;
+    var isNumber;
+    var to;
+
+    if (this.waitComponentInitRawProperty(this.updateConfigForDefault)) {
+      return;
+    }
+
+    if (data.from === '') {
+      // Infer from.
+      from = isRawProperty(data)
+        ? getRawProperty(el, data.property)
+        : getComponentProperty(el, data.property);
+    } else {
+      // Explicit from.
+      from = data.from;
+    }
+
+    to = data.to;
+
+    isNumber = !isNaN(from || to);
+    if (isNumber) {
+      from = parseFloat(from);
+      to = parseFloat(to);
+    } else {
+      from = from ? from.toString() : from;
+      to = to ? to.toString() : to;
+    }
+
+    // Convert booleans to integer to allow boolean flipping.
+    isBoolean = data.to === 'true' || data.to === 'false' ||
+                data.to === true || data.to === false;
+    if (isBoolean) {
+      from = data.from === 'true' || data.from === true ? 1 : 0;
+      to = data.to === 'true' || data.to === true ? 1 : 0;
+    }
+
+    this.targets.aframeProperty = from;
+    config.targets = this.targets;
+    config.aframeProperty = to;
+    config.update = (function () {
+      var lastValue;
+
+      return function (anim) {
+        var value;
+        value = anim.animatables[0].target.aframeProperty;
+
+        // Need to do a last value check for animation timeline since all the tweening
+        // begins simultaenously even if the value has not changed. Also better for perf
+        // anyways.
+        if (value === lastValue) { return; }
+        lastValue = value;
+
+        if (isBoolean) { value = value >= 1; }
+
+        if (isRawProperty(data)) {
+          setRawProperty(el, data.property, value, data.type);
+        } else {
+          setComponentProperty(el, data.property, value);
+        }
+      };
+    })();
+  },
+
+  /**
+   * Extend x/y/z/w onto the config.
+   * Update vector by modifying object3D.
+   */
+  updateConfigForVector: function () {
+    var config = this.config;
+    var data = this.data;
+    var el = this.el;
+    var key;
+    var from;
+    var to;
+
+    // Parse coordinates.
+    from = data.from !== ''
+      ? utils.coordinates.parse(data.from)  // If data.from defined, use that.
+      : getComponentProperty(el, data.property);  // If data.from not defined, get on the fly.
+    to = utils.coordinates.parse(data.to);
+
+    if (data.property === PROP_ROTATION) {
+      toRadians(from);
+      toRadians(to);
+    }
+
+    // Set to and from.
+    this.targetsArray.length = 0;
+    this.targetsArray.push(from);
+    config.targets = this.targetsArray;
+    for (key in to) { config[key] = to[key]; }
+
+    // If animating object3D transformation, run more optimized updater.
+    if (data.property === PROP_POSITION || data.property === PROP_ROTATION ||
+        data.property === PROP_SCALE) {
+      config.update = (function () {
+        var lastValue = {};
+        return function (anim) {
+          var value = anim.animatables[0].target;
+
+          if (data.property === PROP_SCALE) {
+            value.x = Math.max(0.0001, value.x);
+            value.y = Math.max(0.0001, value.y);
+            value.z = Math.max(0.0001, value.z);
+          }
+
+          // For animation timeline.
+          if (value.x === lastValue.x &&
+              value.y === lastValue.y &&
+              value.z === lastValue.z) { return; }
+
+          lastValue.x = value.x;
+          lastValue.y = value.y;
+          lastValue.z = value.z;
+
+          el.object3D[data.property].set(value.x, value.y, value.z);
+        };
+      })();
+      return;
+    }
+
+    // Animating some vector.
+    config.update = (function () {
+      var lastValue = {};
+      return function (anim) {
+        var value = anim.animations[0].target;
+
+        // Animate rotation through radians.
+        // For animation timeline.
+        if (value.x === lastValue.x &&
+            value.y === lastValue.y &&
+            value.z === lastValue.z) { return; }
+        lastValue.x = value.x;
+        lastValue.y = value.y;
+        lastValue.z = value.z;
+        setComponentProperty(el, data.property, value);
+      };
+    })();
+  },
+
+  /**
+   * Update the config before each run.
+   */
+  updateConfig: function () {
+    var propType;
+
+    // Route config type.
+    propType = getPropertyType(this.el, this.data.property);
+    if (isRawProperty(this.data) && this.data.type === TYPE_COLOR) {
+      this.updateConfigForRawColor();
+    } else if (propType === 'vec2' || propType === 'vec3' || propType === 'vec4') {
+      this.updateConfigForVector();
+    } else {
+      this.updateConfigForDefault();
+    }
+  },
+
+  /**
+   * Wait for component to initialize.
+   */
+  waitComponentInitRawProperty: function (cb) {
+    var componentName;
+    var data = this.data;
+    var el = this.el;
+    var self = this;
+
+    if (data.from !== '') { return false; }
+
+    if (!data.property.startsWith(STRING_COMPONENTS)) { return false; }
+
+    componentName = splitDot(data.property)[1];
+    if (el.components[componentName]) { return false; }
+
+    el.addEventListener('componentinitialized', function wait (evt) {
+      if (evt.detail.name !== componentName) { return; }
+      cb();
+      // Since the config was created async, create the animation now since we missed it
+      // earlier.
+      self.animation = anime(self.config);
+      el.removeEventListener('componentinitialized', wait);
+    });
+    return true;
+  },
+
+  /**
+   * Make sure two animations on the same property don't fight each other.
+   * e.g., animation__mouseenter="property: material.opacity"
+   *       animation__mouseleave="property: material.opacity"
+   */
+  stopRelatedAnimations: function () {
+    var component;
+    var componentName;
+    for (componentName in this.el.components) {
+      component = this.el.components[componentName];
+      if (componentName === this.attrName) { continue; }
+      if (component.name !== 'animation') { continue; }
+      if (!component.animationIsPlaying) { continue; }
+      if (component.data.property !== this.data.property) { continue; }
+      component.animationIsPlaying = false;
+    }
+  },
+
+  addEventListeners: function () {
+    var data = this.data;
+    var el = this.el;
+    addEventListeners(el, data.startEvents, this.onStartEvent);
+    addEventListeners(el, data.pauseEvents, this.pauseAnimation);
+    addEventListeners(el, data.resumeEvents, this.resumeAnimation);
+  },
+
+  removeEventListeners: function () {
+    var data = this.data;
+    var el = this.el;
+    removeEventListeners(el, data.startEvents, this.onStartEvent);
+    removeEventListeners(el, data.pauseEvents, this.pauseAnimation);
+    removeEventListeners(el, data.resumeEvents, this.resumeAnimation);
+  },
+
+  setColorConfig: function (from, to) {
+    colorHelperFrom.set(from);
+    colorHelperTo.set(to);
+    from = this.fromColor;
+    to = this.toColor;
+    from.r = colorHelperFrom.r;
+    from.g = colorHelperFrom.g;
+    from.b = colorHelperFrom.b;
+    to.r = colorHelperTo.r;
+    to.g = colorHelperTo.g;
+    to.b = colorHelperTo.b;
+  }
+});
+
+/**
+ * Given property name, check schema to see what type we are animating.
+ * We just care whether the property is a vector.
+ */
+function getPropertyType (el, property) {
+  var component;
+  var componentName;
+  var split;
+  var propertyName;
+
+  split = property.split('.');
+  componentName = split[0];
+  propertyName = split[1];
+  component = el.components[componentName] || components[componentName];
+
+  // Primitives.
+  if (!component) { return null; }
+
+  // Dynamic schema. We only care about vectors anyways.
+  if (propertyName && !component.schema[propertyName]) { return null; }
+
+  // Multi-prop.
+  if (propertyName) { return component.schema[propertyName].type; }
+
+  // Single-prop.
+  return component.schema.type;
+}
+
+/**
+ * Convert object to radians.
+ */
+function toRadians (obj) {
+  obj.x = THREE.Math.degToRad(obj.x);
+  obj.y = THREE.Math.degToRad(obj.y);
+  obj.z = THREE.Math.degToRad(obj.z);
+}
+
+function addEventListeners (el, eventNames, handler) {
+  var i;
+  for (i = 0; i < eventNames.length; i++) {
+    el.addEventListener(eventNames[i], handler);
+  }
+}
+
+function removeEventListeners (el, eventNames, handler) {
+  var i;
+  for (i = 0; i < eventNames.length; i++) {
+    el.removeEventListener(eventNames[i], handler);
+  }
+}
+
+function getRawProperty (el, path) {
+  var i;
+  var split;
+  var value;
+  split = splitDot(path);
+  value = el;
+  for (i = 0; i < split.length; i++) {
+    value = value[split[i]];
+  }
+  return value;
+}
+
+function setRawProperty (el, path, value, type) {
+  var i;
+  var split;
+  var propertyName;
+  var targetValue;
+
+  if (path.startsWith('object3D.rotation')) {
+    value = THREE.Math.degToRad(value);
+  }
+
+  // Walk.
+  split = splitDot(path);
+  targetValue = el;
+  for (i = 0; i < split.length - 1; i++) { targetValue = targetValue[split[i]]; }
+  propertyName = split[split.length - 1];
+
+  // Raw color.
+  if (type === TYPE_COLOR) {
+    if ('r' in targetValue[propertyName]) {
+      targetValue[propertyName].r = value.r;
+      targetValue[propertyName].g = value.g;
+      targetValue[propertyName].b = value.b;
+    } else {
+      targetValue[propertyName].x = value.r;
+      targetValue[propertyName].y = value.g;
+      targetValue[propertyName].z = value.b;
+    }
+    return;
+  }
+
+  targetValue[propertyName] = value;
+}
+
+function splitDot (path) {
+  if (path in splitCache) { return splitCache[path]; }
+  splitCache[path] = path.split('.');
+  return splitCache[path];
+}
+
+function isRawProperty (data) {
+  return data.isRawProperty || data.property.startsWith(STRING_COMPONENTS) ||
+         data.property.startsWith(STRING_OBJECT3D);
+}
+
+},{"../core/component":107,"../lib/three":157,"../utils":180,"animejs":2}],53:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -65390,7 +65513,7 @@ module.exports.Component = registerComponent('camera', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157}],53:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157}],54:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -65424,7 +65547,7 @@ module.exports.Component = registerComponent('collada-model', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157}],54:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157}],55:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
@@ -65485,7 +65608,7 @@ module.exports.Component = registerComponent('cursor', {
     // Debounce.
     this.updateCanvasBounds = utils.debounce(function updateCanvasBounds () {
       self.canvasBounds = self.el.sceneEl.canvas.getBoundingClientRect();
-    }, 1000);
+    }, 500);
 
     this.eventDetail = {};
     this.intersectedEventDetail = {cursorEl: this.el};
@@ -65553,7 +65676,9 @@ module.exports.Component = registerComponent('cursor', {
     el.addEventListener('raycaster-intersection', this.onIntersection);
     el.addEventListener('raycaster-intersection-cleared', this.onIntersectionCleared);
 
+    el.sceneEl.addEventListener('rendererresize', this.updateCanvasBounds);
     window.addEventListener('resize', this.updateCanvasBounds);
+    window.addEventListener('scroll', this.updateCanvasBounds);
   },
 
   removeEventListeners: function () {
@@ -65583,7 +65708,10 @@ module.exports.Component = registerComponent('cursor', {
     canvas.removeEventListener('mousemove', this.onMouseMove);
     canvas.removeEventListener('touchstart', this.onMouseMove);
     canvas.removeEventListener('touchmove', this.onMouseMove);
-    canvas.removeEventListener('resize', this.updateCanvasBounds);
+
+    el.sceneEl.removeEventListener('rendererresize', this.updateCanvasBounds);
+    window.removeEventListener('resize', this.updateCanvasBounds);
+    window.removeEventListener('scroll', this.updateCanvasBounds);
   },
 
   updateMouseEventListeners: function () {
@@ -65700,7 +65828,7 @@ module.exports.Component = registerComponent('cursor', {
     // Ignore events further away than active intersection.
     if (this.intersectedEl) {
       currentIntersection = this.el.components.raycaster.getIntersection(this.intersectedEl);
-      if (currentIntersection.distance <= intersection.distance) { return; }
+      if (currentIntersection && currentIntersection.distance <= intersection.distance) { return; }
     }
 
     // Unset current intersection.
@@ -65797,7 +65925,7 @@ module.exports.Component = registerComponent('cursor', {
   }
 });
 
-},{"../core/component":108,"../utils/":179}],55:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/":180}],56:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var checkControllerPresentAndSetup = _dereq_('../utils/tracked-controls').checkControllerPresentAndSetup;
@@ -65975,7 +66103,7 @@ module.exports.Component = registerComponent('daydream-controls', {
   }
 });
 
-},{"../core/component":108,"../utils/bind":173,"../utils/tracked-controls":185}],56:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],57:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -66050,7 +66178,6 @@ module.exports.Component = registerComponent('gearvr-controls', {
     el.addEventListener('model-loaded', this.onModelLoaded);
     el.addEventListener('axismove', this.onAxisMoved);
     this.controllerEventsActive = true;
-    this.addControllersUpdateListener();
   },
 
   removeEventListeners: function () {
@@ -66063,7 +66190,6 @@ module.exports.Component = registerComponent('gearvr-controls', {
     el.removeEventListener('model-loaded', this.onModelLoaded);
     el.removeEventListener('axismove', this.onAxisMoved);
     this.controllerEventsActive = false;
-    this.removeControllersUpdateListener();
   },
 
   checkIfControllerPresent: function () {
@@ -66153,7 +66279,7 @@ module.exports.Component = registerComponent('gearvr-controls', {
   }
 });
 
-},{"../core/component":108,"../utils/bind":173,"../utils/tracked-controls":185}],57:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],58:[function(_dereq_,module,exports){
 var geometries = _dereq_('../core/geometry').geometries;
 var geometryNames = _dereq_('../core/geometry').geometryNames;
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -66217,12 +66343,10 @@ module.exports.Component = registerComponent('geometry', {
 
   /**
    * Update geometry component schema based on geometry type.
-   *
-   * @param {object} data - New data passed by Component.
    */
   updateSchema: function (data) {
+    var currentGeometryType = this.oldData && this.oldData.primitive;
     var newGeometryType = data.primitive;
-    var currentGeometryType = this.data && this.data.primitive;
     var schema = geometries[newGeometryType] && geometries[newGeometryType].schema;
 
     // Geometry has no schema.
@@ -66234,7 +66358,7 @@ module.exports.Component = registerComponent('geometry', {
   }
 });
 
-},{"../core/component":108,"../core/geometry":110,"../lib/three":157}],58:[function(_dereq_,module,exports){
+},{"../core/component":107,"../core/geometry":109,"../lib/three":157}],59:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -66247,8 +66371,12 @@ module.exports.Component = registerComponent('gltf-model', {
   schema: {type: 'model'},
 
   init: function () {
+    var dracoLoader = this.system.getDRACOLoader();
     this.model = null;
     this.loader = new THREE.GLTFLoader();
+    if (dracoLoader) {
+      this.loader.setDRACOLoader(dracoLoader);
+    }
   },
 
   update: function () {
@@ -66278,7 +66406,7 @@ module.exports.Component = registerComponent('gltf-model', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils/":179}],59:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/":180}],60:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -66661,7 +66789,8 @@ function isViveController (trackedControls) {
   return controllerId && controllerId.indexOf('OpenVR ') === 0;
 }
 
-},{"../core/component":108}],60:[function(_dereq_,module,exports){
+},{"../core/component":107}],61:[function(_dereq_,module,exports){
+_dereq_('./animation');
 _dereq_('./camera');
 _dereq_('./collada-model');
 _dereq_('./cursor');
@@ -66706,7 +66835,7 @@ _dereq_('./scene/screenshot');
 _dereq_('./scene/stats');
 _dereq_('./scene/vr-mode-ui');
 
-},{"./camera":52,"./collada-model":53,"./cursor":54,"./daydream-controls":55,"./gearvr-controls":56,"./geometry":57,"./gltf-model":58,"./hand-controls":59,"./laser-controls":61,"./light":62,"./line":63,"./link":64,"./look-controls":65,"./material":66,"./obj-model":67,"./oculus-go-controls":68,"./oculus-touch-controls":69,"./position":70,"./raycaster":71,"./rotation":72,"./scale":73,"./scene/background":74,"./scene/debug":75,"./scene/effects":77,"./scene/embedded":80,"./scene/fog":81,"./scene/inspector":82,"./scene/keyboard-shortcuts":83,"./scene/overlay":84,"./scene/pool":85,"./scene/renderer":86,"./scene/screenshot":87,"./scene/stats":88,"./scene/vr-mode-ui":89,"./shadow":90,"./sound":91,"./text":92,"./tracked-controls":93,"./visible":94,"./vive-controls":95,"./wasd-controls":96,"./windows-motion-controls":97}],61:[function(_dereq_,module,exports){
+},{"./animation":52,"./camera":53,"./collada-model":54,"./cursor":55,"./daydream-controls":56,"./gearvr-controls":57,"./geometry":58,"./gltf-model":59,"./hand-controls":60,"./laser-controls":62,"./light":63,"./line":64,"./link":65,"./look-controls":66,"./material":67,"./obj-model":68,"./oculus-go-controls":69,"./oculus-touch-controls":70,"./position":71,"./raycaster":72,"./rotation":73,"./scale":74,"./scene/background":75,"./scene/debug":76,"./scene/effects":78,"./scene/embedded":81,"./scene/fog":82,"./scene/inspector":83,"./scene/keyboard-shortcuts":84,"./scene/overlay":85,"./scene/pool":86,"./scene/renderer":87,"./scene/screenshot":88,"./scene/stats":89,"./scene/vr-mode-ui":90,"./shadow":91,"./sound":92,"./text":93,"./tracked-controls":94,"./visible":95,"./vive-controls":96,"./wasd-controls":97,"./windows-motion-controls":98}],62:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
 
@@ -66805,7 +66934,7 @@ registerComponent('laser-controls', {
   }
 });
 
-},{"../core/component":108,"../utils/":179}],62:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/":180}],63:[function(_dereq_,module,exports){
 var bind = _dereq_('../utils/bind');
 var diff = _dereq_('../utils').diff;
 var debug = _dereq_('../utils/debug');
@@ -67082,7 +67211,7 @@ module.exports.Component = registerComponent('light', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils":179,"../utils/bind":173,"../utils/debug":175}],63:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils":180,"../utils/bind":174,"../utils/debug":176}],64:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -67157,7 +67286,7 @@ function isEqualVec3 (a, b) {
   return (a.x === b.x && a.y === b.y && a.z === b.z);
 }
 
-},{"../core/component":108}],64:[function(_dereq_,module,exports){
+},{"../core/component":107}],65:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
@@ -67179,7 +67308,7 @@ module.exports.Component = registerComponent('link', {
     peekMode: {default: false},
     title: {default: ''},
     titleColor: {default: 'white', type: 'color'},
-    visualAspectEnabled: {default: true}
+    visualAspectEnabled: {default: false}
   },
 
   init: function () {
@@ -67188,7 +67317,6 @@ module.exports.Component = registerComponent('link', {
     this.quaternionClone = new THREE.Quaternion();
     // Store hidden elements during peek mode so we can show them again later.
     this.hiddenEls = [];
-    this.initVisualAspect();
   },
 
   update: function (oldData) {
@@ -67197,6 +67325,10 @@ module.exports.Component = registerComponent('link', {
     var backgroundColor;
     var strokeColor;
 
+    if (!data.visualAspectEnabled) { return; }
+
+    this.initVisualAspect();
+
     backgroundColor = data.highlighted ? data.highlightedColor : data.backgroundColor;
     strokeColor = data.highlighted ? data.highlightedColor : data.borderColor;
     el.setAttribute('material', 'backgroundColor', backgroundColor);
@@ -67204,7 +67336,7 @@ module.exports.Component = registerComponent('link', {
 
     if (data.on !== oldData.on) { this.updateEventListener(); }
 
-    if (data.visualAspectEnabled && oldData.peekMode !== undefined &&
+    if (oldData.peekMode !== undefined &&
         data.peekMode !== oldData.peekMode) { this.updatePeekMode(); }
 
     if (!data.image || oldData.image === data.image) { return; }
@@ -67257,7 +67389,7 @@ module.exports.Component = registerComponent('link', {
     var sphereEl;
     var textEl;
 
-    if (!this.data.visualAspectEnabled) { return; }
+    if (!this.data.visualAspectEnabled || this.visualAspectInitialized) { return; }
 
     textEl = this.textEl = this.textEl || document.createElement('a-entity');
     sphereEl = this.sphereEl = this.sphereEl || document.createElement('a-entity');
@@ -67315,6 +67447,8 @@ module.exports.Component = registerComponent('link', {
     });
     sphereEl.setAttribute('visible', false);
     el.appendChild(sphereEl);
+
+    this.visualAspectInitialized = true;
   },
 
   navigate: function () {
@@ -67524,7 +67658,7 @@ registerShader('portal', {
 });
 /* eslint-enable */
 
-},{"../core/component":108,"../core/shader":118,"../lib/three":157}],65:[function(_dereq_,module,exports){
+},{"../core/component":107,"../core/shader":118,"../lib/three":157}],66:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -67548,6 +67682,7 @@ module.exports.Component = registerComponent('look-controls', {
     hmdEnabled: {default: true},
     pointerLockEnabled: {default: false},
     reverseMouseDrag: {default: false},
+    reverseTouchDrag: {default: false},
     touchEnabled: {default: true}
   },
 
@@ -67839,6 +67974,7 @@ module.exports.Component = registerComponent('look-controls', {
    * Translate touch move to Y-axis rotation.
    */
   onTouchMove: function (evt) {
+    var direction;
     var canvas = this.el.sceneEl.canvas;
     var deltaY;
     var yawObject = this.yawObject;
@@ -67847,8 +67983,9 @@ module.exports.Component = registerComponent('look-controls', {
 
     deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
 
+    direction = this.data.reverseTouchDrag ? 1 : -1;
     // Limit touch orientaion to to yaw (y axis).
-    yawObject.rotation.y -= deltaY * 0.5;
+    yawObject.rotation.y -= deltaY * 0.5 * direction;
     this.touchStart = {
       x: evt.touches[0].pageX,
       y: evt.touches[0].pageY
@@ -67951,7 +68088,7 @@ module.exports.Component = registerComponent('look-controls', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils":179,"../utils/":179}],66:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils":180,"../utils/":180}],67:[function(_dereq_,module,exports){
 /* global Promise */
 var utils = _dereq_('../utils/');
 var component = _dereq_('../core/component');
@@ -68007,10 +68144,16 @@ module.exports.Component = registerComponent('material', {
   },
 
   updateSchema: function (data) {
-    var newShader = data.shader;
-    var currentShader = this.data && this.data.shader;
-    var shader = newShader || currentShader;
-    var schema = shaders[shader] && shaders[shader].schema;
+    var currentShader;
+    var newShader;
+    var schema;
+    var shader;
+
+    newShader = data && data.shader;
+    currentShader = this.oldData && this.oldData.shader;
+    shader = newShader || currentShader;
+    schema = shaders[shader] && shaders[shader].schema;
+
     if (!schema) { error('Unknown shader schema ' + shader); }
     if (currentShader && newShader === currentShader) { return; }
     this.extendSchema(schema);
@@ -68018,28 +68161,35 @@ module.exports.Component = registerComponent('material', {
   },
 
   updateBehavior: function () {
+    var key;
+    var sceneEl = this.el.sceneEl;
     var schema = this.schema;
     var self = this;
-    var sceneEl = this.el.sceneEl;
-    var tickProperties = {};
-    var tick = function (time, delta) {
-      Object.keys(tickProperties).forEach(function update (key) {
+    var tickProperties;
+
+    function tickTime (time, delta) {
+      var key;
+      for (key in tickProperties) {
         tickProperties[key] = time;
-      });
+      }
       self.shader.update(tickProperties);
-    };
+    }
+
     this.tick = undefined;
-    Object.keys(schema).forEach(function (key) {
+
+    tickProperties = {};
+    for (key in schema) {
       if (schema[key].type === 'time') {
-        self.tick = tick;
+        this.tick = tickTime;
         tickProperties[key] = true;
       }
-    });
+    }
+
     if (!sceneEl) { return; }
-    if (!this.tick) {
-      sceneEl.removeBehavior(this);
-    } else {
+    if (this.tick) {
       sceneEl.addBehavior(this);
+    } else {
+      sceneEl.removeBehavior(this);
     }
   },
 
@@ -68065,6 +68215,7 @@ module.exports.Component = registerComponent('material', {
   updateMaterial: function (oldData) {
     var data = this.data;
     var material = this.material;
+    var oldDataHasKeys;
 
     // Base material properties.
     material.alphaTest = data.alphaTest;
@@ -68079,7 +68230,8 @@ module.exports.Component = registerComponent('material', {
     material.blending = parseBlending(data.blending);
 
     // Check if material needs update.
-    if (Object.keys(oldData).length &&
+    for (oldDataHasKeys in oldData) { break; }
+    if (oldDataHasKeys &&
         (oldData.alphaTest !== data.alphaTest ||
          oldData.side !== data.side ||
          oldData.vertexColors !== data.vertexColors)) {
@@ -68205,7 +68357,7 @@ function disposeMaterial (material, system) {
   system.unregisterMaterial(material);
 }
 
-},{"../core/component":108,"../core/shader":118,"../lib/three":157,"../utils/":179}],67:[function(_dereq_,module,exports){
+},{"../core/component":107,"../core/shader":118,"../lib/three":157,"../utils/":180}],68:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -68229,12 +68381,16 @@ module.exports.Component = registerComponent('obj-model', {
   update: function () {
     var data = this.data;
     if (!data.obj) { return; }
-    this.remove();
+    this.resetMesh();
     this.loadObj(data.obj, data.mtl);
   },
 
   remove: function () {
     if (!this.model) { return; }
+    this.resetMesh();
+  },
+
+  resetMesh: function () {
     this.el.removeObject3D('mesh');
   },
 
@@ -68281,7 +68437,7 @@ module.exports.Component = registerComponent('obj-model', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils/debug":175}],68:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/debug":176}],69:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -68354,7 +68510,6 @@ module.exports.Component = registerComponent('oculus-go-controls', {
     el.addEventListener('model-loaded', this.onModelLoaded);
     el.addEventListener('axismove', this.onAxisMoved);
     this.controllerEventsActive = true;
-    this.addControllersUpdateListener();
   },
 
   removeEventListeners: function () {
@@ -68367,7 +68522,6 @@ module.exports.Component = registerComponent('oculus-go-controls', {
     el.removeEventListener('model-loaded', this.onModelLoaded);
     el.removeEventListener('axismove', this.onAxisMoved);
     this.controllerEventsActive = false;
-    this.removeControllersUpdateListener();
   },
 
   checkIfControllerPresent: function () {
@@ -68455,7 +68609,7 @@ module.exports.Component = registerComponent('oculus-go-controls', {
   }
 });
 
-},{"../core/component":108,"../utils/bind":173,"../utils/tracked-controls":185}],69:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],70:[function(_dereq_,module,exports){
 var bind = _dereq_('../utils/bind');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -68673,7 +68827,7 @@ module.exports.Component = registerComponent('oculus-touch-controls', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils/bind":173,"../utils/tracked-controls":185}],70:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/bind":174,"../utils/tracked-controls":186}],71:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 module.exports.Component = registerComponent('position', {
@@ -68691,7 +68845,7 @@ module.exports.Component = registerComponent('position', {
   }
 });
 
-},{"../core/component":108}],71:[function(_dereq_,module,exports){
+},{"../core/component":107}],72:[function(_dereq_,module,exports){
 /* global MutationObserver */
 
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -69120,7 +69274,7 @@ function copyArray (a, b) {
   }
 }
 
-},{"../core/component":108,"../lib/three":157,"../utils/":179}],72:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/":180}],73:[function(_dereq_,module,exports){
 var degToRad = _dereq_('../lib/three').Math.degToRad;
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -69143,7 +69297,7 @@ module.exports.Component = registerComponent('rotation', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157}],73:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157}],74:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 // Avoids triggering a zero-determinant which makes object3D matrix non-invertible.
@@ -69170,7 +69324,7 @@ module.exports.Component = registerComponent('scale', {
   }
 });
 
-},{"../core/component":108}],74:[function(_dereq_,module,exports){
+},{"../core/component":107}],75:[function(_dereq_,module,exports){
 /* global THREE */
 var register = _dereq_('../../core/component').registerComponent;
 
@@ -69190,14 +69344,14 @@ module.exports.Component = register('background', {
   }
 });
 
-},{"../../core/component":108}],75:[function(_dereq_,module,exports){
+},{"../../core/component":107}],76:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('debug', {
   schema: {default: true}
 });
 
-},{"../../core/component":108}],76:[function(_dereq_,module,exports){
+},{"../../core/component":107}],77:[function(_dereq_,module,exports){
 /* global THREE */
 var registerEffect = _dereq_('../../../core/effect').registerEffect;
 
@@ -69227,13 +69381,13 @@ registerEffect('bloom', {
   }
 });
 
-},{"../../../../vendor/effects/CopyShader":188,"../../../../vendor/effects/LuminosityHighPassShader":190,"../../../../vendor/effects/ShaderPass":195,"../../../../vendor/effects/UnrealBloomPass":196,"../../../core/effect":109}],77:[function(_dereq_,module,exports){
+},{"../../../../vendor/effects/CopyShader":189,"../../../../vendor/effects/LuminosityHighPassShader":191,"../../../../vendor/effects/ShaderPass":196,"../../../../vendor/effects/UnrealBloomPass":197,"../../../core/effect":108}],78:[function(_dereq_,module,exports){
 _dereq_('./bloom');
 _dereq_('./sepia');
 _dereq_('./ssao');
 
 
-},{"./bloom":76,"./sepia":78,"./ssao":79}],78:[function(_dereq_,module,exports){
+},{"./bloom":77,"./sepia":79,"./ssao":80}],79:[function(_dereq_,module,exports){
 /* global THREE */
 var registerEffect = _dereq_('../../../core/effect').registerEffect;
 
@@ -69257,7 +69411,7 @@ registerEffect('sepia', {
   }
 });
 
-},{"../../../../vendor/effects/SepiaShader":194,"../../../../vendor/effects/ShaderPass":195,"../../../core/effect":109}],79:[function(_dereq_,module,exports){
+},{"../../../../vendor/effects/SepiaShader":195,"../../../../vendor/effects/ShaderPass":196,"../../../core/effect":108}],80:[function(_dereq_,module,exports){
 /* global THREE */
 var registerEffect = _dereq_('../../../core/effect').registerEffect;
 
@@ -69285,7 +69439,7 @@ registerEffect('ssao', {
   }
 });
 
-},{"../../../../vendor/effects/SSAOPass":192,"../../../../vendor/effects/SSAOShader":193,"../../../core/effect":109}],80:[function(_dereq_,module,exports){
+},{"../../../../vendor/effects/SSAOPass":193,"../../../../vendor/effects/SSAOShader":194,"../../../core/effect":108}],81:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 
 /**
@@ -69310,7 +69464,7 @@ module.exports.Component = registerComponent('embedded', {
 
 });
 
-},{"../../core/component":108}],81:[function(_dereq_,module,exports){
+},{"../../core/component":107}],82:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 var debug = _dereq_('../../utils/debug');
@@ -69383,7 +69537,7 @@ function getFog (data) {
   return fog;
 }
 
-},{"../../core/component":108,"../../lib/three":157,"../../utils/debug":175}],82:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../lib/three":157,"../../utils/debug":176}],83:[function(_dereq_,module,exports){
 (function (process){
 /* global AFRAME */
 var AFRAME_INJECTED = _dereq_('../../constants').AFRAME_INJECTED;
@@ -69488,7 +69642,7 @@ module.exports.Component = registerComponent('inspector', {
 
 }).call(this,_dereq_('_process'))
 
-},{"../../../package":51,"../../constants":99,"../../core/component":108,"../../utils/bind":173,"_process":6}],83:[function(_dereq_,module,exports){
+},{"../../../package":51,"../../constants":99,"../../core/component":107,"../../utils/bind":174,"_process":6}],84:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var shouldCaptureKeyEvent = _dereq_('../../utils/').shouldCaptureKeyEvent;
 
@@ -69527,7 +69681,8 @@ module.exports.Component = registerComponent('keyboard-shortcuts', {
   }
 });
 
-},{"../../core/component":108,"../../utils/":179}],84:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../utils/":180}],85:[function(_dereq_,module,exports){
+/* global THREE */
 var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('overlay', {
@@ -69553,7 +69708,7 @@ module.exports.Component = register('overlay', {
     var scene = this.scene;
     if (!scene) { return; }
     els = this.els = this.el.sceneEl.querySelectorAll(this.data.objects);
-    for (i = 0; i < els.length; ++i) {
+    for (var i = 0; i < els.length; ++i) {
       if (!els[i].object3D) { continue; }
       scene.add(els[i].object3D);
     }
@@ -69569,7 +69724,7 @@ module.exports.Component = register('overlay', {
     // Hide objects so they are not rendered on first pass.
     this.scene.visible = false;
     renderer.autoClear = autoClear;
-  }, 
+  },
 
   /* Return ownership to the a-scene THREE.Scene */
   restoreObjects: function () {
@@ -69580,15 +69735,15 @@ module.exports.Component = register('overlay', {
     for (i = 0; i < els.length; ++i) {
       scene && scene.remove(els[i].object3D);
       this.el.object3D.add(els[i].object3D);
-    } 
-  }, 
+    }
+  },
 
   remove: function () {
     this.restoreObjects();
   }
 });
 
-},{"../../core/component":108}],85:[function(_dereq_,module,exports){
+},{"../../core/component":107}],86:[function(_dereq_,module,exports){
 var debug = _dereq_('../../utils/debug');
 var registerComponent = _dereq_('../../core/component').registerComponent;
 
@@ -69706,7 +69861,7 @@ module.exports.Component = registerComponent('pool', {
   }
 });
 
-},{"../../core/component":108,"../../utils/debug":175}],86:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../utils/debug":176}],87:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 var debug = _dereq_('../../utils/debug');
 
@@ -69722,6 +69877,7 @@ var warn = debug('components:renderer:warn');
 module.exports.Component = register('renderer', {
   schema: {
     antialias: {default: 'auto', oneOf: ['true', 'false', 'auto']},
+    logarithmicDepthBuffer: {default: 'auto', oneOf: ['true', 'false', 'auto']},
     maxCanvasWidth: {default: 1920},
     maxCanvasHeight: {default: 1920},
     gammaOutput: {default: false},
@@ -69750,6 +69906,10 @@ module.exports.Component = register('renderer', {
 
     if (sceneEl.time > 0 && data.antialias !== prevData.antialias) {
       warn('Property "antialias" cannot be changed after scene initialization');
+    }
+
+    if (sceneEl.time > 0 && data.logarithmicDepthBuffer !== prevData.logarithmicDepthBuffer) {
+      warn('Property "logarithmicDepthBuffer" cannot be changed after scene initialization');
     }
 
     if (data.sortObjects !== prevData.sortObjects) {
@@ -69783,7 +69943,7 @@ module.exports.Component = register('renderer', {
   }
 });
 
-},{"../../core/component":108,"../../utils/debug":175}],87:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../utils/debug":176}],88:[function(_dereq_,module,exports){
 /* global ImageData, URL */
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
@@ -70042,7 +70202,7 @@ module.exports.Component = registerComponent('screenshot', {
   }
 });
 
-},{"../../core/component":108,"../../lib/three":157}],88:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../lib/three":157}],89:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var RStats = _dereq_('../../../vendor/rStats');
 var utils = _dereq_('../../utils');
@@ -70122,7 +70282,7 @@ function createStats (scene) {
   });
 }
 
-},{"../../../vendor/rStats":198,"../../../vendor/rStats.extras":197,"../../core/component":108,"../../lib/rStatsAframe":156,"../../utils":179}],89:[function(_dereq_,module,exports){
+},{"../../../vendor/rStats":199,"../../../vendor/rStats.extras":198,"../../core/component":107,"../../lib/rStatsAframe":156,"../../utils":180}],90:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var constants = _dereq_('../../constants/');
 var utils = _dereq_('../../utils/');
@@ -70308,7 +70468,7 @@ function createOrientationModal (onClick) {
   return modal;
 }
 
-},{"../../constants/":99,"../../core/component":108,"../../utils/":179}],90:[function(_dereq_,module,exports){
+},{"../../constants/":99,"../../core/component":107,"../../utils/":180}],91:[function(_dereq_,module,exports){
 var component = _dereq_('../core/component');
 var THREE = _dereq_('../lib/three');
 var bind = _dereq_('../utils/bind');
@@ -70362,7 +70522,7 @@ module.exports.Component = registerComponent('shadow', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils/bind":173}],91:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/bind":174}],92:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var debug = _dereq_('../utils/debug');
 var bind = _dereq_('../utils/bind');
@@ -70580,7 +70740,7 @@ module.exports.Component = registerComponent('sound', {
   }
 });
 
-},{"../core/component":108,"../lib/three":157,"../utils/bind":173,"../utils/debug":175}],92:[function(_dereq_,module,exports){
+},{"../core/component":107,"../lib/three":157,"../utils/bind":174,"../utils/debug":176}],93:[function(_dereq_,module,exports){
 var createTextGeometry = _dereq_('three-bmfont-text');
 var loadBMFont = _dereq_('load-bmfont');
 
@@ -70618,6 +70778,9 @@ module.exports.FONTS = FONTS;
 var cache = new PromiseCache();
 var fontWidthFactors = {};
 var textures = {};
+
+// Regular expression for detecting a URLs with a protocol prefix.
+var protocolRe = /^\w+:/;
 
 /**
  * SDF-based text component.
@@ -70676,15 +70839,14 @@ module.exports.Component = registerComponent('text', {
   },
 
   update: function (oldData) {
-    var data = coerceData(this.data);
+    var data = this.data;
     var font = this.currentFont;
-    var fontImage = this.getFontImageSrc();
 
-    if (textures[fontImage]) {
-      this.texture = textures[fontImage];
+    if (textures[data.font]) {
+      this.texture = textures[data.font];
     } else {
       // Create texture per font.
-      this.texture = textures[fontImage] = new THREE.Texture();
+      this.texture = textures[data.font] = new THREE.Texture();
       this.texture.anisotropy = MAX_ANISOTROPY;
     }
 
@@ -70699,8 +70861,8 @@ module.exports.Component = registerComponent('text', {
 
     // Update geometry and layout.
     if (font) {
-      this.updateGeometry(this.geometry, data, font);
-      this.updateLayout(data);
+      this.updateGeometry(this.geometry, font);
+      this.updateLayout();
     }
   },
 
@@ -70789,7 +70951,6 @@ module.exports.Component = registerComponent('text', {
     cache.get(fontSrc, function doLoadFont () {
       return loadFont(fontSrc, data.yOffset);
     }).then(function setFont (font) {
-      var coercedData;
       var fontImgSrc;
 
       if (font.pages.length !== 1) {
@@ -70801,12 +70962,11 @@ module.exports.Component = registerComponent('text', {
       }
 
       // Update geometry given font metrics.
-      coercedData = coerceData(data);
-      self.updateGeometry(geometry, self.data, font);
+      self.updateGeometry(geometry, font);
 
       // Set font and update layout.
       self.currentFont = font;
-      self.updateLayout(coercedData);
+      self.updateLayout();
 
       // Look up font image URL to use, and perform cached load.
       fontImgSrc = self.getFontImageSrc();
@@ -70817,7 +70977,7 @@ module.exports.Component = registerComponent('text', {
         var texture = self.texture;
         texture.image = image;
         texture.needsUpdate = true;
-        textures[fontImgSrc] = texture;
+        textures[data.font] = texture;
         self.texture = texture;
         self.mesh.visible = true;
         el.emit('textfontset', {font: data.font, fontObj: font});
@@ -70832,27 +70992,37 @@ module.exports.Component = registerComponent('text', {
   },
 
   getFontImageSrc: function () {
+    if (this.data.fontImage) { return this.data.fontImage; }
     var fontSrc = this.lookupFont(this.data.font || DEFAULT_FONT) || this.data.font;
-    return this.data.fontImage || fontSrc.replace(/(\.fnt)|(\.json)/, '.png');
+    var imageSrc = this.currentFont.pages[0];
+    // If the image URL contains a non-HTTP(S) protocol, assume it's an absolute
+    // path on disk and try to infer the path from the font source instead.
+    if (imageSrc.match(protocolRe) && imageSrc.indexOf('http') !== 0) {
+      return fontSrc.replace(/(\.fnt)|(\.json)/, '.png');
+    }
+    return THREE.LoaderUtils.extractUrlBase(fontSrc) + imageSrc;
   },
 
   /**
    * Update layout with anchor, alignment, baseline, and considering any meshes.
    */
-  updateLayout: function (data) {
+  updateLayout: function () {
     var anchor;
     var baseline;
     var el = this.el;
+    var data = this.data;
     var geometry = this.geometry;
-    var geometryComponent = el.getAttribute('geometry');
+    var geometryComponent;
     var height;
-    var layout = geometry.layout;
+    var layout;
     var mesh = this.mesh;
     var textRenderWidth;
     var textScale;
     var width;
     var x;
     var y;
+
+    if (!geometry.layout) { return; }
 
     // Determine width to use (defined width, geometry's width, or default width).
     geometryComponent = el.getAttribute('geometry');
@@ -70865,6 +71035,7 @@ module.exports.Component = registerComponent('text', {
     textScale = width / textRenderWidth;
 
     // Determine height to use.
+    layout = geometry.layout;
     height = textScale * (layout.height + layout.descender);
 
     // Update geometry dimensions to match text layout if width and height are set to 0.
@@ -70904,7 +71075,6 @@ module.exports.Component = registerComponent('text', {
     // Place text slightly in front to avoid Z-fighting.
     mesh.position.z = data.zOffset;
     mesh.scale.set(textScale, -1 * textScale, textScale);
-    this.geometry.computeBoundingSphere();
   },
 
   /**
@@ -70918,14 +71088,26 @@ module.exports.Component = registerComponent('text', {
   /**
    * Update the text geometry using `three-bmfont-text.update`.
    */
-  updateGeometry: function (geometry, data, font) {
-    geometry.update(utils.extend({}, data, {
-      font: font,
-      width: computeWidth(data.wrapPixels, data.wrapCount, font.widthFactor),
-      text: data.value.toString().replace(/\\n/g, '\n').replace(/\\t/g, '\t'),
-      lineHeight: data.lineHeight || font.common.lineHeight
-    }));
-  }
+  updateGeometry: (function () {
+    var geometryUpdateBase = {};
+    var geometryUpdateData = {};
+    var newLineRegex = /\\n/g;
+    var tabRegex = /\\t/g;
+
+    return function (geometry, font) {
+      var data = this.data;
+
+      geometryUpdateData.font = font;
+      geometryUpdateData.lineHeight = data.lineHeight && isFinite(data.lineHeight)
+        ? data.lineHeight
+        : font.common.lineHeight;
+      geometryUpdateData.text = data.value.toString().replace(newLineRegex, '\n')
+                                                     .replace(tabRegex, '\t');
+      geometryUpdateData.width = computeWidth(data.wrapPixels, data.wrapCount,
+                                              font.widthFactor);
+      geometry.update(utils.extend(geometryUpdateBase, data, geometryUpdateData));
+    };
+  })()
 });
 
 /**
@@ -70944,23 +71126,6 @@ function parseSide (side) {
       return THREE.BackSide;
     }
   }
-}
-
-/**
- * Coerce some data to numbers.
- * as they will be passed directly into text creation and update
- */
-function coerceData (data) {
-  data = utils.clone(data);
-  if (data.lineHeight !== undefined) {
-    data.lineHeight = parseFloat(data.lineHeight);
-    if (!isFinite(data.lineHeight)) { data.lineHeight = undefined; }
-  }
-  if (data.width !== undefined) {
-    data.width = parseFloat(data.width);
-    if (!isFinite(data.width)) { data.width = undefined; }
-  }
-  return data;
 }
 
 /**
@@ -71060,7 +71225,7 @@ function PromiseCache () {
   };
 }
 
-},{"../core/component":108,"../core/shader":118,"../lib/three":157,"../utils/":179,"load-bmfont":24,"three-bmfont-text":36}],93:[function(_dereq_,module,exports){
+},{"../core/component":107,"../core/shader":118,"../lib/three":157,"../utils/":180,"load-bmfont":24,"three-bmfont-text":35}],94:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var controllerUtils = _dereq_('../utils/tracked-controls');
 var DEFAULT_CAMERA_HEIGHT = _dereq_('../constants').DEFAULT_CAMERA_HEIGHT;
@@ -71394,7 +71559,7 @@ module.exports.Component = registerComponent('tracked-controls', {
   }
 });
 
-},{"../constants":99,"../core/component":108,"../lib/three":157,"../utils/tracked-controls":185}],94:[function(_dereq_,module,exports){
+},{"../constants":99,"../core/component":107,"../lib/three":157,"../utils/tracked-controls":186}],95:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 /**
@@ -71408,7 +71573,7 @@ module.exports.Component = registerComponent('visible', {
   }
 });
 
-},{"../core/component":108}],95:[function(_dereq_,module,exports){
+},{"../core/component":107}],96:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
 
@@ -71637,7 +71802,7 @@ module.exports.Component = registerComponent('vive-controls', {
   }
 });
 
-},{"../core/component":108,"../utils/":179,"../utils/tracked-controls":185}],96:[function(_dereq_,module,exports){
+},{"../core/component":107,"../utils/":180,"../utils/tracked-controls":186}],97:[function(_dereq_,module,exports){
 var KEYCODE_TO_CODE = _dereq_('../constants').keyboardevent.KEYCODE_TO_CODE;
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -71673,8 +71838,6 @@ module.exports.Component = registerComponent('wasd-controls', {
   init: function () {
     // To keep track of the pressed keys.
     this.keys = {};
-
-    this.position = {};
     this.velocity = new THREE.Vector3();
 
     // Bind methods and add event listeners.
@@ -71687,11 +71850,8 @@ module.exports.Component = registerComponent('wasd-controls', {
   },
 
   tick: function (time, delta) {
-    var currentPosition;
     var data = this.data;
     var el = this.el;
-    var movementVector;
-    var position = this.position;
     var velocity = this.velocity;
 
     if (!velocity[data.adAxis] && !velocity[data.wsAxis] &&
@@ -71704,12 +71864,7 @@ module.exports.Component = registerComponent('wasd-controls', {
     if (!velocity[data.adAxis] && !velocity[data.wsAxis]) { return; }
 
     // Get movement vector and translate position.
-    currentPosition = el.getAttribute('position');
-    movementVector = this.getMovementVector(delta);
-    position.x = currentPosition.x + movementVector.x;
-    position.y = currentPosition.y + movementVector.y;
-    position.z = currentPosition.z + movementVector.z;
-    el.setAttribute('position', position);
+    el.object3D.position.add(this.getMovementVector(delta));
   },
 
   remove: function () {
@@ -71856,7 +72011,7 @@ function isEmptyObject (keys) {
   return true;
 }
 
-},{"../constants":99,"../core/component":108,"../lib/three":157,"../utils/":179}],97:[function(_dereq_,module,exports){
+},{"../constants":99,"../core/component":107,"../lib/three":157,"../utils/":180}],98:[function(_dereq_,module,exports){
 /* global THREE */
 var bind = _dereq_('../utils/bind');
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -72305,120 +72460,15 @@ module.exports.Component = registerComponent('windows-motion-controls', {
   }
 });
 
-},{"../constants":99,"../core/component":108,"../utils/":179,"../utils/bind":173,"../utils/tracked-controls":185}],98:[function(_dereq_,module,exports){
-/**
- * Animation configuration options for TWEEN.js animations.
- * Used by `<a-animation>`.
- */
-var TWEEN = _dereq_('@tweenjs/tween.js');
-
-var DIRECTIONS = {
-  alternate: 'alternate',
-  alternateReverse: 'alternate-reverse',
-  normal: 'normal',
-  reverse: 'reverse'
-};
-
-var EASING_FUNCTIONS = {
-  'linear': TWEEN.Easing.Linear.None,
-
-  'ease': TWEEN.Easing.Cubic.InOut,
-  'ease-in': TWEEN.Easing.Cubic.In,
-  'ease-out': TWEEN.Easing.Cubic.Out,
-  'ease-in-out': TWEEN.Easing.Cubic.InOut,
-
-  'ease-cubic': TWEEN.Easing.Cubic.In,
-  'ease-in-cubic': TWEEN.Easing.Cubic.In,
-  'ease-out-cubic': TWEEN.Easing.Cubic.Out,
-  'ease-in-out-cubic': TWEEN.Easing.Cubic.InOut,
-
-  'ease-quad': TWEEN.Easing.Quadratic.InOut,
-  'ease-in-quad': TWEEN.Easing.Quadratic.In,
-  'ease-out-quad': TWEEN.Easing.Quadratic.Out,
-  'ease-in-out-quad': TWEEN.Easing.Quadratic.InOut,
-
-  'ease-quart': TWEEN.Easing.Quartic.InOut,
-  'ease-in-quart': TWEEN.Easing.Quartic.In,
-  'ease-out-quart': TWEEN.Easing.Quartic.Out,
-  'ease-in-out-quart': TWEEN.Easing.Quartic.InOut,
-
-  'ease-quint': TWEEN.Easing.Quintic.InOut,
-  'ease-in-quint': TWEEN.Easing.Quintic.In,
-  'ease-out-quint': TWEEN.Easing.Quintic.Out,
-  'ease-in-out-quint': TWEEN.Easing.Quintic.InOut,
-
-  'ease-sine': TWEEN.Easing.Sinusoidal.InOut,
-  'ease-in-sine': TWEEN.Easing.Sinusoidal.In,
-  'ease-out-sine': TWEEN.Easing.Sinusoidal.Out,
-  'ease-in-out-sine': TWEEN.Easing.Sinusoidal.InOut,
-
-  'ease-expo': TWEEN.Easing.Exponential.InOut,
-  'ease-in-expo': TWEEN.Easing.Exponential.In,
-  'ease-out-expo': TWEEN.Easing.Exponential.Out,
-  'ease-in-out-expo': TWEEN.Easing.Exponential.InOut,
-
-  'ease-circ': TWEEN.Easing.Circular.InOut,
-  'ease-in-circ': TWEEN.Easing.Circular.In,
-  'ease-out-circ': TWEEN.Easing.Circular.Out,
-  'ease-in-out-circ': TWEEN.Easing.Circular.InOut,
-
-  'ease-elastic': TWEEN.Easing.Elastic.InOut,
-  'ease-in-elastic': TWEEN.Easing.Elastic.In,
-  'ease-out-elastic': TWEEN.Easing.Elastic.Out,
-  'ease-in-out-elastic': TWEEN.Easing.Elastic.InOut,
-
-  'ease-back': TWEEN.Easing.Back.InOut,
-  'ease-in-back': TWEEN.Easing.Back.In,
-  'ease-out-back': TWEEN.Easing.Back.Out,
-  'ease-in-out-back': TWEEN.Easing.Back.InOut,
-
-  'ease-bounce': TWEEN.Easing.Bounce.InOut,
-  'ease-in-bounce': TWEEN.Easing.Bounce.In,
-  'ease-out-bounce': TWEEN.Easing.Bounce.Out,
-  'ease-in-out-bounce': TWEEN.Easing.Bounce.InOut
-};
-
-var FILLS = {
-  backwards: 'backwards',
-  both: 'both',
-  forwards: 'forwards',
-  none: 'none'
-};
-
-var REPEATS = {
-  indefinite: 'indefinite'
-};
-
-var DEFAULTS = {
-  attribute: 'rotation',
-  begin: '',
-  end: '',
-  delay: 0,
-  dur: 1000,
-  easing: 'ease',
-  direction: DIRECTIONS.normal,
-  fill: FILLS.forwards,
-  from: undefined,
-  repeat: 0,
-  to: undefined
-};
-
-module.exports.defaults = DEFAULTS;
-module.exports.directions = DIRECTIONS;
-module.exports.easingFunctions = EASING_FUNCTIONS;
-module.exports.fills = FILLS;
-module.exports.repeats = REPEATS;
-
-},{"@tweenjs/tween.js":1}],99:[function(_dereq_,module,exports){
+},{"../constants":99,"../core/component":107,"../utils/":180,"../utils/bind":174,"../utils/tracked-controls":186}],99:[function(_dereq_,module,exports){
 module.exports = {
   AFRAME_INJECTED: 'aframe-injected',
   DEFAULT_CAMERA_HEIGHT: 1.6,
   DEFAULT_HANDEDNESS: 'right',
-  animation: _dereq_('./animation'),
   keyboardevent: _dereq_('./keyboardevent')
 };
 
-},{"./animation":98,"./keyboardevent":100}],100:[function(_dereq_,module,exports){
+},{"./keyboardevent":100}],100:[function(_dereq_,module,exports){
 module.exports = {
   // Tiny KeyboardEvent.code polyfill.
   KEYCODE_TO_CODE: {
@@ -72434,559 +72484,6 @@ module.exports = {
 };
 
 },{}],101:[function(_dereq_,module,exports){
-var ANode = _dereq_('./a-node');
-var animationConstants = _dereq_('../constants/animation');
-var coordinates = _dereq_('../utils/').coordinates;
-var parseProperty = _dereq_('./schema').parseProperty;
-var registerElement = _dereq_('./a-register-element').registerElement;
-var TWEEN = _dereq_('@tweenjs/tween.js');
-var THREE = _dereq_('../lib/three');
-var utils = _dereq_('../utils/');
-var bind = utils.bind;
-
-var getComponentProperty = utils.entity.getComponentProperty;
-var DEFAULTS = animationConstants.defaults;
-var DIRECTIONS = animationConstants.directions;
-var EASING_FUNCTIONS = animationConstants.easingFunctions;
-var FILLS = animationConstants.fills;
-var REPEATS = animationConstants.repeats;
-var isCoordinates = coordinates.isCoordinates;
-var warn = utils.debug('core:a-animation:warn');
-
-var hasLoggedDeprecation = false;
-
-/**
- * Animation element that applies Tween animation to parent element (entity).
- * Takes after the Web Animations spec.
- *
- * @member {number} count - Decrementing counter for how many cycles of animations left to
- *         run.
- * @member {Element} el - Entity which the animation is modifying.
- * @member initialValue - Value before animation started. Used to restore state.
- * @member {bool} isRunning - Whether animation is currently running.
- * @member {function} partialSetAttribute -
- *   setAttribute function that is agnostic to whether we are setting an attribute value
- *   or a component property value. The el and the attribute names are bundled with
- *   the function.
- * @member {object} tween - tween.js object.
- */
-module.exports.AAnimation = registerElement('a-animation', {
-  prototype: Object.create(ANode.prototype, {
-    createdCallback: {
-      value: function () {
-        this.bindMethods();
-        this.isRunning = false;
-        this.partialSetAttribute = function () { /* no-op */ };
-        this.tween = null;
-
-        if (!hasLoggedDeprecation) {
-          warn('<a-animation> has been deprecated and will be replaced by the animation ' +
-               'component: https://www.npmjs.com/package/aframe-animation-component');
-          hasLoggedDeprecation = true;
-        }
-      }
-    },
-
-    attachedCallback: {
-      value: function () {
-        this.el = this.parentNode;
-        this.handleMixinUpdate();
-        this.update();
-        this.load();
-      }
-    },
-
-    attributeChangedCallback: {
-      value: function (attr, oldVal, newVal) {
-        if (!this.hasLoaded || !this.isRunning) { return; }
-        this.stop();
-        this.handleMixinUpdate();
-        this.update();
-      }
-    },
-
-    detachedCallback: {
-      value: function () {
-        if (!this.isRunning) { return; }
-        this.stop();
-      }
-    },
-
-    /**
-     * Builds a Tween object to handle animations.
-     * Uses tween.js's from, to, delay, easing, repeat, onUpdate, and onComplete.
-     * Note: tween.js takes objects for its `from` and `to` values.
-     *
-     * @returns {object}
-     */
-    getTween: {
-      value: function () {
-        var self = this;
-        var data = self.data;
-        var el = self.el;
-        var animationValues;
-        var attribute = data.attribute;
-        var delay = parseInt(data.delay, 10);
-        var currentValue = getComponentProperty(el, attribute);
-        var direction = self.getDirection(data.direction);
-        var easing = EASING_FUNCTIONS[data.easing];
-        var fill = data.fill;
-        var from;
-        var repeat = data.repeat === REPEATS.indefinite ? Infinity : 0;
-        var to;
-        var toTemp;
-        var yoyo = false;
-
-        animationValues = getAnimationValues(el, attribute, data.from || self.initialValue, data.to, currentValue);
-        from = animationValues.from;
-        to = animationValues.to;
-        self.partialSetAttribute = animationValues.partialSetAttribute;
-
-        if (self.count === undefined) {
-          self.count = repeat === Infinity ? 0 : parseInt(data.repeat, 10);
-        }
-
-        if (isNaN(delay)) { delay = 0; }
-
-        // Store initial state.
-        self.initialValue = self.initialValue || cloneValue(currentValue);
-
-        // Handle indefinite + forwards + alternate yoyo edge-case (#405).
-        if (repeat === Infinity && fill === FILLS.forwards &&
-            [DIRECTIONS.alternate,
-              DIRECTIONS.alternateReverse].indexOf(data.direction) !== -1) {
-          yoyo = true;
-        }
-
-        // If reversing, swap from and to.
-        if (direction === DIRECTIONS.reverse) {
-          toTemp = to;
-          to = cloneValue(from);
-          from = cloneValue(toTemp);
-        }
-
-        // If fill is backwards or both, start animation at the specified from.
-        if ([FILLS.backwards, FILLS.both].indexOf(fill) !== -1) {
-          self.partialSetAttribute(from);
-        }
-
-        // Create Tween.
-        return new TWEEN.Tween(cloneValue(from))
-          .to(to, data.dur)
-          .delay(delay)
-          .easing(easing)
-          .repeat(repeat)
-          .yoyo(yoyo)
-          .onUpdate(function () {
-            self.partialSetAttribute(this);
-          })
-          .onComplete(bind(self.onCompleted, self));
-      }
-    },
-
-    /**
-     * Animation parameters changed. Stop current animation, get a new one, and start it.
-     */
-    update: {
-      value: function () {
-        var data = this.data;
-        // Terminology warning if infinite used instead of indefinite
-        if (data.repeat === 'infinite') {
-          console.warn("Using 'infinite' as 'repeat' value is invalid.  Use 'indefinite' instead.");
-        }
-        // Deprecation warning for begin when used as a delay.
-        if (data.begin !== '' && !isNaN(data.begin)) {
-          console.warn("Using 'begin' to specify a delay is deprecated. Use 'delay' instead.");
-          data.delay = data.begin;
-          data.begin = '';
-        }
-        var begin = data.begin;
-        var end = data.end;
-        // Cancel previous event listeners
-        if (this.evt) { this.removeEventListeners(this.evt); }
-        // Store new event name.
-        this.evt = {begin: begin, end: end};
-        // Add new event listeners
-        this.addEventListeners(this.evt);
-        // If `begin` is not defined, start the animation right away.
-        if (begin === '') {
-          this.stop();
-          this.start();
-        }
-      },
-      writable: window.debug
-    },
-
-    /**
-     * Callback for when a cycle of an animation is complete. Handles when to completely
-     * finish the animation.
-     *
-     * If `repeat` is set to a value, this method is called after each repeat. Repeats are
-     * handled by ending the current animation and creating a new one with `count` updated.
-     * Note that this method is *not* called if repeat is set to `indefinite`.
-     */
-    onCompleted: {
-      value: function () {
-        var data = this.data;
-        this.isRunning = false;
-        if ([FILLS.backwards, FILLS.none].indexOf(data.fill) !== -1) {
-          this.partialSetAttribute(this.initialValue);
-        }
-        if (this.count === 0) {
-          this.count = undefined;
-          this.emit('animationend');
-          return;
-        }
-        this.isRunning = false;
-        this.count--;
-        this.start();
-      }
-    },
-
-    start: {
-      value: function () {
-        var self = this;
-        // Postpone animation start until the entity has loaded
-        if (!this.el.hasLoaded) {
-          this.el.addEventListener('loaded', function () { self.start(); });
-          return;
-        }
-        if (this.isRunning || !this.el.isPlaying) { return; }
-        this.tween = this.getTween();
-        this.isRunning = true;
-        this.tween.start();
-        this.emit('animationstart');
-      },
-      writable: true
-    },
-
-    stop: {
-      value: function () {
-        var tween = this.tween;
-        if (!tween) { return; }
-        tween.stop();
-        this.isRunning = false;
-        if ([FILLS.backwards, FILLS.none].indexOf(this.data.fill) !== -1) {
-          this.partialSetAttribute(this.initialValue);
-        }
-        this.emit('animationstop');
-      },
-      writable: true
-    },
-
-    /**
-     * Handle alternating directions. Given the current direction, calculate the next one,
-     * and store the current one.
-     *
-     * @param {string} direction
-     * @returns {string} Direction that the next individual cycle of the animation will go
-     *          towards.
-     */
-    getDirection: {
-      value: function (direction) {
-        if (direction === DIRECTIONS.alternate) {
-          this.prevDirection =
-            this.prevDirection === DIRECTIONS.normal ? DIRECTIONS.reverse : DIRECTIONS.normal;
-          return this.prevDirection;
-        }
-        if (direction === DIRECTIONS.alternateReverse) {
-          this.prevDirection =
-            this.prevDirection === DIRECTIONS.reverse ? DIRECTIONS.normal : DIRECTIONS.reverse;
-          return this.prevDirection;
-        }
-        return direction;
-      }
-    },
-
-    /**
-     * Preemptive binding to attach/detach event listeners (see `update`).
-     */
-    bindMethods: {
-      value: function () {
-        this.start = bind(this.start, this);
-        this.stop = bind(this.stop, this);
-        this.onStateAdded = bind(this.onStateAdded, this);
-        this.onStateRemoved = bind(this.onStateRemoved, this);
-      }
-    },
-
-    addEventListeners: {
-      value: function (evts) {
-        var el = this.el;
-        var self = this;
-        utils.splitString(evts.begin).forEach(function (evt) {
-          el.addEventListener(evt, self.start);
-        });
-        utils.splitString(evts.end).forEach(function (evt) {
-          el.addEventListener(evt, self.stop);
-        });
-        // If "begin" is an event name, wait. If it is not defined, start.
-        if (evts.begin === '') { el.addEventListener('play', this.start); }
-        el.addEventListener('pause', this.stop);
-        el.addEventListener('stateadded', this.onStateAdded);
-        el.addEventListener('stateremoved', this.onStateRemoved);
-      }
-    },
-
-    removeEventListeners: {
-      value: function (evts) {
-        var el = this.el;
-        var start = this.start;
-        var stop = this.stop;
-        utils.splitString(evts.begin).forEach(function (evt) {
-          el.removeEventListener(evt, start);
-        });
-        utils.splitString(evts.end).forEach(function (evt) {
-          el.removeEventListener(evt, stop);
-        });
-        el.removeEventListener('stateadded', this.onStateAdded);
-        el.removeEventListener('stateremoved', this.onStateRemoved);
-      }
-    },
-
-    onStateAdded: {
-      value: function (evt) {
-        if (evt.detail === this.data.begin) { this.start(); }
-      },
-      writable: true
-    },
-
-    onStateRemoved: {
-      value: function (evt) {
-        if (evt.detail === this.data.begin) { this.stop(); }
-      },
-      writable: true
-    },
-
-    /**
-     * Applies animation data from a mixin element.
-     * Works the same as component mixins but reimplemented because animations
-     * aren't components.
-     */
-    handleMixinUpdate: {
-      value: function () {
-        var data = {};
-        var elData;
-        var mixinData;
-        var mixinEl;
-
-        // Get mixin data.
-        mixinEl = document.querySelector('#' + this.getAttribute('mixin'));
-        mixinData = mixinEl ? utils.getElData(mixinEl, DEFAULTS) : {};
-
-        elData = utils.getElData(this, DEFAULTS);
-        utils.extend(data, DEFAULTS, mixinData, elData);
-        this.data = data;
-      }
-    }
-  })
-});
-
-function cloneValue (val) {
-  return utils.extend({}, val);
-}
-
-/**
- * Deduces different animation values based on whether we are:
- *   - animating an inner attribute of a component.
- *   - animating a coordinate component.
- *   - animating a boolean.
- *   - animating a number.
- *
- * @param {Element} el
- * @param {string} attribute - Tells what to animate based on whether it is dot-separated.
- * @param {string} dataFrom - Data `from` value.
- * @param {string} dataTo - Data `to` value.
- * @param currentValue
- * @returns {object}
- *   Object with keys [from, to, partialSetAttribute].
- *     `from` and `to`
- *        Objects where key is attribute being animated and value is value.
- *     `partialSetAttribute`
- *        Closured-function that tells tween how to update the component.
- */
-function getAnimationValues (el, attribute, dataFrom, dataTo, currentValue) {
-  var attributeSplit = attribute.split('.');
-  var schema;
-  var component;
-  var componentPropName;
-  var componentName;
-  var from = {};
-  var partialSetAttribute;
-  var to = {};
-  if (attributeSplit.length === 2) {
-    if (isColor()) {
-      getForColorComponent();
-    } else {
-      getForComponentAttribute();
-    }
-  } else if (dataTo && isCoordinates(dataTo)) {
-    getForCoordinateComponent();
-  } else if (['true', 'false'].indexOf(dataTo) !== -1) {
-    getForBoolean();
-  } else if (isNaN(dataTo)) {
-    getForColorComponent();
-  } else {
-    getForNumber();
-  }
-  return {
-    from: from,
-    partialSetAttribute: partialSetAttribute,
-    to: to
-  };
-
-  /**
-   * Match the schema type to color
-   * @return {bool} if the schema is of type color
-   */
-  function isColor () {
-    var componentName = attributeSplit[0];
-    var propertyName = attributeSplit[1];
-    var component = el.components[componentName];
-    var schema = component && component.schema;
-    return schema && schema[propertyName] && schema[propertyName].type === 'color';
-  }
-
-  /**
-   * Animating a component that has multiple attributes (e.g., geometry.width).
-   */
-  function getForComponentAttribute () {
-    componentName = attributeSplit[0];
-    componentPropName = attributeSplit[1];
-    component = el.components[componentName];
-    if (!component) {
-      el.setAttribute(componentName, '');
-      component = el.components[componentName];
-    }
-    schema = component.schema;
-    if (dataFrom === undefined) {  // dataFrom can be 0.
-      from[attribute] = getComponentProperty(el, attribute);
-    } else {
-      from[attribute] = dataFrom;
-    }
-    from[attribute] = parseProperty(from[attribute], schema[componentPropName]);
-    to[attribute] = parseProperty(dataTo, schema[componentPropName]);
-    partialSetAttribute = function (value) {
-      if (!(attribute in value)) { return; }
-      el.setAttribute(componentName, componentPropName, value[attribute]);
-    };
-  }
-
-  /**
-   * Animating a component that is an XYZ coordinate (e.g., position).
-   * Will be tweening {x, y, z} all at once.
-   */
-  function getForCoordinateComponent () {
-    from = dataFrom ? coordinates.parse(dataFrom) : currentValue;
-    to = coordinates.parse(dataTo);
-    partialSetAttribute = function (value) {
-      el.setAttribute(attribute, value);
-    };
-  }
-
-  /**
-   * Animation a boolean (e.g., visible).
-   * Have to convert from boolean to an integer (0 is false, > 0 is true) for tween.
-   */
-  function getForBoolean () {
-    if (dataFrom === undefined) {
-      from[attribute] = false;
-    } else {
-      from[attribute] = strToBool(dataFrom);
-    }
-    from[attribute] = boolToNum(from[attribute]);
-    to[attribute] = boolToNum(strToBool(dataTo));
-    partialSetAttribute = function (value) {
-      el.setAttribute(attribute, !!value[attribute]);
-    };
-  }
-
-  /**
-   * Animating a color component
-   *   Will convert a hex value to a THREE.Color
-   *   Then converts to hex for the setAttribute
-   */
-  function getForColorComponent () {
-    from = new THREE.Color(dataFrom || el.getAttribute(attribute));
-    to = new THREE.Color(dataTo);
-    partialSetAttribute = function (value) {
-      if (attributeSplit.length > 1) {
-        el.setAttribute(attributeSplit[0], attributeSplit[1], rgbVectorToHex(value));
-      }
-      el.setAttribute(attribute, rgbVectorToHex(value));
-    };
-  }
-
-  /**
-   * Animating a numbered attribute (e.g., opacity).
-   */
-  function getForNumber () {
-    if (dataFrom === undefined) {  // dataFrom can be 0.
-      from[attribute] = parseFloat(el.getAttribute(attribute));
-    } else {
-      from[attribute] = parseFloat(dataFrom);
-    }
-    to[attribute] = parseFloat(dataTo);
-    partialSetAttribute = function (value) {
-      el.setAttribute(attribute, value[attribute]);
-    };
-  }
-}
-module.exports.getAnimationValues = getAnimationValues;
-
-/**
- * Converts string to bool.
- *
- * @param {string} str - `true` or `false`.
- * @returns {bool}
- */
-function strToBool (str) {
-  if (str === 'true') { return true; }
-  return false;
-}
-
-/**
- * Converts boolean to number.
- *
- * @param {bool}
- * @returns {number}
- */
-function boolToNum (bool) {
-  return bool ? 1 : 0;
-}
-
-/**
- * Converts a number 0-255 to hex
- * @param {number} color number 0 - 255
- * @returns {string} hex value of number bassed
- */
-function componentToHex (color) {
-  var hex = color.toString(16);
-  return hex.length === 1 ? '0' + hex : hex;
-}
-
-/**
- * Clamps a number to 0-1
- * Then converts that number to 0-255
- * @param {number} color number 0 - 1
- * @returns {number} color number 0 - 255
- */
-function convertToIntegerColor (color) {
-  return Math.floor(Math.min(Math.abs(color), 1) * 255);
-}
-
-/**
- * Converts a rgb object into a hex string
- * @param {object} color { r: 1, g: 1, b: 1 }
- * @returns {string} hex value #ffffff
- */
-function rgbVectorToHex (color) {
-  return '#' + ['r', 'g', 'b'].map(function (prop) {
-    return componentToHex(convertToIntegerColor(color[prop]));
-  }).join('');
-}
-
-},{"../constants/animation":98,"../lib/three":157,"../utils/":179,"./a-node":106,"./a-register-element":107,"./schema":117,"@tweenjs/tween.js":1}],102:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var bind = _dereq_('../utils/bind');
 var debug = _dereq_('../utils/debug');
@@ -73251,7 +72748,7 @@ function inferResponseType (src) {
 }
 module.exports.inferResponseType = inferResponseType;
 
-},{"../lib/three":157,"../utils/bind":173,"../utils/debug":175,"./a-node":106,"./a-register-element":107}],103:[function(_dereq_,module,exports){
+},{"../lib/three":157,"../utils/bind":174,"../utils/debug":176,"./a-node":105,"./a-register-element":106}],102:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerElement = _dereq_('./a-register-element').registerElement;
 
@@ -73301,7 +72798,7 @@ module.exports = registerElement('a-cubemap', {
   })
 });
 
-},{"../utils/debug":175,"./a-register-element":107}],104:[function(_dereq_,module,exports){
+},{"../utils/debug":176,"./a-register-element":106}],103:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var COMPONENTS = _dereq_('./component').components;
 var registerElement = _dereq_('./a-register-element').registerElement;
@@ -74147,7 +73644,7 @@ function getRotation (entityEl) {
 AEntity = registerElement('a-entity', {prototype: proto});
 module.exports = AEntity;
 
-},{"../lib/three":157,"../utils/":179,"./a-node":106,"./a-register-element":107,"./component":108}],105:[function(_dereq_,module,exports){
+},{"../lib/three":157,"../utils/":180,"./a-node":105,"./a-register-element":106,"./component":107}],104:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var registerElement = _dereq_('./a-register-element').registerElement;
 var components = _dereq_('./component').components;
@@ -74262,7 +73759,7 @@ module.exports = registerElement('a-mixin', {
   })
 });
 
-},{"../utils":179,"./a-node":106,"./a-register-element":107,"./component":108}],106:[function(_dereq_,module,exports){
+},{"../utils":180,"./a-node":105,"./a-register-element":106,"./component":107}],105:[function(_dereq_,module,exports){
 /* global CustomEvent, MutationObserver */
 var registerElement = _dereq_('./a-register-element').registerElement;
 var isNode = _dereq_('./a-register-element').isNode;
@@ -74570,7 +74067,7 @@ module.exports = registerElement('a-node', {
   })
 });
 
-},{"../utils/":179,"./a-register-element":107}],107:[function(_dereq_,module,exports){
+},{"../utils/":180,"./a-register-element":106}],106:[function(_dereq_,module,exports){
 /*
   ------------------------------------------------------------
   ------------- WARNING WARNING WARNING WARNING --------------
@@ -74654,7 +74151,8 @@ function wrapANodeMethods (obj) {
   var ANodeMethods = [
     'attachedCallback',
     'attributeChangedCallback',
-    'createdCallback'
+    'createdCallback',
+    'detachedCallback'
   ];
   wrapMethods(newObj, ANodeMethods, obj, ANode.prototype);
   copyProperties(obj, newObj);
@@ -74673,7 +74171,8 @@ function wrapAEntityMethods (obj) {
   var ANodeMethods = [
     'attachedCallback',
     'attributeChangedCallback',
-    'createdCallback'
+    'createdCallback',
+    'detachedCallback'
   ];
   var AEntityMethods = [
     'attachedCallback',
@@ -74755,7 +74254,7 @@ function copyProperties (source, destination) {
 ANode = _dereq_('./a-node');
 AEntity = _dereq_('./a-entity');
 
-},{"./a-entity":104,"./a-node":106,"document-register-element":13}],108:[function(_dereq_,module,exports){
+},{"./a-entity":103,"./a-node":105,"document-register-element":13}],107:[function(_dereq_,module,exports){
 /* global Node */
 var schema = _dereq_('./schema');
 var scenes = _dereq_('./scene/scenes');
@@ -74774,6 +74273,9 @@ var warn = utils.debug('core:component:warn');
 
 var aframeScript = document.currentScript;
 var upperCaseRegExp = new RegExp('[A-Z]+');
+
+// Object pools by component, created upon registration.
+var objectPools = {};
 
 /**
  * Component class definition.
@@ -74795,13 +74297,23 @@ var Component = module.exports.Component = function (el, attrValue, id) {
   this.attrName = this.name + (id ? '__' + id : '');
   this.evtDetail = {id: this.id, name: this.name};
   this.initialized = false;
+  this.isSingleProperty = isSingleProp(this.schema);
+  this.isSinglePropertyObject = this.isSingleProperty &&
+                                isObject(parseProperty(undefined, this.schema));
+  this.isObjectBased = !this.isSingleProperty || this.isSinglePropertyObject;
   this.el.components[this.attrName] = this;
+  this.objectPool = objectPools[this.name];
 
   // Store component data from previous update call.
-  this.oldData = undefined;
+  this.attrValue = undefined;
+  this.nextData = this.isObjectBased ? this.objectPool.use() : undefined;
+  this.oldData = this.isObjectBased ? this.objectPool.use() : undefined;
+  this.previousOldData = this.isObjectBased ? this.objectPool.use() : undefined;
+  this.parsingAttrValue = this.isObjectBased ? this.objectPool.use() : undefined;
+  // Purely for deciding to skip type checking.
+  this.previousAttrValue = undefined;
 
   // Last value passed to updateProperties.
-  this.previousAttrValue = undefined;
   this.throttledEmitComponentChanged = utils.throttle(function emitChange () {
     el.emit('componentchanged', self.evtDetail, false);
   }, 200);
@@ -74881,7 +74393,7 @@ Component.prototype = {
    */
   parse: function (value, silent) {
     var schema = this.schema;
-    if (isSingleProp(schema)) { return parseProperty(value, schema); }
+    if (this.isSingleProperty) { return parseProperty(value, schema); }
     return parseProperties(styleParser.parse(value), schema, true, this.name, silent);
   },
 
@@ -74897,7 +74409,7 @@ Component.prototype = {
   stringify: function (data) {
     var schema = this.schema;
     if (typeof data === 'string') { return data; }
-    if (isSingleProp(schema)) { return stringifyProperty(data, schema); }
+    if (this.isSingleProperty) { return stringifyProperty(data, schema); }
     data = stringifyProperties(data, schema);
     return styleParser.stringify(data);
   },
@@ -74909,28 +74421,51 @@ Component.prototype = {
    * @param {boolean } clobber - Whether to wipe out and replace previous data.
    */
   updateCachedAttrValue: function (value, clobber) {
-    var attrValue = this.parseAttrValueForCache(value);
-    var isSinglePropSchema = isSingleProp(this.schema);
+    var newAttrValue;
+    var tempObject;
     var property;
+
     if (value === undefined) { return; }
 
-    // Merge new data with previous `attrValue` if updating and not clobbering.
-    if (!isSinglePropSchema && !clobber) {
-      this.attrValue = this.attrValue ? cloneData(this.attrValue) : {};
-      for (property in attrValue) {
-        this.attrValue[property] = attrValue[property];
+    // If null value is the new attribute value, make the attribute value falsy.
+    if (value === null) {
+      if (this.isObjectBased && this.attrValue) {
+        this.objectPool.recycle(this.attrValue);
       }
+      this.attrValue = undefined;
       return;
     }
 
-    // If single-prop schema or clobber.
-    this.attrValue = attrValue;
+    if (value instanceof Object) {
+      // If value is an object, copy it to our pooled newAttrValue object to use to update
+      // the attrValue.
+      tempObject = this.objectPool.use();
+      newAttrValue = utils.extend(tempObject, value);
+    } else {
+      newAttrValue = this.parseAttrValueForCache(value);
+    }
+
+    // Merge new data with previous `attrValue` if updating and not clobbering.
+    if (this.isObjectBased && !clobber && this.attrValue) {
+      for (property in this.attrValue) {
+        if (newAttrValue[property] === undefined) {
+          newAttrValue[property] = this.attrValue[property];
+        }
+      }
+    }
+
+    // Update attrValue.
+    if (this.isObjectBased && !this.attrValue) {
+      this.attrValue = this.objectPool.use();
+    }
+    utils.objectPool.clearObject(this.attrValue);
+    this.attrValue = extendProperties(this.attrValue, newAttrValue, this.isObjectBased);
+    utils.objectPool.clearObject(tempObject);
   },
 
   /**
-   * Given an HTML attribute value parses the string
-   * based on the component schema. To avoid double parsings of
-   * strings into strings we store the original instead
+   * Given an HTML attribute value parses the string based on the component schema.
+   * To avoid double parsings of strings into strings we store the original instead
    * of the parsed one
    *
    * @param {string} value - HTML attribute value
@@ -74938,7 +74473,7 @@ Component.prototype = {
   parseAttrValueForCache: function (value) {
     var parsedValue;
     if (typeof value !== 'string') { return value; }
-    if (isSingleProp(this.schema)) {
+    if (this.isSingleProperty) {
       parsedValue = this.schema.parse(value);
       /**
        * To avoid bogus double parsings. Cached values will be parsed when building
@@ -74949,7 +74484,8 @@ Component.prototype = {
       if (typeof parsedValue === 'string') { parsedValue = value; }
     } else {
       // Parse using the style parser to avoid double parsing of individual properties.
-      parsedValue = styleParser.parse(value);
+      utils.objectPool.clearObject(this.parsingAttrValue);
+      parsedValue = styleParser.parse(value, this.parsingAttrValue);
     }
     return parsedValue;
   },
@@ -74964,7 +74500,7 @@ Component.prototype = {
     var attrValue = isDefault ? this.data : this.attrValue;
     if (!attrValue) { return; }
     window.HTMLElement.prototype.setAttribute.call(this.el, this.attrName,
-                                            this.stringify(attrValue));
+                                                   this.stringify(attrValue));
   },
 
   /**
@@ -74976,10 +74512,10 @@ Component.prototype = {
    */
   updateProperties: function (attrValue, clobber) {
     var el = this.el;
-    var isSinglePropSchema;
     var key;
+    var initialOldData;
     var skipTypeChecking;
-    var oldData = this.oldData;
+    var hasComponentChanged;
 
     // Just cache the attribute if the entity has not loaded
     // Components are not initialized until the entity has loaded
@@ -74987,8 +74523,6 @@ Component.prototype = {
       this.updateCachedAttrValue(attrValue);
       return;
     }
-
-    isSinglePropSchema = isSingleProp(this.schema);
 
     // Disable type checking if the passed attribute is an object and has not changed.
     skipTypeChecking = attrValue !== null && typeof this.previousAttrValue === 'object' &&
@@ -75011,8 +74545,17 @@ Component.prototype = {
     // Cache previously passed attribute to decide if we skip type checking.
     this.previousAttrValue = attrValue;
 
+    // Parse the attribute value.
     // Cache current attrValue for future updates. Updates `this.attrValue`.
     attrValue = this.parseAttrValueForCache(attrValue);
+
+    // Update previous attribute value to later decide if we skip type checking.
+    this.previousAttrValue = attrValue;
+
+    if (this.updateSchema) { this.updateSchema(this.buildData(attrValue, false, true)); }
+    this.data = this.buildData(attrValue, clobber, false, skipTypeChecking);
+
+    // Cache current attrValue for future updates.
     this.updateCachedAttrValue(attrValue, clobber);
 
     if (this.updateSchema) {
@@ -75029,23 +74572,44 @@ Component.prototype = {
       this.init();
       this.initialized = true;
       delete el.initializingComponents[this.name];
+
+      // Store current data as previous data for future updates.
+      this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
+
       // For oldData, pass empty object to multiple-prop schemas or object single-prop schema.
       // Pass undefined to rest of types.
-      oldData = (!isSinglePropSchema ||
-                 typeof parseProperty(undefined, this.schema) === 'object') ? {} : undefined;
-      // Store current data as previous data for future updates.
-      this.oldData = extendProperties({}, this.data, isSinglePropSchema);
-      this.update(oldData);
+      initialOldData = this.isObjectBased ? this.objectPool.use() : undefined;
+      this.update(initialOldData);
+      if (this.isObjectBased) { this.objectPool.recycle(initialOldData); }
+
       // Play the component if the entity is playing.
       if (el.isPlaying) { this.play(); }
       el.emit('componentinitialized', this.evtDetail, false);
     } else {
-      // Don't update if properties haven't changed
-      if (utils.deepEqual(this.oldData, this.data)) { return; }
-     // Store current data as previous data for future updates.
-      this.oldData = extendProperties({}, this.data, isSinglePropSchema);
-      // Update component.
-      this.update(oldData);
+      // Store the previous old data before we calculate the new oldData.
+      if (this.previousOldData instanceof Object) {
+        utils.objectPool.clearObject(this.previousOldData);
+      }
+      if (this.isObjectBased) {
+        copyData(this.previousOldData, this.oldData);
+      } else {
+        this.previousOldData = this.oldData;
+      }
+
+      hasComponentChanged = !utils.deepEqual(this.oldData, this.data);
+
+      // Don't update if properties haven't changed.
+      // Always update rotation, position, scale.
+      if (!this.isPositionRotationScale && !hasComponentChanged) { return; }
+
+      // Store current data as previous data for future updates.
+      // Reuse `this.oldData` object to try not to allocate another one.
+      if (this.oldData instanceof Object) { utils.objectPool.clearObject(this.oldData); }
+      this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
+
+      // Update component with the previous old data.
+      this.update(this.previousOldData);
+
       this.throttledEmitComponentChanged();
     }
   },
@@ -75057,7 +74621,7 @@ Component.prototype = {
    * @param {string} propertyName - Name of property to reset.
    */
   resetProperty: function (propertyName) {
-    if (isSingleProp(this.schema)) {
+    if (!this.isObjectBased) {
       this.attrValue = undefined;
     } else {
       if (!(propertyName in this.attrValue)) { return; }
@@ -75076,16 +74640,17 @@ Component.prototype = {
    * @param {object} schemaAddon - Schema chunk that extend base schema.
    */
   extendSchema: function (schemaAddon) {
+    var extendedSchema;
     // Clone base schema.
-    var extendedSchema = utils.extend({}, components[this.name].schema);
+    extendedSchema = utils.extend({}, components[this.name].schema);
     // Extend base schema with new schema chunk.
     utils.extend(extendedSchema, schemaAddon);
     this.schema = processSchema(extendedSchema);
-    this.el.emit('schemachanged', {component: this.name});
+    this.el.emit('schemachanged', this.evtDetail);
   },
 
   /**
-   * Builds component data from the current state of the entity, ultimately
+   * Build component data from the current state of the entity, ultimately
    * updating this.data.
    *
    * If the component was detached completely, set data to null.
@@ -75100,19 +74665,18 @@ Component.prototype = {
    * @param {object} newData - Element new data.
    * @param {boolean} clobber - The previous data is completely replaced by the new one.
    * @param {boolean} silent - Suppress warning messages.
-   * @param {boolean} skipTypeChecking - Skip type checking and cohercion.
+   * @param {boolean} skipTypeChecking - Skip type checking and coercion.
    * @return {object} The component data
    */
   buildData: function (newData, clobber, silent, skipTypeChecking) {
     var componentDefined;
     var data;
     var defaultValue;
-    var keys;
-    var keysLength;
+    var key;
     var mixinData;
+    var nextData = this.nextData;
     var schema = this.schema;
     var i;
-    var isSinglePropSchema = isSingleProp(schema);
     var mixinEls = this.el.mixinEls;
     var previousData;
 
@@ -75121,46 +74685,62 @@ Component.prototype = {
       ? newData.length
       : newData !== undefined && newData !== null;
 
+    if (this.isObjectBased) { utils.objectPool.clearObject(nextData); }
+
     // 1. Default values (lowest precendence).
-    if (isSinglePropSchema) {
-      // Clone default value if plain object so components don't share the same object
-      // that might be modified by the user.
-      data = isObjectOrArray(schema.default) ? utils.clone(schema.default) : schema.default;
+    if (this.isSingleProperty) {
+      if (this.isObjectBased) {
+        // If object-based single-prop, then copy over the data to our pooled object.
+        data = copyData(nextData, schema.default);
+      } else {
+        // If is plain single-prop, copy by value the default.
+        data = isObjectOrArray(schema.default)
+          ? utils.clone(schema.default)
+          : schema.default;
+      }
     } else {
       // Preserve previously set properties if clobber not enabled.
       previousData = !clobber && this.attrValue;
-      // Clone previous data to prevent sharing references with attrValue that might be
-      // modified by the user.
-      data = typeof previousData === 'object' ? cloneData(previousData) : {};
+
+      // Clone default value if object so components don't share object
+      data = previousData instanceof Object
+        ? copyData(nextData, previousData)
+        : nextData;
 
       // Apply defaults.
-      for (i = 0, keys = Object.keys(schema), keysLength = keys.length; i < keysLength; i++) {
-        defaultValue = schema[keys[i]].default;
-        if (data[keys[i]] !== undefined) { continue; }
+      for (key in schema) {
+        defaultValue = schema[key].default;
+        if (data[key] !== undefined) { continue; }
         // Clone default value if object so components don't share object
-        data[keys[i]] = isObjectOrArray(defaultValue) ? utils.clone(defaultValue) : defaultValue;
+        data[key] = isObjectOrArray(defaultValue)
+          ? utils.clone(defaultValue)
+          : defaultValue;
       }
     }
 
     // 2. Mixin values.
     for (i = 0; i < mixinEls.length; i++) {
       mixinData = mixinEls[i].getAttribute(this.attrName);
-      if (mixinData) {
-        data = extendProperties(data, mixinData, isSinglePropSchema);
-      }
+      if (!mixinData) { continue; }
+      data = extendProperties(data, mixinData, this.isObjectBased);
     }
 
     // 3. Attribute values (highest precendence).
     if (componentDefined) {
-      if (isSinglePropSchema) {
+      if (this.isSingleProperty) {
         if (skipTypeChecking === true) { return newData; }
+        // If object-based, copy the value to not modify the original.
+        if (isObject(newData)) {
+          copyData(this.parsingAttrValue, newData);
+          return parseProperty(this.parsingAttrValue, schema);
+        }
         return parseProperty(newData, schema);
       }
-      data = extendProperties(data, newData, isSinglePropSchema);
+      data = extendProperties(data, newData, this.isObjectBased);
     } else {
       if (skipTypeChecking === true) { return data; }
       // Parse and coerce using the schema.
-      if (isSinglePropSchema) { return parseProperty(data, schema); }
+      if (this.isSingleProperty) { return parseProperty(data, schema); }
     }
 
     if (skipTypeChecking === true) { return data; }
@@ -75234,19 +74814,26 @@ module.exports.registerComponent = function (name, definition) {
 
   NewComponent.prototype = Object.create(Component.prototype, proto);
   NewComponent.prototype.name = name;
+  NewComponent.prototype.isPositionRotationScale = name === 'position' || name === 'rotation' || name === 'scale';
   NewComponent.prototype.constructor = NewComponent;
   NewComponent.prototype.system = systems && systems.systems[name];
   NewComponent.prototype.play = wrapPlay(NewComponent.prototype.play);
   NewComponent.prototype.pause = wrapPause(NewComponent.prototype.pause);
+  NewComponent.prototype.remove = wrapRemove(NewComponent.prototype.remove);
+
+  // Create object pool for class of components.
+  objectPools[name] = utils.objectPool.createPool();
 
   components[name] = {
     Component: NewComponent,
     dependencies: NewComponent.prototype.dependencies,
     isSingleProp: isSingleProp(NewComponent.prototype.schema),
     multiple: NewComponent.prototype.multiple,
+    name: name,
     parse: NewComponent.prototype.parse,
     parseAttrValueForCache: NewComponent.prototype.parseAttrValueForCache,
-    schema: utils.extend(processSchema(NewComponent.prototype.schema, NewComponent.prototype.name)),
+    schema: utils.extend(processSchema(NewComponent.prototype.schema,
+                                       NewComponent.prototype.name)),
     stringify: NewComponent.prototype.stringify,
     type: NewComponent.prototype.type
   };
@@ -75260,15 +74847,17 @@ module.exports.registerComponent = function (name, definition) {
 * @param data - Component data to clone.
 * @returns Cloned data.
 */
-function cloneData (data) {
-  var clone = {};
+function copyData (dest, sourceData) {
   var parsedProperty;
   var key;
-  for (key in data) {
-    parsedProperty = data[key];
-    clone[key] = isObjectOrArray(parsedProperty) ? utils.clone(parsedProperty) : parsedProperty;
+  for (key in sourceData) {
+    if (sourceData[key] === undefined) { continue; }
+    parsedProperty = sourceData[key];
+    dest[key] = isObjectOrArray(parsedProperty)
+      ? utils.clone(parsedProperty)
+      : parsedProperty;
   }
-  return clone;
+  return dest;
 }
 
 /**
@@ -75276,18 +74865,23 @@ function cloneData (data) {
 *
 * @param dest - Destination object or value.
 * @param source - Source object or value
-* @param {boolean} isSinglePropSchema - Whether or not schema is only a single property.
+* @param {boolean} isObjectBased - Whether values are objects.
 * @returns Overridden object or value.
 */
-function extendProperties (dest, source, isSinglePropSchema) {
-  if (isSinglePropSchema && (source === null || typeof source !== 'object')) { return source; }
-  var copy = utils.extend(dest, source);
+function extendProperties (dest, source, isObjectBased) {
   var key;
-  for (key in copy) {
-    if (!copy[key] || copy[key].constructor !== Object) { continue; }
-    copy[key] = utils.clone(copy[key]);
+  if (isObjectBased && source.constructor === Object) {
+    for (key in source) {
+      if (source[key] === undefined) { continue; }
+      if (source[key] && source[key].constructor === Object) {
+        dest[key] = utils.clone(source[key]);
+      } else {
+        dest[key] = source[key];
+      }
+    }
+    return dest;
   }
-  return copy;
+  return source;
 }
 
 /**
@@ -75298,10 +74892,10 @@ function hasBehavior (component) {
 }
 
 /**
- * Wrapper for user defined pause method
+ * Wrapper for defined pause method.
  * Pause component by removing tick behavior and calling user's pause method.
  *
- * @param pauseMethod {function} - user defined pause method
+ * @param pauseMethod {function}
  */
 function wrapPause (pauseMethod) {
   return function pause () {
@@ -75316,11 +74910,10 @@ function wrapPause (pauseMethod) {
 }
 
 /**
- * Wrapper for user defined play method
+ * Wrapper for defined play method.
  * Play component by adding tick behavior and calling user's play method.
  *
- * @param playMethod {function} - user defined play method
- *
+ * @param playMethod {function}
  */
 function wrapPlay (playMethod) {
   return function play () {
@@ -75335,11 +74928,30 @@ function wrapPlay (playMethod) {
   };
 }
 
+/**
+ * Wrapper for defined remove method.
+ * Clean up memory.
+ *
+ * @param removeMethod {function} - Defined remove method.
+ */
+function wrapRemove (removeMethod) {
+  return function remove () {
+    removeMethod.call(this);
+    this.objectPool.recycle(this.attrValue);
+    this.objectPool.recycle(this.oldData);
+    this.objectPool.recycle(this.parsingAttrValue);
+  };
+}
+
+function isObject (value) {
+  return value && value.constructor === Object;
+}
+
 function isObjectOrArray (value) {
   return value && (value.constructor === Object || value.constructor === Array);
 }
 
-},{"../utils/":179,"./scene/scenes":115,"./schema":117,"./system":119}],109:[function(_dereq_,module,exports){
+},{"../utils/":180,"./scene/scenes":115,"./schema":117,"./system":119}],108:[function(_dereq_,module,exports){
 _dereq_('../../vendor/effects/EffectComposer');
 _dereq_('../../vendor/effects/RenderPass');
 
@@ -75418,7 +75030,7 @@ module.exports.registerEffect = function (name, definition) {
   registerComponent('effect-' + name, proto);
 };
 
-},{"../../vendor/effects/EffectComposer":189,"../../vendor/effects/RenderPass":191,"../lib/three":157,"../utils/":179,"./component":108}],110:[function(_dereq_,module,exports){
+},{"../../vendor/effects/EffectComposer":190,"../../vendor/effects/RenderPass":192,"../lib/three":157,"../utils/":180,"./component":107}],109:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -75492,7 +75104,111 @@ module.exports.registerGeometry = function (name, definition) {
   return NewGeometry;
 };
 
-},{"../lib/three":157,"./schema":117}],111:[function(_dereq_,module,exports){
+},{"../lib/three":157,"./schema":117}],110:[function(_dereq_,module,exports){
+/* global THREE */
+var utils = _dereq_('../utils/');
+var styleParser = utils.styleParser;
+
+var sceneEl;
+var titleEl;
+var getSceneCanvasSize;
+
+var LOADER_TITLE_CLASS = 'a-loader-title';
+
+// It catches vrdisplayactivate early to ensure we can enter VR mode after the scene loads.
+window.addEventListener('vrdisplayactivate', function () {
+  var vrManager = sceneEl.renderer.vr;
+  var vrDisplay = utils.device.getVRDisplay();
+
+  vrManager.setDevice(vrDisplay);
+  vrManager.enabled = true;
+  if (!vrDisplay.isPresenting) {
+    return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
+  }
+});
+
+module.exports.setup = function setup (el, getCanvasSize) {
+  sceneEl = el;
+  getSceneCanvasSize = getCanvasSize;
+  var loaderAttribute = sceneEl.hasAttribute('loader') ? styleParser.parse(sceneEl.getAttribute('loader')) : undefined;
+  var dotsColor = loaderAttribute && loaderAttribute.dotsColor || 'white';
+  var backgroundColor = loaderAttribute && loaderAttribute.backgroundColor || '#24CAFF';
+  var loaderEnabled = loaderAttribute === undefined || loaderAttribute.enabled === true || loaderAttribute.enabled === undefined; // true default
+  var loaderScene;
+  var sphereGeometry;
+  var sphereMaterial;
+  var sphereMesh1;
+  var sphereMesh2;
+  var sphereMesh3;
+  var camera;
+  var clock;
+  var time;
+  var render;
+
+  if (!loaderEnabled) { return; }
+
+  // Setup Scene.
+  loaderScene = new THREE.Scene();
+  sphereGeometry = new THREE.SphereGeometry(0.20, 36, 18, 0, 2 * Math.PI, 0, Math.PI);
+  sphereMaterial = new THREE.MeshBasicMaterial({color: dotsColor});
+  sphereMesh1 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  sphereMesh2 = sphereMesh1.clone();
+  sphereMesh3 = sphereMesh1.clone();
+  camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.0005, 10000);
+  clock = new THREE.Clock();
+  time = 0;
+  render = function () {
+    sceneEl.renderer.render(loaderScene, camera);
+    time = clock.getElapsedTime() % 4;
+    sphereMesh1.visible = time >= 1;
+    sphereMesh2.visible = time >= 2;
+    sphereMesh3.visible = time >= 3;
+  };
+
+  loaderScene.background = new THREE.Color(backgroundColor);
+  loaderScene.add(camera);
+  sphereMesh1.position.set(-1, 0, -15);
+  sphereMesh2.position.set(0, 0, -15);
+  sphereMesh3.position.set(1, 0, -15);
+  camera.add(sphereMesh1);
+  camera.add(sphereMesh2);
+  camera.add(sphereMesh3);
+  setupTitle();
+
+  // Delay 200ms to avoid loader flashes.
+  setTimeout(function () {
+    if (sceneEl.hasLoaded) { return; }
+    resize(camera);
+    titleEl.style.display = 'block';
+    window.addEventListener('resize', function () { resize(camera); });
+    sceneEl.renderer.setAnimationLoop(render);
+  }, 200);
+};
+
+module.exports.remove = function remove () {
+  window.removeEventListener('resize', resize);
+  if (!titleEl) { return; }
+  // Hide title.
+  titleEl.style.display = 'none';
+};
+
+function resize (camera) {
+  var size = getSceneCanvasSize(sceneEl.canvas, false, sceneEl.maxCanvasSize, sceneEl.is('vr-mode'));
+  camera.aspect = size.width / size.height;
+  camera.updateProjectionMatrix();
+   // Notify renderer of size change.
+  sceneEl.renderer.setSize(size.width, size.height, false);
+}
+
+function setupTitle () {
+  titleEl = document.createElement('div');
+  titleEl.className = LOADER_TITLE_CLASS;
+  titleEl.innerHTML = document.title;
+  titleEl.style.display = 'none';
+  sceneEl.appendChild(titleEl);
+}
+
+},{"../utils/":180}],111:[function(_dereq_,module,exports){
 var coordinates = _dereq_('../utils/coordinates');
 var debug = _dereq_('debug');
 
@@ -75716,15 +75432,15 @@ function isValidDefaultCoordinate (possibleCoordinates, dimensions) {
 }
 module.exports.isValidDefaultCoordinate = isValidDefaultCoordinate;
 
-},{"../utils/coordinates":174,"debug":10}],112:[function(_dereq_,module,exports){
+},{"../utils/coordinates":175,"debug":10}],112:[function(_dereq_,module,exports){
 /* global Promise, screen */
 var initMetaTags = _dereq_('./metaTags').inject;
 var initWakelock = _dereq_('./wakelock');
+var loadingScreen = _dereq_('../loadingScreen');
 var re = _dereq_('../a-register-element');
 var scenes = _dereq_('./scenes');
 var systems = _dereq_('../system').systems;
 var THREE = _dereq_('../../lib/three');
-var TWEEN = _dereq_('@tweenjs/tween.js');
 var utils = _dereq_('../../utils/');
 // Require after.
 var AEntity = _dereq_('../a-entity');
@@ -75800,7 +75516,6 @@ module.exports.AScene = registerElement('a-scene', {
     attachedCallback: {
       value: function () {
         var self = this;
-
         // Renderer initialization
         setupCanvas(this);
         this.setupRenderer();
@@ -75834,7 +75549,7 @@ module.exports.AScene = registerElement('a-scene', {
           // after an orientation change. The window size is correct if the operation
           // is postponed a few milliseconds.
           // self.resize can be called directly once the bug above is fixed.
-          if (this.isIOS) {
+          if (self.isIOS) {
             setTimeout(resize, 100);
           } else {
             resize();
@@ -76202,6 +75917,7 @@ module.exports.AScene = registerElement('a-scene', {
 
         // Notify renderer of size change.
         this.renderer.setSize(size.width, size.height, false);
+        this.emit('rendererresize', null, false);
       },
       writable: true
     },
@@ -76214,9 +75930,13 @@ module.exports.AScene = registerElement('a-scene', {
         var rendererAttrString;
         var rendererConfig;
 
-        rendererConfig = {alpha: true, antialias: !isMobile, canvas: this.canvas};
+        rendererConfig = {alpha: true, antialias: !isMobile, canvas: this.canvas, logarithmicDepthBuffer: false};
         if (this.hasAttribute('antialias')) {
           rendererConfig.antialias = this.getAttribute('antialias') === 'true';
+        }
+
+        if (this.hasAttribute('logarithmicDepthBuffer')) {
+          rendererConfig.logarithmicDepthBuffer = this.getAttribute('logarithmicDepthBuffer') === 'true';
         }
 
         this.maxCanvasSize = {height: 1920, width: 1920};
@@ -76248,6 +75968,7 @@ module.exports.AScene = registerElement('a-scene', {
         this.addEventListener('camera-set-active', function () {
           renderer.vr.setPoseTarget(self.camera);
         });
+        loadingScreen.setup(this, getCanvasSize);
       },
       writable: window.debug
     },
@@ -76277,6 +75998,7 @@ module.exports.AScene = registerElement('a-scene', {
           if (sceneEl.renderer) {
             if (window.performance) { window.performance.mark('render-started'); }
             sceneEl.clock = new THREE.Clock();
+            loadingScreen.remove();
             sceneEl.render();
             sceneEl.renderStarted = true;
             sceneEl.emit('renderstart');
@@ -76310,9 +76032,6 @@ module.exports.AScene = registerElement('a-scene', {
       value: function (time, timeDelta) {
         var i;
         var systems = this.systems;
-
-        // Animations.
-        TWEEN.update();
 
         // Components.
         for (i = 0; i < this.behaviors.tick.length; i++) {
@@ -76421,7 +76140,7 @@ function getMaxSize (maxSize, isVR) {
   var size;
   var pixelRatio = window.devicePixelRatio;
 
-  size = {height: window.innerHeight, width: window.innerWidth};
+  size = {height: document.body.offsetHeight, width: document.body.offsetWidth};
   if (!maxSize || isVR || (maxSize.width === -1 && maxSize.height === -1)) {
     return size;
   }
@@ -76501,7 +76220,7 @@ function setupCanvas (sceneEl) {
 }
 module.exports.setupCanvas = setupCanvas;  // For testing.
 
-},{"../../lib/three":157,"../../utils/":179,"../a-entity":104,"../a-node":106,"../a-register-element":107,"../system":119,"./metaTags":113,"./postMessage":114,"./scenes":115,"./wakelock":116,"@tweenjs/tween.js":1}],113:[function(_dereq_,module,exports){
+},{"../../lib/three":157,"../../utils/":180,"../a-entity":103,"../a-node":105,"../a-register-element":106,"../loadingScreen":110,"../system":119,"./metaTags":113,"./postMessage":114,"./scenes":115,"./wakelock":116}],113:[function(_dereq_,module,exports){
 var constants = _dereq_('../../constants/');
 var extend = _dereq_('../../utils').extend;
 
@@ -76582,7 +76301,7 @@ function createTag (tagObj) {
   return extend(meta, tagObj.attributes);
 }
 
-},{"../../constants/":99,"../../utils":179}],114:[function(_dereq_,module,exports){
+},{"../../constants/":99,"../../utils":180}],114:[function(_dereq_,module,exports){
 var bind = _dereq_('../../utils/bind');
 var isIframed = _dereq_('../../utils/').isIframed;
 
@@ -76615,7 +76334,7 @@ function postMessageAPIHandler (event) {
   }
 }
 
-},{"../../utils/":179,"../../utils/bind":173}],115:[function(_dereq_,module,exports){
+},{"../../utils/":180,"../../utils/bind":174}],115:[function(_dereq_,module,exports){
 /*
   Scene index for keeping track of created scenes.
 */
@@ -76632,7 +76351,7 @@ module.exports = function initWakelock (scene) {
   scene.addEventListener('exit-vr', function () { wakelock.release(); });
 };
 
-},{"../../../vendor/wakelock/wakelock":200}],117:[function(_dereq_,module,exports){
+},{"../../../vendor/wakelock/wakelock":201}],117:[function(_dereq_,module,exports){
 var utils = _dereq_('../utils/');
 var PropertyTypes = _dereq_('./propertyTypes');
 
@@ -76763,7 +76482,7 @@ module.exports.parseProperties = (function () {
 
     // Validation errors.
     for (propName in propData) {
-      if (!schema[propName] && !silent) {
+      if (propData[propName] !== undefined && !schema[propName] && !silent) {
         warn('Unknown property `' + propName +
              '` for component/system `' + componentName + '`.');
       }
@@ -76833,7 +76552,7 @@ function stringifyProperty (value, propDefinition) {
 }
 module.exports.stringifyProperty = stringifyProperty;
 
-},{"../utils/":179,"./propertyTypes":111}],118:[function(_dereq_,module,exports){
+},{"../utils/":180,"./propertyTypes":111}],118:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -77022,7 +76741,7 @@ module.exports.registerShader = function (name, definition) {
   return NewShader;
 };
 
-},{"../lib/three":157,"../utils":179,"./schema":117}],119:[function(_dereq_,module,exports){
+},{"../lib/three":157,"../utils":180,"./schema":117}],119:[function(_dereq_,module,exports){
 var components = _dereq_('./component');
 var schema = _dereq_('./schema');
 var utils = _dereq_('../utils/');
@@ -77180,7 +76899,7 @@ module.exports.registerSystem = function (name, definition) {
   for (i = 0; i < scenes.length; i++) { scenes[i].initSystem(name); }
 };
 
-},{"../utils/":179,"./component":108,"./schema":117}],120:[function(_dereq_,module,exports){
+},{"../utils/":180,"./component":107,"./schema":117}],120:[function(_dereq_,module,exports){
 _dereq_('./pivot');
 
 },{"./pivot":121}],121:[function(_dereq_,module,exports){
@@ -77232,7 +76951,7 @@ registerComponent('pivot', {
   }
 });
 
-},{"../../core/component":108,"../../lib/three":157}],122:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../lib/three":157}],122:[function(_dereq_,module,exports){
 /**
  * Common mesh defaults, mappings, and transforms.
  */
@@ -77259,7 +76978,7 @@ module.exports = function getMeshMixin () {
   };
 };
 
-},{"../../core/component":108,"../../core/shader":118,"../../utils/":179}],123:[function(_dereq_,module,exports){
+},{"../../core/component":107,"../../core/shader":118,"../../utils/":180}],123:[function(_dereq_,module,exports){
 _dereq_('./primitives/a-camera');
 _dereq_('./primitives/a-collada-model');
 _dereq_('./primitives/a-cursor');
@@ -77475,7 +77194,7 @@ function definePrimitive (tagName, defaultComponents, mappings) {
 }
 module.exports.definePrimitive = definePrimitive;
 
-},{"../../core/a-entity":104,"../../core/a-register-element":107,"../../core/component":108,"../../utils/":179}],125:[function(_dereq_,module,exports){
+},{"../../core/a-entity":103,"../../core/a-register-element":106,"../../core/component":107,"../../utils/":180}],125:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-camera', {
@@ -77543,7 +77262,7 @@ registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],128:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],128:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77580,7 +77299,7 @@ registerPrimitive('a-curvedimage', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],129:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],129:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-gltf-model', {
@@ -77613,7 +77332,7 @@ registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],131:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],131:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-light', {
@@ -77663,7 +77382,7 @@ registerPrimitive('a-obj-model', utils.extendDeep({}, meshMixin, {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],134:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],134:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77689,7 +77408,7 @@ registerPrimitive('a-sky', utils.extendDeep({}, getMeshMixin(), {
   mappings: utils.extendDeep({}, meshPrimitives['a-sphere'].prototype.mappings)
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124,"./meshPrimitives":139}],135:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124,"./meshPrimitives":139}],135:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-sound', {
@@ -77735,7 +77454,7 @@ registerPrimitive('a-video', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],138:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],138:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77764,7 +77483,7 @@ registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],139:[function(_dereq_,module,exports){
+},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],139:[function(_dereq_,module,exports){
 /**
  * Automated mesh primitive registration.
  */
@@ -77804,7 +77523,7 @@ function unCamelCase (str) {
   return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-},{"../../../core/geometry":110,"../../../utils/":179,"../getMeshMixin":122,"../primitives":124}],140:[function(_dereq_,module,exports){
+},{"../../../core/geometry":109,"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],140:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77825,7 +77544,7 @@ registerGeometry('box', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],141:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],141:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77845,7 +77564,7 @@ registerGeometry('circle', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],142:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],142:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77871,7 +77590,7 @@ registerGeometry('cone', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],143:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],143:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77895,7 +77614,7 @@ registerGeometry('cylinder', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],144:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],144:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77910,7 +77629,7 @@ registerGeometry('dodecahedron', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],145:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],145:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77925,7 +77644,7 @@ registerGeometry('icosahedron', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],146:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],146:[function(_dereq_,module,exports){
 _dereq_('./box.js');
 _dereq_('./circle.js');
 _dereq_('./cone.js');
@@ -77956,7 +77675,7 @@ registerGeometry('octahedron', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],148:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],148:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77973,7 +77692,7 @@ registerGeometry('plane', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],149:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],149:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77996,7 +77715,7 @@ registerGeometry('ring', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],150:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],150:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -78020,7 +77739,7 @@ registerGeometry('sphere', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],151:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],151:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -78035,7 +77754,7 @@ registerGeometry('tetrahedron', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],152:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],152:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -78057,7 +77776,7 @@ registerGeometry('torus', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],153:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],153:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -78078,7 +77797,7 @@ registerGeometry('torusKnot', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],154:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],154:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -78133,7 +77852,7 @@ registerGeometry('triangle', {
   }
 });
 
-},{"../core/geometry":110,"../lib/three":157}],155:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../lib/three":157}],155:[function(_dereq_,module,exports){
 // Check before the polyfill runs.
 window.hasNativeWebVRImplementation = !!window.navigator.getVRDisplays || !!window.navigator.getVRDevices;
 
@@ -78196,7 +77915,6 @@ var shaders = _dereq_('./core/shader').shaders;
 var systems = _dereq_('./core/system').systems;
 // Exports THREE to window so three.js can be used without alteration.
 var THREE = window.THREE = _dereq_('./lib/three');
-var TWEEN = window.TWEEN = _dereq_('@tweenjs/tween.js');
 
 var pkg = _dereq_('../package');
 
@@ -78207,7 +77925,6 @@ _dereq_('./systems/index'); // Register standard systems.
 var ANode = _dereq_('./core/a-node');
 var AEntity = _dereq_('./core/a-entity'); // Depends on ANode and core components.
 
-_dereq_('./core/a-animation');
 _dereq_('./core/a-assets');
 _dereq_('./core/a-cubemap');
 _dereq_('./core/a-mixin');
@@ -78216,7 +77933,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-09-25, Commit #b2131c876)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-10-08, Commit #97f80467e)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -78224,6 +77941,7 @@ module.exports = window.AFRAME = {
   AComponent: _dereq_('./core/component').Component,
   AEntity: AEntity,
   ANode: ANode,
+  ANIME: _dereq_('animejs'),
   AScene: AScene,
   components: components,
   geometries: _dereq_('./core/geometry').geometries,
@@ -78242,12 +77960,11 @@ module.exports = window.AFRAME = {
   shaders: shaders,
   systems: systems,
   THREE: THREE,
-  TWEEN: TWEEN,
   utils: utils,
   version: pkg.version
 };
 
-},{"../package":51,"./components/index":60,"./core/a-animation":101,"./core/a-assets":102,"./core/a-cubemap":103,"./core/a-entity":104,"./core/a-mixin":105,"./core/a-node":106,"./core/a-register-element":107,"./core/component":108,"./core/geometry":110,"./core/scene/a-scene":112,"./core/scene/scenes":115,"./core/schema":117,"./core/shader":118,"./core/system":119,"./extras/components/":120,"./extras/primitives/":123,"./extras/primitives/getMeshMixin":122,"./extras/primitives/primitives":124,"./geometries/index":146,"./lib/three":157,"./shaders/index":159,"./style/aframe.css":164,"./style/rStats.css":165,"./systems/index":168,"./utils/":179,"@tweenjs/tween.js":1,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],156:[function(_dereq_,module,exports){
+},{"../package":51,"./components/index":61,"./core/a-assets":101,"./core/a-cubemap":102,"./core/a-entity":103,"./core/a-mixin":104,"./core/a-node":105,"./core/a-register-element":106,"./core/component":107,"./core/geometry":109,"./core/scene/a-scene":112,"./core/scene/scenes":115,"./core/schema":117,"./core/shader":118,"./core/system":119,"./extras/components/":120,"./extras/primitives/":123,"./extras/primitives/getMeshMixin":122,"./extras/primitives/primitives":124,"./geometries/index":146,"./lib/three":157,"./shaders/index":159,"./style/aframe.css":164,"./style/rStats.css":165,"./systems/index":169,"./utils/":180,"animejs":2,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],156:[function(_dereq_,module,exports){
 window.aframeStats = function (scene) {
   var _rS = null;
   var _scene = scene;
@@ -78327,6 +78044,7 @@ if (THREE.Cache) {
 }
 
 // TODO: Eventually include these only if they are needed by a component.
+_dereq_('three/examples/js/loaders/DRACOLoader');  // THREE.DRACOLoader
 _dereq_('three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
 _dereq_('three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
 _dereq_('three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
@@ -78343,7 +78061,7 @@ module.exports = THREE;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../vendor/VRControls":186,"../../vendor/VREffect":187,"three":40,"three/examples/js/loaders/ColladaLoader":41,"three/examples/js/loaders/GLTFLoader":42,"three/examples/js/loaders/MTLLoader":43,"three/examples/js/loaders/OBJLoader":44}],158:[function(_dereq_,module,exports){
+},{"../../vendor/VRControls":187,"../../vendor/VREffect":188,"three":39,"three/examples/js/loaders/ColladaLoader":40,"three/examples/js/loaders/DRACOLoader":41,"three/examples/js/loaders/GLTFLoader":42,"three/examples/js/loaders/MTLLoader":43,"three/examples/js/loaders/OBJLoader":44}],158:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -78369,8 +78087,10 @@ module.exports.Shader = registerShader('flat', {
    * Adds a reference from the scene to this entity as the camera.
    */
   init: function (data) {
+    this.materialData = {color: new THREE.Color()};
     this.textureSrc = null;
-    this.material = new THREE.MeshBasicMaterial(getMaterialData(data));
+    getMaterialData(data, this.materialData);
+    this.material = new THREE.MeshBasicMaterial(this.materialData);
     utils.material.updateMap(this, data);
   },
 
@@ -78385,11 +78105,11 @@ module.exports.Shader = registerShader('flat', {
    * @param {object} data - Material component data.
    */
   updateMaterial: function (data) {
-    var material = this.material;
-    data = getMaterialData(data);
-    Object.keys(data).forEach(function (key) {
-      material[key] = data[key];
-    });
+    var key;
+    getMaterialData(data, this.materialData);
+    for (key in this.materialData) {
+      this.material[key] = this.materialData[key];
+    }
   }
 });
 
@@ -78397,18 +78117,18 @@ module.exports.Shader = registerShader('flat', {
  * Builds and normalize material data, normalizing stuff along the way.
  *
  * @param {object} data - Material data.
- * @returns {object} data - Processed material data.
+ * @param {object} materialData - Object to reuse.
+ * @returns {object} Updated material data.
  */
-function getMaterialData (data) {
-  return {
-    fog: data.fog,
-    color: new THREE.Color(data.color),
-    wireframe: data.wireframe,
-    wireframeLinewidth: data.wireframeLinewidth
-  };
+function getMaterialData (data, materialData) {
+  materialData.color.set(data.color);
+  materialData.fog = data.fog;
+  materialData.wireframe = data.wireframe;
+  materialData.wireframeLinewidth = data.wireframeLinewidth;
+  return materialData;
 }
 
-},{"../core/shader":118,"../lib/three":157,"../utils/":179}],159:[function(_dereq_,module,exports){
+},{"../core/shader":118,"../lib/three":157,"../utils/":180}],159:[function(_dereq_,module,exports){
 _dereq_('./flat');
 _dereq_('./standard');
 _dereq_('./sdf');
@@ -78486,44 +78206,32 @@ module.exports.Shader = registerShader('msdf', {
     '#endif',
 
     'precision highp float;',
-    // FIXME: Experimentally determined constants.
-    '#define BIG_ENOUGH 0.001',
-    '#define MODIFIED_ALPHATEST (0.02 * isBigEnough / BIG_ENOUGH)',
-    '#define ALL_SMOOTH 0.4',
-    '#define ALL_ROUGH 0.02',
-    '#define DISCARD_ALPHA (alphaTest / (2.2 - 1.2 * ratio))',
+    'uniform bool negate;',
+    'uniform float alphaTest;',
+    'uniform float opacity;',
     'uniform sampler2D map;',
     'uniform vec3 color;',
-    'uniform float opacity;',
-    'uniform float alphaTest;',
-    'uniform bool negate;',
     'varying vec2 vUV;',
 
     'float median(float r, float g, float b) {',
     '  return max(min(r, g), min(max(r, g), b));',
     '}',
+
+    // FIXME: Experimentally determined constants.
+    '#define BIG_ENOUGH 0.001',
+    '#define MODIFIED_ALPHATEST (0.02 * isBigEnough / BIG_ENOUGH)',
+
     'void main() {',
     '  vec3 sample = texture2D(map, vUV).rgb;',
-    '  if (negate) {',
-    '    sample = 1.0 - sample;',
-    '  }',
+    '  if (negate) { sample = 1.0 - sample; }',
+
     '  float sigDist = median(sample.r, sample.g, sample.b) - 0.5;',
-    '  float alpha = clamp(sigDist/fwidth(sigDist) + 0.5, 0.0, 1.0);',
+    '  float alpha = clamp(sigDist / fwidth(sigDist) + 0.5, 0.0, 1.0);',
     '  float dscale = 0.353505;',
     '  vec2 duv = dscale * (dFdx(vUV) + dFdy(vUV));',
     '  float isBigEnough = max(abs(duv.x), abs(duv.y));',
-    // When texel is too small, blend raw alpha value rather than supersampling.
-    // FIXME: Experimentally determined constant.
-    '  if (isBigEnough > BIG_ENOUGH) {',
-    '    float ratio = BIG_ENOUGH / isBigEnough;',
-    '    alpha = ratio * alpha + (1.0 - ratio) * (sigDist + 0.5);',
-    '  }',
-    // When texel is big enough, do standard alpha test.
-    // FIXME: Experimentally determined constant.
-    // Looks much better if we *don't* do this, but do we get Z fighting?
-    '  if (isBigEnough <= BIG_ENOUGH && alpha < alphaTest) { discard; return; }',
-    // Else, do modified alpha test.
-    // FIXME: Experimentally determined constant.
+
+    '  // Do modified alpha test.',
     '  if (alpha < alphaTest * MODIFIED_ALPHATEST) { discard; return; }',
     '  gl_FragColor = vec4(color.xyz, alpha * opacity);',
     '}'
@@ -78565,76 +78273,73 @@ module.exports.Shader = registerShader('sdf', {
     '#endif',
 
     'precision highp float;',
-    // FIXME: experimentally determined constants
+    'uniform float alphaTest;',
+    'uniform float opacity;',
+    'uniform sampler2D map;',
+    'uniform vec3 color;',
+    'varying vec2 vUV;',
+
+    '#ifdef GL_OES_standard_derivatives',
+    '  float contour(float width, float value) {',
+    '    return smoothstep(0.5 - value, 0.5 + value, width);',
+    '  }',
+    '#else',
+    '  float aastep(float value, float afwidth) {',
+    '    return smoothstep(0.5 - afwidth, 0.5 + afwidth, value);',
+    '  }',
+    '#endif',
+
+    // FIXME: Experimentally determined constants.
     '#define BIG_ENOUGH 0.001',
     '#define MODIFIED_ALPHATEST (0.02 * isBigEnough / BIG_ENOUGH)',
     '#define ALL_SMOOTH 0.4',
     '#define ALL_ROUGH 0.02',
     '#define DISCARD_ALPHA (alphaTest / (2.2 - 1.2 * ratio))',
-    'uniform sampler2D map;',
-    'uniform vec3 color;',
-    'uniform float opacity;',
-    'uniform float alphaTest;',
-    'varying vec2 vUV;',
-    '#ifdef GL_OES_standard_derivatives',
-    'float contour(float width, float value) {',
-    '  return smoothstep(0.5 - value, 0.5 + value, width);',
-    '}',
-    '#else',
-    'float aastep(float value, float afwidth) {',
-    '  return smoothstep(0.5 - afwidth, 0.5 + afwidth, value);',
-    '}',
-    '#endif',
+
     'void main() {',
-    '#ifdef GL_OES_standard_derivatives',
-    // when we have derivatives and can get texel size etc., that allows supersampling etc.
-    '  vec2 uv = vUV;',
-    '  vec4 texColor = texture2D(map, uv);',
-    '  float dist = texColor.a;',
-    '  float width = fwidth(dist);',
-    '  float alpha = contour(dist, width);',
-    '  float dscale = 0.353505;',
-    '  vec2 duv = dscale * (dFdx(uv) + dFdy(uv));',
-    '  float isBigEnough = max(abs(duv.x), abs(duv.y));',
-    // when texel is too small, blend raw alpha value rather than supersampling etc.
-    // FIXME: experimentally determined constant
-    '  if (isBigEnough > BIG_ENOUGH) {',
-    '    float ratio = BIG_ENOUGH / isBigEnough;',
-    '    alpha = ratio * alpha + (1.0 - ratio) * dist;',
-    '  }',
-    // otherwise do weighted supersampling
-    // FIXME: why this weighting?
-    '  else if (isBigEnough <= BIG_ENOUGH) {',
-    '    vec4 box = vec4 (uv - duv, uv + duv);',
-    '    alpha = (alpha + 0.5 * (',
-    '      contour(texture2D(map, box.xy).a, width)',
-    '      + contour(texture2D(map, box.zw).a, width)',
-    '      + contour(texture2D(map, box.xw).a, width)',
-    '      + contour(texture2D(map, box.zy).a, width)',
-    '    )) / 3.0;',
-    '  }',
-    // when texel is big enough, do standard alpha test
-    // FIXME: experimentally determined constant
-    // looks much better if we DON'T do this, but do we get Z fighting etc.?
-    '  if (isBigEnough <= BIG_ENOUGH && alpha < alphaTest) { discard; return; }',
-    // else do modified alpha test
-    // FIXME: experimentally determined constant
-    '  if (alpha < alphaTest * MODIFIED_ALPHATEST) { discard; return; }',
-    '#else',
-    '  vec4 texColor = texture2D(map, vUV);',
-    '  float value = texColor.a;',
-    // when we don't have derivatives, use approximations
-    // FIXME: if we understood font pixel dimensions, this could probably be improved
-    '  float afwidth = (1.0 / 32.0) * (1.4142135623730951 / (2.0 * gl_FragCoord.w));',
-    '  float alpha = aastep(value, afwidth);',
-    // use gl_FragCoord.w to guess when we should blend
-    // FIXME: if we understood font pixel dimensions, this could probably be improved
-    '  float ratio = (gl_FragCoord.w >= ALL_SMOOTH) ? 1.0 : (gl_FragCoord.w < ALL_ROUGH) ? 0.0 : (gl_FragCoord.w - ALL_ROUGH) / (ALL_SMOOTH - ALL_ROUGH);',
-    '  if (alpha < alphaTest) { if (ratio >= 1.0) { discard; return; } alpha = 0.0; }',
-    '  alpha = alpha * ratio + (1.0 - ratio) * value;',
-    '  if (ratio < 1.0)',
-    '    if (alpha <= DISCARD_ALPHA) { discard; return; }',
-    '#endif',
+       // When we have derivatives and can get texel size for supersampling.
+    '  #ifdef GL_OES_standard_derivatives',
+    '    vec2 uv = vUV;',
+    '    vec4 texColor = texture2D(map, uv);',
+    '    float dist = texColor.a;',
+    '    float width = fwidth(dist);',
+    '    float alpha = contour(dist, width);',
+    '    float dscale = 0.353505;',
+
+    '    vec2 duv = dscale * (dFdx(uv) + dFdy(uv));',
+    '    float isBigEnough = max(abs(duv.x), abs(duv.y));',
+
+         // Otherwise do weighted supersampling.
+         // FIXME: why this weighting?
+    '    if (isBigEnough <= BIG_ENOUGH) {',
+    '      vec4 box = vec4 (uv - duv, uv + duv);',
+    '      alpha = (alpha + 0.5 * (',
+    '        contour(texture2D(map, box.xy).a, width)',
+    '        + contour(texture2D(map, box.zw).a, width)',
+    '        + contour(texture2D(map, box.xw).a, width)',
+    '        + contour(texture2D(map, box.zy).a, width)',
+    '      )) / 3.0;',
+    '    }',
+
+         // Do modified alpha test.
+    '    if (alpha < alphaTest * MODIFIED_ALPHATEST) { discard; return; }',
+
+    '  #else',
+         // When we don't have derivatives, use approximations.
+    '    vec4 texColor = texture2D(map, vUV);',
+    '    float value = texColor.a;',
+         // FIXME: if we understood font pixel dimensions, this could probably be improved
+    '    float afwidth = (1.0 / 32.0) * (1.4142135623730951 / (2.0 * gl_FragCoord.w));',
+    '    float alpha = aastep(value, afwidth);',
+
+         // Use gl_FragCoord.w to guess when we should blend.
+         // FIXME: If we understood font pixel dimensions, this could probably be improved.
+    '    float ratio = (gl_FragCoord.w >= ALL_SMOOTH) ? 1.0 : (gl_FragCoord.w < ALL_ROUGH) ? 0.0 : (gl_FragCoord.w - ALL_ROUGH) / (ALL_SMOOTH - ALL_ROUGH);',
+    '    if (alpha < alphaTest) { if (ratio >= 1.0) { discard; return; } alpha = 0.0; }',
+    '    alpha = alpha * ratio + (1.0 - ratio) * value;',
+    '    if (ratio < 1.0 && alpha <= DISCARD_ALPHA) { discard; return; }',
+    '  #endif',
+
     '  gl_FragColor = vec4(color, opacity * alpha);',
     '}'
   ].join('\n')
@@ -78702,7 +78407,10 @@ module.exports.Shader = registerShader('standard', {
    * Adds a reference from the scene to this entity as the camera.
    */
   init: function (data) {
-    this.material = new THREE.MeshStandardMaterial(getMaterialData(data));
+    this.materialData = {color: new THREE.Color(), emissive: new THREE.Color()};
+    getMaterialData(data, this.materialData);
+    this.material = new THREE.MeshStandardMaterial(this.materialData);
+
     utils.material.updateMap(this, data);
     if (data.normalMap) { utils.material.updateDistortionMap('normal', this, data); }
     if (data.displacementMap) { utils.material.updateDistortionMap('displacement', this, data); }
@@ -78730,11 +78438,12 @@ module.exports.Shader = registerShader('standard', {
    * @returns {object} Material.
    */
   updateMaterial: function (data) {
+    var key;
     var material = this.material;
-    data = getMaterialData(data);
-    Object.keys(data).forEach(function (key) {
-      material[key] = data[key];
-    });
+    getMaterialData(data, this.materialData);
+    for (key in this.materialData) {
+      material[key] = this.materialData[key];
+    }
   },
 
   /**
@@ -78796,34 +78505,35 @@ module.exports.Shader = registerShader('standard', {
  * Builds and normalize material data, normalizing stuff along the way.
  *
  * @param {object} data - Material data.
- * @returns {object} data - Processed material data.
+ * @param {object} materialData - Object to use.
+ * @returns {object} Updated materialData.
  */
-function getMaterialData (data) {
-  var newData = {
-    color: new THREE.Color(data.color),
-    emissive: new THREE.Color(data.emissive),
-    emissiveIntensity: data.emissiveIntensity,
-    fog: data.fog,
-    metalness: data.metalness,
-    roughness: data.roughness,
-    wireframe: data.wireframe,
-    wireframeLinewidth: data.wireframeLinewidth
-  };
+function getMaterialData (data, materialData) {
+  materialData.color.set(data.color);
+  materialData.emissive.set(data.emissive);
+  materialData.emissiveIntensity = data.emissiveIntensity;
+  materialData.fog = data.fog;
+  materialData.metalness = data.metalness;
+  materialData.roughness = data.roughness;
+  materialData.wireframe = data.wireframe;
+  materialData.wireframeLinewidth = data.wireframeLinewidth;
 
-  if (data.normalMap) { newData.normalScale = data.normalScale; }
+  if (data.normalMap) { materialData.normalScale = data.normalScale; }
 
-  if (data.ambientOcclusionMap) { newData.aoMapIntensity = data.ambientOcclusionMapIntensity; }
-
-  if (data.displacementMap) {
-    newData.displacementScale = data.displacementScale;
-    newData.displacementBias = data.displacementBias;
+  if (data.ambientOcclusionMap) {
+    materialData.aoMapIntensity = data.ambientOcclusionMapIntensity;
   }
 
-  return newData;
+  if (data.displacementMap) {
+    materialData.displacementScale = data.displacementScale;
+    materialData.displacementBias = data.displacementBias;
+  }
+
+  return materialData;
 }
 
-},{"../core/shader":118,"../lib/three":157,"../utils/":179}],164:[function(_dereq_,module,exports){
-var css = ".a-html{bottom:0;left:0;position:fixed;right:0;top:0}.a-body{height:100%;margin:0;overflow:hidden;padding:0;width:100%}:-webkit-full-screen{background-color:transparent}.a-hidden{display:none!important}.a-canvas{height:100%;left:0;position:absolute;top:0;width:100%}.a-canvas.a-grab-cursor:hover{cursor:grab;cursor:-moz-grab;cursor:-webkit-grab}.a-canvas.a-grab-cursor:active,.a-grabbing{cursor:grabbing;cursor:-moz-grabbing;cursor:-webkit-grabbing}a-scene.fullscreen .a-canvas{width:100%!important;height:100%!important;top:0!important;left:0!important;right:0!important;bottom:0!important;position:fixed!important}.a-inspector-loader{background-color:#ed3160;position:fixed;left:3px;top:3px;padding:6px 10px;color:#fff;text-decoration:none;font-size:12px;font-family:Roboto,sans-serif;text-align:center;z-index:99999;width:204px}@keyframes dots-1{from{opacity:0}25%{opacity:1}}@keyframes dots-2{from{opacity:0}50%{opacity:1}}@keyframes dots-3{from{opacity:0}75%{opacity:1}}@-webkit-keyframes dots-1{from{opacity:0}25%{opacity:1}}@-webkit-keyframes dots-2{from{opacity:0}50%{opacity:1}}@-webkit-keyframes dots-3{from{opacity:0}75%{opacity:1}}.a-inspector-loader .dots span{animation:dots-1 2s infinite steps(1);-webkit-animation:dots-1 2s infinite steps(1)}.a-inspector-loader .dots span:first-child+span{animation-name:dots-2;-webkit-animation-name:dots-2}.a-inspector-loader .dots span:first-child+span+span{animation-name:dots-3;-webkit-animation-name:dots-3}a-scene{display:block;position:relative;height:100%;width:100%}a-assets,a-scene audio,a-scene img,a-scene video{display:none}.a-enter-vr-modal,.a-orientation-modal{font-family:Consolas,Andale Mono,Courier New,monospace}.a-enter-vr-modal a{border-bottom:1px solid #fff;padding:2px 0;text-decoration:none;transition:.1s color ease-in}.a-enter-vr-modal a:hover{background-color:#fff;color:#111;padding:2px 4px;position:relative;left:-4px}.a-enter-vr{font-family:sans-serif,monospace;font-size:13px;width:100%;font-weight:200;line-height:16px;position:absolute;right:20px;bottom:20px}.a-enter-vr.embedded{right:5px;bottom:5px}.a-enter-vr-button,.a-enter-vr-modal,.a-enter-vr-modal a{color:#fff}.a-enter-vr-button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20245.82%20141.73%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3Bfill-rule%3Aevenodd%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3Emask%3C%2Ftitle%3E%3Cpath%20class%3D%22a%22%20d%3D%22M175.56%2C111.37c-22.52%2C0-40.77-18.84-40.77-42.07S153%2C27.24%2C175.56%2C27.24s40.77%2C18.84%2C40.77%2C42.07S198.08%2C111.37%2C175.56%2C111.37ZM26.84%2C69.31c0-23.23%2C18.25-42.07%2C40.77-42.07s40.77%2C18.84%2C40.77%2C42.07-18.26%2C42.07-40.77%2C42.07S26.84%2C92.54%2C26.84%2C69.31ZM27.27%2C0C11.54%2C0%2C0%2C12.34%2C0%2C28.58V110.9c0%2C16.24%2C11.54%2C30.83%2C27.27%2C30.83H99.57c2.17%2C0%2C4.19-1.83%2C5.4-3.7L116.47%2C118a8%2C8%2C0%2C0%2C1%2C12.52-.18l11.51%2C20.34c1.2%2C1.86%2C3.22%2C3.61%2C5.39%2C3.61h72.29c15.74%2C0%2C27.63-14.6%2C27.63-30.83V28.58C245.82%2C12.34%2C233.93%2C0%2C218.19%2C0H27.27Z%22%2F%3E%3C%2Fsvg%3E) 50% 50%/70% 70% no-repeat rgba(0,0,0,.35);border:0;bottom:0;cursor:pointer;min-width:50px;min-height:30px;padding-right:5%;padding-top:4%;position:absolute;right:0;transition:background-color .05s ease;-webkit-transition:background-color .05s ease;z-index:9999}.a-enter-vr-button:active,.a-enter-vr-button:hover{background-color:#666}[data-a-enter-vr-no-webvr] .a-enter-vr-button{border-color:#666;opacity:.65}[data-a-enter-vr-no-webvr] .a-enter-vr-button:active,[data-a-enter-vr-no-webvr] .a-enter-vr-button:hover{background-color:rgba(0,0,0,.35);cursor:not-allowed}.a-enter-vr-modal{background-color:#666;border-radius:0;display:none;min-height:32px;margin-right:70px;padding:9px;width:280px;right:2%;position:absolute}.a-enter-vr-modal:after{border-bottom:10px solid transparent;border-left:10px solid #666;border-top:10px solid transparent;display:inline-block;content:'';position:absolute;right:-5px;top:5px;width:0;height:0}.a-enter-vr-modal a,.a-enter-vr-modal p{display:inline}.a-enter-vr-modal p{margin:0}.a-enter-vr-modal p:after{content:' '}[data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,[data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal{display:block}.a-orientation-modal{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E) center/50% 50% no-repeat rgba(244,244,244,1);bottom:0;font-size:14px;font-weight:600;left:0;line-height:20px;right:0;position:fixed;top:0;z-index:9999999}.a-orientation-modal:after{color:#666;content:\"Insert phone into Cardboard holder.\";display:block;position:absolute;text-align:center;top:70%;transform:translateY(-70%);width:100%}.a-orientation-modal button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E) no-repeat;border:none;height:50px;text-indent:-9999px;width:50px}"; (_dereq_("browserify-css").createStyle(css, { "href": "src\\style\\aframe.css"})); module.exports = css;
+},{"../core/shader":118,"../lib/three":157,"../utils/":180}],164:[function(_dereq_,module,exports){
+var css = ".a-html{bottom:0;left:0;position:fixed;right:0;top:0}.a-body{height:100%;margin:0;overflow:hidden;padding:0;width:100%}:-webkit-full-screen{background-color:transparent}.a-hidden{display:none!important}.a-canvas{height:100%;left:0;position:absolute;top:0;width:100%}.a-canvas.a-grab-cursor:hover{cursor:grab;cursor:-moz-grab;cursor:-webkit-grab}.a-canvas.a-grab-cursor:active,.a-grabbing{cursor:grabbing;cursor:-moz-grabbing;cursor:-webkit-grabbing}a-scene.fullscreen .a-canvas{width:100%!important;height:100%!important;top:0!important;left:0!important;right:0!important;bottom:0!important;position:fixed!important}.a-inspector-loader{background-color:#ed3160;position:fixed;left:3px;top:3px;padding:6px 10px;color:#fff;text-decoration:none;font-size:12px;font-family:Roboto,sans-serif;text-align:center;z-index:99999;width:204px}@keyframes dots-1{from{opacity:0}25%{opacity:1}}@keyframes dots-2{from{opacity:0}50%{opacity:1}}@keyframes dots-3{from{opacity:0}75%{opacity:1}}@-webkit-keyframes dots-1{from{opacity:0}25%{opacity:1}}@-webkit-keyframes dots-2{from{opacity:0}50%{opacity:1}}@-webkit-keyframes dots-3{from{opacity:0}75%{opacity:1}}.a-inspector-loader .dots span{animation:dots-1 2s infinite steps(1);-webkit-animation:dots-1 2s infinite steps(1)}.a-inspector-loader .dots span:first-child+span{animation-name:dots-2;-webkit-animation-name:dots-2}.a-inspector-loader .dots span:first-child+span+span{animation-name:dots-3;-webkit-animation-name:dots-3}a-scene{display:block;position:relative;height:100%;width:100%}a-assets,a-scene audio,a-scene img,a-scene video{display:none}.a-enter-vr-modal,.a-orientation-modal{font-family:Consolas,Andale Mono,Courier New,monospace}.a-enter-vr-modal a{border-bottom:1px solid #fff;padding:2px 0;text-decoration:none;transition:.1s color ease-in}.a-enter-vr-modal a:hover{background-color:#fff;color:#111;padding:2px 4px;position:relative;left:-4px}.a-enter-vr{font-family:sans-serif,monospace;font-size:13px;width:100%;font-weight:200;line-height:16px;position:absolute;right:20px;bottom:20px}.a-enter-vr.embedded{right:5px;bottom:5px}.a-enter-vr-button,.a-enter-vr-modal,.a-enter-vr-modal a{color:#fff}.a-enter-vr-button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20245.82%20141.73%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3Bfill-rule%3Aevenodd%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3Emask%3C%2Ftitle%3E%3Cpath%20class%3D%22a%22%20d%3D%22M175.56%2C111.37c-22.52%2C0-40.77-18.84-40.77-42.07S153%2C27.24%2C175.56%2C27.24s40.77%2C18.84%2C40.77%2C42.07S198.08%2C111.37%2C175.56%2C111.37ZM26.84%2C69.31c0-23.23%2C18.25-42.07%2C40.77-42.07s40.77%2C18.84%2C40.77%2C42.07-18.26%2C42.07-40.77%2C42.07S26.84%2C92.54%2C26.84%2C69.31ZM27.27%2C0C11.54%2C0%2C0%2C12.34%2C0%2C28.58V110.9c0%2C16.24%2C11.54%2C30.83%2C27.27%2C30.83H99.57c2.17%2C0%2C4.19-1.83%2C5.4-3.7L116.47%2C118a8%2C8%2C0%2C0%2C1%2C12.52-.18l11.51%2C20.34c1.2%2C1.86%2C3.22%2C3.61%2C5.39%2C3.61h72.29c15.74%2C0%2C27.63-14.6%2C27.63-30.83V28.58C245.82%2C12.34%2C233.93%2C0%2C218.19%2C0H27.27Z%22%2F%3E%3C%2Fsvg%3E) 50% 50%/70% 70% no-repeat rgba(0,0,0,.35);border:0;bottom:0;cursor:pointer;min-width:50px;min-height:30px;padding-right:5%;padding-top:4%;position:absolute;right:0;transition:background-color .05s ease;-webkit-transition:background-color .05s ease;z-index:9999}.a-enter-vr-button:active,.a-enter-vr-button:hover{background-color:#666}[data-a-enter-vr-no-webvr] .a-enter-vr-button{border-color:#666;opacity:.65}[data-a-enter-vr-no-webvr] .a-enter-vr-button:active,[data-a-enter-vr-no-webvr] .a-enter-vr-button:hover{background-color:rgba(0,0,0,.35);cursor:not-allowed}.a-enter-vr-modal{background-color:#666;border-radius:0;display:none;min-height:32px;margin-right:70px;padding:9px;width:280px;right:2%;position:absolute}.a-enter-vr-modal:after{border-bottom:10px solid transparent;border-left:10px solid #666;border-top:10px solid transparent;display:inline-block;content:'';position:absolute;right:-5px;top:5px;width:0;height:0}.a-enter-vr-modal a,.a-enter-vr-modal p{display:inline}.a-enter-vr-modal p{margin:0}.a-enter-vr-modal p:after{content:' '}[data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,[data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal{display:block}.a-orientation-modal{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E) center/50% 50% no-repeat rgba(244,244,244,1);bottom:0;font-size:14px;font-weight:600;left:0;line-height:20px;right:0;position:fixed;top:0;z-index:9999999}.a-orientation-modal:after{color:#666;content:\"Insert phone into Cardboard holder.\";display:block;position:absolute;text-align:center;top:70%;transform:translateY(-70%);width:100%}.a-orientation-modal button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E) no-repeat;border:none;height:50px;text-indent:-9999px;width:50px}.a-loader-title{background-color:rgba(0,0,0,.6);font-family:sans-serif,monospace;text-align:center;font-size:20px;height:50px;font-weight:300;line-height:50px;position:absolute;right:0;left:0;top:0;color:#fff}"; (_dereq_("browserify-css").createStyle(css, { "href": "src\\style\\aframe.css"})); module.exports = css;
 },{"browserify-css":5}],165:[function(_dereq_,module,exports){
 var css = ".rs-base{background-color:#333;color:#fafafa;border-radius:0;font:10px monospace;left:5px;line-height:1em;opacity:.85;overflow:hidden;padding:10px;position:fixed;top:5px;width:300px;z-index:10000}.rs-base div.hidden{display:none}.rs-base h1{color:#fff;cursor:pointer;font-size:1.4em;font-weight:300;margin:0 0 5px;padding:0}.rs-group{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column-reverse;flex-direction:column-reverse;margin-bottom:5px}.rs-group:last-child{margin-bottom:0}.rs-counter-base{align-items:center;display:-webkit-box;display:-webkit-flex;display:flex;height:10px;-webkit-justify-content:space-between;justify-content:space-between;margin:2px 0}.rs-counter-base.alarm{color:#b70000;text-shadow:0 0 0 #b70000,0 0 1px #fff,0 0 1px #fff,0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 3px #fff,0 0 4px #fff,0 0 4px #fff}.rs-counter-id{font-weight:300;-webkit-box-ordinal-group:0;-webkit-order:0;order:0;width:54px}.rs-counter-value{font-weight:300;-webkit-box-ordinal-group:1;-webkit-order:1;order:1;text-align:right;width:35px}.rs-canvas{-webkit-box-ordinal-group:2;-webkit-order:2;order:2}@media (min-width:480px){.rs-base{left:20px;top:20px}}"; (_dereq_("browserify-css").createStyle(css, { "href": "src\\style\\rStats.css"})); module.exports = css;
 },{"browserify-css":5}],166:[function(_dereq_,module,exports){
@@ -78934,10 +78644,14 @@ module.exports.System = registerSystem('camera', {
     // Set up default camera.
     defaultCameraEl = document.createElement('a-entity');
     defaultCameraEl.setAttribute('camera', {active: true});
+    defaultCameraEl.setAttribute('position', {
+      x: 0,
+      y: constants.DEFAULT_CAMERA_HEIGHT,
+      z: 0
+    });
     defaultCameraEl.setAttribute('wasd-controls', '');
     defaultCameraEl.setAttribute('look-controls', '');
     defaultCameraEl.setAttribute(constants.AFRAME_INJECTED, '');
-    defaultCameraEl.object3D.position.set(0, constants.DEFAULT_CAMERA_HEIGHT, 0);
 
     defaultCameraEl.addEventListener('object3dset', function (evt) {
       if (evt.detail.type !== 'camera') { return; }
@@ -79236,16 +78950,44 @@ function toBufferGeometry (geometry, doBuffer) {
   return bufferGeometry;
 }
 
-},{"../core/geometry":110,"../core/system":119,"../lib/three":157}],168:[function(_dereq_,module,exports){
+},{"../core/geometry":109,"../core/system":119,"../lib/three":157}],168:[function(_dereq_,module,exports){
+var registerSystem = _dereq_('../core/system').registerSystem;
+var THREE = _dereq_('../lib/three');
+
+/**
+ * glTF model system.
+ *
+ * Configures glTF loading options. Models using glTF compression require that a Draco decoder be
+ * provided externally.
+ *
+ * @param {string} dracoDecoderPath - Base path from which to load Draco decoder library.
+ */
+module.exports.System = registerSystem('gltf-model', {
+  schema: {
+    dracoDecoderPath: {default: ''}
+  },
+
+  init: function () {
+    var path = this.data.dracoDecoderPath;
+    THREE.DRACOLoader.setDecoderPath(path);
+    this.dracoLoader = path ? new THREE.DRACOLoader() : null;
+  },
+
+  getDRACOLoader: function () {
+    return this.dracoLoader;
+  }
+});
+
+},{"../core/system":119,"../lib/three":157}],169:[function(_dereq_,module,exports){
 _dereq_('./camera');
 _dereq_('./geometry');
+_dereq_('./gltf-model');
 _dereq_('./light');
 _dereq_('./material');
 _dereq_('./shadow');
 _dereq_('./tracked-controls');
 
-
-},{"./camera":166,"./geometry":167,"./light":169,"./material":170,"./shadow":171,"./tracked-controls":172}],169:[function(_dereq_,module,exports){
+},{"./camera":166,"./geometry":167,"./gltf-model":168,"./light":170,"./material":171,"./shadow":172,"./tracked-controls":173}],170:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var bind = _dereq_('../utils/bind');
 var constants = _dereq_('../constants/');
@@ -79331,7 +79073,7 @@ module.exports.System = registerSystem('light', {
   }
 });
 
-},{"../constants/":99,"../core/system":119,"../utils/bind":173}],170:[function(_dereq_,module,exports){
+},{"../constants/":99,"../core/system":119,"../utils/bind":174}],171:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -79736,7 +79478,7 @@ function fixVideoAttributes (videoEl) {
   return videoEl;
 }
 
-},{"../core/system":119,"../lib/three":157,"../utils/":179,"../utils/material":180}],171:[function(_dereq_,module,exports){
+},{"../core/system":119,"../lib/three":157,"../utils/":180,"../utils/material":181}],172:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 
@@ -79784,7 +79526,7 @@ module.exports.System = registerSystem('shadow', {
   }
 });
 
-},{"../core/system":119,"../lib/three":157}],172:[function(_dereq_,module,exports){
+},{"../core/system":119,"../lib/three":157}],173:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var utils = _dereq_('../utils');
 
@@ -79843,7 +79585,7 @@ module.exports.System = registerSystem('tracked-controls', {
   }
 });
 
-},{"../core/system":119,"../utils":179}],173:[function(_dereq_,module,exports){
+},{"../core/system":119,"../utils":180}],174:[function(_dereq_,module,exports){
 /**
  * Faster version of Function.prototype.bind
  * @param {Function} fn - Function to wrap.
@@ -79860,7 +79602,7 @@ module.exports = function bind (fn, ctx/* , arg1, arg2 */) {
   })(Array.prototype.slice.call(arguments, 2));
 };
 
-},{}],174:[function(_dereq_,module,exports){
+},{}],175:[function(_dereq_,module,exports){
 /* global THREE */
 var debug = _dereq_('./debug');
 var extend = _dereq_('object-assign');
@@ -79958,7 +79700,7 @@ module.exports.toVector3 = function (vec3) {
   return new THREE.Vector3(vec3.x, vec3.y, vec3.z);
 };
 
-},{"./debug":175,"object-assign":26}],175:[function(_dereq_,module,exports){
+},{"./debug":176,"object-assign":26}],176:[function(_dereq_,module,exports){
 (function (process){
 var debugLib = _dereq_('debug');
 var extend = _dereq_('object-assign');
@@ -80055,7 +79797,7 @@ module.exports = debug;
 
 }).call(this,_dereq_('_process'))
 
-},{"_process":6,"debug":10,"object-assign":26}],176:[function(_dereq_,module,exports){
+},{"_process":6,"debug":10,"object-assign":26}],177:[function(_dereq_,module,exports){
 (function (process){
 var vrDisplay;
 
@@ -80194,7 +79936,7 @@ module.exports.PolyfillControls = function PolyfillControls (object) {
 
 }).call(this,_dereq_('_process'))
 
-},{"_process":6}],177:[function(_dereq_,module,exports){
+},{"_process":6}],178:[function(_dereq_,module,exports){
 /**
  * Split a delimited component property string (e.g., `material.color`) to an object
  * containing `component` name and `property` name. If there is no delimiter, just return the
@@ -80256,7 +79998,7 @@ module.exports.setComponentProperty = function (el, name, value, delimiter) {
   el.setAttribute(name, value);
 };
 
-},{}],178:[function(_dereq_,module,exports){
+},{}],179:[function(_dereq_,module,exports){
 module.exports = function forceCanvasResizeSafariMobile (canvasEl) {
   var width = canvasEl.style.width;
   var height = canvasEl.style.height;
@@ -80272,7 +80014,7 @@ module.exports = function forceCanvasResizeSafariMobile (canvasEl) {
   }, 200);
 };
 
-},{}],179:[function(_dereq_,module,exports){
+},{}],180:[function(_dereq_,module,exports){
 /* global location */
 
 /* Centralized place to reference utilities since utils is exposed to the user. */
@@ -80599,7 +80341,7 @@ module.exports.findAllScenes = function (el) {
 // Must be at bottom to avoid circular dependency.
 module.exports.srcLoader = _dereq_('./src-loader');
 
-},{"./bind":173,"./coordinates":174,"./debug":175,"./device":176,"./entity":177,"./forceCanvasResizeSafariMobile":178,"./material":180,"./object-pool":181,"./split":182,"./src-loader":183,"./styleParser":184,"./tracked-controls":185,"deep-assign":12,"object-assign":26}],180:[function(_dereq_,module,exports){
+},{"./bind":174,"./coordinates":175,"./debug":176,"./device":177,"./entity":178,"./forceCanvasResizeSafariMobile":179,"./material":181,"./object-pool":182,"./split":183,"./src-loader":184,"./styleParser":185,"./tracked-controls":186,"deep-assign":12,"object-assign":26}],181:[function(_dereq_,module,exports){
 var THREE = _dereq_('../lib/three');
 
 var HLS_MIMETYPES = ['application/x-mpegurl', 'application/vnd.apple.mpegurl'];
@@ -80754,7 +80496,7 @@ module.exports.isHLS = function (src, type) {
   return false;
 };
 
-},{"../lib/three":157}],181:[function(_dereq_,module,exports){
+},{"../lib/three":157}],182:[function(_dereq_,module,exports){
 /*
   Adapted deePool by Kyle Simpson.
   MIT License: http://getify.mit-license.org
@@ -80829,12 +80571,12 @@ module.exports.createPool = function createPool (objectFactory) {
 
 function clearObject (obj) {
   var key;
-  if (!(obj.constructor === Object)) { return; }
+  if (!obj || obj.constructor !== Object) { return; }
   for (key in obj) { obj[key] = undefined; }
 }
 module.exports.clearObject = clearObject;
 
-},{}],182:[function(_dereq_,module,exports){
+},{}],183:[function(_dereq_,module,exports){
 /**
  * String split with cached result.
  */
@@ -80851,7 +80593,7 @@ module.exports.split = (function () {
   };
 })();
 
-},{}],183:[function(_dereq_,module,exports){
+},{}],184:[function(_dereq_,module,exports){
 /* global Image, XMLHttpRequest */
 var debug = _dereq_('./debug');
 
@@ -81010,20 +80752,25 @@ module.exports = {
   validateCubemapSrc: validateCubemapSrc
 };
 
-},{"./debug":175}],184:[function(_dereq_,module,exports){
-/* Utils for parsing style-like strings (e.g., "primitive: box; width: 5; height: 4.5"). */
-var styleParser = _dereq_('style-attr');
+},{"./debug":176}],185:[function(_dereq_,module,exports){
+/**
+ * Utils for parsing style-like strings (e.g., "primitive: box; width: 5; height: 4.5").
+ * Some code adapted from `style-attr` (https://github.com/joshwnj/style-attr)
+ * by Josh Johnston (MIT License).
+ */
+var DASH_REGEX = /-([a-z])/g;
 
 /**
- * Deserializes style-like string into an object of properties.
+ * Deserialize style-like string into an object of properties.
  *
  * @param {string} value - HTML attribute value.
+ * @param {object} obj - Reused object for object pooling.
  * @returns {object} Property data.
  */
-module.exports.parse = function (value) {
+module.exports.parse = function (value, obj) {
   var parsedData;
   if (typeof value !== 'string') { return value; }
-  parsedData = styleParser.parse(value);
+  parsedData = styleParse(value, obj);
   // The style parser returns an object { "" : "test"} when fed a string
   if (parsedData['']) { return value; }
   return transformKeysToCamelCase(parsedData);
@@ -81037,7 +80784,7 @@ module.exports.parse = function (value) {
  */
 module.exports.stringify = function (data) {
   if (typeof data === 'string') { return data; }
-  return styleParser.stringify(data);
+  return styleStringify(data);
 };
 
 /**
@@ -81047,8 +80794,7 @@ module.exports.stringify = function (data) {
  * @return {string} CamelCased string.
  */
 function toCamelCase (str) {
-  return str.replace(/-([a-z])/g, camelCase);
-  function camelCase (g) { return g[1].toUpperCase(); }
+  return str.replace(DASH_REGEX, upperCase);
 }
 module.exports.toCamelCase = toCamelCase;
 
@@ -81060,17 +80806,106 @@ module.exports.toCamelCase = toCamelCase;
  * @return {object} The object with keys camelCased.
  */
 function transformKeysToCamelCase (obj) {
-  var keys = Object.keys(obj);
-  var camelCaseObj = {};
-  keys.forEach(function (key) {
-    var camelCaseKey = toCamelCase(key);
-    camelCaseObj[camelCaseKey] = obj[key];
-  });
-  return camelCaseObj;
+  var camelKey;
+  var key;
+  for (key in obj) {
+    camelKey = toCamelCase(key);
+    if (key === camelKey) { continue; }
+    obj[camelKey] = obj[key];
+    delete obj[key];
+  }
+  return obj;
 }
 module.exports.transformKeysToCamelCase = transformKeysToCamelCase;
 
-},{"style-attr":35}],185:[function(_dereq_,module,exports){
+/**
+ * Split a string into chunks matching `<key>: <value>`
+ */
+var getKeyValueChunks = (function () {
+  var chunks = [];
+  var hasUnclosedUrl = /url\([^)]+$/;
+
+  return function getKeyValueChunks (raw) {
+    var chunk = '';
+    var nextSplit;
+    var offset = 0;
+    var sep = ';';
+
+    chunks.length = 0;
+
+    while (offset < raw.length) {
+      nextSplit = raw.indexOf(sep, offset);
+      if (nextSplit === -1) { nextSplit = raw.length; }
+
+      chunk += raw.substring(offset, nextSplit);
+
+      // data URIs can contain semicolons, so make sure we get the whole thing
+      if (hasUnclosedUrl.test(chunk)) {
+        chunk += ';';
+        offset = nextSplit + 1;
+        continue;
+      }
+
+      chunks.push(chunk.trim());
+      chunk = '';
+      offset = nextSplit + 1;
+    }
+
+    return chunks;
+  };
+})();
+
+/**
+ * Convert a style attribute string to an object.
+ *
+ * @param {object} str - Attribute string.
+ * @param {object} obj - Object to reuse as a base, else a new one will be allocated.
+ */
+function styleParse (str, obj) {
+  var chunks;
+  var i;
+  var item;
+  var pos;
+  var key;
+  var val;
+
+  obj = obj || {};
+
+  chunks = getKeyValueChunks(str);
+  for (i = 0; i < chunks.length; i++) {
+    item = chunks[i];
+    if (!item) { continue; }
+    // Split with `.indexOf` rather than `.split` because the value may also contain colons.
+    pos = item.indexOf(':');
+    key = item.substr(0, pos).trim();
+    val = item.substr(pos + 1).trim();
+    obj[key] = val;
+  }
+  return obj;
+}
+
+/**
+ * Convert an object into an attribute string
+ **/
+function styleStringify (obj) {
+  var key;
+  var keyCount = 0;
+  var i = 0;
+  var str = '';
+
+  for (key in obj) { keyCount++; }
+
+  for (key in obj) {
+    str += (key + ': ' + obj[key]);
+    if (i < keyCount - 1) { str += '; '; }
+    i++;
+  }
+  return str;
+}
+
+function upperCase (str) { return str[1].toUpperCase(); }
+
+},{}],186:[function(_dereq_,module,exports){
 var DEFAULT_HANDEDNESS = _dereq_('../constants').DEFAULT_HANDEDNESS;
 var AXIS_LABELS = ['x', 'y', 'z', 'w'];
 var NUM_HANDS = 2;  // Number of hands in a pair. Should always be 2.
@@ -81250,7 +81085,7 @@ module.exports.onButtonEvent = function (id, evtName, component, hand) {
   }
 };
 
-},{"../constants":99}],186:[function(_dereq_,module,exports){
+},{"../constants":99}],187:[function(_dereq_,module,exports){
 /**
  * @author dmarcos / https://github.com/dmarcos
  * @author mrdoob / http://mrdoob.com
@@ -81428,7 +81263,7 @@ THREE.VRControls = function ( object, onError ) {
 
 };
 
-},{}],187:[function(_dereq_,module,exports){
+},{}],188:[function(_dereq_,module,exports){
 /**
  * @author dmarcos / https://github.com/dmarcos
  * @author mrdoob / http://mrdoob.com
@@ -81947,7 +81782,7 @@ THREE.VREffect = function( renderer, onError ) {
 
 };
 
-},{}],188:[function(_dereq_,module,exports){
+},{}],189:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  *
@@ -81995,7 +81830,7 @@ THREE.CopyShader = {
 
 };
 
-},{}],189:[function(_dereq_,module,exports){
+},{}],190:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  */
@@ -82200,7 +82035,7 @@ Object.assign( THREE.Pass.prototype, {
 
 } );
 
-},{}],190:[function(_dereq_,module,exports){
+},{}],191:[function(_dereq_,module,exports){
 /**
  * @author bhouston / http://clara.io/
  *
@@ -82266,7 +82101,7 @@ THREE.LuminosityHighPassShader = {
 
 };
 
-},{}],191:[function(_dereq_,module,exports){
+},{}],192:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  */
@@ -82331,7 +82166,7 @@ THREE.RenderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype 
 
 } );
 
-},{}],192:[function(_dereq_,module,exports){
+},{}],193:[function(_dereq_,module,exports){
 'use strict';
 
 /**
@@ -82490,7 +82325,7 @@ THREE.SSAOPass.prototype.setSize = function( width, height ) {
 
 };
 
-},{}],193:[function(_dereq_,module,exports){
+},{}],194:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  *
@@ -82725,7 +82560,7 @@ THREE.SSAOShader = {
 
 };
 
-},{}],194:[function(_dereq_,module,exports){
+},{}],195:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  *
@@ -82781,7 +82616,7 @@ THREE.SepiaShader = {
 
 };
 
-},{}],195:[function(_dereq_,module,exports){
+},{}],196:[function(_dereq_,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  */
@@ -82850,7 +82685,7 @@ THREE.ShaderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype 
 
 } );
 
-},{}],196:[function(_dereq_,module,exports){
+},{}],197:[function(_dereq_,module,exports){
 /**
  * @author spidersharma / http://eduperiment.com/
  * 
@@ -83233,7 +83068,7 @@ THREE.UnrealBloomPass.prototype = Object.assign( Object.create( THREE.Pass.proto
 THREE.UnrealBloomPass.BlurDirectionX = new THREE.Vector2( 1.0, 0.0 );
 THREE.UnrealBloomPass.BlurDirectionY = new THREE.Vector2( 0.0, 1.0 );
 
-},{}],197:[function(_dereq_,module,exports){
+},{}],198:[function(_dereq_,module,exports){
 window.glStats = function () {
 
     var _rS = null;
@@ -83494,7 +83329,7 @@ if (typeof module === 'object') {
   };
 }
 
-},{}],198:[function(_dereq_,module,exports){
+},{}],199:[function(_dereq_,module,exports){
 // performance.now() polyfill from https://gist.github.com/paulirish/5438650
 'use strict';
 
@@ -83949,7 +83784,7 @@ if (typeof module === 'object') {
   module.exports = window.rStats;
 }
 
-},{}],199:[function(_dereq_,module,exports){
+},{}],200:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84011,7 +83846,7 @@ Util.isLandscapeMode = function() {
 
 module.exports = Util;
 
-},{}],200:[function(_dereq_,module,exports){
+},{}],201:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84087,6 +83922,6 @@ function getWakeLock() {
 
 module.exports = getWakeLock();
 
-},{"./util.js":199}]},{},[155])(155)
+},{"./util.js":200}]},{},[155])(155)
 });
 //# sourceMappingURL=aframe.effects.js.map
