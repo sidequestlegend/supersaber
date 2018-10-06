@@ -3,6 +3,7 @@ function requireAll (req) { req.keys().forEach(req); }
 require('../vendor/BufferGeometryUtils');
 
 require('aframe-animation-component');
+require('aframe-atlas-uvs-component');
 require('aframe-audioanalyser-component');
 require('aframe-event-set-component');
 require('aframe-geometry-merger-component');

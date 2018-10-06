@@ -23,6 +23,14 @@
   </a-entity>
 
   <a-entity
+    id="searchThumbnailImages"
+    bind__search-thumbnail-atlas="dummyUpdater: search.songSubNameTexts"
+    geometry="primitive: plane; buffer: false; width: 0.2; height: 0.12"
+    dynamic-texture-atlas="canvasId: searchThumbnailImagesCanvas; canvasWidth: 64; canvasHeight: 512; numColumns: 1; numRows: 6"
+    material="shader: flat"
+    position="-0.45 -0.13 0.001"></a-entity>
+
+  <a-entity
     id="searchSongNameTextSelected"
     mixin="textFont"
     bind__search-song-name-selected="index: menuSelectedChallenge.index; selectedChallengeId: menuSelectedChallenge.id"
@@ -83,13 +91,6 @@
         animation__mouseleave="property: components.material.material.opacity; from: 1.0; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
         animation__mouseleavevisible="property: visible; from: true; to: false; startEvents: mouseleave; pauseEvents: mouseenter; dur: 160"
         visible="false"></a-entity>
-      <a-entity class="searchResultContent" position="0.125 -0.05 0">
-        <a-entity
-          class="searchResultImage"
-          bind-item__search-result-image="id: item.id"
-          geometry="primitive: plane; width: 0.2; height: 0.2"
-          material="shader: flat; color: #223"
-          position="-0.576 -0.08 0.001"></a-entity>
       </a-entity>
     </a-entity>
   </template>
