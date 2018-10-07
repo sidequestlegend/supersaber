@@ -54,31 +54,6 @@ AFRAME.registerComponent('search-result-list', {
   }),
 });
 
-AFRAME.registerComponent('search-result-image', {
-  dependencies: ['material'],
-
-  schema: {
-    id: {type: 'string'}
-  },
-
-  init: function () {
-    this.materialUpdateObj = {color: '#223'};
-
-    this.el.addEventListener('materialtextureloaded', () => {
-      this.el.setAttribute('material', 'color', '#FFF');
-    });
-  },
-
-  update: function () {
-    this.el.components.material.material.map = null;
-    this.el.components.material.material.needsUpdate = true;
-
-    this.materialUpdateObj.src =
-      `https://s3-us-west-2.amazonaws.com/supersaber/${this.data.id}-image.jpg`
-    this.el.setAttribute('material', this.materialUpdateObj);
-  },
-});
-
 AFRAME.registerComponent('search-song-name-selected', {
   schema: {
     anchor: {default: 0},

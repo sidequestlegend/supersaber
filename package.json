@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "aframe-animation-component": "^5.1.2",
-    "aframe-atlas-uvs-component": "^2.0.0",
     "aframe-audioanalyser-component": "^4.0.1",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",
@@ -17,7 +16,7 @@
     "aframe-orbit-controls": "^1.2.0",
     "aframe-proxy-event-component": "^2.1.0",
     "aframe-slice9-component": "^1.0.0",
-    "aframe-state-component": "6.1.0",
+    "aframe-state-component": "^6.1.0",
     "aframe-super-keyboard": "2.0.2",
     "aframe-thumb-controls-component": "^1.1.0",
     "algoliasearch": "^3.29.0",
