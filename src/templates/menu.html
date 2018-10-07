@@ -109,20 +109,20 @@
     animation__menuright="property: object3D.position.x; to: 0; dur: 200; easing: easeOutCubic; startEvents: menuchallengeunselect">
 
     <a-entity id="divisorA"
-      class="menuAnimation"
       position="0.566 0 -0.0025"
-      geometry="primitive:plane; height:1.17; width:0.005"
-      material="shader: flat; color: #fff; transparent: true; opacity: 0"></a-entity>
+      geometry="primitive: plane; height: 1.17; width: 0.005"
+      material="shader: flat; color: #fff"
+      bind__visible="!!menuSelectedChallenge.id"></a-entity>
 
     {{ searchResults() }}
   </a-entity>
 
   <a-entity id="menuDifficultiesGroup" position="0.195 0.18 0">
     <a-entity id="divisorB"
-      class="menuAnimation"
       position="0.218 -0.179 -0.003"
       geometry="primitive: plane; height: 1.17; width: 0.005"
-      material="shader: flat; color: #fff; transparent: true; opacity: 0.0"></a-entity>
+      material="shader: flat; color: #fff"
+      bind__visible="!!menuSelectedChallenge.id"></a-entity>
 
     <!-- Top-aligned. TODO: Smart-centering. -->
     <!-- Uses bind-for and bind-item to render difficulties. -->
