@@ -1,24 +1,27 @@
 /**
- * Reuse images from the search results to not create another texture.
+ * Reuse images from the search result.
  */
 AFRAME.registerComponent('menu-selected-challenge-image', {
+  dependencies: ['geometry', 'material'],
+
   schema: {
-    selectedChallengeId: {type: 'string'}
+    selectedChallengeIndex: {type: 'number'}
   },
 
   init: function () {
-    this.searchResultEls = document.getElementById('searchResultList');
+    const el = this.el;
+    this.searchThumbnails = document.getElementById('searchThumbnailImages');
+    el.getObject3D('mesh').material.map = this.searchThumbnails.getObject3D('mesh').material.map;
+    el.getObject3D('mesh').material.needsUpdate = true;
   },
 
   update: function () {
     const data = this.data;
     const el = this.el;
 
-    if (!data.selectedChallengeId) { return; }
+    if (data.selectedChallengeIndex === -1 || data.selectedChallengeIndex === '') { return; }
 
-    const imageEl = this.searchResultEls
-      .querySelector(`[data-id="${data.selectedChallengeId}"] .searchResultImage`);
-    el.getObject3D('mesh').material.map = imageEl.getObject3D('mesh').material.map;
-    el.getObject3D('mesh').material.needsUpdate = true;
+    // Update UVs.
+    el.setAttribute('atlas-uvs', 'row', data.selectedChallengeIndex + 1);
   }
 });

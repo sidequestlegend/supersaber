@@ -48,7 +48,7 @@ AFRAME.registerState({
       downloads: '',
       downloadsText: '',
       id: '',
-      index: '',
+      index: -1,
       image: '',
       songName: '',
       songSubName: ''
