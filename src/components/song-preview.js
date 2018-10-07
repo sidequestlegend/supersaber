@@ -6,6 +6,7 @@ var utils = require('../utils');
  */
 AFRAME.registerComponent('song-preview-system', {
   schema: {
+    debug: {default: false},
     selectedChallengeId: {type: 'string'}
   },
 
@@ -52,6 +53,11 @@ AFRAME.registerComponent('song-preview-system', {
     }
   },
 
+  log: function (str) {
+    if (!this.data.debug) { return; }
+    console.log(str);
+  },
+
   /**
    * Song was selected so pause preload queue, prioritize its loading, and try to play ASAP.
    */
@@ -59,16 +65,16 @@ AFRAME.registerComponent('song-preview-system', {
     const data = this.data;
     const preloadQueue = this.preloadQueue;
 
-    console.log(`[song-preview] Prioritizing loading of ${data.selectedChallengeId}`);
+    this.log(`[song-preview] Prioritizing loading of ${data.selectedChallengeId}`);
     this.priorityLoadingChallengeId = data.selectedChallengeId;
 
     this.audioStore[data.selectedChallengeId].addEventListener('loadeddata', () => {
-      console.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
+      this.log(`[song-preview] Finished load of priority ${data.selectedChallengeId}`);
       this.preloadedAudioIds.push(data.selectedChallengeId);
       this.priorityLoadingChallengeId = '';
       // Resume preloading queue.
       if (preloadQueue.length) {
-        console.log(`[song-preview] Resuming queue with ${preloadQueue[0].challengeId}`);
+        this.log(`[song-preview] Resuming queue with ${preloadQueue[0].challengeId}`);
         this.preloadMetadata(preloadQueue[0]);
       }
     });
@@ -126,16 +132,16 @@ AFRAME.registerComponent('song-preview-system', {
    */
   preloadMetadata: function (preloadItem) {
     const audio = preloadItem.audio;
-    console.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
+    this.log(`[song-preview] Preloading song preview ${preloadItem.challengeId}`);
 
     audio.addEventListener('loadedmetadata', () => {
       // Song preloaded.
-      console.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
+      this.log(`[song-preview] Finished preloading song preview ${preloadItem.challengeId}`);
       this.preloadedAudioIds.push(preloadItem.challengeId);
       this.currentLoadingId = '';
 
       // Move on to next song in queue if any.
-      console.log(`[song-preview] ${this.preloadQueue.length} in queue`);
+      this.log(`[song-preview] ${this.preloadQueue.length} in queue`);
       if (this.preloadQueue.length && !this.priorityLoadingChallengeId) {
         this.preloadMetadata(this.preloadQueue.shift());
       }
