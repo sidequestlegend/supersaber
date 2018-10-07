@@ -243,6 +243,7 @@ function computeSearchPagination (state) {
   state.search.songSubNameTexts = '';
 
   state.searchResultsPage.length = 0;
+  state.searchResultsPage.__dirty = true;
   for (i = state.search.page * SEARCH_PER_PAGE;
        i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
     if (!state.search.results[i]) { break; }

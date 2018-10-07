@@ -42,12 +42,13 @@
 
   <a-entity id="pauseDialogInfo" position="1.64 -0.12 0.798" rotation="0 -55 0">
     <a-entity mixin="slice" slice9="width: 0.77; height: 1; padding: 0.04" position="0 0.110 -0.03"></a-entity>
+
     <a-entity id="dialogImage"
-      bind__menu-selected-challenge-image="selectedChallengeIndex: menuSelectedChallenge.index"
+      copy-texture="from: #menuSelectedChallengeImage"
       geometry="primitive: plane; buffer: false; skipCache: true; height: 0.3; width: 0.3"
       material="shader: flat"
-      atlas-uvs="totalColumns: 1; totalRows: 6; column: 1"
       position="0 0.382 0"></a-entity>
+
     <a-entity id="dialogSelectedChallengeInfo">
       <a-entity class="dialogSelectedChallengeSongSubName" position="0 0.058 0"
         mixin="textFont" text="wrapCount: 40; align: center; color: #FF185B" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>

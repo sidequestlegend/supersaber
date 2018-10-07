@@ -23,18 +23,15 @@ AFRAME.registerComponent('search-thumbnail-atlas', {
 
     this.ctx = canvas.getContext('2d');
     this.clearCanvas();
-
     document.body.appendChild(canvas);
-    this.el.setAttribute('material', 'src', canvas);
 
+    this.el.setAttribute('material', 'src', canvas);
     this.images = [];
   },
 
   update: function () {
     var el = this.el;
     var data = this.data;
-
-    this.clearCanvas();
 
     const results = el.sceneEl.systems.state.state.searchResultsPage;
     for (let i = 0; i < results.length; i++) {
