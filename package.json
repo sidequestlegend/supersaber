@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "aframe-audioanalyser-component": "^4.0.1",
+    "aframe-atlas-uvs-component": "^2.0.0",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",
     "aframe-geometry-merger-component": "^2.0.0-beta1",
