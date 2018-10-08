@@ -245,16 +245,19 @@ function computeSearchPagination (state) {
 
   state.searchResultsPage.length = 0;
   state.searchResultsPage.__dirty = true;
-  for (i = state.search.page * SEARCH_PER_PAGE;
+  for (let i = state.search.page * SEARCH_PER_PAGE;
        i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
     if (!state.search.results[i]) { break; }
     state.searchResultsPage.push(state.search.results[i]);
-    state.search.results[i].index = i;
 
     state.search.songNameTexts +=
       truncate(state.search.results[i].songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';
     state.search.songSubNameTexts +=
       truncate(state.search.results[i].songSubName, SONG_SUB_NAME_TRUNCATE) + '\n';
+  }
+
+  for (i = 0; i < state.searchResultsPage.length; i++) {
+    state.searchResultsPage[i].index = i;
   }
 
   computeMenuSelectedChallengeIndex(state);
