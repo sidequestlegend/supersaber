@@ -36,6 +36,7 @@ AFRAME.registerState({
     isGameOver: false,
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Not in the menu AND not paused.
+    isVictory: false,
     keyboardActive: false,
     menu: {
       active: true,
@@ -221,6 +222,10 @@ AFRAME.registerState({
 
     'exit-vr': (state) => {
       state.inVR = false;
+    },
+
+    victory: function (state) {
+      state.isVictory = true;
     }
   },
 
@@ -228,7 +233,7 @@ AFRAME.registerState({
    * Post-process the state after each action.
    */
   computeState: (state) => {
-    state.isPlaying = !state.menu.active && !state.isPaused;
+    state.isPlaying = !state.menu.active && !state.isPaused && !state.isVictory;
     state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
     state.multiplierText = `${state.score.multiplier}x`;

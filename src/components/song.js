@@ -23,6 +23,14 @@ AFRAME.registerComponent('song', {
         audio.play();
       }
     });
+
+    audio.addEventListener('ended', () => {
+      if (this.data.isPlaying) {
+        this.el.sceneEl.emit('victory', null, false);
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
   },
 
   update: function (oldData) {
