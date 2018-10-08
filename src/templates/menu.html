@@ -1,8 +1,9 @@
 <!-- Macro is a templating function. It is rendered into the HTML below with searchResults(). -->
 {% macro searchResults () %}
+  <!-- TODO: Sort the layout based on the IDs. -->
   <a-entity id="searchResultList"
             bind-for="for: item; in: searchResultsPage; key: id; template: #searchResultTemplate; updateInPlace: true; pool: 6; delay: 25"
-            layout="type: box; columns: 1; marginRow: -0.2"
+            layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-index"
             search-result-list
             position="0 0.644 0"></a-entity>
 
@@ -73,6 +74,7 @@
     <a-entity
       class="searchResult"
       bind-item__data-id="item.id"
+      bind-item__data-index="item.index"
       bind-item__song-preview="challengeId: item.id; previewStartTime: item.previewStartTime">
       <a-entity
         class="searchResultBackground"

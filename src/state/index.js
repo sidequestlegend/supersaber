@@ -212,6 +212,7 @@ AFRAME.registerState({
         challengeDataStore[result.id] = result
       }
       computeSearchPagination(state);
+      computeMenuSelectedChallengeIndex(state);
     },
 
     'enter-vr': (state) => {
@@ -248,6 +249,7 @@ function computeSearchPagination (state) {
        i < state.search.page * SEARCH_PER_PAGE + SEARCH_PER_PAGE; i++) {
     if (!state.search.results[i]) { break; }
     state.searchResultsPage.push(state.search.results[i]);
+    state.search.results[i].index = i;
 
     state.search.songNameTexts +=
       truncate(state.search.results[i].songName, SONG_NAME_TRUNCATE).toUpperCase() + '\n';

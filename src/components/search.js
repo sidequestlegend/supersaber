@@ -47,6 +47,21 @@ AFRAME.registerComponent('search', {
  * Click listener for search result.
  */
 AFRAME.registerComponent('search-result-list', {
+  init: function () {
+    const obv = new MutationObserver(mutations => {
+      for (let i = 0; i < mutations.length; i++) {
+        if (mutations[i].attributeName === 'data-index') {
+          this.refreshLayout();
+        }
+      }
+    });
+    obv.observe(this.el, {attributes: true, childList: false, subtree: true});
+  },
+
+  refreshLayout: function () {
+    this.el.emit('layoutrefresh', null, false);
+  },
+
   click: bindEvent(function (evt) {
     this.el.sceneEl.emit('menuchallengeselect',
                          evt.target.closest('.searchResult').dataset.id,
