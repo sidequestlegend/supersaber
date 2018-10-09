@@ -147,6 +147,7 @@ AFRAME.registerState({
     },
 
     pausegame: (state) => {
+      if (!state.isPlaying) { return; }
       state.isPaused = true;
     },
 

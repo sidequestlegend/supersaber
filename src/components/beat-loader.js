@@ -18,6 +18,7 @@ AFRAME.registerComponent('beat-loader', {
 
   init: function () {
     this.audioSync = undefined;
+    this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
     this.beatContainer = document.getElementById('beatContainer');
     this.bpm = undefined;
@@ -115,36 +116,36 @@ AFRAME.registerComponent('beat-loader', {
     const beatObj = {};
 
     return function (noteInfo) {
+      var beatEl;
       var color;
       var orientation;
-      var el;
       var type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
+
       color = noteInfo._type === 0 ? 'red' : 'blue';
       if (noteInfo._type === 3) {
         type = 'mine';
         color = undefined;
       }
-      el = this.requestBeat(type, color);
-      if (!el) { return; }
+      beatEl = this.requestBeat(type, color);
+      if (!beatEl) { return; }
 
       beatObj.color = color;
       beatObj.type = type;
       beatObj.speed = this.data.beatSpeed;
-      el.setAttribute('beat', beatObj);
-      el.object3D.position.set(
+      beatEl.setAttribute('beat', beatObj);
+      beatEl.object3D.position.set(
         this.horizontalPositions[noteInfo._lineIndex],
         this.verticalPositions[noteInfo._lineLayer],
         -this.data.beatAnticipationTime * this.data.beatSpeed
       );
-      el.object3D.rotation.z = THREE.Math.degToRad(this.orientations[noteInfo._cutDirection]);
-      el.play();
+      beatEl.object3D.rotation.z = THREE.Math.degToRad(this.orientations[noteInfo._cutDirection]);
+      beatEl.play();
+
+      this.beams.newBeam(color, beatEl.object3D.position);
 
       if (this.first) { return; }
 
-      this.first = {
-        el: el,
-        time: noteInfo._time
-      };
+      this.first = {el: beatEl, time: noteInfo._time};
     };
   })(),
 

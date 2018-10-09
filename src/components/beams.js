@@ -2,6 +2,7 @@ const ANIME = AFRAME.ANIME || AFRAME.anime;
 
 AFRAME.registerComponent('beams', {
   schema: {
+    isPlaying: {default: false},
     poolSize: {default: 3}
   },
 
@@ -48,13 +49,15 @@ AFRAME.registerComponent('beams', {
       }
     }
 
-    this.el.sceneEl.addEventListener('cleargame', this.clearBeams.bind(this));
+    this.clearBeams = this.clearBeams.bind(this);
+    this.el.sceneEl.addEventListener('cleargame', this.clearBeams);
   },
 
   /**
    * Use tick for manual ANIME animations, else it will create RAF.
    */
   tick: function (t, dt) {
+    if (!this.data.isPlaying) { return; }
     for (let i = 0; i < this.beams.length; i++) {
       let beam = this.beams[i];
       // Tie animation state to beam visibility.
@@ -85,6 +88,8 @@ AFRAME.registerComponent('beams', {
   clearBeams: function () {
     for (let i = 0; i < this.beams.length; i++) {
       this.beams[i].visible = false;
+      this.beams[i].time = 0;
+      this.beams[i].scale.x = 1;
     }
   }
 });
