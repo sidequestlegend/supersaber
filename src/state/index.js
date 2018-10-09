@@ -296,7 +296,7 @@ function checkGameOver (state) {
   if (state.damage >= DAMAGE_MAX) {
     state.damage = 0;
     state.isGameOver = true;
-    state.isPaused = true;
+    //state.isPaused = true;
   }
 }
 

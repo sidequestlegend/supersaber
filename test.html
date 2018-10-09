@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    let audio = document.createElement('audio');
+    audio.crossOrigin = 'anonymous';
+    audio.setAttribute('src',  "https://s3-us-west-2.amazonaws.com/supersaber/106-song.ogg");
+
+  // var ctx = new AudioContext();
+  // var audioSrc = ctx.createMediaElementSource(audio);
+  // var analyser = ctx.createAnalyser();
+  // audioSrc.connect(analyser);
+  // var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+  // analyser.getByteFrequencyData(frequencyData);
+
+    var r = 1;
+    var v = 1;
+    audio.play();
+    setTimeout(rate, 100);
+    function rate(){
+      if (r < 0.5) return;
+      r -= 0.01;
+      v -= 0.02;
+      audio.playbackRate = r;
+      audio.volume = Math.max(0, v);
+      setTimeout(rate, 100);
+    }
+</script>
+</body>
+</html>

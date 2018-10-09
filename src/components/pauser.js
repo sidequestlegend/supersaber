@@ -20,6 +20,7 @@ AFRAME.registerComponent('pauser', {
     events.forEach(event  => {
       this.el.addEventListener(event, this.pauseGame);
     });
+      document.addEventListener('keydown', this.pauseGame);
   },
 
   pauseGame: function () {

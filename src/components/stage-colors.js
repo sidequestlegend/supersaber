@@ -22,12 +22,18 @@ AFRAME.registerComponent('stage-colors', {
       emissive: this.mineEmission[this.data],
       envMap: this.mineEnvMap[this.data]
     });
+    this.sky = document.getElementById('sky');
+    this.backglow = document.getElementById('backglow');
+    this.smoke1 = document.getElementById('smoke1');
+    this.smoke2 = document.getElementById('smoke2');
+    this.auxColor = new THREE.Color();
+    this.el.addEventListener('slowdown', this.slowDown.bind(this));
   },
 
   update: function () {
     const red = this.data === 'red';
-    document.getElementById('backglow').setAttribute('material', 'color', red ? '#f10' : '#00acfc');
-    document.getElementById('sky').setAttribute('material', 'color', red ? '#f10' : '#00acfc');
+    this.backglow.setAttribute('material', {color: red ? '#f10' : '#00acfc', opacity: 0.8});
+    this.sky.setAttribute('material', 'color', red ? '#f10' : '#00acfc');
     this.el.setAttribute('background', 'color', red ? '#770100': '#15252d');
     this.el.sceneEl.setAttribute('fog', 'color', red ? '#a00' : '#007cb9');
     this.el.sceneEl.systems.materials.neon.color = red ? this.neonRed : this.neonBlue;
@@ -35,6 +41,25 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.color = this.mineColor[this.data];
     this.mineMaterial.emissive = this.mineEmission[this.data];
     this.mineMaterial.envMap = this.mineEnvMap[this.data];
+    this.smoke1.setAttribute('material', 'opacity', 1);
+    this.smoke2.setAttribute('material', 'opacity', 1);
+  },
+
+  slowDown: function (ev) {
+    var progress = Math.max(0, ev.detail.progress);
+
+    this.auxColor.setRGB(0.2 + progress * 0.46, 0, 0);
+    this.el.sceneEl.setAttribute('fog', 'color', '#' + this.auxColor.getHexString());
+
+    this.auxColor.setHSL(0.0014, 1, 0.23 * progress);
+    this.el.sceneEl.setAttribute('background', 'color', '#' + this.auxColor.getHexString());
+
+    this.auxColor.setRGB(0.1 + progress * 0.9, 0.066 * progress, 0);
+    this.sky.setAttribute('material', 'color', '#' + this.auxColor.getHexString());
+
+    this.backglow.setAttribute('material', 'opacity', 0.2 + progress * 0.5);
+    this.smoke1.setAttribute('material', 'opacity', progress);
+    this.smoke2.setAttribute('material', 'opacity', progress);
   }
 
 });

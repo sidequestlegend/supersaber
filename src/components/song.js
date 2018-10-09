@@ -31,6 +31,8 @@ AFRAME.registerComponent('song', {
         audio.currentTime = 0;
       }
     });
+
+    this.el.addEventListener('slowdown', this.slowDown.bind(this));
   },
 
   update: function (oldData) {
@@ -48,10 +50,23 @@ AFRAME.registerComponent('song', {
     if (data.isPlaying && data.challengeId && this.audio.paused) {
       console.log(`Playing ${this.audio.src}...`);
       this.data.analyserEl.setAttribute('audioanalyser', 'src', audio);
+      audio.playbackRate = 1;
+      audio.volume = 1;
       audio.play();
       return;
     } else if ((!data.isPlaying || !data.challengeId) && !audio.paused) {
       audio.pause();
+    }
+  },
+
+  slowDown: function (ev) {
+    var progress = ev.detail.progress;
+    if (progress > 0.01){
+      this.audio.playbackRate = 0.5 + progress / 2.0;
+      this.audio.volume = progress;
+    }
+    else {
+      this.audio.pause();
     }
   }
 });

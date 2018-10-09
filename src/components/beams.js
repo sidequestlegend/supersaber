@@ -26,7 +26,7 @@ AFRAME.registerComponent('beams', {
       blending: THREE.AdditiveBlending
     };
     redMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    materialOptions.color = 0x4444cc;
+    materialOptions.color = 0x3333aa;
     blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
     geo = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
 
