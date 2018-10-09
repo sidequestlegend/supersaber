@@ -4,6 +4,7 @@ AFRAME.registerComponent('beams', {
   schema: {
     poolSize: {default: 3}
   },
+
   init: function () {
     var redMaterial;
     var blueMaterial;
@@ -11,6 +12,7 @@ AFRAME.registerComponent('beams', {
     var geo;
     var beam;
 
+    this.beams = [];
     this.redBeams = [];
     this.blueBeams = [];
     this.currentRed = 0;
@@ -31,18 +33,34 @@ AFRAME.registerComponent('beams', {
       for (var i = 0; i < this.data.poolSize; i++) {
         beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
         beam.visible = false;
-        beam.anim = ANIME({
+        beam.animation = ANIME({
+          autoplay: false,
           targets: beam.scale,
           x: 0.00001,
-          autoplay: false,
           duration: 300,
           easing: 'easeInCubic',
-          complete: (anim) => { beam.visible = false; }
+          complete: () => { beam.visible = false; }
         });
 
         this.el.object3D.add(beam);
         this[j === 0 ? 'redBeams' : 'blueBeams'].push(beam);
+        this.beams.push(beam);
       }
+    }
+
+    this.el.sceneEl.addEventListener('cleargame', this.clearBeams.bind(this));
+  },
+
+  /**
+   * Use tick for manual ANIME animations, else it will create RAF.
+   */
+  tick: function (t, dt) {
+    for (let i = 0; i < this.beams.length; i++) {
+      let beam = this.beams[i];
+      // Tie animation state to beam visibility.
+      if (!beam.visible) { continue; }
+      beam.time += dt;
+      beam.animation.tick(beam.time);
     }
   },
 
@@ -51,7 +69,8 @@ AFRAME.registerComponent('beams', {
     if (color === 'red') {
       beam = this.redBeams[this.currentRed];
       this.currentRed = (this.currentRed + 1) % this.redBeams.length;
-      beam.position.set(position.x, position.y, position.z + this.currentRed / 50.0); // z offset to avoid z-fighting
+      // z offset to avoid z-fighting.
+      beam.position.set(position.x, position.y, position.z + this.currentRed / 50.0);
     } else {
       beam = this.blueBeams[this.currentBlue];
       this.currentBlue = (this.currentBlue + 1) % this.blueBeams.length;
@@ -60,7 +79,12 @@ AFRAME.registerComponent('beams', {
 
     beam.visible = true;
     beam.scale.x = 1;
-    beam.anim.restart();
-  }
+    beam.time = 0;
+  },
 
+  clearBeams: function () {
+    for (let i = 0; i < this.beams.length; i++) {
+      this.beams[i].visible = false;
+    }
+  }
 });

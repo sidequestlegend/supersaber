@@ -24,7 +24,7 @@ AFRAME.registerComponent('beat-loader', {
     this.first = null;
     this.lastTime = undefined;
 
-    this.el.addEventListener('pausemenurestart', this.restart.bind(this));
+    this.el.addEventListener('cleargame', this.clearBeats.bind(this));
   },
 
   update: function () {
@@ -183,12 +183,16 @@ AFRAME.registerComponent('beat-loader', {
     return pool.requestEntity();
   },
 
-  restart: function () {
+  /**
+   * Restart by returning all beats to pool.
+   */
+  clearBeats: function () {
     this.audioSync = null;
     this.first = null;
     this.lastTime = 0;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
-      this.beatContainer.children[i].components.beat.returnToPool();
+      console.log('returning to pool');
+      this.beatContainer.children[i].components.beat.returnToPool(true);
     }
   }
 });

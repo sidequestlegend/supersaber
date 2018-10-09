@@ -64,6 +64,12 @@ AFRAME.registerComponent('beat', {
   update: function () {
     this.updateBlock();
     this.updateFragments();
+
+    if (this.data.type === 'mine') {
+      this.poolName = `pool__beat-mine`;
+    } else {
+      this.poolName = `pool__beat-${this.data.type}-${this.data.color}`;
+    }
   },
 
   initBlock: function () {
@@ -386,14 +392,9 @@ AFRAME.registerComponent('beat', {
     leftBorderInnerPlane.setFromCoplanarPoints(leftCutPlanePointsWorld[2], leftCutPlanePointsWorld[1], leftCutPlanePointsWorld[0]);
   },
 
-  returnToPool: function () {
-    var poolName;
-    var type;
-    if (!this.backToPool) { return; }
-    type = this.data.type;
-    poolName = 'pool__beat-' + type;
-    if (type !== 'mine') { poolName  += '-' + this.data.color; }
-    this.el.sceneEl.components[poolName].returnEntity(this.el);
+  returnToPool: function (force) {
+    if (!this.backToPool && !force) { return; }
+    this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 
   tock: (function () {
