@@ -28,9 +28,13 @@ AFRAME.registerComponent('beat-loader', {
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
   },
 
-  update: function () {
-    if (!this.data.challengeId || !this.data.difficulty) { return; }
-    this.loadBeats();
+  update: function (oldData) {
+    const data = this.data;
+    if (!data.challengeId || !data.difficulty) { return; }
+    if (data.challengeId !== oldData.challengeId ||
+        data.difficulty !== oldData.difficulty) {
+      this.loadBeats();
+    }
   },
 
   /**
