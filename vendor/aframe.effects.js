@@ -75105,110 +75105,6 @@ module.exports.registerGeometry = function (name, definition) {
 };
 
 },{"../lib/three":157,"./schema":117}],110:[function(_dereq_,module,exports){
-/* global THREE */
-var utils = _dereq_('../utils/');
-var styleParser = utils.styleParser;
-
-var sceneEl;
-var titleEl;
-var getSceneCanvasSize;
-
-var LOADER_TITLE_CLASS = 'a-loader-title';
-
-// It catches vrdisplayactivate early to ensure we can enter VR mode after the scene loads.
-window.addEventListener('vrdisplayactivate', function () {
-  var vrManager = sceneEl.renderer.vr;
-  var vrDisplay = utils.device.getVRDisplay();
-
-  vrManager.setDevice(vrDisplay);
-  vrManager.enabled = true;
-  if (!vrDisplay.isPresenting) {
-    return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
-  }
-});
-
-module.exports.setup = function setup (el, getCanvasSize) {
-  sceneEl = el;
-  getSceneCanvasSize = getCanvasSize;
-  var loaderAttribute = sceneEl.hasAttribute('loader') ? styleParser.parse(sceneEl.getAttribute('loader')) : undefined;
-  var dotsColor = loaderAttribute && loaderAttribute.dotsColor || 'white';
-  var backgroundColor = loaderAttribute && loaderAttribute.backgroundColor || '#24CAFF';
-  var loaderEnabled = loaderAttribute === undefined || loaderAttribute.enabled === true || loaderAttribute.enabled === undefined; // true default
-  var loaderScene;
-  var sphereGeometry;
-  var sphereMaterial;
-  var sphereMesh1;
-  var sphereMesh2;
-  var sphereMesh3;
-  var camera;
-  var clock;
-  var time;
-  var render;
-
-  if (!loaderEnabled) { return; }
-
-  // Setup Scene.
-  loaderScene = new THREE.Scene();
-  sphereGeometry = new THREE.SphereGeometry(0.20, 36, 18, 0, 2 * Math.PI, 0, Math.PI);
-  sphereMaterial = new THREE.MeshBasicMaterial({color: dotsColor});
-  sphereMesh1 = new THREE.Mesh(sphereGeometry, sphereMaterial);
-  sphereMesh2 = sphereMesh1.clone();
-  sphereMesh3 = sphereMesh1.clone();
-  camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.0005, 10000);
-  clock = new THREE.Clock();
-  time = 0;
-  render = function () {
-    sceneEl.renderer.render(loaderScene, camera);
-    time = clock.getElapsedTime() % 4;
-    sphereMesh1.visible = time >= 1;
-    sphereMesh2.visible = time >= 2;
-    sphereMesh3.visible = time >= 3;
-  };
-
-  loaderScene.background = new THREE.Color(backgroundColor);
-  loaderScene.add(camera);
-  sphereMesh1.position.set(-1, 0, -15);
-  sphereMesh2.position.set(0, 0, -15);
-  sphereMesh3.position.set(1, 0, -15);
-  camera.add(sphereMesh1);
-  camera.add(sphereMesh2);
-  camera.add(sphereMesh3);
-  setupTitle();
-
-  // Delay 200ms to avoid loader flashes.
-  setTimeout(function () {
-    if (sceneEl.hasLoaded) { return; }
-    resize(camera);
-    titleEl.style.display = 'block';
-    window.addEventListener('resize', function () { resize(camera); });
-    sceneEl.renderer.setAnimationLoop(render);
-  }, 200);
-};
-
-module.exports.remove = function remove () {
-  window.removeEventListener('resize', resize);
-  if (!titleEl) { return; }
-  // Hide title.
-  titleEl.style.display = 'none';
-};
-
-function resize (camera) {
-  var size = getSceneCanvasSize(sceneEl.canvas, false, sceneEl.maxCanvasSize, sceneEl.is('vr-mode'));
-  camera.aspect = size.width / size.height;
-  camera.updateProjectionMatrix();
-   // Notify renderer of size change.
-  sceneEl.renderer.setSize(size.width, size.height, false);
-}
-
-function setupTitle () {
-  titleEl = document.createElement('div');
-  titleEl.className = LOADER_TITLE_CLASS;
-  titleEl.innerHTML = document.title;
-  titleEl.style.display = 'none';
-  sceneEl.appendChild(titleEl);
-}
-
-},{"../utils/":180}],111:[function(_dereq_,module,exports){
 var coordinates = _dereq_('../utils/coordinates');
 var debug = _dereq_('debug');
 
@@ -75432,11 +75328,11 @@ function isValidDefaultCoordinate (possibleCoordinates, dimensions) {
 }
 module.exports.isValidDefaultCoordinate = isValidDefaultCoordinate;
 
-},{"../utils/coordinates":175,"debug":10}],112:[function(_dereq_,module,exports){
+},{"../utils/coordinates":175,"debug":10}],111:[function(_dereq_,module,exports){
 /* global Promise, screen */
 var initMetaTags = _dereq_('./metaTags').inject;
 var initWakelock = _dereq_('./wakelock');
-var loadingScreen = _dereq_('../loadingScreen');
+var loadingScreen = _dereq_('./loadingScreen');
 var re = _dereq_('../a-register-element');
 var scenes = _dereq_('./scenes');
 var systems = _dereq_('../system').systems;
@@ -76220,7 +76116,115 @@ function setupCanvas (sceneEl) {
 }
 module.exports.setupCanvas = setupCanvas;  // For testing.
 
-},{"../../lib/three":157,"../../utils/":180,"../a-entity":103,"../a-node":105,"../a-register-element":106,"../loadingScreen":110,"../system":119,"./metaTags":113,"./postMessage":114,"./scenes":115,"./wakelock":116}],113:[function(_dereq_,module,exports){
+},{"../../lib/three":157,"../../utils/":180,"../a-entity":103,"../a-node":105,"../a-register-element":106,"../system":119,"./loadingScreen":112,"./metaTags":113,"./postMessage":114,"./scenes":115,"./wakelock":116}],112:[function(_dereq_,module,exports){
+/* global THREE */
+var utils = _dereq_('../../utils/');
+var styleParser = utils.styleParser;
+
+var sceneEl;
+var raf;
+var titleEl;
+var getSceneCanvasSize;
+
+var ATTR_NAME = 'loading-screen';
+var LOADER_TITLE_CLASS = 'a-loader-title';
+
+// It catches vrdisplayactivate early to ensure we can enter VR mode after the scene loads.
+window.addEventListener('vrdisplayactivate', function () {
+  var vrManager = sceneEl.renderer.vr;
+  var vrDisplay = utils.device.getVRDisplay();
+
+  vrManager.setDevice(vrDisplay);
+  vrManager.enabled = true;
+  if (!vrDisplay.isPresenting) {
+    return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
+  }
+});
+
+module.exports.setup = function setup (el, getCanvasSize) {
+  sceneEl = el;
+  getSceneCanvasSize = getCanvasSize;
+  var loaderAttribute = sceneEl.hasAttribute(ATTR_NAME) ? styleParser.parse(sceneEl.getAttribute(ATTR_NAME)) : undefined;
+  var dotsColor = loaderAttribute && loaderAttribute.dotsColor || 'white';
+  var backgroundColor = loaderAttribute && loaderAttribute.backgroundColor || '#24CAFF';
+  var loaderEnabled = loaderAttribute === undefined || loaderAttribute.enabled === true || loaderAttribute.enabled === undefined; // true default
+  var loaderScene;
+  var sphereGeometry;
+  var sphereMaterial;
+  var sphereMesh1;
+  var sphereMesh2;
+  var sphereMesh3;
+  var camera;
+  var clock;
+  var time;
+  var render;
+
+  if (!loaderEnabled) { return; }
+
+  // Setup Scene.
+  loaderScene = new THREE.Scene();
+  sphereGeometry = new THREE.SphereGeometry(0.20, 36, 18, 0, 2 * Math.PI, 0, Math.PI);
+  sphereMaterial = new THREE.MeshBasicMaterial({color: dotsColor});
+  sphereMesh1 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  sphereMesh2 = sphereMesh1.clone();
+  sphereMesh3 = sphereMesh1.clone();
+  camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.0005, 10000);
+  clock = new THREE.Clock();
+  time = 0;
+  render = function () {
+    raf = sceneEl.effect.requestAnimationFrame(render);
+    sceneEl.effect.render(loaderScene, camera);
+    time = clock.getElapsedTime() % 4;
+    sphereMesh1.visible = time >= 1;
+    sphereMesh2.visible = time >= 2;
+    sphereMesh3.visible = time >= 3;
+  };
+
+  loaderScene.background = new THREE.Color(backgroundColor);
+  loaderScene.add(camera);
+  sphereMesh1.position.set(-1, 0, -15);
+  sphereMesh2.position.set(0, 0, -15);
+  sphereMesh3.position.set(1, 0, -15);
+  camera.add(sphereMesh1);
+  camera.add(sphereMesh2);
+  camera.add(sphereMesh3);
+  setupTitle();
+
+  // Delay 200ms to avoid loader flashes.
+  setTimeout(function () {
+    if (sceneEl.hasLoaded) { return; }
+    resize(camera);
+    titleEl.style.display = 'block';
+    window.addEventListener('resize', function () { resize(camera); });
+    render();
+  }, 200);
+};
+
+module.exports.remove = function remove () {
+  window.removeEventListener('resize', resize);
+  if (!titleEl) { return; }
+  // Hide title.
+  titleEl.style.display = 'none';
+  sceneEl.effect.cancelAnimationFrame(raf);
+};
+
+function resize (camera) {
+  var size = getSceneCanvasSize(sceneEl.canvas, false, sceneEl.maxCanvasSize, sceneEl.is('vr-mode'));
+  camera.aspect = size.width / size.height;
+  camera.updateProjectionMatrix();
+   // Notify renderer of size change.
+  sceneEl.renderer.setSize(size.width, size.height, false);
+}
+
+function setupTitle () {
+  titleEl = document.createElement('div');
+  titleEl.className = LOADER_TITLE_CLASS;
+  titleEl.innerHTML = document.title;
+  titleEl.style.display = 'none';
+  sceneEl.appendChild(titleEl);
+}
+
+},{"../../utils/":180}],113:[function(_dereq_,module,exports){
 var constants = _dereq_('../../constants/');
 var extend = _dereq_('../../utils').extend;
 
@@ -76552,7 +76556,7 @@ function stringifyProperty (value, propDefinition) {
 }
 module.exports.stringifyProperty = stringifyProperty;
 
-},{"../utils/":180,"./propertyTypes":111}],118:[function(_dereq_,module,exports){
+},{"../utils/":180,"./propertyTypes":110}],118:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -77933,7 +77937,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-10-08, Commit #97f80467e)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-10-09, Commit #621221474)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -77964,7 +77968,7 @@ module.exports = window.AFRAME = {
   version: pkg.version
 };
 
-},{"../package":51,"./components/index":61,"./core/a-assets":101,"./core/a-cubemap":102,"./core/a-entity":103,"./core/a-mixin":104,"./core/a-node":105,"./core/a-register-element":106,"./core/component":107,"./core/geometry":109,"./core/scene/a-scene":112,"./core/scene/scenes":115,"./core/schema":117,"./core/shader":118,"./core/system":119,"./extras/components/":120,"./extras/primitives/":123,"./extras/primitives/getMeshMixin":122,"./extras/primitives/primitives":124,"./geometries/index":146,"./lib/three":157,"./shaders/index":159,"./style/aframe.css":164,"./style/rStats.css":165,"./systems/index":169,"./utils/":180,"animejs":2,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],156:[function(_dereq_,module,exports){
+},{"../package":51,"./components/index":61,"./core/a-assets":101,"./core/a-cubemap":102,"./core/a-entity":103,"./core/a-mixin":104,"./core/a-node":105,"./core/a-register-element":106,"./core/component":107,"./core/geometry":109,"./core/scene/a-scene":111,"./core/scene/scenes":115,"./core/schema":117,"./core/shader":118,"./core/system":119,"./extras/components/":120,"./extras/primitives/":123,"./extras/primitives/getMeshMixin":122,"./extras/primitives/primitives":124,"./geometries/index":146,"./lib/three":157,"./shaders/index":159,"./style/aframe.css":164,"./style/rStats.css":165,"./systems/index":169,"./utils/":180,"animejs":2,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],156:[function(_dereq_,module,exports){
 window.aframeStats = function (scene) {
   var _rS = null;
   var _scene = scene;
