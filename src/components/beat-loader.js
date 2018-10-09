@@ -191,7 +191,6 @@ AFRAME.registerComponent('beat-loader', {
     this.first = null;
     this.lastTime = 0;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
-      console.log('returning to pool');
       this.beatContainer.children[i].components.beat.returnToPool(true);
     }
   }
