@@ -17,11 +17,13 @@ AFRAME.registerComponent('song', {
     audio.crossOrigin = 'anonymous';
     this.el.sceneEl.appendChild(audio);
 
-    this.el.addEventListener('cleargame', () => {
-      if (audio.paused) {
-        audio.currentTime = 0;
-        audio.play();
-      }
+    this.el.addEventListener('pausemenuexit', () => {
+      audio.currentTime = 0;
+    });
+
+    this.el.addEventListener('pausemenurestart', () => {
+      audio.currentTime = 0;
+      audio.play();
     });
 
     audio.addEventListener('ended', () => {
