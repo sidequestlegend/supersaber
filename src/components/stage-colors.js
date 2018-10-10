@@ -1,7 +1,8 @@
 AFRAME.registerComponent('stage-colors', {
+  dependencies: ['background', 'fog'],
+
   schema: {
-    default: 'red',
-    oneOf: ['red', 'blue']
+    isGameOver: {default: false}
   },
 
   init: function () {
@@ -27,39 +28,25 @@ AFRAME.registerComponent('stage-colors', {
     this.smoke1 = document.getElementById('smoke1');
     this.smoke2 = document.getElementById('smoke2');
     this.auxColor = new THREE.Color();
-    this.el.addEventListener('slowdown', this.slowDown.bind(this));
   },
 
-  update: function () {
-    const red = this.data === 'red';
-    this.backglow.setAttribute('material', {color: red ? '#f10' : '#00acfc', opacity: 0.8});
-    this.sky.setAttribute('material', 'color', red ? '#f10' : '#00acfc');
-    this.el.setAttribute('background', 'color', red ? '#770100': '#15252d');
-    this.el.sceneEl.setAttribute('fog', 'color', red ? '#a00' : '#007cb9');
+  update: function (oldData) {
+    const red = this.data.isGameOver;
+
+    // Init or reset.
+    if (!('isGameOver' in oldData) || (oldData.isGameOver && !this.data.isGameOver)) {
+      this.backglow.getObject3D('mesh').material.color.set('#00acfc');
+      this.sky.getObject3D('mesh').material.color.set('#00acfc');
+      this.el.sceneEl.object3D.background.set('#15252d');
+      this.el.sceneEl.object3D.fog.color.set('#007cb9');
+    }
+
     this.el.sceneEl.systems.materials.neon.color = red ? this.neonRed : this.neonBlue;
     this.el.sceneEl.systems.materials.default.color = red ? this.defaultRed : this.defaultBlue;
-    this.mineMaterial.color = this.mineColor[this.data];
-    this.mineMaterial.emissive = this.mineEmission[this.data];
-    this.mineMaterial.envMap = this.mineEnvMap[this.data];
-    this.smoke1.setAttribute('material', 'opacity', 1);
-    this.smoke2.setAttribute('material', 'opacity', 1);
+
+    this.mineMaterial.color = this.mineColor[red ? 'red' : 'blue'];
+    this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
+    this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
+    this.mineMaterial.needsUpdate = true;
   },
-
-  slowDown: function (ev) {
-    var progress = Math.max(0, ev.detail.progress);
-
-    this.auxColor.setRGB(0.2 + progress * 0.46, 0, 0);
-    this.el.sceneEl.setAttribute('fog', 'color', '#' + this.auxColor.getHexString());
-
-    this.auxColor.setHSL(0.0014, 1, 0.23 * progress);
-    this.el.sceneEl.setAttribute('background', 'color', '#' + this.auxColor.getHexString());
-
-    this.auxColor.setRGB(0.1 + progress * 0.9, 0.066 * progress, 0);
-    this.sky.setAttribute('material', 'color', '#' + this.auxColor.getHexString());
-
-    this.backglow.setAttribute('material', 'opacity', 0.2 + progress * 0.5);
-    this.smoke1.setAttribute('material', 'opacity', progress);
-    this.smoke2.setAttribute('material', 'opacity', progress);
-  }
-
 });

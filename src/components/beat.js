@@ -76,9 +76,8 @@ AFRAME.registerComponent('beat', {
     var blockEl = this.blockEl = document.createElement('a-entity');
     var signEl = this.signEl = document.createElement('a-entity');
 
-    this.el.object3D.visible = true;
-    blockEl.setAttribute('material', {opacity: 1});
-    signEl.setAttribute('material', {opacity: 1});
+    blockEl.setAttribute('mixin', 'beatBlock');
+    blockEl.setAttribute('mixin', 'beatSign');
 
     // Small offset to prevent z-fighting when the blocks are far away
     signEl.object3D.position.z += 0.02;
@@ -434,30 +433,20 @@ AFRAME.registerComponent('beat', {
           }
         }
 
-        this.el.object3D.position.z += this.data.speed * this.system.speed * (timeDelta / 1000);
+        this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
         this.backToPool = this.el.object3D.position.z >= 2;
-
-        if (this.system.speed < 1.0) {
-          if (this.system.speed <= 0){
-            this.el.object3D.visible = false;
-          }
-          else {
-            this.blockEl.setAttribute('material', {opacity: this.system.speed});
-            this.signEl.setAttribute('material', {opacity: this.system.speed});
-          }
-        }
       } else {
         // Update gravity velocity.
         this.gravityVelocity = getGravityVelocity(this.gravityVelocity, timeDelta);
         this.el.object3D.position.y += this.gravityVelocity * (timeDelta / 1000);
 
-        rightCutNormal.copy(this.rightCutPlane.normal).multiplyScalar((this.data.speed * this.system.speed  / 2) * (timeDelta / 500));
+        rightCutNormal.copy(this.rightCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
         rightCutNormal.y = 0;  // Y handled by gravity.
         this.partRightEl.object3D.position.add(rightCutNormal);
         this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
         rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
 
-        leftCutNormal.copy(this.leftCutPlane.normal).multiplyScalar((this.data.speed * this.system.speed / 2) * (timeDelta / 500));
+        leftCutNormal.copy(this.leftCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
         leftCutNormal.y = 0;  // Y handled by gravity.
         this.partLeftEl.object3D.position.add(leftCutNormal);
         this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
@@ -503,12 +492,3 @@ function getGravityVelocity (velocity, timeDelta) {
   const GRAVITY = -9.8;
   return velocity + (GRAVITY * (timeDelta / 1000));
 }
-
-
-/**
-  * Beat system to coordinate the speed down of all beats on game over
-  */
-
-AFRAME.registerSystem('beat', {
-  speed: 1.0
-});

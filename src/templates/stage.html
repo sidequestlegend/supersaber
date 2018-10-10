@@ -1,6 +1,11 @@
 <a-mixin id="stageLaser" geometry="height: 300; depth: 0.16; width: 0.16" materials="neon"></a-mixin>
 
-<a-sky id="sky" geometry="segmentsHeight: 16; segmentsWidth: 32" material="fog: false; src: #skyTexture"></a-sky>
+<a-sky
+  id="sky"
+  mixin="gameoverAnimation"
+  animation__gameover="property: components.material.material.color; type: color; to: #301000; startEvents: gameover"
+  geometry="segmentsHeight: 16; segmentsWidth: 32"
+  material="fog: false; src: #skyTexture"></a-sky>
 
 <a-entity
   id="audioAnalyser"
@@ -8,7 +13,13 @@
   proxy-event="event: audioanalyser-beat; to: #logolight, #floor, #twister"></a-entity>
 
 <a-entity id="stage">
-  <a-entity id="backglow" obj-model="obj: #backglowObj" position="0 0 -50" scale="20 20 20" material="shader: flat; transparent: true; fog: false; color: #f00; src: #backglowTexture; opacity: 0.8"></a-entity>
+  <a-entity id="backglow"
+    mixin="gameoverAnimation"
+    animation__gameover="property: components.material.material.opacity; to: 0.2; startEvents: gameover"
+    obj-model="obj: #backglowObj"
+    material="shader: flat; transparent: true; fog: false; color: #f00; src: #backglowTexture; opacity: 0.8"
+    position="0 0 -50"
+    scale="20 20 20"></a-entity>
 
   <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
 
@@ -49,9 +60,16 @@
   <a-entity class="stageLaser" mixin="stageLaser" position="10 2 -38"></a-entity>
   <a-entity class="stageLaser" mixin="stageLaser" position="14 -1.5 -36"></a-entity>
 
-  <a-entity id="smoke1" geometry="primitive: cylinder; radius: 10; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.4 0" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 200000; easing: linear; loop: true"></a-entity>
-
-  <a-entity id="smoke2" geometry="primitive: cylinder; radius: 20; height: 15; openEnded: true; segmentsHeight: 1; segmentsRadial: 9" additive material="repeat: 2 1; side: double; fog: true; src: #smokeTexture; shader: flat; transparent: true; color: #111" position="0 1.8 0" animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 243000; easing: linear; loop: true"></a-entity>
+  <a-mixin
+    id="smoke"
+    mixin="gameoverAnimation"
+    additive
+    animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameover"
+    animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true"
+    geometry="primitive: cylinder; height: 30"
+    material="src: #smokeTexture; repeat: 2 1; side: double; fog: true; shader: flat; transparent: true; color: #111"></a-mixin>
+  <a-entity id="smoke1" mixin="smoke" geometry="radius: 10" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
+  <a-entity id="smoke2" mixin="smoke" geometry="radius: 20" position="0 1.8 0" animation__rotate="dur: 243000"></a-entity>
 
   <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 

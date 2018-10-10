@@ -24,10 +24,8 @@ AFRAME.registerComponent('beat-loader', {
     this.bpm = undefined;
     this.first = null;
     this.lastTime = undefined;
-    this.speed = 1.0; // for slowing down on gameover
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
-    this.el.addEventListener('slowdown', this.slowDown.bind(this));
   },
 
   update: function (oldData) {
@@ -85,8 +83,6 @@ AFRAME.registerComponent('beat-loader', {
     var lastTime = this.lastTime || 0;
     var msPerBeat;
     var noteTime;
-
-    delta *= this.speed;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData || !audioEl) { return; }
 
@@ -199,13 +195,8 @@ AFRAME.registerComponent('beat-loader', {
     this.audioSync = null;
     this.first = null;
     this.lastTime = 0;
-    this.speed = 1.0;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       this.beatContainer.children[i].components.beat.returnToPool(true);
     }
-  },
-
-  slowDown: function (ev) {
-    this.speed = ev.detail.progress;
   }
 });
