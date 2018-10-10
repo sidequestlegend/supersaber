@@ -91,7 +91,7 @@ AFRAME.registerComponent('beat-loader', {
     // Re-sync song with beats playback.
     if (this.beatsHeadStart !== undefined && this.currentTime !== this.el.components.song.audio.currentTime) {
       this.currentTime = this.el.components.song.audio.currentTime;
-      this.lastTime = (this.currentTime + this.data.beatAnticipationTime) * 1000 + this.lastDelta;
+      this.lastTime = (this.currentTime + this.data.beatAnticipationTime) * 1000;
     }
 
     notes = this.beatData._notes;
@@ -124,8 +124,6 @@ AFRAME.registerComponent('beat-loader', {
     }
     
     this.lastTime = lastTime + delta;
-    this.lastDelta = delta;
-    
   },
 
   generateBeat: (function () {
