@@ -6,6 +6,7 @@ AFRAME.registerComponent('intro-song', {
   init: function () {
     this.analyserEl = document.getElementById('audioAnalyser');
     this.audio = document.getElementById('introSong');
+    this.timeout = null;
   },
 
   update: function (oldData) {
@@ -14,14 +15,16 @@ AFRAME.registerComponent('intro-song', {
     if (!this.el.sceneEl.isPlaying) { return; }
 
     if (!oldData.isPlaying && this.data.isPlaying) {
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         // TODO: Fade in volume.
         this.analyserEl.setAttribute('audioanalyser', 'src', audio);
         audio.play();
+        this.timeout = null;
       }, 1000);
     }
 
     if (oldData.isPlaying && !this.data.isPlaying) {
+      if (this.timeout) { clearTimeout(this.timeout); }
       audio.pause();
     }
   },
