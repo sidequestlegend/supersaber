@@ -76130,16 +76130,16 @@ var ATTR_NAME = 'loading-screen';
 var LOADER_TITLE_CLASS = 'a-loader-title';
 
 // It catches vrdisplayactivate early to ensure we can enter VR mode after the scene loads.
-window.addEventListener('vrdisplayactivate', function () {
-  var vrManager = sceneEl.renderer.vr;
-  var vrDisplay = utils.device.getVRDisplay();
+// window.addEventListener('vrdisplayactivate', function () {
+//   var vrManager = sceneEl.renderer.vr;
+//   var vrDisplay = utils.device.getVRDisplay();
 
-  vrManager.setDevice(vrDisplay);
-  vrManager.enabled = true;
-  if (!vrDisplay.isPresenting) {
-    return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
-  }
-});
+//   vrManager.setDevice(vrDisplay);
+//   vrManager.enabled = true;
+//   if (!vrDisplay.isPresenting) {
+//     return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
+//   }
+// });
 
 module.exports.setup = function setup (el, getCanvasSize) {
   sceneEl = el;
@@ -77937,7 +77937,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-10-09, Commit #621221474)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-10-10, Commit #1ab59cd99)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
