@@ -9,7 +9,7 @@
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
     <a-scene
-      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: !isPlaying"
+      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
