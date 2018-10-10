@@ -17,7 +17,7 @@ AFRAME.registerComponent('song', {
     audio.crossOrigin = 'anonymous';
     this.el.sceneEl.appendChild(audio);
 
-    this.el.addEventListener('pausemenurestart', () => {
+    this.el.addEventListener('cleargame', () => {
       if (audio.paused) {
         audio.currentTime = 0;
         audio.play();
