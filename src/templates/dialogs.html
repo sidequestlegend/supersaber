@@ -1,7 +1,6 @@
 <a-mixin
   id="dialogButton"
   mixin="slice"
-  bind-toggle__raycastable="isPaused"
   animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #067197; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
   animation__mouseleave="property: components.slice9.material.color; type: color; from: #067197; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
   slice9="width: 1; height: 0.27; padding: 0.04"></a-mixin>
@@ -18,7 +17,7 @@
   <a-entity
     id="resumeButton"
     mixin="dialogButton"
-    bind-toggle__raycastable="isPaused && !isGameOver"
+    bind-toggle__raycastable="isPaused"
     position="0 0.35 0"
     proxy-event="event: click; to: a-scene; as: pausemenuresume"
     bind__visible="!isGameOver">
@@ -27,6 +26,7 @@
 
   <a-entity
     id="restartButton"
+    bind-toggle__raycastable="isPaused || isGameOver"
     mixin="dialogButton"
     proxy-event="event: click; to: a-scene; as: pausemenurestart">
     <a-entity mixin="dialogButtonText" text="value: RESTART SONG"></a-entity>
@@ -35,6 +35,7 @@
   <a-entity
     id="exitButton"
     mixin="dialogButton"
+    bind-toggle__raycastable="isPaused || isGameOver || isVictory"
     position="0 -0.35 0"
     proxy-event="event: click; to: a-scene; as: pausemenuexit">
     <a-entity mixin="dialogButtonText" text="value: EXIT TO MENU"></a-entity>
