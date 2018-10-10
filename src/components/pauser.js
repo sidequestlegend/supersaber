@@ -16,6 +16,10 @@ AFRAME.registerComponent('pauser', {
         this.el.addEventListener('thumbstickdown', this.pauseGame);
       }
     });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') { this.pauseGame(); }
+    });
   },
 
   pauseGame: function () {
