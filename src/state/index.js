@@ -28,7 +28,7 @@ AFRAME.registerState({
       id: AFRAME.utils.getUrlParameter('challenge'),
       image: '',
       isLoading: false,
-      isPreloadingBeats: false,
+      isBeatsPreloaded: false,
       songName: '',
       songSubName: ''
     },
@@ -37,6 +37,7 @@ AFRAME.registerState({
     isGameOver: false,
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Not in the menu AND not paused.
+    isSongLoading: false,
     isVictory: false,
     keyboardActive: false,
     menu: {
@@ -106,11 +107,11 @@ AFRAME.registerState({
     },
 
     beatloaderpreloadfinish: (state) => {
-      state.challenge.isPreloadingBeats = false;
+      state.challenge.isBeatsPreloaded = true;
     },
 
     beatloaderstart: (state) => {
-      state.challenge.isPreloadingBeats = true;
+      state.challenge.isBeatsPreloaded = false;
       state.challenge.isLoading = true;
     },
 
@@ -142,6 +143,9 @@ AFRAME.registerState({
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
       computeMenuSelectedChallengeIndex(state);
+
+      state.challenge.isLoading = true;
+      state.isSongLoading = true;
     },
 
     menuchallengeunselect: () => {
@@ -163,16 +167,19 @@ AFRAME.registerState({
 
     pausemenurestart: (state) => {
       resetScore(state);
+      state.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
     },
 
     pausemenuexit: (state) => {
       resetScore(state);
+      state.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
       state.isVictory = false;
       state.menu.active = true;
+      state.challenge.id = '';
     },
 
     /**
@@ -224,6 +231,14 @@ AFRAME.registerState({
       computeMenuSelectedChallengeIndex(state);
     },
 
+    songloadfinish: (state) => {
+      state.isSongLoading = false;
+    },
+
+    songloadstart: (state) => {
+      state.isSongLoading = true;
+    },
+
     'enter-vr': (state) => {
       state.inVR = true;
     },
@@ -241,7 +256,9 @@ AFRAME.registerState({
    * Post-process the state after each action.
    */
   computeState: (state) => {
-    state.isPlaying = !state.menu.active && !state.isPaused && !state.isVictory && !state.isGameOver;
+    state.isPlaying =
+      !state.menu.active && !state.isPaused && !state.isVictory && !state.isGameOver &&
+      !state.challenge.isLoading && !state.isSongLoading;
     state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
     state.multiplierText = `${state.score.multiplier}x`;
@@ -303,7 +320,6 @@ function checkGameOver (state) {
   if (state.damage >= DAMAGE_MAX) {
     state.damage = 0;
     state.isGameOver = true;
-    //state.isPaused = true;
   }
 }
 

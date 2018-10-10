@@ -1,5 +1,7 @@
 const utils = require('../utils');
 
+var once = {once: true};
+
 /**
  * Active challenge song / audio.
  */
@@ -7,23 +9,28 @@ AFRAME.registerComponent('song', {
   schema: {
     analyserEl: {type: 'selector', default: '#audioAnalyser'},
     challengeId: {default: ''},
+    isBeatsPreloaded: {default: false},
+    isGameOver: {default: false},
     isPlaying: {default: false}
   },
 
   init: function () {
-    // Use audio element for audioanalyser.
-    const audio = this.audio = document.createElement('audio');
-    audio.setAttribute('id', 'song');
-    audio.crossOrigin = 'anonymous';
-    this.el.sceneEl.appendChild(audio);
+    this.analyserSetter = {buffer: true};
+    this.context = this.data.analyserEl.components.audioanalyser.context;
 
-    this.el.addEventListener('pausemenuexit', () => {
-      audio.currentTime = 0;
+    // Restart, get new buffer source node and play.
+    this.el.addEventListener('pausemenurestart', () => {
+      this.source.disconnect();
+      this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
+        this.source = evt.detail;
+        if (this.data.isBeatsPreloaded) { this.source.start(); }
+      }, once);
+      this.data.analyserEl.components.audioanalyser.refreshSource();
     });
 
-    this.el.addEventListener('pausemenurestart', () => {
-      audio.currentTime = 0;
-      audio.play();
+    /*
+    this.el.addEventListener('pausemenuexit', () => {
+      this.data.analyserEl.components.audioanalyser.suspendContext();
     });
 
     audio.addEventListener('ended', () => {
@@ -33,8 +40,7 @@ AFRAME.registerComponent('song', {
         audio.currentTime = 0;
       }
     });
-
-    this.el.addEventListener('slowdown', this.slowDown.bind(this));
+    */
   },
 
   update: function (oldData) {
@@ -42,33 +48,64 @@ AFRAME.registerComponent('song', {
     var el = this.el;
     var data = this.data;
 
-    // Changed challenge.
-    if (data.challengeId !== oldData.challengeId) {
-      let songUrl = utils.getS3FileUrl(data.challengeId, 'song.ogg');
-      audio.setAttribute('src', data.challengeId ? songUrl : '');
+    // Game over, slow down audio, and then stop.
+    if (!oldData.isGameOver && data.isGameOver) {
+      this.source.playbackRate = 0.5;
+      setTimeout(() => {
+        this.stopAudio();
+      }, 1000);
+      return;
     }
 
-    // Keep playback state up to date.
-    if (data.isPlaying && data.challengeId && this.audio.paused) {
-      console.log(`Playing ${this.audio.src}...`);
-      this.data.analyserEl.setAttribute('audioanalyser', 'src', audio);
-      audio.playbackRate = 1;
-      audio.volume = 1;
-      audio.play();
+    // New challenge, play if we have loaded and were waiting for beats to preload.
+    if (!oldData.isBeatsPreloaded && this.data.isBeatsPreloaded && this.source) {
+      this.source.start();
+    }
+
+    if (oldData.challengeId && !data.challengeId) {
+      this.stopAudio();
       return;
-    } else if ((!data.isPlaying || !data.challengeId) && !audio.paused) {
-      audio.pause();
+    }
+
+    // New challenge, load audio and play when ready.
+    if (oldData.challengeId !== data.challengeId && data.challengeId) {
+      this.el.sceneEl.emit('songloadstart', null, false);
+      this.getAudio().then(source => {
+        this.el.sceneEl.emit('songloadfinish', null, false);
+        if (this.data.isBeatsPreloaded) { source.start(); }
+      }).catch(console.error);
+    }
+
+    // Pause / stop.
+    if (oldData.isPlaying && !data.isPlaying) {
+      data.analyserEl.components.audioanalyser.suspendContext();
+    }
+
+    // Resume.
+    if (!oldData.isPlaying && data.isPlaying && this.source) {
+      data.analyserEl.components.audioanalyser.resumeContext();
     }
   },
 
-  slowDown: function (ev) {
-    var progress = ev.detail.progress;
-    if (progress > 0.01){
-      this.audio.playbackRate = 0.5 + progress / 2.0;
-      this.audio.volume = progress;
+  getAudio: function () {
+    const data = this.data;
+    return new Promise(resolve => {
+      data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
+        this.source = evt.detail;
+        resolve(this.source);
+      }, once);
+      this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
+      data.analyserEl.setAttribute('audioanalyser', this.analyserSetter);
+    });
+  },
+
+  stopAudio: function () {
+    if (!this.source) {
+      console.warn('[song] Tried to stopAudio, but not playing.');
+      return;
     }
-    else {
-      this.audio.pause();
-    }
+    this.source.stop();
+    this.source.disconnect();
+    this.source = null;
   }
 });

@@ -15,6 +15,7 @@ AFRAME.registerComponent('intro-song', {
     if (!this.el.sceneEl.isPlaying) { return; }
 
     if (!oldData.isPlaying && this.data.isPlaying) {
+      this.analyserEl.components.audioanalyser.resumeContext();
       this.timeout = setTimeout(() => {
         // TODO: Fade in volume.
         this.analyserEl.setAttribute('audioanalyser', 'src', audio);

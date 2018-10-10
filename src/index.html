@@ -13,7 +13,7 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
-      bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading && !challenge.isPreloadingBeats"
+      bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind__stage-colors="isGameOver: isGameOver"
       bind__overlay="enabled: !isPlaying"
@@ -159,7 +159,7 @@
                   class="blade"
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: {{ bladeColor }}"
-                  play-sound="event: drawbladesound; sound: #saberDraw"
+                  play-sound="event: drawbladesound; sound: #saberDraw; volume: 0.5"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity

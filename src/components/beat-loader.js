@@ -17,6 +17,7 @@ AFRAME.registerComponent('beat-loader', {
   verticalPositions: [1.00, 1.35, 1.70],
 
   init: function () {
+    this.audioAnalyserEl = document.getElementById('audioanalyser');
     this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
     this.beatContainer = document.getElementById('beatContainer');
@@ -103,7 +104,6 @@ AFRAME.registerComponent('beat-loader', {
    * Generate beats and stuff according to timestamp.
    */
   tick: function (time, delta) {
-    var audioEl = this.el.components.song.audio;
     var bpm;
     var i;
     var notes;
@@ -112,11 +112,11 @@ AFRAME.registerComponent('beat-loader', {
     var msPerBeat;
     var noteTime;
 
-    if (!this.data.isPlaying || !this.data.challengeId || !this.beatData || !audioEl) { return; }
+    if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
     // Re-sync song with beats playback.
-    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.audio.currentTime) {
-      this.songCurrentTime = this.el.components.song.audio.currentTime;
+    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.context.currentTime) {
+      this.songCurrentTime = this.el.components.song.context.currentTime;
       this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
 
@@ -142,7 +142,7 @@ AFRAME.registerComponent('beat-loader', {
     if (this.beatsTimeOffset !== undefined) {
       if (this.beatsTimeOffset <= 0) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
-        this.songCurrentTime = this.el.components.song.audio.currentTime;
+        this.songCurrentTime = this.el.components.song.context.currentTime;
         this.beatsTimeOffset = undefined;
       } else {
         this.beatsTimeOffset -= delta;
