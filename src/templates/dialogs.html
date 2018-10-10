@@ -14,7 +14,7 @@
 
 <a-entity mixin="dialogButtonText" text="value: GAME OVER; color: #ff7171; width: 4" bind__visible="isGameOver" position="0 1.8 -2.3"></a-entity>
 
-<a-entity position="0 1.6 -2" bind__visible="isGameOver || isPaused || isVictory">
+<a-entity id="inGameMenu" position="0 1.6 -2" bind__visible="isGameOver || isPaused || isVictory">
   <a-entity
     id="resumeButton"
     mixin="dialogButton"
