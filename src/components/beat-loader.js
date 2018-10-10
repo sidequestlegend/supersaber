@@ -17,12 +17,10 @@ AFRAME.registerComponent('beat-loader', {
   verticalPositions: [1.00, 1.35, 1.70],
 
   init: function () {
-    this.audioSync = undefined;
     this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
     this.beatContainer = document.getElementById('beatContainer');
     this.bpm = undefined;
-    this.first = null;
     this.lastTime = undefined;
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
@@ -64,6 +62,10 @@ AFRAME.registerComponent('beat-loader', {
     var lessThan = function (a, b) {
       return a._time - b._time;
     };
+    // Reset variables used during playback.
+    this.beatsHeadStart = this.data.beatAnticipationTime * 1000;
+    this.lastTime = 0;
+
     this.beatData = beatData;
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
@@ -80,11 +82,17 @@ AFRAME.registerComponent('beat-loader', {
     var i;
     var notes;
     var obstacles;
-    var lastTime = this.lastTime || 0;
+    var lastTime = this.lastTime;
     var msPerBeat;
     var noteTime;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData || !audioEl) { return; }
+
+    // Re-sync song with beats playback.
+    if (this.beatsHeadStart !== undefined && this.currentTime !== this.el.components.song.audio.currentTime) {
+      this.currentTime = this.el.components.song.audio.currentTime;
+      this.lastTime = (this.currentTime + this.data.beatAnticipationTime) * 1000 + this.lastDelta;
+    }
 
     notes = this.beatData._notes;
     obstacles = this.beatData._obstacles;
@@ -101,19 +109,23 @@ AFRAME.registerComponent('beat-loader', {
     for (i=0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > lastTime && noteTime <= lastTime + delta) {
-        // this.generateWall(obstacles[i]);
+        //this.generateWall(obstacles[i]);
       }
     }
 
-    this.lastTime = lastTime + delta;
-
-    // Sync audio with first element.
-    if (this.audioSync || !this.first) { return; }
-    if (this.first.el.object3D.position.z < this.el.sceneEl.camera.el.object3D.position.z) {
-      return;
+    if (this.beatsHeadStart !== undefined) {
+      if (this.beatsHeadStart <= 0) {
+        this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
+        this.currentTime = this.el.components.song.audio.currentTime;
+        this.beatHeadstart = undefined;
+      } else {
+        this.beatsHeadStart -= delta;
+      }
     }
-    this.audioSync = true;
-    this.el.components.song.audio.currentTime = this.first.time;
+    
+    this.lastTime = lastTime + delta;
+    this.lastDelta = delta;
+    
   },
 
   generateBeat: (function () {
@@ -146,10 +158,6 @@ AFRAME.registerComponent('beat-loader', {
       beatEl.play();
 
       this.beams.newBeam(color, beatEl.object3D.position);
-
-      if (this.first) { return; }
-
-      this.first = {el: beatEl, time: noteInfo._time};
     };
   })(),
 
@@ -169,11 +177,6 @@ AFRAME.registerComponent('beat-loader', {
   //   );
   //   el.object3D.scale.set(wallInfo._width * 0.30, 2.5, durationSeconds * speed);
   //   el.play();
-  //   if (this.first) { return; }
-  //   this.first = {
-  //     el: el,
-  //     time: wallInfo._time
-  //   };
   // },
 
   requestBeat: function (type, color) {
@@ -192,9 +195,6 @@ AFRAME.registerComponent('beat-loader', {
    * Restart by returning all beats to pool.
    */
   clearBeats: function () {
-    this.audioSync = null;
-    this.first = null;
-    this.lastTime = 0;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       this.beatContainer.children[i].components.beat.returnToPool(true);
     }

@@ -28,6 +28,7 @@ AFRAME.registerState({
       id: AFRAME.utils.getUrlParameter('challenge'),
       image: '',
       isLoading: false,
+      isPreloadingBeats: false,
       songName: '',
       songSubName: ''
     },
@@ -104,7 +105,12 @@ AFRAME.registerState({
       state.challenge.isLoading = false;
     },
 
+    beatloaderpreloadfinish: (state) => {
+      state.challenge.isPreloadingBeats = false;
+    },
+
     beatloaderstart: (state) => {
+      state.challenge.isPreloadingBeats = true;
       state.challenge.isLoading = true;
     },
 

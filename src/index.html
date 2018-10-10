@@ -13,7 +13,7 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
-      bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
+      bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading && !challenge.isPreloadingBeats"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind__stage-colors="isGameOver: isGameOver"
       bind__overlay="enabled: !isPlaying"
