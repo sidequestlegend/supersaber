@@ -171,6 +171,7 @@ AFRAME.registerState({
       resetScore(state);
       state.isGameOver = false;
       state.isPaused = false;
+      state.isVictory = false;
       state.menu.active = true;
     },
 
