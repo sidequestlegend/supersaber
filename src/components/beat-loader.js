@@ -9,7 +9,7 @@ AFRAME.registerComponent('beat-loader', {
     beatSpeed: {default: 4.0},
     challengeId: {type: 'string'},
     difficulty: {type: 'string'},
-    isPaused: {default: false}
+    isPlaying: {default: false}
   },
 
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
@@ -88,7 +88,7 @@ AFRAME.registerComponent('beat-loader', {
 
     delta *= this.speed;
 
-    if (this.data.isPaused || !this.data.challengeId || !this.beatData || !audioEl) { return; }
+    if (!this.data.isPlaying || !this.data.challengeId || !this.beatData || !audioEl) { return; }
 
     notes = this.beatData._notes;
     obstacles = this.beatData._obstacles;

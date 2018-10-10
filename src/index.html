@@ -8,15 +8,13 @@
   <body>
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
-    {% include './templates/debugStates.html' %}
-
     <a-scene
-      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: !isPlaying && !isGameOver"
+      bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPaused: !isPlaying"
+      bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying && !challenge.isLoading"
       bind__song-preview-system="selectedChallengeId: menuSelectedChallenge.id"
       bind__overlay="enabled: !isPlaying"
-      bind__debug-states="isPlaying: isPlaying; isPaused: isPaused; isGameOver: isGameOver"
       console-shortcuts
       debug-controller
       effect-bloom="strength: 1"
@@ -32,7 +30,6 @@
       proxy-event__cleargame2="event: pausemenurestart; as: cleargame; to: a-scene"
       search
       stage-colors="blue"
-      bind__gameover="start: isGameOver; reset: isPlaying && !isGameOver || menu.active"
       fog="color: #a00; density: 0.035; type: exponential">
       <a-assets timeout="10000">
         <a-asset-item id="arrowObj" src="assets/models/arrow.obj"></a-asset-item>

@@ -234,7 +234,7 @@ AFRAME.registerState({
    * Post-process the state after each action.
    */
   computeState: (state) => {
-    state.isPlaying = !state.menu.active && !state.isPaused && !state.isVictory;
+    state.isPlaying = !state.menu.active && !state.isPaused && !state.isVictory && !state.isGameOver;
     state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
     state.multiplierText = `${state.score.multiplier}x`;
