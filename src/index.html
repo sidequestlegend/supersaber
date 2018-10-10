@@ -101,15 +101,15 @@
         {% include './templates/score.html' %}
         {% include './templates/menu.html' %}
         {% include './templates/inGameMenu.html' %}
-
-        <!-- Wrong + miss beat visual indicators. -->
-        <a-entity id="wrongLeft" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongRedImg"></a-entity>
-        <a-entity id="wrongRight" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongBlueImg"></a-entity>
-        <a-entity id="missLeft" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missRedImg"></a-entity>
-        <a-entity id="missRight" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missBlueImg"></a-entity>
-
-        <a-entity id="saberParticles" particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"> </a-entity>
       </a-entity>
+
+      <!-- Wrong + miss beat visual indicators. -->
+      <a-entity id="wrongLeft" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongRedImg"></a-entity>
+      <a-entity id="wrongRight" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongBlueImg"></a-entity>
+      <a-entity id="missLeft" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missRedImg"></a-entity>
+      <a-entity id="missRight" mixin='badBeat' geometry="height: 0.25; width: 0.5" material="src: #missBlueImg"></a-entity>
+
+      <a-entity id="saberParticles" particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"> </a-entity>
 
       <!-- Player. -->
       <a-mixin
