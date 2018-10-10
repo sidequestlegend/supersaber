@@ -3,7 +3,6 @@
  */
 AFRAME.registerComponent('pauser', {
   schema: {
-    controllerType: {default: ''},
     enabled: {default: true}
   },
 
