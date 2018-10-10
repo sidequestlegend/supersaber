@@ -1,24 +1,21 @@
-const events = [
-  'menudown',
-  'abuttondown',
-  'bbuttondown',
-  'xbuttondown',
-  'ybuttondown'
-];
-
 /**
  * Tell app to pause game if playing.
  */
 AFRAME.registerComponent('pauser', {
   schema: {
+    controllerType: {default: ''},
     enabled: {default: true}
   },
 
   init: function () {
     this.pauseGame = this.pauseGame.bind(this);
 
-    events.forEach(event  => {
-      this.el.addEventListener(event, this.pauseGame);
+    this.el.sceneEl.addEventListener('controllerconnected', evt => {
+      if (evt.detail.name === 'vive-controls') {
+        this.el.addEventListener('menudown', this.pauseGame);
+      } else {
+        this.el.addEventListener('thumbstickdown', this.pauseGame);
+      }
     });
   },
 
