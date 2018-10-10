@@ -91,9 +91,9 @@
         <a-entity id="beatContainer" bind__pause="isPaused: !isPlaying"></a-entity>
 
         {% include './templates/stage.html' %}
-        {% include './templates/gameUi.html' %}
+        {% include './templates/score.html' %}
         {% include './templates/menu.html' %}
-        {% include './templates/dialogs.html' %}
+        {% include './templates/inGameMenu.html' %}
 
         <!-- Wrong + miss beat visual indicators. -->
         <a-entity id="wrongLeft" mixin='badBeat' geometry="height: 0.3; width: 0.3" material="src: #wrongRedImg"></a-entity>
