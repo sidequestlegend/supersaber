@@ -136,7 +136,7 @@
             saber-controls="hand: {{ hand }}"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
-            trail="color: {{ bladeColor }}">
+            trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
               bind__visible="activeHand === '{{ hand }}'"

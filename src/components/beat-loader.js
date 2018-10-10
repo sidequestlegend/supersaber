@@ -122,7 +122,7 @@ AFRAME.registerComponent('beat-loader', {
         this.beatsHeadStart -= delta;
       }
     }
-    
+
     this.lastTime = lastTime + delta;
   },
 

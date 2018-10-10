@@ -1,7 +1,8 @@
 AFRAME.registerComponent('trail', {
   schema: {
     color: {type: 'color'},
-    enabled: {default: false}
+    enabled: {default: false},
+    hand: {type: 'string'}
   },
 
   init: function () {
@@ -61,7 +62,7 @@ AFRAME.registerComponent('trail', {
     mesh.vertices = vertices;
     //mesh.scale.set(0.4, 0.4, 0.4);
     //mesh.rotation.set(0, 0, Math.PI / 2.0);
-    this.el.sceneEl.setObject3D('trail', mesh);
+    this.el.sceneEl.setObject3D(`trail__${this.data.hand}`, mesh);
   },
 
   addLayer: function (length) {
