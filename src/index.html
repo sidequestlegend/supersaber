@@ -33,7 +33,8 @@
       proxy-event__cleargame1="event: pausemenuexit; as: cleargame; to: a-scene"
       proxy-event__cleargame2="event: pausemenurestart; as: cleargame; to: a-scene"
       search
-      fog="color: #a00; density: 0.035; type: exponential">
+      fog="color: #a00; density: 0.035; type: exponential"
+      vr-mode-ui="enterVRButton: #vrButton">
       <a-assets timeout="10000">
         <a-asset-item id="arrowObj" src="assets/models/arrow.obj"></a-asset-item>
         <a-asset-item id="backglowObj" src="assets/models/backglow.obj"></a-asset-item>
@@ -200,5 +201,6 @@
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"></a-entity>
       {% endif %}
     </a-scene>
+    <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
   </body>
 </html>

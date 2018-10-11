@@ -17,3 +17,5 @@ require('aframe-thumb-controls-component');
 
 requireAll(require.context('./components/', true, /\.js$/));
 requireAll(require.context('./state/', true, /\.js$/));
+
+require('./style.css');
