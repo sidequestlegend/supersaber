@@ -7,6 +7,7 @@ var utils = require('../utils');
 AFRAME.registerComponent('song-preview-system', {
   schema: {
     debug: {default: false},
+    isSongLoading: {default: false},  // Continue to play preview song during loading.
     selectedChallengeId: {type: 'string'}
   },
 
@@ -36,10 +37,8 @@ AFRAME.registerComponent('song-preview-system', {
   update: function (oldData) {
     const data = this.data;
 
-    if (oldData.selectedChallengeId &&
-        oldData.selectedChallengeId !== data.selectedChallengeId) {
-      this.stopSong();
-    }
+    // Continue to play preview song during loading to keep entertained.
+    if (oldData.isSongLoading && !data.isSongLoading) { this.stopSong(); }
 
     // Selected challenge ID updated.
     if (data.selectedChallengeId && oldData.selectedChallengeId !== data.selectedChallengeId) {

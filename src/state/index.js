@@ -143,9 +143,6 @@ AFRAME.registerState({
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
       computeMenuSelectedChallengeIndex(state);
-
-      state.challenge.isLoading = true;
-      state.isSongLoading = true;
     },
 
     menuchallengeunselect: () => {
@@ -197,6 +194,8 @@ AFRAME.registerState({
       state.menuSelectedChallenge.id = '';
 
       state.keyboardActive = false;
+      state.challenge.isLoading = true;
+      state.isSongLoading = true;
     },
 
     searchprevpage: function (state) {

@@ -50,10 +50,10 @@ AFRAME.registerComponent('song', {
 
     // Game over, slow down audio, and then stop.
     if (!oldData.isGameOver && data.isGameOver) {
-      this.source.playbackRate = 0.5;
+      this.source.playbackRate.value = 0.75;
       setTimeout(() => {
         this.stopAudio();
-      }, 1000);
+      }, 2000);
       return;
     }
 
