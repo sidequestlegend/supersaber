@@ -21,7 +21,7 @@ AFRAME.registerComponent('beat-loader', {
     this.beatData = null;
     this.beatContainer = document.getElementById('beatContainer');
     this.bpm = undefined;
-    this.lastTime = undefined;
+    this.beatsTime = undefined;
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
   },
@@ -63,8 +63,9 @@ AFRAME.registerComponent('beat-loader', {
       return a._time - b._time;
     };
     // Reset variables used during playback.
-    this.beatsHeadStart = this.data.beatAnticipationTime * 1000;
-    this.lastTime = 0;
+    // Beats spawn ahead of the song and get to the user in sync with the music.
+    this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
+    this.beatsTime = 0;
 
     this.beatData = beatData;
     this.beatData._obstacles.sort(lessThan);
@@ -82,16 +83,16 @@ AFRAME.registerComponent('beat-loader', {
     var i;
     var notes;
     var obstacles;
-    var lastTime = this.lastTime;
+    var beatsTime = this.beatsTime;
     var msPerBeat;
     var noteTime;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData || !audioEl) { return; }
 
     // Re-sync song with beats playback.
-    if (this.beatsHeadStart !== undefined && this.currentTime !== this.el.components.song.audio.currentTime) {
-      this.currentTime = this.el.components.song.audio.currentTime;
-      this.lastTime = (this.currentTime + this.data.beatAnticipationTime) * 1000;
+    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.audio.currentTime) {
+      this.songCurrentTime = this.el.components.song.audio.currentTime;
+      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
 
     notes = this.beatData._notes;
@@ -100,7 +101,7 @@ AFRAME.registerComponent('beat-loader', {
     msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     for (i = 0; i < notes.length; ++i) {
       noteTime = notes[i]._time * msPerBeat;
-      if (noteTime > lastTime && noteTime <= lastTime + delta) {
+      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         notes[i].time = noteTime;
         this.generateBeat(notes[i]);
       }
@@ -108,26 +109,28 @@ AFRAME.registerComponent('beat-loader', {
 
     for (i=0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
-      if (noteTime > lastTime && noteTime <= lastTime + delta) {
+      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         //this.generateWall(obstacles[i]);
       }
     }
 
-    if (this.beatsHeadStart !== undefined) {
-      if (this.beatsHeadStart <= 0) {
+    if (this.beatsTimeOffset !== undefined) {
+      if (this.beatsTimeOffset <= 0) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
-        this.currentTime = this.el.components.song.audio.currentTime;
-        this.beatHeadstart = undefined;
+        this.songCurrentTime = this.el.components.song.audio.currentTime;
+        this.beatsTimeOffset = undefined;
       } else {
-        this.beatsHeadStart -= delta;
+        this.beatsTimeOffset -= delta;
       }
     }
 
-    this.lastTime = lastTime + delta;
+    this.beatsTime = beatsTime + delta;
   },
 
   generateBeat: (function () {
     const beatObj = {};
+    // Beats arrive at sword stroke distance synced with the music.
+    const swordOffset = 1.5;
 
     return function (noteInfo) {
       var beatEl;
@@ -150,7 +153,7 @@ AFRAME.registerComponent('beat-loader', {
       beatEl.object3D.position.set(
         this.horizontalPositions[noteInfo._lineIndex],
         this.verticalPositions[noteInfo._lineLayer],
-        -this.data.beatAnticipationTime * this.data.beatSpeed
+        -this.data.beatAnticipationTime * this.data.beatSpeed - swordOffset
       );
       beatEl.object3D.rotation.z = THREE.Math.degToRad(this.orientations[noteInfo._cutDirection]);
       beatEl.play();
