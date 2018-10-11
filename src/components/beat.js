@@ -101,12 +101,12 @@ AFRAME.registerComponent('beat', {
     blockEl.object3D.scale.multiplyScalar(3.45).multiplyScalar(this.data.size);
 
     if (this.data.type === 'mine') {
-      let model = evt.detail.model.children[0];
-      model.material = this.el.sceneEl.components.stagecolors.mineMaterial;
+      let model = blockEl.getObject3D('mesh');
+      model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+    } else {
+      signEl.setAttribute('material', SIGN_MATERIAL);
+      this.setObjModelFromTemplate(signEl, this.signModels[this.data.type]);
     }
-
-    signEl.setAttribute('material', SIGN_MATERIAL);
-    this.setObjModelFromTemplate(signEl, this.signModels[this.data.type]);
   },
 
   initColliders: function () {

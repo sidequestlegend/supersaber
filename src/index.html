@@ -28,6 +28,7 @@
       pool__beat-arrow-red="mixin: arrowRedBeat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: dotRedBeat; size: 10; container: #beatContainer"
+      pool__beat-mine="mixin: mine; size: 10; container: #beatContainer"
       proxy-event__menuleft="event: menuchallengeunselect; to: .menuAnimation"
       proxy-event__menuright="event: menuchallengeselect; to: .menuAnimation"
       proxy-event__cleargame1="event: pausemenuexit; as: cleargame; to: a-scene"
@@ -45,6 +46,7 @@
         <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
         <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
         <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
+        <a-asset-item id="mineObj" src="assets/models/mine.obj"></a-asset-item>
         <a-asset-item id="sabercutParticles" src="assets/models/sabercut.json"></a-asset-item>
 
         <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
@@ -80,6 +82,7 @@
         <a-mixin id="dotBlueBeat" mixin="beat" beat="color: blue; type: dot"></a-mixin>
         <a-mixin id="dotRedBeat" mixin="beat" beat="color: red; type: dot"></a-mixin>
         <a-mixin id="gameoverAnimation" animation__gameover="dur: 1000; easing: easeOutQuad"></a-mixin>
+        <a-mixin id="mine" mixin="beat" beat="type: mine"></a-mixin>
 
         <a-mixin id="badBeat"
           geometry="primitive: plane"
@@ -92,6 +95,7 @@
       <a-entity id="arrowObjTemplate" obj-model="obj: #arrowObj" visible="false"></a-entity>
       <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
       <a-entity id="dotObjTemplate" obj-model="obj: #dotObj" visible="false"></a-entity>
+      <a-entity id="mineObjTemplate" obj-model="obj: #mineObj" visible="false"></a-entity>
 
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 

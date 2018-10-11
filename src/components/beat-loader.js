@@ -22,6 +22,7 @@ AFRAME.registerComponent('beat-loader', {
     this.beatContainer = document.getElementById('beatContainer');
     this.bpm = undefined;
     this.beatsTime = undefined;
+    this.onKeyDown = this.onKeyDown.bind(this);
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
   },
@@ -52,6 +53,30 @@ AFRAME.registerComponent('beat-loader', {
       this.handleBeats(JSON.parse(xhr.responseText));
     });
     xhr.send();
+  },
+
+  onKeyDown: function (event) {
+    var keyCode = event.keyCode;
+    switch (keyCode) {
+      case 32: // Space
+        this.generateBeat({
+          _lineIndex: 2,
+          _lineLayer: 1,
+          _cutDirection: 1,
+          _type: 3
+        });
+        break;
+      default:
+        break;
+    }
+  },
+
+  play: function () {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
+
+  pause: function () {
+    window.removeEventListener('keydown', this.onKeyDown);
   },
 
   /**
