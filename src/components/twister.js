@@ -12,7 +12,7 @@ AFRAME.registerComponent('twister', {
   init: function () {
     this.currentTwist = 0;
     this.animate = false;
-    this.el.addEventListener('audioanalyser-beat', this.pulse.bind(this));
+    this.el.addEventListener('audioanalyserbeat', this.pulse.bind(this));
   },
 
   pulse: function () {

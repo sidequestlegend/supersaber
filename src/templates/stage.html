@@ -10,7 +10,7 @@
 <a-entity
   id="audioAnalyser"
   audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
-  proxy-event="event: audioanalyser-beat; to: #logolight, #floor, #twister"></a-entity>
+  proxy-event="event: audioanalyserbeat; to: #logolight, #floor, #twister"></a-entity>
 
 <a-entity id="stage">
   <a-entity id="backglow"
@@ -82,7 +82,7 @@
     position="0 6 0"
     rotation="0 50 0"
     logo-light
-    animation__rotate="property: object3D.rotation.y; from: 50; to: -50; dur: 300; easing: linear; startEvents: audioanalyser-beat"></a-entity>
+    animation__rotate="property: object3D.rotation.y; from: 50; to: -50; dur: 300; easing: linear; startEvents: audioanalyserbeat"></a-entity>
 
   <a-entity id="logosparks" bind__visible="menu.active" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 1000; on: logoflicker; animateScale: true; initialScale: 1.5 1.5 1.5; finalScale: 0.3 0.3 0.3" position="-2.8 5.5 -7.2"></a-entity>
   <a-entity id="logo" bind__visible="menu.active" position="0 6 -7.5" rotation="90 0 0">
@@ -93,7 +93,7 @@
 
   <a-entity
     id="floor"
-    animation__beat="property: components.material.material.color; type: color; to: #FFF; dur: 250; easing: linear; startEvents: audioanalyser-beat"
+    animation__beat="property: components.material.material.color; type: color; to: #FFF; dur: 250; easing: linear; startEvents: audioanalyserbeat"
     animation="property: components.material.material.color; type: color; to: #BBB; dur: 250; easing: linear; startEvents: animationcomplete__beat"
     geometry="primitive: plane; width: 3; height: 3"
     material="color: #BBB; shader: flat; src: #floorImg"
