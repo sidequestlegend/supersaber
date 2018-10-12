@@ -32,7 +32,7 @@
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: dotRedBeat; size: 10; container: #beatContainer"
       pool__beat-mine="mixin: mine; size: 10; container: #beatContainer"
-      pool__wall="mixin: wall; size: 10; container: #beatContainer"  
+      pool__wall="mixin: wall; size: 10; container: #beatContainer"
       proxy-event__menuleft="event: menuchallengeunselect; to: .menuAnimation"
       proxy-event__menuright="event: menuchallengeselect; to: .menuAnimation"
       proxy-event__cleargame1="event: pausemenuexit; as: cleargame; to: a-scene"
@@ -55,7 +55,6 @@
         <a-asset-item id="sabercutParticles" src="assets/models/sabercut.json"></a-asset-item>
 
         <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
-        <audio id="saberDraw" src="assets/sounds/saberDraw.ogg"></audio>
 
         <img id="backglowTexture" src="assets/img/stage/backglow.png">
         <img id="cursorMeshImg" src="assets/models/laser/laser.png">
@@ -89,7 +88,7 @@
         <a-mixin id="gameoverAnimation" animation__gameover="dur: 1000; easing: easeOutQuad"></a-mixin>
         <a-mixin id="mine" mixin="beat" beat="type: mine"></a-mixin>
         <a-mixin id="wall" geometry wall material="shader: wall-shader; tex: #noiseTexture; repeat: 2 2; transparent: true; side: double">
-          
+
         <a-mixin id="badBeat"
           geometry="primitive: plane"
           material="shader: flat; transparent: true"
@@ -168,7 +167,6 @@
                   class="blade"
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: {{ bladeColor }}"
-                  play-sound="event: drawbladesound; sound: #saberDraw; volume: 0.5"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity

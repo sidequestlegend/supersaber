@@ -25,9 +25,6 @@ AFRAME.registerComponent('saber-controls', {
   update: function (oldData) {
     if (!oldData.bladeEnabled  && this.data.bladeEnabled) {
       this.bladeEl.emit('drawblade');
-      if (!oldData.isPaused) {
-        this.bladeEl.emit('drawbladesound');
-      }
     }
   },
 
