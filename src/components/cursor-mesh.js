@@ -3,11 +3,16 @@
  */
 AFRAME.registerComponent('cursor-mesh', {
   schema: {
+    active: {default: true},
     cursorEl: {type: 'selector'}
   },
 
   init: function () {
     this.scenePivotEl = document.getElementById('scenePivot');
+  },
+
+  update: function () {
+    this.el.object3D.visible = this.data.active;
   },
 
   tick: function () {
@@ -20,6 +25,8 @@ AFRAME.registerComponent('cursor-mesh', {
     var intersectionPoint;
     var object3D = this.el.object3D;
     var scenePivotEl = this.scenePivotEl;
+
+    if (!this.data.active) { return; }
 
     cursor = cursorEl.components.cursor;
     if (!cursor) { return; }
