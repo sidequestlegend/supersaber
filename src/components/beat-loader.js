@@ -225,7 +225,13 @@ AFRAME.registerComponent('beat-loader', {
     this.beatsTime = 0;
     this.beatsTimeOffset = undefined;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
-      this.beatContainer.children[i].components.beat.returnToPool(true);
+      let child = this.beatContainer.children[i];
+      if (child.components.beat) {
+        child.components.beat.returnToPool(true);
+      }
+      if (child.components.wall) {
+        child.components.wall.returnToPool(true);
+      }
     }
   }
 });
