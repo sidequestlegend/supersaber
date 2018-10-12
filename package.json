@@ -6,8 +6,8 @@
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
-    "aframe-audioanalyser-component": "^5.0.0-beta2",
     "aframe-atlas-uvs-component": "^2.0.0",
+    "aframe-audioanalyser-component": "^5.0.0-beta2",
     "aframe-event-decorators": "^1.0.2",
     "aframe-event-set-component": "^4.0.1",
     "aframe-geometry-merger-component": "^2.0.0-beta1",
@@ -37,10 +37,10 @@
     "json-loader": "^0.5.7",
     "nunjucks": "3.0.1",
     "postcss-loader": "^2.0.9",
+    "style-loader": "^0.23.1",
     "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
     "uglifyjs-webpack-plugin": "0.4.6",
     "url-loader": "^1.1.2",
-    "style-loader": "^0.23.1",
     "webpack": "2.3.3",
     "webpack-glsl-loader": "^1.0.1",
     "webpack-sources": "1.0.1"
