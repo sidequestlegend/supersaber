@@ -45,7 +45,7 @@ AFRAME.registerComponent('beat-hit-sound', {
 
   processSound: function (audio) {
     // Randomize a bit.
-    audio.detune = (Math.random() * 1000) - 500;
+    audio.detune = (Math.random() * 1500);
     audio.playbackRate = 0.80 + (Math.random() * .20);
     this.currentBeatEl.object3D.getWorldPosition(audio.position);
   }
