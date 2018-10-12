@@ -213,6 +213,16 @@ AFRAME.registerComponent('beat', {
     this.destroyed = true;
   },
 
+  missHit: function (hand) {
+    var missEl = hand === 'left' ? this.missElLeft : this.missElRight;
+    if (!missEl) { return; }
+    missEl.object3D.position.copy(this.el.object3D.position);
+    missEl.object3D.position.y += 0.2;
+    missEl.object3D.position.z -= 0.5;
+    missEl.object3D.visible = true;
+    missEl.emit('beatmiss', null, false);
+  },
+
   destroyBeat: (function () {
     var parallelPlaneMaterial = new THREE.MeshBasicMaterial({color: '#00008b', side: THREE.DoubleSide});
     var planeMaterial = new THREE.MeshBasicMaterial({color: 'grey', side: THREE.DoubleSide});
@@ -395,6 +405,7 @@ AFRAME.registerComponent('beat', {
 
   returnToPool: function (force) {
     if (!this.backToPool && !force) { return; }
+    if (!this.destroyed) { this.missHit(); }
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 
