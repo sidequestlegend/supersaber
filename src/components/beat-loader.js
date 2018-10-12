@@ -194,9 +194,7 @@ AFRAME.registerComponent('beat-loader', {
     var durationMs;
     if (!el) { return; }
     durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    el.setAttribute('wall', {
-      speed: speed
-    });
+    el.setAttribute('wall', 'speed', speed);
     el.object3D.position.set(
       this.horizontalPositions[wallInfo._lineIndex],
       1.30,
