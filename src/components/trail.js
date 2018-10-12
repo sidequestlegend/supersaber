@@ -12,6 +12,7 @@ AFRAME.registerComponent('trail', {
     var vertices = this.vertices = new Float32Array(36 * maxPoints);
     var colors = this.colors = new Float32Array(48 * maxPoints);
     var bladeColor = this.bladeColor = new THREE.Color(this.data.color);
+
     this.bladeColor = {
       red: bladeColor.r,
       green: bladeColor.g,
@@ -27,11 +28,10 @@ AFRAME.registerComponent('trail', {
       {top: new THREE.Vector3(-0.5, 1.0, 0), center: new THREE.Vector3(0, 1.0, 0), bottom: new THREE.Vector3(0.5, 1.0, 0)}
     ];
 
-    //geometry.setDrawRange(0, 0);
     geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3).setDynamic(true));
     geometry.addAttribute('vertexColor', new THREE.BufferAttribute(colors, 4).setDynamic(true));
 
-    var material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
       side: THREE.DoubleSide,
       vertexColors: THREE.VertexColors,
       transparent: true,
@@ -52,17 +52,24 @@ AFRAME.registerComponent('trail', {
       ].join('')
     });
 
-    //this.initGeometry();
-    var mesh = this.mesh = new THREE.Mesh(geometry, material);
-    // var material = new THREE.MeshBasicMaterial({color: 0xffff00});
-    // var wireframe = new THREE.WireframeGeometry(geometry);
-    // var mesh = new THREE.LineSegments(wireframe, material);
-
+    const mesh = this.mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
     mesh.vertices = vertices;
-    //mesh.scale.set(0.4, 0.4, 0.4);
-    //mesh.rotation.set(0, 0, Math.PI / 2.0);
     this.el.sceneEl.setObject3D(`trail__${this.data.hand}`, mesh);
+  },
+
+  update: function (oldData) {
+    if (!oldData.enabled && this.data.enabled) {
+      this.enabledTime = this.el.sceneEl.time;
+      this.mesh.visible = false;
+    }
+  },
+
+  tock: function (time, delta) {
+    if (!this.data.enabled) { return; }
+    // Delay before showing after enabled to prevent flash from old saber position.
+    if (!this.mesh.visible && time > this.enabledTime + 250) { this.mesh.visible = true; }
+    this.sampleSaberPosition();
   },
 
   addLayer: function (length) {
@@ -296,20 +303,13 @@ AFRAME.registerComponent('trail', {
     this.geometry.attributes.vertexColor.needsUpdate = true;
   },
 
-  tock: function (time, delta) {
-    if (!this.data.enabled) { return; }
-    this.sampleSaberPosition();
-  },
-
   sampleSaberPosition: function () {
-    var saberEl = this.el.querySelector('.blade');
+    var saberEl = this.saberEl;
     var saberObject;
     var sample;
 
-    if (!saberEl) { return; }
-
     if (this.saberTrajectory.length === this.maxPoints) {
-      // Dump oldest point
+      // Dump oldest point.
       sample = this.saberTrajectory.shift();
       sample.top.set(0, -0.4, 0);
       sample.center.set(0, 0, 0);
