@@ -83,7 +83,7 @@ AFRAME.registerState({
       localStorage.setItem('activeHand', state.activeHand);
     },
 
-    beathit: state => {
+    goodhit: state => {
       if (state.damage > DAMAGE_DECAY) {
         state.damage -= DAMAGE_DECAY;
       }
@@ -95,10 +95,6 @@ AFRAME.registerState({
      * Not implemented.
      */
     beatmiss: state => {
-      takeDamage(state);
-    },
-
-    beatwrong: state => {
       takeDamage(state);
     },
 
@@ -248,6 +244,10 @@ AFRAME.registerState({
 
     victory: function (state) {
       state.isVictory = true;
+    },
+
+    wronghit: state => {
+      takeDamage(state);
     }
   },
 
