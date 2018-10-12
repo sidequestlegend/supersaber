@@ -1,11 +1,14 @@
 const ANIME = AFRAME.ANIME || AFRAME.anime;
 var utils = require('../utils');
 
+const PREVIEW_VOLUME = 0.5;
+
 /**
  * Song preview when search result selected with smart logic for preloading.
  */
 AFRAME.registerComponent('song-preview-system', {
   schema: {
+    challengeId: {default: ''},
     debug: {default: false},
     isSongLoading: {default: false},  // Continue to play preview song during loading.
     selectedChallengeId: {type: 'string'}
@@ -25,7 +28,7 @@ AFRAME.registerComponent('song-preview-system', {
       delay: 250,
       duration: 1500,
       easing: 'easeInQuad',
-      volume: 0.5,
+      volume: PREVIEW_VOLUME,
       autoplay: false,
       loop: false,
       update: () => {
@@ -33,21 +36,16 @@ AFRAME.registerComponent('song-preview-system', {
       }
     });
 
-    this.fadeOutVolumeTarget = {volume: 0.5};
-    this.fadeOutAnimation = ANIME({
-      targets: this.fadeOutVolumeTarget,
+    this.fadeDownVolumeTarget = {volume: PREVIEW_VOLUME};
+    this.fadeDownAnimation = ANIME({
+      targets: this.fadeDownVolumeTarget,
       duration: 500,
-      easing: 'easeOutQuad',
-      volume: 0,
+      easing: 'easeInQuad',
+      volume: 0.05,
       autoplay: false,
       loop: false,
       update: () => {
-        this.audio.volume = this.fadeOutVolumeTarget.volume;
-      },
-      complete: () => {
-        setTimeout(() => {
-          this.audio.pause();
-        }, 1000);
+        this.audio.volume = this.fadeDownVolumeTarget.volume;
       }
     });
   },
@@ -55,17 +53,22 @@ AFRAME.registerComponent('song-preview-system', {
   update: function (oldData) {
     const data = this.data;
 
-    // Continue to play preview song during loading to keep entertained.
-    if (oldData.isSongLoading && !data.isSongLoading) {
-      this.stopSong(true);  // Flag for fade out.
+    // Play clicked.
+    // But don't start playing it if it wasn't playing already.
+    if (!oldData.challengeId && data.challengeId) {
+      if (this.analyserEl.components.audioanalyser.volume === 0) {
+        this.stopSong();
+      } else {
+        this.fadeDownVolumeTarget.volume = this.audio.volume;
+        this.fadeDownAnimation.restart();
+      }
       return;
     }
 
-    // But don't start playing it if it wasn't playing already.
-    if (!oldData.isSongLoading && data.isSongLoading) {
-      if (this.analyserEl.components.audioanalyser.volume === 0) {
-        this.stopSong();
-      }
+    // Song finished loading.
+    // Continue to play preview song during loading to keep entertained.
+    if (oldData.isSongLoading && !data.isSongLoading) {
+      this.stopSong();
       return;
     }
 
@@ -182,17 +185,11 @@ AFRAME.registerComponent('song-preview-system', {
     this.currentLoadingId = preloadItem.challengeId;
   },
 
-  stopSong: function (fadeOut) {
+  stopSong: function () {
     if (!this.audio) { return; }
-
-    if (fadeOut) {
-      this.fadeOutVolumeTarget.volume = this.audio.volume;
-      this.fadeOutAnimation.restart();
-      return;
-    }
-
     this.fadeInAnimation.pause();
     if (!this.audio.paused) { this.audio.pause(); }
+    this.audio.volume = PREVIEW_VOLUME;
   },
 
   playSong: function (challengeId) {
