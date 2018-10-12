@@ -1,3 +1,7 @@
+html {
+  background: #000;
+}
+
 #vrButton {
   position: absolute;
   background: url(../assets/img/enter-vr-button-background.png) no-repeat;
@@ -21,4 +25,14 @@
 
 #vrButton:hover {
   background-position: 0 -50.5px;
+}
+
+.a-loader-title {
+  color: #ff99b6;
+  font-family: monospace;
+  font-size: 48px;
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 24px;
+  text-transform: uppercase;
 }
