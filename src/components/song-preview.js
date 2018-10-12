@@ -38,7 +38,13 @@ AFRAME.registerComponent('song-preview-system', {
     const data = this.data;
 
     // Continue to play preview song during loading to keep entertained.
-    if (oldData.isSongLoading && !data.isSongLoading) { this.stopSong(); }
+    if (oldData.isSongLoading && !data.isSongLoading) {
+      this.stopSong();
+    }
+    // But don't start playing it if it wasn't playing already.
+    if (!oldData.isSongLoading && data.isSongLoading) {
+      if (this.audio.currentTime < 1) { this.stopSong(); }
+    }
 
     // Selected challenge ID updated.
     if (data.selectedChallengeId && oldData.selectedChallengeId !== data.selectedChallengeId) {
