@@ -11,7 +11,7 @@
   id="audioAnalyser"
   bind__audioanalyser="beatDetectionThrottle: menu.active && 5000 || 1000"
   audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
-  proxy-event="event: audioanalyserbeat; to: #logolight, #floor, #twister"></a-entity>
+  proxy-event="event: audioanalyserbeat; to: #logolight"></a-entity>
 
 <a-entity id="stage">
   <a-entity id="backglow"
@@ -22,7 +22,7 @@
     position="0 0 -50"
     scale="20 20 20"></a-entity>
 
-  <a-entity id="twister" twister position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
+  <a-entity id="twister" position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
 
   <a-entity
     id="audioColumns"
@@ -42,24 +42,24 @@
     <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
   </a-entity>
 
-  <a-mixin id="neon" geometry="skipCache: true" vertex-colors-buffer="baseColor: #9999ff" visible="false"></a-mixin>
-  <a-entity id="stageNeon" buffer-geometry-merger material="shader: flat; fog: false; vertexColors: vertex">
-    <a-entity mixin="neon" geometry="height: 0.05; depth: 50; width: 0.05" position="3.5 0.65 -32"></a-entity>
-    <a-entity mixin="neon" geometry="height: 0.05; depth: 50; width: 0.05" position="-3.5 0.65 -32"></a-entity>
-    <!-- Neons on sides. -->
-    <a-entity mixin="neon" geometry="height: 0.05; depth: 100; width: 0.05" position="4.5 0.65 -32"></a-entity>
-    <a-entity mixin="neon" geometry="height: 0.05; depth: 100; width: 0.05" position="-4.5 0.65 -32"></a-entity>
-  </a-entity>
+  <a-entity id="tunnel" obj-model="obj:#tunnelObj" material="shader: flat; flatShading: true; color: #010101"></a-entity>
+  <a-entity id="tunnelNeon" obj-model="obj:#tunnelNeonObj" material="shader: flat; fog: false; color: #9999ff" animation="property: components.material.material.color; type: color; from: #FFF to: #6666ff; dur: 200; easing: linear; startEvents: pulse"></a-entity>
+
+  <a-entity id="stageNeon" obj-model="obj:#stageNeonObj" material="shader: flat; fog: false; color: #9999ff" animation="property: components.material.material.color; type: color; from: #FFF to: #6666ff; dur: 200; easing: linear; startEvents: pulse"></a-entity>
 
   <!-- Lasers left. -->
-  <a-entity class="stageLaser" mixin="stageLaser" position=" -6 2.3 -40"></a-entity>
-  <a-entity class="stageLaser" mixin="stageLaser" position="-10 0 -38"></a-entity>
-  <a-entity class="stageLaser" mixin="stageLaser" position="-14 -3 -36"></a-entity>
+  <a-entity bind__stage-lasers="enabled: !menu.active" id="leftStageLasers">
+    <a-entity class="stageLaser" mixin="stageLaser" position=" -6 2.3 -40"></a-entity>
+    <a-entity class="stageLaser" mixin="stageLaser" position="-10 0 -38"></a-entity>
+    <a-entity class="stageLaser" mixin="stageLaser" position="-14 -3 -36"></a-entity>
+  </a-entity>
 
   <!-- Lasers right. -->
-  <a-entity class="stageLaser" mixin="stageLaser" position=" 6 4 -40"></a-entity>
-  <a-entity class="stageLaser" mixin="stageLaser" position="10 2 -38"></a-entity>
-  <a-entity class="stageLaser" mixin="stageLaser" position="14 -1.5 -36"></a-entity>
+  <a-entity bind__stage-lasers="enabled: !menu.active" id="rightStageLasers">
+    <a-entity class="stageLaser" mixin="stageLaser" position=" 6 4 -40"></a-entity>
+    <a-entity class="stageLaser" mixin="stageLaser" position="10 2 -38"></a-entity>
+    <a-entity class="stageLaser" mixin="stageLaser" position="14 -1.5 -36"></a-entity>
+  </a-entity>
 
   <a-mixin
     id="smoke"
@@ -110,9 +110,8 @@
 
   <a-entity
     id="floor"
-    animation__beat="property: components.material.material.color; type: color; to: #FFF; dur: 250; easing: linear; startEvents: audioanalyserbeat"
-    animation="property: components.material.material.color; type: color; to: #BBB; dur: 250; easing: linear; startEvents: animationcomplete__beat"
+    animation="property: components.material.material.color; type: color; from: #FFF to: #888; dur: 200; easing: linear; startEvents: pulse"
     geometry="primitive: plane; width: 3; height: 3"
-    material="color: #BBB; shader: flat; src: #floorImg"
+    material="color: #888; shader: flat; src: #floorImg"
     rotation="-90 0 0"></a-entity>
 </a-entity>

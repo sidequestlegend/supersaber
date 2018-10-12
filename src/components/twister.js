@@ -12,12 +12,14 @@ AFRAME.registerComponent('twister', {
   init: function () {
     this.currentTwist = 0;
     this.animate = false;
-    this.el.addEventListener('audioanalyserbeat', this.pulse.bind(this));
   },
 
-  pulse: function () {
+  pulse: function (twist) {
     if (!this.data.enabled) { return; }
-    this.el.setAttribute('twister', {twist: Math.random() * 0.5 - 0.25});
+    if (twist == 0) { twist = 0.1 + Math.random() * 0.25; }
+    else twist = Math.min(twist, 0.5);
+    twist *= Math.random() < 0.5 ? -1 : 1; // random direction
+    this.el.setAttribute('twister', {twist: twist});
   },
 
   update: function (oldData) {

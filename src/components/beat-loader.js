@@ -93,11 +93,19 @@ AFRAME.registerComponent('beat-loader', {
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
     this.beatsTime = 0;
-
     this.beatData = beatData;
+    this.beatData._events.sort(lessThan);
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
     this.bpm = this.beatData._beatsPerMinute;
+
+    // some events have negative time stamp to inicialize the stage
+    var events = this.beatData._events;
+    if (events.length && events[0]._time < 0) {
+      for (let i = 0; events[i]._time < 0; i++) {
+        this.generateEvent(events[i]);
+      }
+    }
     console.log('Finished loading challenge data.');
   },
 
@@ -109,6 +117,7 @@ AFRAME.registerComponent('beat-loader', {
     var i;
     var notes;
     var obstacles;
+    var events;
     var beatsTime = this.beatsTime;
     var msPerBeat;
     var noteTime;
@@ -123,6 +132,7 @@ AFRAME.registerComponent('beat-loader', {
 
     notes = this.beatData._notes;
     obstacles = this.beatData._obstacles;
+    events = this.beatData._events;
     bpm = this.beatData._beatsPerMinute;
     msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     for (i = 0; i < notes.length; ++i) {
@@ -139,6 +149,14 @@ AFRAME.registerComponent('beat-loader', {
         this.generateWall(obstacles[i]);
       }
     }
+
+    for (i=0; i < events.length; ++i) {
+      noteTime = events[i]._time * msPerBeat;
+      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
+        this.generateEvent(events[i]);
+      }
+    }
+
 
     if (this.beatsTimeOffset !== undefined) {
       if (this.beatsTimeOffset <= 0) {
@@ -202,6 +220,34 @@ AFRAME.registerComponent('beat-loader', {
     );
     el.object3D.scale.set(wallInfo._width * 0.30, 2.5, durationSeconds * speed);
     el.play();
+  },
+
+  generateEvent: function (event) {
+    console.log(event);
+    switch(event._type) {
+      case 0: // lasers color
+      case 1: // tunnel neon color
+              document.getElementById('tunnelNeon').setAttribute('colorPreset', event._value);
+              document.getElementById('tunnelNeon').emit('pulse');
+      break;
+      case 2: document.getElementById('leftStageLasers').setAttribute('colorPreset', event._value);
+      break;
+      case 3: document.getElementById('rightStageLasers').setAttribute('colorPreset', event._value);
+      break;
+      case 4:
+        document.getElementById('floor').emit('pulse');
+        document.getElementById('stageNeon').emit('pulse');
+      break;
+      case 8:
+      case 9: document.getElementById('twister').components.twister.pulse(event._value);
+      break;
+      case 12: document.getElementById('leftStageLasers').components['stage-lasers'].pulse(event._value);
+      console.log('left laser', event._value);
+      break;
+      case 13: document.getElementById('rightStageLasers').components['stage-lasers'].pulse(event._value);
+      console.log('right laser', event._value);
+      break;
+    }
   },
 
   requestBeat: function (type, color) {
