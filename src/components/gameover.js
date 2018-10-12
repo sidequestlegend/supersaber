@@ -29,6 +29,7 @@ AFRAME.registerComponent('gameover', {
 
   reset: function () {
     this.beatContainer.object3D.position.z = 0;
+    this.el.sceneEl.setAttribute('stage-colors', 'color', 'blue');
   },
 
   triggerAnimations: function () {

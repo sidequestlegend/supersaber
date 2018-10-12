@@ -2,7 +2,7 @@ AFRAME.registerComponent('stage-colors', {
   dependencies: ['background', 'fog'],
 
   schema: {
-    isGameOver: {default: false}
+    color: {default: 'blue', oneOf: ['blue', 'red']}
   },
 
   init: function () {
@@ -19,9 +19,9 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial = new THREE.MeshStandardMaterial({
       roughness: 0.38,
       metalness: 0.48,
-      color: this.mineColor[this.data],
-      emissive: this.mineEmission[this.data],
-      envMap: this.mineEnvMap[this.data]
+      color: this.mineColor[this.data.color],
+      emissive: this.mineEmission[this.data.color],
+      envMap: this.mineEnvMap[this.data.color]
     });
     this.sky = document.getElementById('sky');
     this.backglow = document.getElementById('backglow');
@@ -31,15 +31,13 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   update: function (oldData) {
-    const red = this.data.isGameOver;
+    const red = this.data.color === 'red';
 
     // Init or reset.
-    if (!('isGameOver' in oldData) || (oldData.isGameOver && !this.data.isGameOver)) {
-      this.backglow.getObject3D('mesh').material.color.set('#00acfc');
-      this.sky.getObject3D('mesh').material.color.set('#00acfc');
-      this.el.sceneEl.object3D.background.set('#15252d');
-      this.el.sceneEl.object3D.fog.color.set('#007cb9');
-    }
+    this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
+    this.sky.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
+    this.el.sceneEl.object3D.background.set(red ? '#770100': '#15252d');
+    this.el.sceneEl.object3D.fog.color.set(red ? '#a00' : '#007cb9');
 
     this.el.sceneEl.systems.materials.neon.color = red ? this.neonRed : this.neonBlue;
     this.el.sceneEl.systems.materials.default.color = red ? this.defaultRed : this.defaultBlue;
