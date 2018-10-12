@@ -42,6 +42,8 @@ AFRAME.registerComponent('song-preview-system', {
 
     // Selected challenge ID updated.
     if (data.selectedChallengeId && oldData.selectedChallengeId !== data.selectedChallengeId) {
+      if (this.audio) { this.stopSong(); }
+
       // If not yet preloaded, pause the preload queue until this song is loaded.
       if (!this.preloadedAudioIds.includes(data.selectedChallengeId) &&
           data.selectedChallengeId !== this.currentLoadingId) {
