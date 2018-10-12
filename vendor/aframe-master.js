@@ -51,7 +51,7 @@ function(a){a=P(a);for(var c=v.length;c--;)for(var d=v[c],b=d.animations,f=b.len
 },{}],3:[function(_dereq_,module,exports){
 module.exports = function numtype(num, def) {
 	return typeof num === 'number'
-		? num
+		? num 
 		: (typeof def === 'number' ? def : 0)
 }
 },{}],4:[function(_dereq_,module,exports){
@@ -207,7 +207,7 @@ module.exports = {
             var value = attributes[key];
             style.setAttribute('data-' + key, value);
         }
-
+        
         if (style.sheet) { // for jsdom and IE9+
             style.innerHTML = cssText;
             style.sheet.cssText = cssText;
@@ -416,11 +416,11 @@ module.exports = function (a, b) {
     if (!Buffer.isBuffer(b)) return undefined;
     if (typeof a.equals === 'function') return a.equals(b);
     if (a.length !== b.length) return false;
-
+    
     for (var i = 0; i < a.length; i++) {
         if (a[i] !== b[i]) return false;
     }
-
+    
     return true;
 };
 
@@ -2384,7 +2384,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this
     }
-
+    
     if (toString.call(list) === '[object Array]')
         forEachArray(list, iterator, context)
     else if (typeof list === 'string')
@@ -2604,8 +2604,8 @@ var CAP_HEIGHTS = ['H', 'I', 'N', 'E', 'F', 'K', 'L', 'T', 'U', 'V', 'W', 'X', '
 
 var TAB_ID = '\t'.charCodeAt(0)
 var SPACE_ID = ' '.charCodeAt(0)
-var ALIGN_LEFT = 0,
-    ALIGN_CENTER = 1,
+var ALIGN_LEFT = 0, 
+    ALIGN_CENTER = 1, 
     ALIGN_RIGHT = 2
 
 module.exports = function createLayout(opt) {
@@ -2629,10 +2629,10 @@ TextLayout.prototype.update = function(opt) {
     throw new Error('must provide a valid bitmap font')
 
   var glyphs = this.glyphs
-  var text = opt.text||''
+  var text = opt.text||'' 
   var font = opt.font
   this._setupSpaceGlyphs(font)
-
+  
   var lines = wordWrap.lines(text, opt)
   var minWidth = opt.width || 0
 
@@ -2656,7 +2656,7 @@ TextLayout.prototype.update = function(opt) {
 
   //draw text along baseline
   y -= height
-
+  
   //the metrics for this text layout
   this._width = maxLineWidth
   this._height = height
@@ -2666,7 +2666,7 @@ TextLayout.prototype.update = function(opt) {
   this._capHeight = getCapHeight(font)
   this._lineHeight = lineHeight
   this._ascender = lineHeight - descender - this._xHeight
-
+    
   //layout each glyph
   var self = this
   lines.forEach(function(line, lineIndex) {
@@ -2674,17 +2674,17 @@ TextLayout.prototype.update = function(opt) {
     var end = line.end
     var lineWidth = line.width
     var lastGlyph
-
+    
     //for each glyph in that line...
     for (var i=start; i<end; i++) {
       var id = text.charCodeAt(i)
       var glyph = self.getGlyph(font, id)
       if (glyph) {
-        if (lastGlyph)
+        if (lastGlyph) 
           x += getKerning(font, lastGlyph.id, glyph.id)
 
         var tx = x
-        if (align === ALIGN_CENTER)
+        if (align === ALIGN_CENTER) 
           tx += (maxLineWidth-lineWidth)/2
         else if (align === ALIGN_RIGHT)
           tx += (maxLineWidth-lineWidth)
@@ -2694,7 +2694,7 @@ TextLayout.prototype.update = function(opt) {
           data: glyph,
           index: i,
           line: lineIndex
-        })
+        })  
 
         //move pen forward
         x += glyph.xadvance + letterSpacing
@@ -2721,15 +2721,15 @@ TextLayout.prototype._setupSpaceGlyphs = function(font) {
   //try to get space glyph
   //then fall back to the 'm' or 'w' glyphs
   //then fall back to the first glyph available
-  var space = getGlyphById(font, SPACE_ID)
-          || getMGlyph(font)
+  var space = getGlyphById(font, SPACE_ID) 
+          || getMGlyph(font) 
           || font.chars[0]
 
   //and create a fallback for tab
   var tabWidth = this._opt.tabSize * space.xadvance
   this._fallbackSpaceGlyph = space
   this._fallbackTabGlyph = xtend(space, {
-    x: 0, y: 0, xadvance: tabWidth, id: TAB_ID,
+    x: 0, y: 0, xadvance: tabWidth, id: TAB_ID, 
     xoffset: 0, yoffset: 0, width: 0, height: 0
   })
 }
@@ -2738,9 +2738,9 @@ TextLayout.prototype.getGlyph = function(font, id) {
   var glyph = getGlyphById(font, id)
   if (glyph)
     return glyph
-  else if (id === TAB_ID)
+  else if (id === TAB_ID) 
     return this._fallbackTabGlyph
-  else if (id === SPACE_ID)
+  else if (id === SPACE_ID) 
     return this._fallbackSpaceGlyph
   return null
 }
@@ -2787,7 +2787,7 @@ TextLayout.prototype.computeMetrics = function(text, start, end, width) {
     }
     count++
   }
-
+  
   //make sure rightmost edge lines up with rendered glyphs
   if (lastGlyph)
     curWidth += lastGlyph.xoffset
@@ -2800,7 +2800,7 @@ TextLayout.prototype.computeMetrics = function(text, start, end, width) {
 }
 
 //getters for the private vars
-;['width', 'height',
+;['width', 'height', 
   'descender', 'ascender',
   'xHeight', 'baseline',
   'capHeight',
@@ -2836,7 +2836,7 @@ function getXHeight(font) {
   for (var i=0; i<X_HEIGHTS.length; i++) {
     var id = X_HEIGHTS[i].charCodeAt(0)
     var idx = findChar(font.chars, id)
-    if (idx >= 0)
+    if (idx >= 0) 
       return font.chars[idx].height
   }
   return 0
@@ -2846,7 +2846,7 @@ function getMGlyph(font) {
   for (var i=0; i<M_WIDTHS.length; i++) {
     var id = M_WIDTHS[i].charCodeAt(0)
     var idx = findChar(font.chars, id)
-    if (idx >= 0)
+    if (idx >= 0) 
       return font.chars[idx]
   }
   return 0
@@ -2856,7 +2856,7 @@ function getCapHeight(font) {
   for (var i=0; i<CAP_HEIGHTS.length; i++) {
     var id = CAP_HEIGHTS[i].charCodeAt(0)
     var idx = findChar(font.chars, id)
-    if (idx >= 0)
+    if (idx >= 0) 
       return font.chars[idx].height
   }
   return 0
@@ -2926,7 +2926,7 @@ module.exports = function(opt, cb) {
     if (!body)
       return cb(new Error('no body result'))
 
-    var binary = false
+    var binary = false 
 
     //if the response type is an array buffer,
     //we need to convert it into a regular Buffer object
@@ -2940,9 +2940,9 @@ module.exports = function(opt, cb) {
     if (isBinaryFormat(body)) {
       binary = true
       //if we have a string, turn it into a Buffer
-      if (typeof body === 'string')
+      if (typeof body === 'string') 
         body = new Buffer(body, 'binary')
-    }
+    } 
 
     //we are not parsing a binary format, just ASCII/XML/etc
     if (!binary) {
@@ -2980,7 +2980,7 @@ function getBinaryOpts(opt) {
   //IE10+ and other modern browsers support array buffers
   if (xml2)
     return xtend(opt, { responseType: 'arraybuffer' })
-
+  
   if (typeof self.XMLHttpRequest === 'undefined')
     throw new Error('your browser does not support XHR loading')
 
@@ -3146,7 +3146,7 @@ function splitLine(line, idx) {
     return null
 
   var space = line.indexOf(' ')
-  if (space === -1)
+  if (space === -1) 
     throw new Error("no named row at line " + idx)
 
   var key = line.substring(0, space)
@@ -3154,7 +3154,7 @@ function splitLine(line, idx) {
   line = line.substring(space + 1)
   //clear "letter" field as it is non-standard and
   //requires additional complexity to parse " / = symbols
-  line = line.replace(/letter=[\'\"]\S+[\'\"]/gi, '')
+  line = line.replace(/letter=[\'\"]\S+[\'\"]/gi, '')  
   line = line.split("=")
   line = line.map(function(str) {
     return str.trim().match((/(".*?"|[^"\s]+)+(?=\s*|\s*$)/g))
@@ -3225,7 +3225,7 @@ module.exports = function readBMFontBinary(buf) {
   var vers = buf.readUInt8(i++)
   if (vers > 3)
     throw new Error('Only supports BMFont Binary v3 (BMFont App v1.10)')
-
+  
   var target = { kernings: [], chars: [] }
   for (var b=0; b<5; b++)
     i += readBlock(target, buf, i)
@@ -3241,7 +3241,7 @@ function readBlock(target, buf, i) {
   i += 4
 
   switch(blockID) {
-    case 1:
+    case 1: 
       target.info = readInfo(buf, i)
       break
     case 2:
@@ -3269,11 +3269,11 @@ function readInfo(buf, i) {
   info.unicode = (bitField >> 6) & 1
   info.italic = (bitField >> 5) & 1
   info.bold = (bitField >> 4) & 1
-
-  //fixedHeight is only mentioned in binary spec
+  
+  //fixedHeight is only mentioned in binary spec 
   if ((bitField >> 3) & 1)
     info.fixedHeight = 1
-
+  
   info.charset = buf.readUInt8(i+3) || ''
   info.stretchH = buf.readUInt16LE(i+4)
   info.aa = buf.readUInt8(i+6)
@@ -3359,7 +3359,7 @@ function readKernings(buf, i, blockSize) {
 function readNameNT(buf, offset) {
   var pos=offset
   for (; pos<buf.length; pos++) {
-    if (buf[pos] === 0x00)
+    if (buf[pos] === 0x00) 
       break
   }
   return buf.slice(offset, pos)
@@ -3373,7 +3373,7 @@ var parseAttributes = _dereq_('./parse-attribs')
 var parseFromString = _dereq_('xml-parse-from-string')
 
 //In some cases element.attribute.nodeName can return
-//all lowercase values.. so we need to map them to the correct
+//all lowercase values.. so we need to map them to the correct 
 //case
 var NAME_MAP = {
   scaleh: 'scaleH',
@@ -3388,7 +3388,7 @@ var NAME_MAP = {
 
 module.exports = function parse(data) {
   data = data.toString()
-
+  
   var xmlRoot = parseFromString(data)
   var output = {
     pages: [],
@@ -3426,7 +3426,7 @@ module.exports = function parse(data) {
       return
     var childTag = key.substring(0, key.length-1)
     var children = element.getElementsByTagName(childTag)
-    for (var i=0; i<children.length; i++) {
+    for (var i=0; i<children.length; i++) {      
       var child = children[i]
       output[key].push(parseAttributes(getAttribs(child)))
     }
@@ -3456,7 +3456,7 @@ function mapName(nodeName) {
 }
 },{"./parse-attribs":27,"xml-parse-from-string":46}],27:[function(_dereq_,module,exports){
 //Some versions of GlyphDesigner have a typo
-//that causes some bugs with parsing.
+//that causes some bugs with parsing. 
 //Need to confirm with recent version of the software
 //to see whether this is still an issue or not.
 var GLYPH_DESIGNER_ERROR = 'chasrset'
@@ -3468,12 +3468,12 @@ module.exports = function parseAttributes(obj) {
   }
 
   for (var k in obj) {
-    if (k === 'face' || k === 'charset')
+    if (k === 'face' || k === 'charset') 
       continue
     else if (k === 'padding' || k === 'spacing')
       obj[k] = parseIntList(obj[k])
     else
-      obj[k] = parseInt(obj[k], 10)
+      obj[k] = parseInt(obj[k], 10) 
   }
   return obj
 }
@@ -3766,10 +3766,10 @@ module.exports = function createQuadElements(array, opt) {
 
     var type = typeof opt.type === 'string' ? opt.type : 'uint16'
     var count = typeof opt.count === 'number' ? opt.count : 1
-    var start = (opt.start || 0)
+    var start = (opt.start || 0) 
 
     var dir = opt.clockwise !== false ? CW : CCW,
-        a = dir[0],
+        a = dir[0], 
         b = dir[1],
         c = dir[2]
 
@@ -60410,7 +60410,7 @@ exports.right = function(str){
 
 /**
  * @license
- * webvr-polyfill-dpdb
+ * webvr-polyfill-dpdb 
  * Copyright (c) 2017 Google
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63906,7 +63906,7 @@ module.exports.lines = function wordwrap(text, opt) {
     opt = opt||{}
 
     //zero width results in nothing visible
-    if (opt.width === 0 && opt.mode !== 'nowrap')
+    if (opt.width === 0 && opt.mode !== 'nowrap') 
         return []
 
     text = text||''
@@ -63946,7 +63946,7 @@ function pre(measure, text, start, end, width) {
             var lineEnd = isNewline ? i : i+1
             var measured = measure(text, lineStart, lineEnd, width)
             lines.push(measured)
-
+            
             lineStart = i+1
         }
     }
@@ -64273,7 +64273,7 @@ module.exports = (function xmlparser() {
       var parser = new self.DOMParser()
       return parser.parseFromString(str, 'application/xml')
     }
-  }
+  } 
 
   //IE8 fallback
   if (typeof self.ActiveXObject !== 'undefined'
@@ -66555,12 +66555,12 @@ registerComponent('laser-controls', {
     },
 
     'gearvr-controls': {
-      cursor: {downEvents: ['triggerdown'], upEvents: ['triggerup']},
+      cursor: {downEvents: ['trackpaddown', 'triggerdown'], upEvents: ['trackpadup', 'triggerup']},
       raycaster: {origin: {x: 0, y: 0.0005, z: 0}}
     },
 
     'oculus-go-controls': {
-      cursor: {downEvents: ['triggerdown'], upEvents: ['triggerup']},
+      cursor: {downEvents: ['trackpaddown', 'triggerdown'], upEvents: ['trackpadup', 'triggerup']},
       raycaster: {origin: {x: 0, y: 0.0005, z: 0}}
     },
 
@@ -70341,7 +70341,7 @@ module.exports.Component = registerComponent('sound', {
     for (i = 0; i < this.pool.children.length; i++) {
       sound = this.pool.children[i];
       sound.onEnded = function () {
-        sound.isPlaying = false;
+        this.isPlaying = false;
         el.emit('sound-ended', self.evtDetail, false);
       };
     }
@@ -77613,7 +77613,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-10-12, Commit #6849534f)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-10-12, Commit #4717599f)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -80973,7 +80973,7 @@ THREE.VREffect = function( renderer, onError ) {
   window.addEventListener('vrdisplayconnect', function (evt) { vrDisplay = evt.display; });
   window.addEventListener('vrdisplaydisconnect', function (evt) {
     var f;
-
+    
     scope.exitPresent();
     // Cancels current request animation frame.
     f = scope.cancelAnimationFrame();
@@ -81861,7 +81861,7 @@ THREE.RenderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype 
  *    - Ambient occlusion clamp (numeric value).
  *  - lumInfluence
  *    - Pixel luminosity influence in AO calculation (numeric value).
- *
+ * 
  * To output to screen set renderToScreens true
  *
  * @author alteredq / http://alteredqualia.com/
@@ -81895,7 +81895,7 @@ THREE.SSAOPass = function ( scene, camera, width, height ) {
   //Depth render target
   this.depthRenderTarget = new THREE.WebGLRenderTarget( this.width, this.height, { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter } );
   //this.depthRenderTarget.texture.name = 'SSAOShader.rt';
-
+  
   //Shader uniforms
   this.uniforms[ 'tDepth' ].value = this.depthRenderTarget.texture;
   this.uniforms[ 'size' ].value.set( this.width, this.height );
@@ -81938,7 +81938,7 @@ THREE.SSAOPass.prototype = Object.create( THREE.ShaderPass.prototype );
 
 /**
  * Render using this pass.
- *
+ * 
  * @method render
  * @param {WebGLRenderer} renderer
  * @param {WebGLRenderTarget} writeBuffer Buffer to write output.
@@ -81950,9 +81950,9 @@ THREE.SSAOPass.prototype.render = function( renderer, writeBuffer, readBuffer, d
 
   //Render depth into depthRenderTarget
   this.scene2.overrideMaterial = this.depthMaterial;
-
+  
   renderer.render( this.scene2, this.camera2, this.depthRenderTarget, true );
-
+  
   this.scene2.overrideMaterial = null;
 
 
@@ -81968,7 +81968,7 @@ THREE.SSAOPass.prototype.render = function( renderer, writeBuffer, readBuffer, d
  * @param {Scene} scene
  */
 THREE.SSAOPass.prototype.setScene = function(scene) {
-
+  
   this.scene2 = scene;
 
 };
@@ -81990,7 +81990,7 @@ THREE.SSAOPass.prototype.setCamera = function( camera ) {
 
 /**
  * Set resolution of this render pass.
- *
+ * 
  * @method setSize
  * @param {Number} width
  * @param {Number} height
@@ -82368,7 +82368,7 @@ THREE.ShaderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype 
 },{}],194:[function(_dereq_,module,exports){
 /**
  * @author spidersharma / http://eduperiment.com/
- *
+ * 
  * Inspired from Unreal Engine
  * https://docs.unrealengine.com/latest/INT/Engine/Rendering/PostProcessEffects/Bloom/
  */
@@ -83960,4 +83960,4 @@ function coerce(val) {
 (function(t,n,r,i){"use strict";function st(e,t){for(var n=0,r=e.length;n<r;n++)gt(e[n],t)}function ot(e){for(var t=0,n=e.length,r;t<n;t++)r=e[t],it(r,w[at(r)])}function ut(e){return function(t){F(t)&&(gt(t,e),st(t.querySelectorAll(E),e))}}function at(e){var t=R.call(e,"is"),n=e.nodeName.toUpperCase(),r=x.call(b,t?m+t.toUpperCase():v+n);return t&&-1<r&&!ft(n,t)?-1:r}function ft(e,t){return-1<E.indexOf(e+'[is="'+t+'"]')}function lt(e){var t=e.currentTarget,n=e.attrChange,r=e.attrName,i=e.target;Y&&(!i||i===t)&&t.attributeChangedCallback&&r!=="style"&&e.prevValue!==e.newValue&&t.attributeChangedCallback(r,n===e[f]?null:e.prevValue,n===e[c]?null:e.newValue)}function ct(e){var t=ut(e);return function(e){$.push(t,e.target)}}function ht(e){G&&(G=!1,e.currentTarget.removeEventListener(p,ht)),st((e.target||n).querySelectorAll(E),e.detail===u?u:o),j&&vt()}function pt(e,t){var n=this;U.call(n,e,t),Z.call(n,{target:n})}function dt(e,t){P(e,t),nt?nt.observe(e,X):(Q&&(e.setAttribute=pt,e[s]=tt(e),e.addEventListener(d,Z)),e.addEventListener(h,lt)),e.createdCallback&&Y&&(e.created=!0,e.createdCallback(),e.created=!1)}function vt(){for(var e,t=0,n=I.length;t<n;t++)e=I[t],S.contains(e)||(n--,I.splice(t--,1),gt(e,u))}function mt(e){throw new Error("A "+e+" type is already registered")}function gt(e,t){var n,r=at(e);-1<r&&(rt(e,w[r]),r=0,t===o&&!e[o]?(e[u]=!1,e[o]=!0,r=1,j&&x.call(I,e)<0&&I.push(e)):t===u&&!e[u]&&(e[o]=!1,e[u]=!0,r=1),r&&(n=e[t+"Callback"])&&n.call(e))}if(i in n)return;var s="__"+i+(Math.random()*1e5>>0),o="attached",u="detached",a="extends",f="ADDITION",l="MODIFICATION",c="REMOVAL",h="DOMAttrModified",p="DOMContentLoaded",d="DOMSubtreeModified",v="<",m="=",g=/^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$/,y=["ANNOTATION-XML","COLOR-PROFILE","FONT-FACE","FONT-FACE-SRC","FONT-FACE-URI","FONT-FACE-FORMAT","FONT-FACE-NAME","MISSING-GLYPH"],b=[],w=[],E="",S=n.documentElement,x=b.indexOf||function(e){for(var t=this.length;t--&&this[t]!==e;);return t},T=r.prototype,N=T.hasOwnProperty,C=T.isPrototypeOf,k=r.defineProperty,L=r.getOwnPropertyDescriptor,A=r.getOwnPropertyNames,O=r.getPrototypeOf,M=r.setPrototypeOf,_=!!r.__proto__,D=r.create||function yt(e){return e?(yt.prototype=e,new yt):this},P=M||(_?function(e,t){return e.__proto__=t,e}:A&&L?function(){function e(e,t){for(var n,r=A(t),i=0,s=r.length;i<s;i++)n=r[i],N.call(e,n)||k(e,n,L(t,n))}return function(t,n){do e(t,n);while((n=O(n))&&!C.call(n,t));return t}}():function(e,t){for(var n in t)e[n]=t[n];return e}),H=t.MutationObserver||t.WebKitMutationObserver,B=(t.HTMLElement||t.Element||t.Node).prototype,j=!C.call(B,S),F=j?function(e){return e.nodeType===1}:function(e){return C.call(B,e)},I=j&&[],q=B.cloneNode,R=B.getAttribute,U=B.setAttribute,z=B.removeAttribute,W=n.createElement,X=H&&{attributes:!0,characterData:!0,attributeOldValue:!0},V=H||function(e){Q=!1,S.removeEventListener(h,V)},$,J=t.requestAnimationFrame||t.webkitRequestAnimationFrame||t.mozRequestAnimationFrame||t.msRequestAnimationFrame||function(e){setTimeout(e,10)},K=!1,Q=!0,G=!0,Y=!0,Z,et,tt,nt,rt,it;M||_?(rt=function(e,t){C.call(t,e)||dt(e,t)},it=dt):(rt=function(e,t){e[s]||(e[s]=r(!0),dt(e,t))},it=rt),j?(Q=!1,function(){var t=L(B,"addEventListener"),n=t.value,r=function(e){var t=new CustomEvent(h,{bubbles:!0});t.attrName=e,t.prevValue=R.call(this,e),t.newValue=null,t[c]=t.attrChange=2,z.call(this,e),this.dispatchEvent(t)},i=function(t,n){var r=this.hasAttribute(t),i=r&&R.call(this,t);e=new CustomEvent(h,{bubbles:!0}),U.call(this,t,n),e.attrName=t,e.prevValue=r?i:null,e.newValue=n,r?e[l]=e.attrChange=1:e[f]=e.attrChange=0,this.dispatchEvent(e)},o=function(e){var t=e.currentTarget,n=t[s],r=e.propertyName,i;n.hasOwnProperty(r)&&(n=n[r],i=new CustomEvent(h,{bubbles:!0}),i.attrName=n.name,i.prevValue=n.value||null,i.newValue=n.value=t[r]||null,i.prevValue==null?i[f]=i.attrChange=0:i[l]=i.attrChange=1,t.dispatchEvent(i))};t.value=function(e,t,u){e===h&&this.attributeChangedCallback&&this.setAttribute!==i&&(this[s]={className:{name:"class",value:this.className}},this.setAttribute=i,this.removeAttribute=r,n.call(this,"propertychange",o)),n.call(this,e,t,u)},k(B,"addEventListener",t)}()):H||(S.addEventListener(h,V),S.setAttribute(s,1),S.removeAttribute(s),Q&&(Z=function(e){var t=this,n,r,i;if(t===e.target){n=t[s],t[s]=r=tt(t);for(i in r){if(!(i in n))return et(0,t,i,n[i],r[i],f);if(r[i]!==n[i])return et(1,t,i,n[i],r[i],l)}for(i in n)if(!(i in r))return et(2,t,i,n[i],r[i],c)}},et=function(e,t,n,r,i,s){var o={attrChange:e,currentTarget:t,attrName:n,prevValue:r,newValue:i};o[s]=e,lt(o)},tt=function(e){for(var t,n,r={},i=e.attributes,s=0,o=i.length;s<o;s++)t=i[s],n=t.name,n!=="setAttribute"&&(r[n]=t.value);return r})),n[i]=function(t,r){c=t.toUpperCase(),K||(K=!0,H?(nt=function(e,t){function n(e,t){for(var n=0,r=e.length;n<r;t(e[n++]));}return new H(function(r){for(var i,s,o,u=0,a=r.length;u<a;u++)i=r[u],i.type==="childList"?(n(i.addedNodes,e),n(i.removedNodes,t)):(s=i.target,Y&&s.attributeChangedCallback&&i.attributeName!=="style"&&(o=R.call(s,i.attributeName),o!==i.oldValue&&s.attributeChangedCallback(i.attributeName,i.oldValue,o)))})}(ut(o),ut(u)),nt.observe(n,{childList:!0,subtree:!0})):($=[],J(function d(){while($.length)$.shift().call(null,$.shift());J(d)}),n.addEventListener("DOMNodeInserted",ct(o)),n.addEventListener("DOMNodeRemoved",ct(u))),n.addEventListener(p,ht),n.addEventListener("readystatechange",ht),n.createElement=function(e,t){var r=W.apply(n,arguments),i=""+e,s=x.call(b,(t?m:v)+(t||i).toUpperCase()),o=-1<s;return t&&(r.setAttribute("is",t=t.toLowerCase()),o&&(o=ft(i.toUpperCase(),t))),Y=!n.createElement.innerHTMLHelper,o&&it(r,w[s]),r},B.cloneNode=function(e){var t=q.call(this,!!e),n=at(t);return-1<n&&it(t,w[n]),e&&ot(t.querySelectorAll(E)),t}),-2<x.call(b,m+c)+x.call(b,v+c)&&mt(t);if(!g.test(c)||-1<x.call(y,c))throw new Error("The type "+t+" is invalid");var i=function(){return f?n.createElement(l,c):n.createElement(l)},s=r||T,f=N.call(s,a),l=f?r[a].toUpperCase():c,c,h;return f&&-1<x.call(b,v+l)&&mt(l),h=b.push((f?m:v)+c)-1,E=E.concat(E.length?",":"",f?l+'[is="'+t.toLowerCase()+'"]':l),i.prototype=w[h]=N.call(s,"prototype")?s.prototype:D(B),st(n.querySelectorAll(E),o),i}})(window,document,Object,"registerElement");
 },{}]},{},[152])(152)
 });
-//# sourceMappingURL=aframe.effects.js.map
+//# sourceMappingURL=aframe-master.js.map
