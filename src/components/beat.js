@@ -421,14 +421,14 @@ AFRAME.registerComponent('beat', {
           saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
           if (!boundingBox || !saberBoundingBox) { break; }
           if (saberBoundingBox.intersectsBox(boundingBox)) {
+            this.el.emit('beathit', this.el);
             this.destroyBeat(saberEls[i]);
-            this.el.sceneEl.emit('beathit', null, false);
             break;
           }
           if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
+            this.el.emit('beathit', this.el);
             this.destroyBeat(saberEls[i]);
             this.wrongCut(saberEls[i].getAttribute('saber-controls').hand);
-            this.el.sceneEl.emit('beatwrong', null, false);
             break;
           }
         }

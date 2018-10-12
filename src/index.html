@@ -100,8 +100,11 @@
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
       <a-entity id="container">
-        <a-entity id="beatContainer" bind__pause="isPaused: !isPlaying"></a-entity>
-
+        <a-entity
+          id="beatContainer"
+          beat-hit
+          bind__pause="isPaused: !isPlaying"
+          sound__beathit="poolSize: 12; src: assets/sounds/beatHit.ogg"></a-entity>
         {% include './templates/stage.html' %}
         {% include './templates/score.html' %}
         {% include './templates/menu.html' %}
