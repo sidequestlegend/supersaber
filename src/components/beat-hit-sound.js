@@ -29,22 +29,18 @@ THREE.Audio.prototype.play = function () {
 
 /**
  * Beat hit sound using positional audio and audio buffer source.
- * Pitch the sound up and down using the song audioanalyser FFT.
  */
-AFRAME.registerComponent('beat-hit', {
+AFRAME.registerComponent('beat-hit-sound', {
   dependencies: ['sound__beathit'],
 
   init: function () {
-    const data = this.data;
-    const el = this.el;
-
     this.processSound = this.processSound.bind(this);
+  },
 
-    const soundPool = el.components.sound__beathit;
-    el.addEventListener('beathit', evt => {
-      this.currentBeatEl = evt.detail;
-      soundPool.playSound(this.processSound);
-    });
+  playSound: function (beatEl) {
+    const soundPool = this.el.components.sound__beathit;
+    this.currentBeatEl = beatEl;
+    soundPool.playSound(this.processSound);
   },
 
   processSound: function (audio) {
