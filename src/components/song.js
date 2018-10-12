@@ -16,7 +16,12 @@ AFRAME.registerComponent('song', {
 
   init: function () {
     this.analyserSetter = {buffer: true};
-    this.context = this.data.analyserEl.components.audioanalyser.context;
+    this.audioAnalyser = this.data.analyserEl.components.audioanalyser;
+    this.context = this.audioAnalyser.context;
+    this.victory = this.victory.bind(this);
+
+    // Base volume.
+    this.audioAnalyser.gainNode.gain.value = 0.75;
 
     // Restart, get new buffer source node and play.
     this.el.addEventListener('pausemenurestart', () => {
@@ -25,22 +30,8 @@ AFRAME.registerComponent('song', {
         this.source = evt.detail;
         if (this.data.isBeatsPreloaded) { this.source.start(); }
       }, once);
-      this.data.analyserEl.components.audioanalyser.refreshSource();
+      this.audioAnalyser.refreshSource();
     });
-
-    /*
-    this.el.addEventListener('pausemenuexit', () => {
-      this.data.analyserEl.components.audioanalyser.suspendContext();
-    });
-
-    audio.addEventListener('ended', () => {
-      if (this.data.isPlaying) {
-        this.el.sceneEl.emit('victory', null, false);
-        audio.pause();
-        audio.currentTime = 0;
-      }
-    });
-    */
   },
 
   update: function (oldData) {
@@ -78,12 +69,12 @@ AFRAME.registerComponent('song', {
 
     // Pause / stop.
     if (oldData.isPlaying && !data.isPlaying) {
-      data.analyserEl.components.audioanalyser.suspendContext();
+      this.audioAnalyser.suspendContext();
     }
 
     // Resume.
     if (!oldData.isPlaying && data.isPlaying && this.source) {
-      data.analyserEl.components.audioanalyser.resumeContext();
+      this.audioAnalyser.resumeContext();
     }
   },
 
@@ -92,6 +83,7 @@ AFRAME.registerComponent('song', {
     return new Promise(resolve => {
       data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
         this.source = evt.detail;
+        this.source.onended = this.victory;
         resolve(this.source);
       }, once);
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
@@ -107,5 +99,10 @@ AFRAME.registerComponent('song', {
     this.source.stop();
     this.source.disconnect();
     this.source = null;
+  },
+
+  victory: function () {
+    if (!this.data.isPlaying) { return; }
+    this.el.sceneEl.emit('victory', null, false);
   }
 });
