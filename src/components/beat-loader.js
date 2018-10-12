@@ -21,8 +21,10 @@ AFRAME.registerComponent('beat-loader', {
     this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
     this.beatContainer = document.getElementById('beatContainer');
-    this.bpm = undefined;
     this.beatsTime = undefined;
+    this.beatsTimeOffset = undefined;
+    this.bpm = undefined;
+    this.songCurrentTime = undefined;
     this.onKeyDown = this.onKeyDown.bind(this);
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
@@ -30,7 +32,9 @@ AFRAME.registerComponent('beat-loader', {
 
   update: function (oldData) {
     const data = this.data;
+
     if (!data.challengeId || !data.difficulty) { return; }
+
     if (data.challengeId !== oldData.challengeId ||
         data.difficulty !== oldData.difficulty) {
       this.loadBeats();
@@ -85,9 +89,6 @@ AFRAME.registerComponent('beat-loader', {
    */
   handleBeats: function (beatData) {
     this.el.sceneEl.emit('beatloaderfinish', beatData, false);
-    var lessThan = function (a, b) {
-      return a._time - b._time;
-    };
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
@@ -221,8 +222,14 @@ AFRAME.registerComponent('beat-loader', {
    * Restart by returning all beats to pool.
    */
   clearBeats: function () {
+    this.beatsTime = 0;
+    this.beatsTimeOffset = undefined;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       this.beatContainer.children[i].components.beat.returnToPool(true);
     }
   }
 });
+
+function lessThan (a, b) {
+  return a._time - b._time;
+};
