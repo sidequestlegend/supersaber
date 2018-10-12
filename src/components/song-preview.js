@@ -20,7 +20,7 @@ AFRAME.registerComponent('song-preview-system', {
 
     // anime.js animation to fade in volume.
     this.volumeTarget = {volume: 0};
-    this.animation = ANIME({
+    this.fadeInAnimation = ANIME({
       targets: this.volumeTarget,
       delay: 250,
       duration: 1500,
@@ -32,6 +32,24 @@ AFRAME.registerComponent('song-preview-system', {
         this.audio.volume = this.volumeTarget.volume;
       }
     });
+
+    this.fadeOutVolumeTarget = {volume: 0.5};
+    this.fadeOutAnimation = ANIME({
+      targets: this.fadeOutVolumeTarget,
+      duration: 500,
+      easing: 'easeOutQuad',
+      volume: 0,
+      autoplay: false,
+      loop: false,
+      update: () => {
+        this.audio.volume = this.fadeOutVolumeTarget.volume;
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.audio.pause();
+        }, 1000);
+      }
+    });
   },
 
   update: function (oldData) {
@@ -39,11 +57,14 @@ AFRAME.registerComponent('song-preview-system', {
 
     // Continue to play preview song during loading to keep entertained.
     if (oldData.isSongLoading && !data.isSongLoading) {
-      this.stopSong();
+      this.stopSong(true);  // Flag for fade out.
+      return;
     }
+
     // But don't start playing it if it wasn't playing already.
     if (!oldData.isSongLoading && data.isSongLoading) {
       if (this.audio.currentTime < 1) { this.stopSong(); }
+      return;
     }
 
     // Selected challenge ID updated.
@@ -159,9 +180,16 @@ AFRAME.registerComponent('song-preview-system', {
     this.currentLoadingId = preloadItem.challengeId;
   },
 
-  stopSong: function () {
+  stopSong: function (fadeOut) {
     if (!this.audio) { return; }
-    if (this.animation) { this.animation.pause(); }
+
+    if (fadeOut) {
+      this.fadeOutVolumeTarget.volume = this.audio.volume;
+      this.fadeOutAnimation.restart();
+      return;
+    }
+
+    this.fadeInAnimation.pause();
     if (!this.audio.paused) { this.audio.pause(); }
   },
 
@@ -173,7 +201,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.analyserEl.components.audioanalyser.resumeContext();
     this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.play();
-    this.animation.restart();
+    this.fadeInAnimation.restart();
     this.updateAnalyser();
   },
 
