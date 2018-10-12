@@ -63,7 +63,9 @@ AFRAME.registerComponent('song-preview-system', {
 
     // But don't start playing it if it wasn't playing already.
     if (!oldData.isSongLoading && data.isSongLoading) {
-      if (this.audio.currentTime < 1) { this.stopSong(); }
+      if (this.analyserEl.components.audioanalyser.volume === 0) {
+        this.stopSong();
+      }
       return;
     }
 
