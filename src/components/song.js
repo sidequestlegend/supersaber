@@ -1,6 +1,7 @@
 const utils = require('../utils');
 
 var once = {once: true};
+var BASE_VOLUME = 0.75;
 
 /**
  * Active challenge song / audio.
@@ -21,7 +22,7 @@ AFRAME.registerComponent('song', {
     this.victory = this.victory.bind(this);
 
     // Base volume.
-    this.audioAnalyser.gainNode.gain.value = 0.75;
+    this.audioAnalyser.gainNode.gain.value = BASE_VOLUME;
 
     // Restart, get new buffer source node and play.
     this.el.addEventListener('pausemenurestart', () => {
@@ -41,10 +42,16 @@ AFRAME.registerComponent('song', {
 
     // Game over, slow down audio, and then stop.
     if (!oldData.isGameOver && data.isGameOver) {
-      this.source.playbackRate.value = 0.75;
+      this.source.playbackRate.setValueAtTime(this.source.playbackRate.value,
+                                              this.context.currentTime);
+      this.source.playbackRate.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
+      this.audioAnalyser.gainNode.gain.setValueAtTime(this.audioAnalyser.gainNode.gain.value,
+                                                      this.context.currentTime);
+      this.audioAnalyser.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
       setTimeout(() => {
         this.stopAudio();
-      }, 2000);
+        this.audioAnalyser.gainNode.value = BASE_VOLUME;
+      }, 3500);
       return;
     }
 
