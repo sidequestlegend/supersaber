@@ -3,6 +3,7 @@ AFRAME.registerShader('wall-shader', {
     iTime: {type: 'time', is: 'uniform'},
     tex: {type: 'map', is: 'uniform'}
   },
+
   vertexShader: `
     varying vec2 uvs;
     void main() {
@@ -10,6 +11,7 @@ AFRAME.registerShader('wall-shader', {
       gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
     }
   `,
+
   fragmentShader: `
     // based on https://www.shadertoy.com/view/ldlXRS
     varying vec2 uvs;
@@ -40,7 +42,7 @@ AFRAME.registerShader('wall-shader', {
       vec2 basis = vec2(fbm(p2-time*1.6),fbm(p2+time*1.7));
       basis = (basis-.5)*.2;
       p += basis;
-      
+
       return fbm(p*makem2(time*0.2));
     }
 
@@ -48,20 +50,20 @@ AFRAME.registerShader('wall-shader', {
       vec2 p = uvs.xy-0.5;// / iResolution.xy-0.5;
       vec2 pp = p;
       p*= 4.0;
-      
+
       float rz = dualfbm(p)*5.0;
-      
+
       p += time * 20.0;
       rz *= pow(abs(cos(p.x*.2) + sin(p.y*1.4)*0.1), .4);
-      
+
       vec3 col = vec3(0.2,0.0,0.0) / rz;
       col.g = smoothstep(0.6, 1.0, col.r);
       col.b = smoothstep(0.6, 1.0, col.r);
-        
+
       col += smoothstep(0.49, 0.495, abs(pp.x));
       col += smoothstep(0.49, 0.495, abs(pp.y));
-        
+
       gl_FragColor = vec4(col, 0.2 + smoothstep(0.0, 0.6, col.x));
     }
-  ` 
+  `
 });
