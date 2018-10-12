@@ -136,7 +136,7 @@ AFRAME.registerComponent('beat-loader', {
     for (i=0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
-        //this.generateWall(obstacles[i]);
+        this.generateWall(obstacles[i]);
       }
     }
 
@@ -188,23 +188,23 @@ AFRAME.registerComponent('beat-loader', {
     };
   })(),
 
-  // generateWall: function (wallInfo) {
-  //   var el = this.el.sceneEl.components.pool__wall.requestEntity();
-  //   var speed = this.data.beatSpeed;
-  //   var durationMs;
-  //   if (!el) { return; }
-  //   durationSeconds = 60 * (wallInfo._duration / this.bpm);
-  //   el.setAttribute('wall', {
-  //     speed: speed
-  //   });
-  //   el.object3D.position.set(
-  //     this.horizontalPositions[wallInfo._lineIndex],
-  //     1.30,
-  //     -(this.data.beatAnticipationTime * speed)
-  //   );
-  //   el.object3D.scale.set(wallInfo._width * 0.30, 2.5, durationSeconds * speed);
-  //   el.play();
-  // },
+  generateWall: function (wallInfo) {
+    var el = this.el.sceneEl.components.pool__wall.requestEntity();
+    var speed = this.data.beatSpeed;
+    var durationMs;
+    if (!el) { return; }
+    durationSeconds = 60 * (wallInfo._duration / this.bpm);
+    el.setAttribute('wall', {
+      speed: speed
+    });
+    el.object3D.position.set(
+      this.horizontalPositions[wallInfo._lineIndex],
+      1.30,
+      -(this.data.beatAnticipationTime * speed)
+    );
+    el.object3D.scale.set(wallInfo._width * 0.30, 2.5, durationSeconds * speed);
+    el.play();
+  },
 
   requestBeat: function (type, color) {
     var beatPoolName = 'pool__beat-' + type;

@@ -32,6 +32,7 @@
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: dotRedBeat; size: 10; container: #beatContainer"
       pool__beat-mine="mixin: mine; size: 10; container: #beatContainer"
+      pool__wall="mixin: wall; size: 10; container: #beatContainer"  
       proxy-event__menuleft="event: menuchallengeunselect; to: .menuAnimation"
       proxy-event__menuright="event: menuchallengeselect; to: .menuAnimation"
       proxy-event__cleargame1="event: pausemenuexit; as: cleargame; to: a-scene"
@@ -87,7 +88,8 @@
         <a-mixin id="dotRedBeat" mixin="beat" beat="color: red; type: dot"></a-mixin>
         <a-mixin id="gameoverAnimation" animation__gameover="dur: 1000; easing: easeOutQuad"></a-mixin>
         <a-mixin id="mine" mixin="beat" beat="type: mine"></a-mixin>
-
+        <a-mixin id="wall" geometry wall material="shader: wall-shader; tex: #noiseTexture; repeat: 2 2; transparent: true; side: double">
+          
         <a-mixin id="badBeat"
           geometry="primitive: plane"
           material="shader: flat; transparent: true"
