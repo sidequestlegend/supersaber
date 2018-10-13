@@ -209,7 +209,7 @@ AFRAME.registerComponent('beat', {
     wrongEl.object3D.position.y += 0.2;
     wrongEl.object3D.position.z -= 0.5;
     wrongEl.object3D.visible = true;
-    wrongEl.emit('wronghit', null, false);
+    wrongEl.emit('beatwrong', null, true);
     this.destroyed = true;
   },
 
@@ -220,7 +220,7 @@ AFRAME.registerComponent('beat', {
     missEl.object3D.position.y += 0.2;
     missEl.object3D.position.z -= 0.5;
     missEl.object3D.visible = true;
-    missEl.emit('beatmiss', null, false);
+    missEl.emit('beatmiss', null, true);
   },
 
   destroyBeat: (function () {
@@ -432,7 +432,7 @@ AFRAME.registerComponent('beat', {
           saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
           if (!boundingBox || !saberBoundingBox) { break; }
           if (saberBoundingBox.intersectsBox(boundingBox)) {
-            this.el.emit('goodhit', null, false);
+            this.el.emit('beathit', null, true);
             this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
             this.destroyBeat(saberEls[i]);
             break;
@@ -441,7 +441,7 @@ AFRAME.registerComponent('beat', {
             this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
             this.destroyBeat(saberEls[i]);
             if (this.data.type === 'dot') {
-              this.el.emit('goodhit', null, false);
+              this.el.emit('beathit', null, true);
             } else {
               this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
             }
