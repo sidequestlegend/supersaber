@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-var once = {once: true};
+var ONCE = {once: true};
 var BASE_VOLUME = 0.75;
 
 /**
@@ -27,14 +27,9 @@ AFRAME.registerComponent('song', {
     this.audioAnalyser.gainNode.gain.value = BASE_VOLUME;
 
     // Restart, get new buffer source node and play.
-    this.el.addEventListener('pausemenurestart', () => {
-      this.source.disconnect();
-      this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
-        this.source = evt.detail;
-        if (this.data.isBeatsPreloaded) { this.source.start(); }
-      }, once);
-      this.audioAnalyser.refreshSource();
-    });
+    this.el.addEventListener('pausemenurestart', this.onRestart.bind(this));
+    this.el.addEventListener('wallhitstart', this.onWallHitStart.bind(this));
+    this.el.addEventListener('wallhitend', this.onWallHitEnd.bind(this));
   },
 
   update: function (oldData) {
@@ -94,7 +89,7 @@ AFRAME.registerComponent('song', {
         this.source = evt.detail;
         this.source.onended = this.victory;
         resolve(this.source);
-      }, once);
+      }, ONCE);
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
       data.analyserEl.setAttribute('audioanalyser', this.analyserSetter);
       this.audioAnalyser.xhr.addEventListener('progress', evt => {
@@ -122,5 +117,26 @@ AFRAME.registerComponent('song', {
     const progress = evt.loaded / evt.total;
     this.songLoadingIndicator.setAttribute(
       'geometry', 'thetaLength', progress * 360);
+  },
+
+  onRestart: function () {
+    if (this.source) { this.source.disconnect(); }
+    this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
+      this.source = evt.detail;
+      if (this.data.isBeatsPreloaded) { this.source.start(); }
+    }, ONCE);
+    this.audioAnalyser.refreshSource();
+  },
+
+  onWallHitStart: function () {
+    const gain = this.audioAnalyser.gainNode.gain;
+    gain.linearRampToValueAtTime(0.2, this.context.currentTime + 0.1);
+    this.source.detune.linearRampToValueAtTime(-1000, this.context.currentTime + 0.1);
+  },
+
+  onWallHitEnd: function () {
+    const gain = this.audioAnalyser.gainNode.gain;
+    gain.linearRampToValueAtTime(BASE_VOLUME, this.context.currentTime + 0.2);
+    this.source.detune.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
   }
 });

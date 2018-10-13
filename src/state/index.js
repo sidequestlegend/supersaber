@@ -307,6 +307,7 @@ function difficultyComparator (a, b) {
 }
 
 function takeDamage (state) {
+  if (!state.isPlaying) { return; }
   state.damage++;
   state.score.combo = 0;
   checkGameOver(state);

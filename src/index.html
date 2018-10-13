@@ -143,7 +143,16 @@
         material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
         sub-object="from: #cursorLaser; name: glow"></a-mixin>
       <a-entity id="cameraRig">
-        <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls></a-entity>
+        <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls>
+          <a-entity
+            id="cameraCollider"
+            bind__aabb-collider="enabled: isPlaying"
+            aabb-collider="objects: [collidable]; interval: 50; collideNonVisible: false"
+            geometry="primitive: box; width: 0.25; height: 0.25; depth: 0.25"
+            proxy-event__wallhitstart="event: hitstart; to: a-scene; as: wallhitstart"
+            proxy-event__wallhitend="event: hitend; to: a-scene; as: wallhitend"
+            visible="false"></a-entity>
+        </a-entity>
 
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
