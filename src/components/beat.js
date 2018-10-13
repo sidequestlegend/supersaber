@@ -405,7 +405,6 @@ AFRAME.registerComponent('beat', {
 
   returnToPool: function (force) {
     if (!this.backToPool && !force) { return; }
-    if (!this.destroyed) { this.missHit(); }
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 
@@ -474,6 +473,7 @@ AFRAME.registerComponent('beat', {
         this.backToPool = this.returnToPoolTimer <= 0;
       }
 
+      if (!this.destroyed) { this.missHit(); }
       this.returnToPool();
     };
   })(),
