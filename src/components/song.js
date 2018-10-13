@@ -19,6 +19,7 @@ AFRAME.registerComponent('song', {
     this.analyserSetter = {buffer: true};
     this.audioAnalyser = this.data.analyserEl.components.audioanalyser;
     this.context = this.audioAnalyser.context;
+
     this.victory = this.victory.bind(this);
 
     // Base volume.
@@ -95,6 +96,9 @@ AFRAME.registerComponent('song', {
       }, once);
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
       data.analyserEl.setAttribute('audioanalyser', this.analyserSetter);
+      this.audioAnalyser.xhr.addEventListener('progress', evt => {
+        this.onFetchProgress(evt);
+      });
     });
   },
 
@@ -111,5 +115,9 @@ AFRAME.registerComponent('song', {
   victory: function () {
     if (!this.data.isPlaying) { return; }
     this.el.sceneEl.emit('victory', null, false);
+  },
+
+  onFetchProgress: function (evt) {
+
   }
 });
