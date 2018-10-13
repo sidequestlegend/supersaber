@@ -10,18 +10,13 @@ AFRAME.registerComponent('intro-song', {
     this.audio = document.getElementById('introSong');
     this.timeout = null;
 
-    // anime.js animation to fade in volume.
-    this.volumeTarget = {volume: 0};
-    this.fadeInAnimation = AFRAME.ANIME({
-      targets: this.volumeTarget,
-      duration: 500,
+    this.el.setAttribute('animation__introsong', {
+      property: 'components.intro-song.audio.volume',
+      dur: 500,
       easing: 'easeInQuad',
-      volume: VOLUME,
-      autoplay: false,
-      loop: false,
-      update: () => {
-        this.audio.volume = this.volumeTarget.volume;
-      }
+      from: 0,
+      to: 0.5,
+      autoplay: false
     });
   },
 
@@ -42,13 +37,13 @@ AFRAME.registerComponent('intro-song', {
   },
 
   play: function () {
-    this.fadeInAudio();
+    this.audio.volume = VOLUME;
+    this.audio.play();
   },
 
   fadeInAudio: function () {
     this.audio.volume = 0;
     this.audio.play();
-    this.volumeTarget.volume = 0;
-    this.fadeInAnimation.restart();
+    this.el.components['animation__introsong'].beginAnimation();
   }
 });

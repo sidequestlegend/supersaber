@@ -1,4 +1,3 @@
-const ANIME = AFRAME.ANIME || AFRAME.anime;
 var utils = require('../utils');
 
 const PREVIEW_VOLUME = 0.5;
@@ -16,37 +15,26 @@ AFRAME.registerComponent('song-preview-system', {
 
   init: function () {
     this.analyserEl = document.getElementById('audioAnalyser');
-    this.audio = null;
+    this.audio = document.createElement('audio');  // Dummy.
     this.audioStore = {};
     this.preloadedAudioIds = [];
     this.preloadQueue = [];
 
-    // anime.js animation to fade in volume.
-    this.volumeTarget = {volume: 0};
-    this.fadeInAnimation = ANIME({
-      targets: this.volumeTarget,
-      delay: 250,
-      duration: 1500,
+    this.el.setAttribute('animation__songpreviewfadein', {
+      property: 'components.song-preview-system.audio.volume',
+      dur: 1500,
       easing: 'easeInQuad',
-      volume: PREVIEW_VOLUME,
-      autoplay: false,
-      loop: false,
-      update: () => {
-        this.audio.volume = this.volumeTarget.volume;
-      }
+      from: 0,
+      to: PREVIEW_VOLUME,
+      autoplay: false
     });
 
-    this.fadeDownVolumeTarget = {volume: PREVIEW_VOLUME};
-    this.fadeDownAnimation = ANIME({
-      targets: this.fadeDownVolumeTarget,
-      duration: 500,
+    this.el.setAttribute('animation__songpreviewfadedown', {
+      property: 'components.song-preview-system.audio.volume',
+      dur: 500,
       easing: 'easeInQuad',
-      volume: 0.05,
-      autoplay: false,
-      loop: false,
-      update: () => {
-        this.audio.volume = this.fadeDownVolumeTarget.volume;
-      }
+      to: 0.05,
+      autoplay: false
     });
   },
 
@@ -59,8 +47,7 @@ AFRAME.registerComponent('song-preview-system', {
       if (this.analyserEl.components.audioanalyser.volume === 0) {
         this.stopSong();
       } else {
-        this.fadeDownVolumeTarget.volume = this.audio.volume;
-        this.fadeDownAnimation.restart();
+        this.el.components['animation__songpreviewfadedown'].beginAnimation();
       }
       return;
     }
@@ -187,7 +174,7 @@ AFRAME.registerComponent('song-preview-system', {
 
   stopSong: function () {
     if (!this.audio) { return; }
-    this.fadeInAnimation.pause();
+    this.el.components['animation__songpreviewfadein'].pauseAnimation();
     if (!this.audio.paused) { this.audio.pause(); }
     this.audio.volume = PREVIEW_VOLUME;
   },
@@ -198,11 +185,10 @@ AFRAME.registerComponent('song-preview-system', {
     const audioanalyser = this.analyserEl.components.audioanalyser;
     this.audio = this.audioStore[challengeId];
     this.audio.volume = 0;
-    this.volumeTarget.volume = 0;
     audioanalyser.resumeContext();
     this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.play();
-    this.fadeInAnimation.restart();
+    this.el.components['animation__songpreviewfadein'].beginAnimation();
     this.updateAnalyser();
 
     // Prefetch buffer for playing.
