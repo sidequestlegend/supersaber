@@ -245,6 +245,10 @@ AFRAME.registerState({
 
     victory: function (state) {
       state.isVictory = true;
+    },
+
+    wallhitstart: function (state) {
+      takeDamage(state);
     }
   },
 
