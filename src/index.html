@@ -89,14 +89,14 @@
         <a-mixin id="mine" mixin="beat" beat="type: mine"></a-mixin>
         <a-mixin id="wall" geometry wall material="shader: wall-shader; tex: #noiseTexture; repeat: 2 2; transparent: true; side: double">
 
-        <a-mixin id="badBeat"
+        <a-mixin id="beatWrong"
           geometry="primitive: plane; height: 0.3; width: 0.3"
           material="shader: flat; transparent: true; src: #wrongImg"
           visible="false"
-          animation__posz="property: object3D.position.z; to: -8; startEvents: wronghit; easing: easeOutQuart; dur: 4000"
-          animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: wronghit; easing: easeOutQuart; dur: 4000"></a-mixin>
+          animation__posz="property: object3D.position.z; to: -8; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"
+          animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"></a-mixin>
 
-        <a-mixin id="missBeat"
+        <a-mixin id="beatMiss"
           geometry="primitive: plane; height: 0.25; width: 0.5"
           material="shader: flat; transparent: true; src: #missImg"
           visible="false"
@@ -124,10 +124,12 @@
       </a-entity>
 
       <!-- Wrong + miss beat visual indicators. -->
-      <a-entity id="wrongLeft" mixin='badBeat'></a-entity>
-      <a-entity id="wrongRight" mixin='badBeat'></a-entity>
-      <a-entity id="missLeft" mixin='missBeat'></a-entity>
-      <a-entity id="missRight" mixin='missBeat'></a-entity>
+      <a-entity id="badContainer" bind__visible="isPlaying">
+        <a-entity id="wrongLeft" mixin='beatWrong'></a-entity>
+        <a-entity id="wrongRight" mixin='beatWrong'></a-entity>
+        <a-entity id="missLeft" mixin='beatMiss'></a-entity>
+        <a-entity id="missRight" mixin='beatMiss'></a-entity>
+      </a-entity>
 
       <a-entity id="saberParticles" particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"> </a-entity>
 

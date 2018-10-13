@@ -63,6 +63,10 @@ AFRAME.registerComponent('trail', {
       this.enabledTime = this.el.sceneEl.time;
       this.mesh.visible = false;
     }
+
+    if (oldData.enabled && !this.data.enabled) {
+      this.mesh.visible = false;
+    }
   },
 
   tock: function (time, delta) {
