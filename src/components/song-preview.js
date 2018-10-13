@@ -194,14 +194,20 @@ AFRAME.registerComponent('song-preview-system', {
 
   playSong: function (challengeId) {
     if (!challengeId) { return; }
+
+    const audioanalyser = this.analyserEl.components.audioanalyser;
     this.audio = this.audioStore[challengeId];
     this.audio.volume = 0;
     this.volumeTarget.volume = 0;
-    this.analyserEl.components.audioanalyser.resumeContext();
+    audioanalyser.resumeContext();
     this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.play();
     this.fadeInAnimation.restart();
     this.updateAnalyser();
+
+    // Prefetch buffer for playing.
+    if (audioanalyser.xhr) { audioanalyser.xhr.abort(); }
+    audioanalyser.fetchAudioBuffer(utils.getS3FileUrl(challengeId, 'song.ogg'));
   },
 
   updateAnalyser: function () {
