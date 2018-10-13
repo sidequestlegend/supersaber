@@ -26,7 +26,6 @@ AFRAME.registerComponent('song', {
     // Base volume.
     this.audioAnalyser.gainNode.gain.value = BASE_VOLUME;
 
-    // Restart, get new buffer source node and play.
     this.el.addEventListener('pausemenurestart', this.onRestart.bind(this));
     this.el.addEventListener('wallhitstart', this.onWallHitStart.bind(this));
     this.el.addEventListener('wallhitend', this.onWallHitEnd.bind(this));
@@ -45,11 +44,12 @@ AFRAME.registerComponent('song', {
       this.audioAnalyser.gainNode.gain.setValueAtTime(this.audioAnalyser.gainNode.gain.value,
                                                       this.context.currentTime);
       this.audioAnalyser.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
-      setTimeout(() => {
-        this.stopAudio();
-        this.audioAnalyser.gainNode.value = BASE_VOLUME;
-      }, 3500);
+      setTimeout(() => { this.stopAudio(); }, 3500);
       return;
+    }
+
+    if (oldData.isGameOver && !data.isGameOver) {
+      this.audioAnalyser.gainNode.value = BASE_VOLUME;
     }
 
     // New challenge, play if we have loaded and were waiting for beats to preload.
@@ -119,6 +119,7 @@ AFRAME.registerComponent('song', {
   },
 
   onRestart: function () {
+    // Restart, get new buffer source node and play.
     if (this.source) { this.source.disconnect(); }
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
