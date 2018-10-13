@@ -115,8 +115,7 @@ AFRAME.registerComponent('song', {
 
   onFetchProgress: function (evt) {
     const progress = evt.loaded / evt.total;
-    this.songLoadingIndicator.setAttribute(
-      'geometry', 'thetaLength', progress * 360);
+    this.songLoadingIndicator.setAttribute('geometry', 'thetaLength', progress * 360);
   },
 
   onRestart: function () {
