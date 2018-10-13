@@ -45,7 +45,8 @@ AFRAME.registerComponent('song-preview-system', {
     // Play clicked.
     // But don't start playing it if it wasn't playing already.
     if (!oldData.challengeId && data.challengeId) {
-      if (this.analyserEl.components.audioanalyser.volume === 0) {
+      if (this.analyserEl.components.audioanalyser.volume === 0 ||
+          this.audio.currentTime < 1) {
         this.stopSong();
       } else {
         this.el.components['animation__songpreviewfadedown'].beginAnimation();
