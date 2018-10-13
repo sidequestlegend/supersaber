@@ -30,6 +30,8 @@ AFRAME.registerComponent('beams', {
     blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
     geo = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
 
+    this.texture = materialOptions.map;
+
     for (var j = 0; j < 2; j++) {
       for (var i = 0; i < this.data.poolSize; i++) {
         beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
