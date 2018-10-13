@@ -1,3 +1,5 @@
+const VOLUME = 0.5;
+
 AFRAME.registerComponent('intro-song', {
   schema: {
     isPlaying: {default: true}
@@ -7,6 +9,20 @@ AFRAME.registerComponent('intro-song', {
     this.analyserEl = document.getElementById('audioAnalyser');
     this.audio = document.getElementById('introSong');
     this.timeout = null;
+
+    // anime.js animation to fade in volume.
+    this.volumeTarget = {volume: 0};
+    this.fadeInAnimation = AFRAME.ANIME({
+      targets: this.volumeTarget,
+      duration: 500,
+      easing: 'easeInQuad',
+      volume: VOLUME,
+      autoplay: false,
+      loop: false,
+      update: () => {
+        this.audio.volume = this.volumeTarget.volume;
+      }
+    });
   },
 
   update: function (oldData) {
@@ -14,24 +30,25 @@ AFRAME.registerComponent('intro-song', {
 
     if (!this.el.sceneEl.isPlaying) { return; }
 
+    // Play.
     if (!oldData.isPlaying && this.data.isPlaying) {
       this.analyserEl.components.audioanalyser.resumeContext();
-      this.timeout = setTimeout(() => {
-        // TODO: Fade in volume.
-        this.analyserEl.setAttribute('audioanalyser', 'src', audio);
-        audio.play();
-        this.timeout = null;
-      }, 1000);
+      this.analyserEl.setAttribute('audioanalyser', 'src', audio);
+      this.fadeInAudio();
     }
 
-    if (oldData.isPlaying && !this.data.isPlaying) {
-      if (this.timeout) { clearTimeout(this.timeout); }
-      audio.pause();
-    }
+    // Pause.
+    if (oldData.isPlaying && !this.data.isPlaying) { audio.pause(); }
   },
 
   play: function () {
-    this.audio.volume = 0.5;
+    this.fadeInAudio();
+  },
+
+  fadeInAudio: function () {
+    this.audio.volume = 0;
     this.audio.play();
+    this.volumeTarget.volume = 0;
+    this.fadeInAnimation.restart();
   }
 });
