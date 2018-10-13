@@ -19,6 +19,7 @@ AFRAME.registerComponent('song', {
     this.analyserSetter = {buffer: true};
     this.audioAnalyser = this.data.analyserEl.components.audioanalyser;
     this.context = this.audioAnalyser.context;
+    this.songLoadingIndicator = document.getElementById('songLoadingIndicator');
 
     this.victory = this.victory.bind(this);
 
@@ -118,6 +119,8 @@ AFRAME.registerComponent('song', {
   },
 
   onFetchProgress: function (evt) {
-
+    const progress = evt.loaded / evt.total;
+    this.songLoadingIndicator.setAttribute(
+      'geometry', 'thetaLength', progress * 360);
   }
 });

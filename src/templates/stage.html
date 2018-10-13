@@ -74,6 +74,14 @@
   <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 
   <a-entity
+    id="songLoadingIndicator"
+    bind__visible="isSongLoading"
+    geometry="primitive: ring; radiusInner: 0.05; radiusOuter: 0.08"
+    material="shader: flat; color: #FAFAFA; opacity: 0.75"
+    position="0 1.4 -2.5">
+  </a-entity>
+
+  <a-entity
     mixin="textFont"
     bind__animation__opacity="enabled: challenge.isLoading || isSongLoading"
     animation__opacity="property: components.text.material.uniforms.opacity.value; from: 1; to: 0.5; dir: alternate; loop: true; dur: 2000; easing: easeInOutCubic; enabled: false"
