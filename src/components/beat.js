@@ -473,7 +473,7 @@ AFRAME.registerComponent('beat', {
         this.backToPool = this.returnToPoolTimer <= 0;
       }
 
-      if (!this.destroyed) { this.missHit(); }
+      if (this.backToPool && !this.destroyed) { this.missHit(); }
       this.returnToPool();
     };
   })(),
