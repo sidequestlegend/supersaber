@@ -23,7 +23,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.el.setAttribute('animation__songpreviewfadein', {
       property: 'components.song-preview-system.audio.volume',
       dur: 1500,
-      easing: 'easeInQuad',
+      easing: 'linear',
       from: 0,
       to: PREVIEW_VOLUME,
       autoplay: false
@@ -32,7 +32,8 @@ AFRAME.registerComponent('song-preview-system', {
     this.el.setAttribute('animation__songpreviewfadedown', {
       property: 'components.song-preview-system.audio.volume',
       dur: 500,
-      easing: 'easeInQuad',
+      easing: 'linear',
+      from: 0.5,
       to: 0.05,
       autoplay: false
     });
