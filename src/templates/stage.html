@@ -83,9 +83,10 @@
   </a-entity>
 
   <a-entity
+    id="loadingText"
     mixin="textFont"
-    bind__animation__opacity="enabled: challenge.isLoading || isSongLoading"
-    animation__opacity="property: components.text.material.uniforms.opacity.value; from: 1; to: 0.5; dir: alternate; loop: true; dur: 2000; easing: easeInOutCubic; enabled: false"
+    bind__animation__color="enabled: challenge.isLoading || isSongLoading"
+    animation__color="property: components.text.material.uniforms.color.value; type: color; from: #AAF; to: #88D; dir: alternate; loop: true; dur: 2000; easing: easeInOutCubic; enabled: false"
     text="value: READY, STEADY...; align: center; color: #aaf; wrapCount: 18; width: 2"
     position="0 1.5 -2.5"
     bind__visible="challenge.isLoading || isSongLoading"></a-entity>
