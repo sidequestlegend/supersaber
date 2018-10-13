@@ -10,10 +10,11 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadBeamMap();
       this.preloadBeatEnvMap();
       this.preloadCutParticles();
+      this.preloadMineEnvMaps();
       this.preloadMissMap();
       this.preloadWallMap();
       this.preloadWrongMap();
-    }, 250);
+    }, 1000);
   },
 
   preloadBeamMap: function () {
@@ -37,6 +38,12 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadCutParticles: function () {
     const particles = document.querySelector('#saberParticles');
     this.preloadTexture(particles.components.particleplayer.material.map);
+  },
+
+  preloadMineEnvMaps: function () {
+    const stageColors = this.el.sceneEl.components['stage-colors'];
+    this.preloadTexture(stageColors.mineEnvMap.red);
+    this.preloadTexture(stageColors.mineEnvMap.blue);
   },
 
   preloadMissMap: function () {
