@@ -8,7 +8,7 @@ var webpack = require('webpack');
 
 // Set up templating.
 var nunjucks = Nunjucks.configure(path.resolve(__dirname, 'src'), {
-  noCache: true,
+  noCache: true
 });
 nunjucks.addGlobal('DEBUG_KEYBOARD', !!process.env.DEBUG_KEYBOARD);
 nunjucks.addGlobal('HOST', ip.address());
@@ -59,10 +59,10 @@ if (process.env.NODE_ENV === 'production') {
         undefinedToVoid: true,
         keepFnName: true,
         keepClassName: true,
-        tdz: true,
+        tdz: true
       },
       {
-        sourceMap: 'source-map',
+        sourceMap: 'source-map'
       }
     )
   );
@@ -71,12 +71,12 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   devtool: '#inline-source-map',
   devServer: {
-    disableHostCheck: true,
+    disableHostCheck: true
   },
   entry: './src/index.js',
   output: {
     path: __dirname,
-    filename: 'build/build.js',
+    filename: 'build/build.js'
   },
   plugins: PLUGINS,
   module: {
@@ -85,25 +85,25 @@ module.exports = {
         test: /\.js/,
         exclude: path =>
           path.indexOf('node_modules') !== -1 || path.indexOf('panel') !== -1,
-        loader: 'babel-loader',
+        loader: 'babel-loader'
       },
       {
         test: /\.glsl/,
         exclude: /(node_modules)/,
-        loader: 'webpack-glsl-loader',
+        loader: 'webpack-glsl-loader'
       },
       {
         test: /\.css$/,
         exclude: /(node_modules)/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|jpg)/,
-        loader: 'url-loader',
+        loader: 'url-loader'
       }
-    ],
+    ]
   },
   resolve: {
-    modules: [path.join(__dirname, 'node_modules')],
-  },
+    modules: [path.join(__dirname, 'node_modules')]
+  }
 };

@@ -26,7 +26,7 @@ AFRAME.registerComponent('active-color', {
         setTimeout(() => { el.emit('mouseleave', null, false); });
       }
     }
-  },
+  }
 });
 
 AFRAME.registerComponent('active-text-color', {
@@ -48,5 +48,5 @@ AFRAME.registerComponent('active-text-color', {
     } else {
       el.setAttribute('text', 'color', this.defaultColor);
     }
-  },
+  }
 });

@@ -32,7 +32,7 @@ AFRAME.registerComponent('song', {
   },
 
   update: function (oldData) {
-    var audio =  this.audio;
+    var audio = this.audio;
     var el = this.el;
     var data = this.data;
 

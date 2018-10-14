@@ -4,5 +4,5 @@ AFRAME.registerComponent('keyboard-raycastable', {
   play: function () {
     this.el.components['super-keyboard'].kbImg.setAttribute('bind-toggle__raycastable',
                                                             'keyboardActive');
-  },
+  }
 });

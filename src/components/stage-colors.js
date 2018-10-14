@@ -6,12 +6,12 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   init: function () {
-    this.neonRed  = new THREE.Color(0xff9999);
+    this.neonRed = new THREE.Color(0xff9999);
     this.neonBlue = new THREE.Color(0x9999ff);
-    this.defaultRed  = new THREE.Color(0xff0000);
+    this.defaultRed = new THREE.Color(0xff0000);
     this.defaultBlue = new THREE.Color(0x0000ff);
     this.mineEnvMap = {
-      red:  new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg'),
+      red: new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg'),
       blue: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg')
     };
     this.mineColor = {red: new THREE.Color(0x070304), blue: new THREE.Color(0x030407)};
@@ -36,7 +36,7 @@ AFRAME.registerComponent('stage-colors', {
     // Init or reset.
     this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
     this.sky.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
-    this.el.sceneEl.object3D.background.set(red ? '#770100': '#15252d');
+    this.el.sceneEl.object3D.background.set(red ? '#770100' : '#15252d');
     this.el.sceneEl.object3D.fog.color.set(red ? '#a00' : '#007cb9');
 
     this.el.sceneEl.systems.materials.neon.color = red ? this.neonRed : this.neonBlue;
@@ -46,5 +46,5 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
-  },
+  }
 });

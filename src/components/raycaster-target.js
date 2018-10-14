@@ -7,7 +7,7 @@ AFRAME.registerComponent('raycaster-target', {
     bindToggle: {default: ''},
     depth: {type: 'number'},
     height: {type: 'number'},
-   position: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
+    position: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     rotation: {type: 'vec3', default: {x: 0, y: 0, z: 0}},
     useBoxTarget: {default: false},
     width: {type: 'number'}

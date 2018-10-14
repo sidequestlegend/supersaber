@@ -133,7 +133,7 @@ AFRAME.registerComponent('beat-loader', {
       }
     }
 
-    for (i=0; i < obstacles.length; ++i) {
+    for (i = 0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         this.generateWall(obstacles[i]);
@@ -236,4 +236,4 @@ AFRAME.registerComponent('beat-loader', {
 
 function lessThan (a, b) {
   return a._time - b._time;
-};
+}

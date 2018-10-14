@@ -130,7 +130,7 @@ AFRAME.registerComponent('beat', {
     var data = this.data;
     var i;
     var size;
-    var hitColliderConfiguration =  {
+    var hitColliderConfiguration = {
       position: {x: 0, y: data.size / 2, z: 0},
       size: {width: data.size, height: data.size / 5.0, depth: data.size}
     };
@@ -239,8 +239,8 @@ AFRAME.registerComponent('beat', {
 
   destroyBeat: (function () {
     var parallelPlaneMaterial = new THREE.MeshBasicMaterial({
-        color: '#00008b',
-        side: THREE.DoubleSide
+      color: '#00008b',
+      side: THREE.DoubleSide
     });
     var planeMaterial = new THREE.MeshBasicMaterial({color: 'grey', side: THREE.DoubleSide});
     var point1 = new THREE.Vector3();
@@ -271,7 +271,7 @@ AFRAME.registerComponent('beat', {
       direction.copy(point1).sub(point3);
 
       this.partLeftEl.object3D.position.set(0, 0, 0);
-      this.partLeftEl.object3D.rotation.set(0, 0, 0)
+      this.partLeftEl.object3D.rotation.set(0, 0, 0);
       this.partLeftEl.object3D.updateMatrixWorld();
 
       this.partRightEl.object3D.position.set(0, 0, 0);
@@ -320,9 +320,9 @@ AFRAME.registerComponent('beat', {
 
       const cutRightMaterial = this.cutRightEl.getObject3D('mesh').material;
       cutRightMaterial.clippingPlanes = cutRightMaterial.clippingPlanes || [];
-      cutRightMaterial.clippingPlanes.length  = 0
-      cutRightMaterial.clippingPlanes.push(rightBorderOuterPlane)
-      cutRightMaterial.clippingPlanes.push(rightBorderInnerPlane)
+      cutRightMaterial.clippingPlanes.length = 0;
+      cutRightMaterial.clippingPlanes.push(rightBorderOuterPlane);
+      cutRightMaterial.clippingPlanes.push(rightBorderInnerPlane);
 
       const partLeftMaterial = this.partLeftEl.getObject3D('mesh').material;
       partLeftMaterial.clippingPlanes = partLeftMaterial.clippingPlanes || [];
@@ -332,8 +332,8 @@ AFRAME.registerComponent('beat', {
       const cutLeftMaterial = this.cutLeftEl.getObject3D('mesh').material;
       cutLeftMaterial.clippingPlanes = cutLeftMaterial.clippingPlanes || [];
       cutLeftMaterial.clippingPlanes.length = 0;
-      cutLeftMaterial.clippingPlanes.push(leftBorderInnerPlane)
-      cutLeftMaterial.clippingPlanes.push(leftBorderOuterPlane)
+      cutLeftMaterial.clippingPlanes.push(leftBorderInnerPlane);
+      cutLeftMaterial.clippingPlanes.push(leftBorderOuterPlane);
 
       this.partLeftEl.object3D.visible = true;
       this.partRightEl.object3D.visible = true;
@@ -352,7 +352,7 @@ AFRAME.registerComponent('beat', {
         position: this.el.object3D.position,
         rotation: auxObj3D.rotation
       });
-    }
+    };
   })(),
 
   pause: function () {

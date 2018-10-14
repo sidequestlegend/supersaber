@@ -2,7 +2,7 @@
  * Log cursor events.
  */
 AFRAME.registerComponent('debug-cursor', {
-  init: function() {
+  init: function () {
     if (process.env.NODE_ENV === 'production') {
       return;
     }
@@ -20,12 +20,12 @@ AFRAME.registerComponent('debug-cursor', {
     });
   },
 
-  log: function(event, intersectedEl, color) {
+  log: function (event, intersectedEl, color) {
     if (intersectedEl.id) {
       console.log(`%c[${event}] ${intersectedEl.id}`, `color: ${color}`);
     } else {
       console.log(`%c[${event}]`, `color: ${color}`);
       console.log(intersectedEl);
     }
-  },
+  }
 });

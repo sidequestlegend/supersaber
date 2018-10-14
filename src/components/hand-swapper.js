@@ -18,7 +18,7 @@ AFRAME.registerComponent('hand-swapper', {
 
   init: function () {
     this.swapHand = this.swapHand.bind(this);
-    events.forEach(event  => {
+    events.forEach(event => {
       this.el.addEventListener(event, this.swapHand);
     });
   },

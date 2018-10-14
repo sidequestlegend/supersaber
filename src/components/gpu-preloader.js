@@ -67,5 +67,5 @@ AFRAME.registerComponent('gpu-preloader', {
       return;
     }
     this.el.renderer.setTexture2D(texture, i++ % 8);
-  },
+  }
 });

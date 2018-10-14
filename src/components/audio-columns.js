@@ -37,7 +37,7 @@ AFRAME.registerComponent('audio-columns', {
       }
     }
 
-    this.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries)
+    this.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
     const mesh = new THREE.Mesh(this.geometry, this.el.sceneEl.systems.materials.black);
     this.el.setObject3D('mesh', mesh);
   },

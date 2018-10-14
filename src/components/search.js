@@ -9,7 +9,7 @@ var algolia = client.initIndex('supersaber');
  * Attached to super-keyboard.
  */
 AFRAME.registerComponent('search', {
-  init: function() {
+  init: function () {
     this.eventDetail = {results: []};
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 100, query: ''};
@@ -66,7 +66,7 @@ AFRAME.registerComponent('search-result-list', {
     this.el.sceneEl.emit('menuchallengeselect',
                          evt.target.closest('.searchResult').dataset.id,
                          false);
-  }),
+  })
 });
 
 AFRAME.registerComponent('search-song-name-selected', {

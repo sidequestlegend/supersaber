@@ -25,7 +25,7 @@ AFRAME.registerComponent('twister', {
     var segment;
     var lastSegment;
 
-    if (Math.abs(this.data.twist - this.currentTwist) > 0.001){
+    if (Math.abs(this.data.twist - this.currentTwist) > 0.001) {
       this.animate = true;
       return;
     }
@@ -45,11 +45,11 @@ AFRAME.registerComponent('twister', {
   createSegment: function (radius) {
     const R = this.data.thickness;
     var points = [
-      new THREE.Vector2(radius - R,  R),
+      new THREE.Vector2(radius - R, R),
       new THREE.Vector2(radius - R, -R),
       new THREE.Vector2(radius + R, -R),
-      new THREE.Vector2(radius + R,  R),
-      new THREE.Vector2(radius - R,  R)
+      new THREE.Vector2(radius + R, R),
+      new THREE.Vector2(radius - R, R)
     ];
     var material = this.el.sceneEl.systems.materials.black;
     var geometry = new THREE.LatheBufferGeometry(points, this.data.vertices);
@@ -63,7 +63,7 @@ AFRAME.registerComponent('twister', {
 
   tick: function (time, delta) {
     if (!this.animate) { return; }
-    if (Math.abs(this.data.twist - this.currentTwist) < 0.001){
+    if (Math.abs(this.data.twist - this.currentTwist) < 0.001) {
       this.animate = false;
     }
 

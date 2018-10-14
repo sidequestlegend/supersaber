@@ -221,7 +221,7 @@ AFRAME.registerState({
         result.songSubName = result.songSubName || 'Unknown Artist';
         result.shortSongName = truncate(result.songName, SONG_NAME_TRUNCATE).toUpperCase();
         result.shortSongSubName = truncate(result.songSubName, SONG_SUB_NAME_TRUNCATE);
-        challengeDataStore[result.id] = result
+        challengeDataStore[result.id] = result;
       }
       computeSearchPagination(state);
       computeMenuSelectedChallengeIndex(state);

@@ -20,7 +20,7 @@ AFRAME.registerComponent('logoflicker', {
   },
 
   update: function (oldData) {
-    if (this.data.active !== oldData.active){
+    if (this.data.active !== oldData.active) {
       if (this.data.active) {
         this.setOn();
       } else {

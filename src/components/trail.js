@@ -39,15 +39,15 @@ AFRAME.registerComponent('trail', {
         'varying vec4 vColor;',
         'attribute vec4 vertexColor;',
         'void main() {',
-          'vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);',
-          'vColor = vertexColor;',
-          'gl_Position = projectionMatrix * modelViewPosition;',
+        'vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);',
+        'vColor = vertexColor;',
+        'gl_Position = projectionMatrix * modelViewPosition;',
         '}'
       ].join(''),
       fragmentShader: [
         'varying vec4 vColor;',
         'void main() {',
-          'gl_FragColor = vColor;',
+        'gl_FragColor = vColor;',
         '}'
       ].join('')
     });
@@ -178,7 +178,7 @@ AFRAME.registerComponent('trail', {
       alpha = 1.0 - ((saberTrajectory.length - i) / saberTrajectory.length);
 
       currentPoint = saberTrajectory[i];
-      previousPoint = saberTrajectory[i-1];
+      previousPoint = saberTrajectory[i - 1];
 
       vertices[36 * i] = previousPoint.center.x;
       vertices[36 * i + 1] = previousPoint.center.y;
@@ -286,7 +286,7 @@ AFRAME.registerComponent('trail', {
 
       // Color
       colors[48 * i + 40] = color.red;
-      colors[48 *    i + 41] = color.green;
+      colors[48 * i + 41] = color.green;
       colors[48 * i + 42] = color.blue;
       colors[48 * i + 43] = 0.0;
 

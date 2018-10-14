@@ -1,4 +1,4 @@
-var hoveredIndex = undefined;
+var hoveredIndex;
 var keyEventsRegistered = false;
 var results = null;
 

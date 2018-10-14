@@ -23,7 +23,7 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   update: function (oldData) {
-    if (!oldData.bladeEnabled  && this.data.bladeEnabled) {
+    if (!oldData.bladeEnabled && this.data.bladeEnabled) {
       this.bladeEl.emit('drawblade');
     }
   },
@@ -47,7 +47,7 @@ AFRAME.registerComponent('saber-controls', {
           'abuttondown',
           'bbuttondown',
           'xbuttondown',
-          'ybuttondown',
+          'ybuttondown'
         ],
         upEvents: [
           'triggerup',
@@ -55,23 +55,23 @@ AFRAME.registerComponent('saber-controls', {
           'abuttonup',
           'bbuttonup',
           'xbuttonup',
-          'ybuttonup',
-        ],
-      },
+          'ybuttonup'
+        ]
+      }
     },
 
     'vive-controls': {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
-        upEvents: ['trackpadup', 'triggerup', 'gripup'],
-      },
+        upEvents: ['trackpadup', 'triggerup', 'gripup']
+      }
     },
 
     'windows-motion-controls': {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
-        upEvents: ['trackpadup', 'triggerup', 'gripup'],
-      },
+        upEvents: ['trackpadup', 'triggerup', 'gripup']
+      }
     }
   }
 });

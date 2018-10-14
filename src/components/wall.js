@@ -27,5 +27,5 @@ AFRAME.registerComponent('wall', {
     this.el.object3D.position.z = 9999;
     this.el.pause();
     this.el.removeAttribute('collidable');
-  },
+  }
 });
