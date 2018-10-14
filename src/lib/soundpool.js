@@ -1,6 +1,6 @@
+/* global Audio */
 module.exports = function SoundPool (src, volume) {
   var currSound = 0;
-  var i;
   var pool = [];
   var sound;
 

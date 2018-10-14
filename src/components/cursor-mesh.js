@@ -19,11 +19,8 @@ AFRAME.registerComponent('cursor-mesh', {
     var cursor;
     var cursorEl = this.data.cursorEl;
     var el = this.el;
-    var i;
     var intersection;
     var intersectedEl;
-    var intersectionPoint;
-    var object3D = this.el.object3D;
     var scenePivotEl = this.scenePivotEl;
 
     if (!this.data.active) { return; }

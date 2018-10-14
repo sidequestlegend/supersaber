@@ -128,8 +128,6 @@ AFRAME.registerComponent('beat', {
 
   initColliders: function () {
     var data = this.data;
-    var i;
-    var size;
     var hitColliderConfiguration = {
       position: {x: 0, y: data.size / 2, z: 0},
       size: {width: data.size, height: data.size / 5.0, depth: data.size}
@@ -251,13 +249,9 @@ AFRAME.registerComponent('beat', {
       var coplanarPoint;
       var cutThickness = this.cutThickness = 0.02;
       var direction = this.cutDirection;
-      var focalPoint;
-      var i;
       var leftBorderInnerPlane = this.leftBorderInnerPlane;
       var leftBorderOuterPlane = this.leftBorderOuterPlane;
       var leftCutPlane = this.leftCutPlane;
-      var parallelPlane2;
-      var parallelPlane;
       var planeGeometry;
       var planeMesh;
       var rightBorderInnerPlane = this.rightBorderInnerPlane;
@@ -307,7 +301,7 @@ AFRAME.registerComponent('beat', {
         planeGeometry.lookAt(rightBorderOuterPlane.normal);
         planeGeometry.translate(coplanarPoint.x, coplanarPoint.y, coplanarPoint.z);
 
-        parallelPlaneMesh = new THREE.Mesh(planeGeometry, parallelPlaneMaterial);
+        const parallelPlaneMesh = new THREE.Mesh(planeGeometry, parallelPlaneMaterial);
         this.el.sceneEl.setObject3D('planeParallel', parallelPlaneMesh);
       }
 

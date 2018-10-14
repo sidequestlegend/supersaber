@@ -32,8 +32,6 @@ AFRAME.registerComponent('song', {
   },
 
   update: function (oldData) {
-    var audio = this.audio;
-    var el = this.el;
     var data = this.data;
 
     // Game over, slow down audio, and then stop.

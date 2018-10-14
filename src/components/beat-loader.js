@@ -161,7 +161,6 @@ AFRAME.registerComponent('beat-loader', {
     return function (noteInfo) {
       var beatEl;
       var color;
-      var orientation;
       var type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
 
       color = noteInfo._type === 0 ? 'red' : 'blue';
@@ -191,9 +190,10 @@ AFRAME.registerComponent('beat-loader', {
   generateWall: function (wallInfo) {
     var el = this.el.sceneEl.components.pool__wall.requestEntity();
     var speed = this.data.beatSpeed;
-    var durationMs;
+
     if (!el) { return; }
-    durationSeconds = 60 * (wallInfo._duration / this.bpm);
+
+    const durationSeconds = 60 * (wallInfo._duration / this.bpm);
     el.setAttribute('wall', 'speed', speed);
     el.object3D.position.set(
       this.horizontalPositions[wallInfo._lineIndex],

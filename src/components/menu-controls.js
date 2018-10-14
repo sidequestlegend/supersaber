@@ -15,7 +15,6 @@ AFRAME.registerComponent('menu-controls', {
   },
 
   init: function () {
-    const data = this.data;
     const el = this.el;
 
     results = document.getElementById('searchResultList').children;

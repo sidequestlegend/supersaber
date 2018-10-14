@@ -7,7 +7,6 @@ AFRAME.registerComponent('trail', {
 
   init: function () {
     var geometry = this.geometry = new THREE.BufferGeometry();
-    var steps = 10;
     var maxPoints = this.maxPoints = 12;
     var vertices = this.vertices = new Float32Array(36 * maxPoints);
     var colors = this.colors = new Float32Array(48 * maxPoints);
@@ -81,18 +80,15 @@ AFRAME.registerComponent('trail', {
     var segments = this.segments;
     var dx = 2 / segments;
     var colors = this.colors;
-    var bottomLayer;
     var vertices = this.vertices;
-    var uvs = this.uvs;
-    var indexOffset;
     var color = this.bladeColor;
 
     if (this.layers >= this.maxLayers) { this.layers = 0; }
 
-    bottomLayer = this.layers * length;
+    const bottomLayer = this.layers * length;
     length = bottomLayer + length;
-    indexOffset = this.layers * segments * 18;
-    colorOffset = this.layers * segments * 24;
+    const indexOffset = this.layers * segments * 18;
+    const colorOffset = this.layers * segments * 24;
 
     for (var i = 0; i < segments; ++i) {
       vertices[indexOffset + 18 * i] = startX + i * dx;

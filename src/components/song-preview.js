@@ -218,7 +218,7 @@ AFRAME.registerComponent('song-preview-system', {
       }
     }
     if (!index) { return; }
-    this.preloadQueue.splice(i, 1);
+    this.preloadQueue.splice(index, 1);
   }
 });
 

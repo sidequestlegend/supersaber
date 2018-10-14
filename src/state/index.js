@@ -1,7 +1,7 @@
+/* global localStorage */
 var utils = require('../utils');
 
 const challengeDataStore = {};
-const hasInitialChallenge = !!AFRAME.utils.getUrlParameter('challenge');
 const SEARCH_PER_PAGE = 6;
 const SONG_NAME_TRUNCATE = 24;
 const SONG_SUB_NAME_TRUNCATE = 32;
@@ -142,7 +142,7 @@ AFRAME.registerState({
       computeMenuSelectedChallengeIndex(state);
     },
 
-    menuchallengeunselect: () => {
+    menuchallengeunselect: state => {
       state.menuSelectedChallenge.id = '';
     },
 
@@ -286,7 +286,7 @@ function computeSearchPagination (state) {
       truncate(state.search.results[i].songSubName, SONG_SUB_NAME_TRUNCATE) + '\n';
   }
 
-  for (i = 0; i < state.searchResultsPage.length; i++) {
+  for (let i = 0; i < state.searchResultsPage.length; i++) {
     state.searchResultsPage[i].index = i;
   }
 

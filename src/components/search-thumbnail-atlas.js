@@ -44,7 +44,6 @@ AFRAME.registerComponent('search-thumbnail-atlas', {
 
   update: function () {
     var el = this.el;
-    var data = this.data;
 
     const results = el.sceneEl.systems.state.state.searchResultsPage;
     for (let i = 0; i < results.length; i++) {
