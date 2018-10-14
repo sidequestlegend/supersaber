@@ -9,6 +9,7 @@
 
 <a-entity
   id="audioAnalyser"
+  bind__audioanalyser="beatDetectionThrottle: menu.active && 5000 || 1000"
   audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
   proxy-event="event: audioanalyserbeat; to: #logolight, #floor, #twister"></a-entity>
 
