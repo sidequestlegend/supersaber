@@ -36,9 +36,6 @@ AFRAME.registerComponent('beat', {
   },
 
   init: function () {
-    var el = this.el;
-    var color;
-    var size = this.data.size;
     this.beatBoundingBox = new THREE.Box3();
     this.boundingBox = new THREE.Box3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
@@ -69,6 +66,26 @@ AFRAME.registerComponent('beat', {
     } else {
       this.poolName = `pool__beat-${this.data.type}-${this.data.color}`;
     }
+  },
+
+  play: function () {
+    this.destroyed = false;
+    this.el.object3D.visible = true;
+    this.blockEl.object3D.visible = true;
+  },
+
+  tock: function (time, timeDelta) {
+    if (this.destroyed) {
+      this.tockDestroyed(timeDelta);
+    } else {
+      // Only check collisions when close.
+      const collisionZThreshold = -4;
+      if (this.el.object3D.position.z > collisionZThreshold) { this.checkCollisions(); }
+      this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
+      this.backToPool = this.el.object3D.position.z >= 2;
+      if (this.backToPool) { this.missHit(); }
+    }
+    this.returnToPool();
   },
 
   initBlock: function () {
@@ -137,11 +154,8 @@ AFRAME.registerComponent('beat', {
   },
 
   initFragments: function () {
-    var partEl;
     var cutEl;
-    var color = this.data.color === 'red' ? '#5b0502' : '#083771';
-    var size = this.data.size;
-    var geometry = {primitive: 'box', height: size, width: size, depth: size};
+    var partEl;
 
     this.cutDirection = new THREE.Vector3();
     this.rotationAxis = new THREE.Vector3();
@@ -224,7 +238,10 @@ AFRAME.registerComponent('beat', {
   },
 
   destroyBeat: (function () {
-    var parallelPlaneMaterial = new THREE.MeshBasicMaterial({color: '#00008b', side: THREE.DoubleSide});
+    var parallelPlaneMaterial = new THREE.MeshBasicMaterial({
+        color: '#00008b',
+        side: THREE.DoubleSide
+    });
     var planeMaterial = new THREE.MeshBasicMaterial({color: 'grey', side: THREE.DoubleSide});
     var point1 = new THREE.Vector3();
     var point2 = new THREE.Vector3();
@@ -344,12 +361,6 @@ AFRAME.registerComponent('beat', {
     this.partRightEl.object3D.visible = false;
   },
 
-  play: function () {
-    this.destroyed = false;
-    this.el.object3D.visible = true;
-    this.blockEl.object3D.visible = true;
-  },
-
   initCuttingClippingPlanes: function () {
     this.leftCutPlanePointsWorld = [
       new THREE.Vector3(),
@@ -384,23 +395,34 @@ AFRAME.registerComponent('beat', {
     var rightCutPlanePointsWorld = this.rightCutPlanePointsWorld;
 
     partRightEl.object3D.updateMatrixWorld();
-    partRightEl.object3D.localToWorld(rightCutPlanePointsWorld[0].copy(this.rightCutPlanePoints[0]));
-    partRightEl.object3D.localToWorld(rightCutPlanePointsWorld[1].copy(this.rightCutPlanePoints[1]));
-    partRightEl.object3D.localToWorld(rightCutPlanePointsWorld[2].copy(this.rightCutPlanePoints[2]));
+    partRightEl.object3D.localToWorld(
+      rightCutPlanePointsWorld[0].copy(this.rightCutPlanePoints[0]));
+    partRightEl.object3D.localToWorld(
+      rightCutPlanePointsWorld[1].copy(this.rightCutPlanePoints[1]));
+    partRightEl.object3D.localToWorld(
+      rightCutPlanePointsWorld[2].copy(this.rightCutPlanePoints[2]));
 
     partLeftEl.object3D.updateMatrixWorld();
-    partLeftEl.object3D.localToWorld(leftCutPlanePointsWorld[0].copy(this.leftCutPlanePoints[0]));
-    partLeftEl.object3D.localToWorld(leftCutPlanePointsWorld[1].copy(this.leftCutPlanePoints[1]));
-    partLeftEl.object3D.localToWorld(leftCutPlanePointsWorld[2].copy(this.leftCutPlanePoints[2]));
+    partLeftEl.object3D.localToWorld(
+      leftCutPlanePointsWorld[0].copy(this.leftCutPlanePoints[0]));
+    partLeftEl.object3D.localToWorld(
+      leftCutPlanePointsWorld[1].copy(this.leftCutPlanePoints[1]));
+    partLeftEl.object3D.localToWorld(
+      leftCutPlanePointsWorld[2].copy(this.leftCutPlanePoints[2]));
 
-    rightCutPlane.setFromCoplanarPoints(rightCutPlanePointsWorld[0], rightCutPlanePointsWorld[1], rightCutPlanePointsWorld[2]);
-    rightBorderOuterPlane.set(rightCutPlane.normal, rightCutPlane.constant + this.cutThickness);
+    rightCutPlane.setFromCoplanarPoints(
+      rightCutPlanePointsWorld[0], rightCutPlanePointsWorld[1], rightCutPlanePointsWorld[2]);
+    rightBorderOuterPlane.set(rightCutPlane.normal,
+                              rightCutPlane.constant + this.cutThickness);
 
-    leftCutPlane.setFromCoplanarPoints(leftCutPlanePointsWorld[0], leftCutPlanePointsWorld[1], leftCutPlanePointsWorld[2]);
+    leftCutPlane.setFromCoplanarPoints(
+      leftCutPlanePointsWorld[0], leftCutPlanePointsWorld[1], leftCutPlanePointsWorld[2]);
     leftBorderOuterPlane.set(leftCutPlane.normal, leftCutPlane.constant + this.cutThickness);
 
-    rightBorderInnerPlane.setFromCoplanarPoints(rightCutPlanePointsWorld[2], rightCutPlanePointsWorld[1], rightCutPlanePointsWorld[0]);
-    leftBorderInnerPlane.setFromCoplanarPoints(leftCutPlanePointsWorld[2], leftCutPlanePointsWorld[1], leftCutPlanePointsWorld[0]);
+    rightBorderInnerPlane.setFromCoplanarPoints(
+      rightCutPlanePointsWorld[2], rightCutPlanePointsWorld[1], rightCutPlanePointsWorld[0]);
+    leftBorderInnerPlane.setFromCoplanarPoints(
+      leftCutPlanePointsWorld[2], leftCutPlanePointsWorld[1], leftCutPlanePointsWorld[0]);
   },
 
   returnToPool: function (force) {
@@ -408,76 +430,79 @@ AFRAME.registerComponent('beat', {
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 
-  tock: (function () {
+  checkCollisions: function () {
+    if (!this.hitColliderEl.getObject3D('mesh')) { return; }
+
+    const saberEls = this.saberEls;
+    const boundingBox = this.boundingBox.setFromObject(
+      this.hitColliderEl.getObject3D('mesh'));
+    const beatBoundingBox = this.beatBoundingBox.setFromObject(
+      this.blockEl.getObject3D('mesh'));
+
+    for (let i = 0; i < saberEls.length; i++) {
+      let saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
+
+      if (!boundingBox || !saberBoundingBox) { break; }
+
+      if (saberBoundingBox.intersectsBox(boundingBox)) {
+        this.el.emit('beathit', null, true);
+        this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
+        this.destroyBeat(saberEls[i]);
+        break;
+      }
+
+      if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
+        this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
+        this.destroyBeat(saberEls[i]);
+        if (this.data.type === 'dot') {
+          this.el.emit('beathit', null, true);
+        } else {
+          this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
+        }
+        break;
+      }
+    }
+  },
+
+  /**
+   * Destroyed animation.
+   */
+  tockDestroyed: (function () {
     var leftCutNormal = new THREE.Vector3();
     var leftRotation = 0;
     var rightCutNormal = new THREE.Vector3();
     var rightRotation = 0;
     var rotationStep = 2 * Math.PI / 150;
 
-    return function (time, timeDelta) {
-      var beatBoundingBox;
-      var boundingBox;
-      var i;
-      var plane;
-      var saberBoundingBox;
-      var saberEls = this.saberEls;
+    return function (timeDelta) {
+      // Update gravity velocity.
+      this.gravityVelocity = getGravityVelocity(this.gravityVelocity, timeDelta);
+      this.el.object3D.position.y += this.gravityVelocity * (timeDelta / 1000);
 
-      if (!this.destroyed) {
-        if (!this.hitColliderEl.getObject3D('mesh')) { return; }
-        boundingBox = this.boundingBox.setFromObject(this.hitColliderEl.getObject3D('mesh'));
-        beatBoundingBox = this.beatBoundingBox.setFromObject(this.blockEl.getObject3D('mesh'));
-        for (i = 0; i < saberEls.length; i++) {
-          saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
-          if (!boundingBox || !saberBoundingBox) { break; }
-          if (saberBoundingBox.intersectsBox(boundingBox)) {
-            this.el.emit('beathit', null, true);
-            this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
-            this.destroyBeat(saberEls[i]);
-            break;
-          }
-          if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
-            this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
-            this.destroyBeat(saberEls[i]);
-            if (this.data.type === 'dot') {
-              this.el.emit('beathit', null, true);
-            } else {
-              this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
-            }
-            break;
-          }
-        }
+      rightCutNormal.copy(this.rightCutPlane.normal)
+                    .multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+      rightCutNormal.y = 0;  // Y handled by gravity.
+      this.partRightEl.object3D.position.add(rightCutNormal);
+      this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
+      rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
 
-        this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
-        this.backToPool = this.el.object3D.position.z >= 2;
-      } else {
-        // Update gravity velocity.
-        this.gravityVelocity = getGravityVelocity(this.gravityVelocity, timeDelta);
-        this.el.object3D.position.y += this.gravityVelocity * (timeDelta / 1000);
+      leftCutNormal.copy(this.leftCutPlane.normal)
+                   .multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+      leftCutNormal.y = 0;  // Y handled by gravity.
+      this.partLeftEl.object3D.position.add(leftCutNormal);
+      this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
+      leftRotation = leftRotation >= 2 * Math.PI ? 0 : leftRotation + rotationStep;
 
-        rightCutNormal.copy(this.rightCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
-        rightCutNormal.y = 0;  // Y handled by gravity.
-        this.partRightEl.object3D.position.add(rightCutNormal);
-        this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
-        rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
+      this.generateCutClippingPlanes();
 
-        leftCutNormal.copy(this.leftCutPlane.normal).multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
-        leftCutNormal.y = 0;  // Y handled by gravity.
-        this.partLeftEl.object3D.position.add(leftCutNormal);
-        this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
-        leftRotation = leftRotation >= 2 * Math.PI ? 0 : leftRotation + rotationStep;
-
-        this.generateCutClippingPlanes();
-
-        this.returnToPoolTimer -= timeDelta;
-        this.backToPool = this.returnToPoolTimer <= 0;
-      }
-
-      if (this.backToPool && !this.destroyed) { this.missHit(); }
-      this.returnToPool();
+      this.returnToPoolTimer -= timeDelta;
+      this.backToPool = this.returnToPoolTimer <= 0;
     };
   })(),
 
+  /**
+   * Load OBJ from already parsed and loaded OBJ template.
+   */
   setObjModelFromTemplate: (function () {
     const geometries = {};
 
