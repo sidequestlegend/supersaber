@@ -2,7 +2,9 @@
   schema: {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
-    isPaused: {default: false}
+    isPaused: {default: false},
+    strokeDuration: {default: 100},
+    strokeSpeed: {default: 2000}
   },
 
   init: function () {
@@ -41,6 +43,7 @@
   detectStroke: function (delta) {
     var bladeObject
     var distance;
+    var data = this.data;
     this.bladeTipPosition.set(0, 0.4, 0);
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
@@ -50,12 +53,12 @@
       return;
     }
     distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
-    if (distance > 2000) {
+    if (distance > data.strokeSpeed) {
       if (!this.startSwinging) {
         this.startSwinging = true;
         this.swingDuration = 0;
       }
-      if (this.swingDuration > 100) {
+      if (this.swingDuration > data.strokeDuration) {
         this.swinging = true;
       } else {
         this.swingDuration += delta;
