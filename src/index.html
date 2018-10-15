@@ -18,9 +18,10 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
+      bind__overlay="enabled: !isPlaying"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver"
       bind__song-preview-system="challengeId: challenge.id; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
-      bind__overlay="enabled: !isPlaying"
+      bind__stage-colors="isGameOver: isGameOver"
       animation__gameover="property: object3D.background; type: color; to: #750000; startEvents: gameover"
       animation__gameoverfog="property: components.fog.el.object3D.fog.color; type: color; to: #330000; startEvents: gameover; dur: 500; easing: easeInQuad"
       console-shortcuts

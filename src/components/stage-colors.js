@@ -4,7 +4,8 @@ AFRAME.registerComponent('stage-colors', {
   dependencies: ['background', 'fog'],
 
   schema: {
-    color: {default: 'blue', oneOf: ['blue', 'red']}
+    color: {default: 'blue', oneOf: ['blue', 'red']},
+    isGameOver: {default: false}
   },
 
   init: function () {
@@ -54,6 +55,9 @@ AFRAME.registerComponent('stage-colors', {
 
   update: function (oldData) {
     const red = this.data.color === 'red';
+
+    // Let game over animations do the work. Only update when leaving game over state.
+    if (!oldData.isGameOver && this.data.isGameOver) { return; }
 
     // Init or reset.
     this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
