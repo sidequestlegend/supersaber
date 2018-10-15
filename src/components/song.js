@@ -35,7 +35,7 @@ AFRAME.registerComponent('song', {
     var data = this.data;
 
     // Game over, slow down audio, and then stop.
-    if (!oldData.isGameOver && data.isGameOver) {
+    if (!oldData.isGameOver && data.isGameOver && this.source) {
       this.source.playbackRate.setValueAtTime(this.source.playbackRate.value,
                                               this.context.currentTime);
       this.source.playbackRate.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
