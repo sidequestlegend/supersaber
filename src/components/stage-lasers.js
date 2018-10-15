@@ -13,7 +13,7 @@ AFRAME.registerComponent('stage-lasers', {
   },
 
   pulse: function (speed) {
-    this.speed = speed / 3;
+    this.speed = speed / 5;
   },
 
   tick: function (time, delta) {

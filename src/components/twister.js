@@ -12,14 +12,21 @@ AFRAME.registerComponent('twister', {
   init: function () {
     this.currentTwist = 0;
     this.animate = false;
+    this.zoomProgress = 0;
   },
 
   pulse: function (twist) {
     if (!this.data.enabled) { return; }
-    if (twist == 0) { twist = 0.1 + Math.random() * 0.25; }
-    else twist = Math.min(twist, 0.5);
+    if (twist == 0) { twist = 0.05 + Math.random() * 0.15; }
+    else twist = Math.min(twist * 0.5, 0.5);
     twist *= Math.random() < 0.5 ? -1 : 1; // random direction
     this.el.setAttribute('twister', {twist: twist});
+  },
+
+  zoom: function () {
+    if (!this.data.enabled) { return; }
+    this.zoomProgress = 0.01;
+    this.animate = true;
   },
 
   update: function (oldData) {
@@ -65,16 +72,28 @@ AFRAME.registerComponent('twister', {
 
   tick: function (time, delta) {
     if (!this.animate) { return; }
-    if (Math.abs(this.data.twist - this.currentTwist) < 0.001) {
+    delta *= 0.001;
+
+    this.currentTwist += (this.data.twist - this.currentTwist) * delta;
+
+    var child = this.el.object3D.children[0];
+    var zoom = this.zoomProgress ? Math.sin(this.zoomProgress * Math.PI) * 0.4 : 0;
+
+    while (child) {
+      child.rotation.y = this.currentTwist;
+      child.position.y = this.data.positionIncrement + zoom;
+      child = child.children[0];
+    }
+
+    if (this.zoomProgress > 0) {
+      this.zoomProgress += delta;
+      if (this.zoomProgress >= 1) {
+        this.zoomProgress = 0;
+      }
+    }
+    if (Math.abs(this.data.twist - this.currentTwist) < 0.001 && this.zoomProgress == 0){
       this.animate = false;
     }
 
-    this.currentTwist += (this.data.twist - this.currentTwist) * delta * 0.001;
-
-    var child = this.el.object3D.children[0];
-    while (child) {
-      child.rotation.y = this.currentTwist;
-      child = child.children[0];
-    }
   }
 });

@@ -4,6 +4,7 @@ var utils = require('../utils');
  * Load beat data (all the beats and such).
  */
 AFRAME.registerComponent('beat-loader', {
+  dependencies: ['stage-colors'],
   schema: {
     beatAnticipationTime: {default: 2.0},
     beatSpeed: {default: 4.0},
@@ -27,7 +28,14 @@ AFRAME.registerComponent('beat-loader', {
     this.songCurrentTime = undefined;
     this.onKeyDown = this.onKeyDown.bind(this);
 
+    this.stageColors = this.el.components['stage-colors'];
+    this.twister = document.getElementById('twister');
+    this.leftStageLasers = document.getElementById('leftStageLasers');
+    this.rightStageLasers = document.getElementById('rightStageLasers');
+
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
+
+    //this.addDebugControls();
   },
 
   update: function (oldData) {
@@ -223,30 +231,41 @@ AFRAME.registerComponent('beat-loader', {
   },
 
   generateEvent: function (event) {
-    console.log(event);
     switch(event._type) {
-      case 0: // lasers color
-      case 1: // tunnel neon color
-              document.getElementById('tunnelNeon').setAttribute('colorPreset', event._value);
-              document.getElementById('tunnelNeon').emit('pulse');
-      break;
-      case 2: document.getElementById('leftStageLasers').setAttribute('colorPreset', event._value);
-      break;
-      case 3: document.getElementById('rightStageLasers').setAttribute('colorPreset', event._value);
-      break;
+      case 0:
+        this.stageColors.setColor('fog', event._value);
+        this.stageColors.setColor('sky', event._value);
+        this.stageColors.setColor('backglow', event._value);
+        break;
+      case 1:
+        this.stageColors.setColor('tunnelNeon', event._value);
+        break;
+      case 2:
+        this.stageColors.setColor('leftStageLaser0', event._value);
+        this.stageColors.setColor('leftStageLaser1', event._value);
+        this.stageColors.setColor('leftStageLaser2', event._value);
+        break;
+      case 3:
+        this.stageColors.setColor('rightStageLaser0', event._value);
+        this.stageColors.setColor('rightStageLaser1', event._value);
+        this.stageColors.setColor('rightStageLaser2', event._value);
+        break;
       case 4:
-        document.getElementById('floor').emit('pulse');
-        document.getElementById('stageNeon').emit('pulse');
-      break;
+        this.stageColors.setColor('floor', event._value);
+        this.stageColors.setColor('stageNeon', event._value);
+        break;
       case 8:
-      case 9: document.getElementById('twister').components.twister.pulse(event._value);
-      break;
-      case 12: document.getElementById('leftStageLasers').components['stage-lasers'].pulse(event._value);
-      console.log('left laser', event._value);
-      break;
-      case 13: document.getElementById('rightStageLasers').components['stage-lasers'].pulse(event._value);
-      console.log('right laser', event._value);
-      break;
+        this.twister.components.twister.pulse(event._value);
+        break;
+      case 9:
+        this.twister.components.twister.zoom(event._value);
+        break;
+      case 12:
+        this.leftStageLasers.components['stage-lasers'].pulse(event._value);
+        break;
+      case 13:
+        this.rightStageLasers.components['stage-lasers'].pulse(event._value);
+        break;
     }
   },
 
@@ -277,6 +296,56 @@ AFRAME.registerComponent('beat-loader', {
         child.components.wall.returnToPool(true);
       }
     }
+  },
+
+  addDebugControls: function () {
+    var self = this;
+    var currControl = 0;
+    function addControl(i, name, type){
+      var div = document.createElement('div');
+      div.style.position = 'absolute';
+      div.id = 'stagecontrol' + i;
+      div.style.width = '100px';
+      div.style.height = '30px';
+      div.style.top = type === 'element' ? '20px' : '70px';
+      div.style.background = '#000';
+      div.style.color = '#fff';
+      div.style.zIndex = 999999999;
+      div.style.padding = '5px';
+      div.style.font = '14px sans-serif';
+      div.style.textAlign = 'center';
+      div.style.cursor = 'pointer';
+      div.style.left = (20 + i * 120)+'px';
+      div.innerHTML = name;
+      if (type === 'element') {
+        div.addEventListener('click', () => {
+          document.getElementById('stagecontrol' + currControl).style.background = '#000';
+          div.style.background = '#66f';
+          currControl = i;
+        } )
+      } else {
+        div.addEventListener('click', () => { self.generateEvent({_type: currControl, _value: i}) })
+      }
+      document.body.appendChild(div);
+    }
+
+    [ 'sky',
+      'tunnelNeon',
+      'leftStageLasers',
+      'rightStageLasers',
+      'floor'].forEach((id, i) => {addControl(i, id, 'element'); });
+
+    [
+      'off',
+      'blue',
+      'blue',
+      'bluefade',
+      '',
+      'red',
+      'red',
+      'redfade'
+    ].forEach((id, i) => {addControl(i, id, 'value'); });
+;
   }
 });
 

@@ -14,7 +14,7 @@
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
     <a-scene
-      mixin="gameoverAnimation"
+      mixin="gameoverAnimation fogAnimation"
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
@@ -52,6 +52,7 @@
         <a-asset-item id="logobackObj" src="assets/models/logoback.obj"></a-asset-item>
         <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
         <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
+        <a-asset-item id="laserNeonObj" src="assets/models/laserneon.obj"></a-asset-item>
         <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
         <a-asset-item id="mineObj" src="assets/models/mine.obj"></a-asset-item>
         <a-asset-item id="sabercutParticles" src="assets/models/sabercut.json"></a-asset-item>
@@ -76,6 +77,7 @@
         <img id="wrongImg" src="assets/img/wrong.png">
         <img id="missImg" src="assets/img/miss.png">
         <img id="noiseTexture" src="assets/img/noise.png"></img>
+        <img id="neonImg" src="assets/img/neon.png">
         <img id="sparkImg" src="assets/img/spark.png">
 
         <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>

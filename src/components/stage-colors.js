@@ -25,9 +25,27 @@ AFRAME.registerComponent('stage-colors', {
     });
     this.sky = document.getElementById('sky');
     this.backglow = document.getElementById('backglow');
-    this.smoke1 = document.getElementById('smoke1');
-    this.smoke2 = document.getElementById('smoke2');
     this.auxColor = new THREE.Color();
+
+    let $ = function (id) { return document.getElementById(id); };
+
+    this.targets = {};
+    [ 'fog',
+      'sky',
+      'backglow',
+      'tunnelNeon',
+      'leftStageLaser0',
+      'leftStageLaser1',
+      'leftStageLaser2',
+      'rightStageLaser0',
+      'rightStageLaser1',
+      'rightStageLaser2',
+      'floor',
+      'stageNeon'].forEach((id) => {
+        this.targets[id] = id == 'fog' ? this.el.sceneEl : document.getElementById(id);
+      });
+
+    this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
   },
 
   update: function (oldData) {
@@ -46,5 +64,11 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
+  },
+
+  setColor: function (target, code) {
+    var mesh = this.targets[target].getObject3D('mesh');
+    if (mesh) mesh.material.opacity = 1;
+    this.targets[target].emit('color' + this.colorCodes[code], {}, false);
   }
 });
