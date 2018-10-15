@@ -115,7 +115,7 @@
 
   <a-entity
     id="songLoadingIndicator"
-    bind__visible="isSongLoading"
+    bind__visible="isSongFetching"
     geometry="primitive: ring; radiusInner: 0.05; radiusOuter: 0.08"
     material="shader: flat; color: #FAFAFA; opacity: 0.75; side: back"
     position="0 1.4 -2.5"
@@ -125,11 +125,12 @@
   <a-entity
     id="loadingText"
     mixin="textFont"
-    bind__animation__color="enabled: challenge.isLoading || isSongLoading"
-    animation__color="property: components.text.material.uniforms.color.value; type: color; from: #AAF; to: #88D; dir: alternate; loop: true; dur: 2000; easing: easeInOutCubic; enabled: false"
-    text="value: READY, STEADY...; align: center; color: #aaf; wrapCount: 18; width: 2"
+    bind__animation__color="enabled: isSongLoading"
+    bind__text="value: loadingText"
+    animation__color="property: components.text.material.uniforms.color.value; type: color; from: #AAF; to: #88D; dir: alternate; loop: true; dur: 750; easing: easeInOutCubic; enabled: false"
+    text="align: center; color: #aaf; wrapCount: 18; width: 2"
     position="0 1.5 -2.5"
-    bind__visible="challenge.isLoading || isSongLoading"></a-entity>
+    bind__visible="isSongLoading"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 

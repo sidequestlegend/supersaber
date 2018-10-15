@@ -84,6 +84,7 @@ AFRAME.registerComponent('song', {
     const data = this.data;
     return new Promise(resolve => {
       data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
+        // Finished decoding.
         this.source = evt.detail;
         this.source.onended = this.victory;
         resolve(this.source);
@@ -91,6 +92,7 @@ AFRAME.registerComponent('song', {
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
       data.analyserEl.setAttribute('audioanalyser', this.analyserSetter);
       this.audioAnalyser.xhr.addEventListener('progress', evt => {
+        // Finished fetching.
         this.onFetchProgress(evt);
       });
     });
@@ -114,6 +116,7 @@ AFRAME.registerComponent('song', {
   onFetchProgress: function (evt) {
     const progress = evt.loaded / evt.total;
     this.songLoadingIndicator.setAttribute('geometry', 'thetaLength', progress * 360);
+    if (progress >= 1) { this.el.sceneEl.emit('songfetchfinish', null, false); }
   },
 
   onRestart: function () {

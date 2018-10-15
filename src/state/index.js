@@ -34,16 +34,14 @@ AFRAME.registerState({
     },
     damage: 0,
     inVR: false,
-    isGameOver: false,
+    isGameOver: false,  // Game over screen.
     isPaused: false,  // Playing, but paused. Not active during menu.
-    isPlaying: false,  // Not in the menu AND not paused.
-    isSongLoading: false,
-    isVictory: false,
-    keyboardActive: false,
-    menu: {
-      active: true,
-      playButtonText: 'Play'
-    },
+    isPlaying: false,  // Actively playing (slicing beats).
+    isSongFetching: false,  // Fetching stage.
+    isSongLoading: false,  // Either fetching or decoding.
+    isVictory: false,  // Victory screen.
+    keyboardActive: false,  // Whether search is open.
+    menu: {active: true},
     menuDifficulties: [],
     menuSelectedChallenge: {
       author: '',
@@ -227,11 +225,17 @@ AFRAME.registerState({
       computeMenuSelectedChallengeIndex(state);
     },
 
+    songfetchfinish: (state) => {
+      state.isSongFetching = false;
+    },
+
     songloadfinish: (state) => {
+      state.isSongFetching = false;
       state.isSongLoading = false;
     },
 
     songloadstart: (state) => {
+      state.isSongFetching = true;
       state.isSongLoading = true;
     },
 
@@ -263,6 +267,13 @@ AFRAME.registerState({
     const anyMenuOpen = state.menu.active || state.isPaused || state.isVictory || state.isGameOver;
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
+
+    // Song is decoding if it is loading, but not fetching.
+    if (state.isSongLoading) {
+      state.loadingText = state.isSongFetching ? 'Downloading song...' : 'Processing song...';
+    } else {
+      state.loadingText = '';
+    }
 
     state.multiplierText = `${state.score.multiplier}x`;
   }
