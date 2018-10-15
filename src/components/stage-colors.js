@@ -1,3 +1,5 @@
+function $ (id) { return document.getElementById(id); };
+
 AFRAME.registerComponent('stage-colors', {
   dependencies: ['background', 'fog'],
 
@@ -11,8 +13,12 @@ AFRAME.registerComponent('stage-colors', {
     this.defaultRed = new THREE.Color(0xff0000);
     this.defaultBlue = new THREE.Color(0x0000ff);
     this.mineEnvMap = {
-      red: new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg'),
-      blue: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg')
+      red: new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg', () => {
+        this.el.sceneEl.emit('mineredenvmaploaded', null, false);
+      }),
+      blue: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg', () => {
+        this.el.sceneEl.emit('mineblueenvmaploaded', null, false);
+      })
     };
     this.mineColor = {red: new THREE.Color(0x070304), blue: new THREE.Color(0x030407)};
     this.mineEmission = {red: new THREE.Color(0x090707), blue: new THREE.Color(0x070709)};
@@ -27,23 +33,21 @@ AFRAME.registerComponent('stage-colors', {
     this.backglow = document.getElementById('backglow');
     this.auxColor = new THREE.Color();
 
-    let $ = function (id) { return document.getElementById(id); };
-
     this.targets = {};
-    [ 'fog',
-      'sky',
-      'backglow',
-      'tunnelNeon',
-      'leftStageLaser0',
-      'leftStageLaser1',
-      'leftStageLaser2',
-      'rightStageLaser0',
-      'rightStageLaser1',
-      'rightStageLaser2',
-      'floor',
-      'stageNeon'].forEach((id) => {
+    ['fog',
+     'sky',
+     'backglow',
+     'tunnelNeon',
+     'leftStageLaser0',
+     'leftStageLaser1',
+     'leftStageLaser2',
+     'rightStageLaser0',
+     'rightStageLaser1',
+     'rightStageLaser2',
+     'floor',
+     'stageNeon'].forEach(id => {
         this.targets[id] = id == 'fog' ? this.el.sceneEl : document.getElementById(id);
-      });
+     });
 
     this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
   },
@@ -67,8 +71,8 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   setColor: function (target, code) {
-    var mesh = this.targets[target].getObject3D('mesh');
-    if (mesh) mesh.material.opacity = 1;
-    this.targets[target].emit('color' + this.colorCodes[code], {}, false);
+    const mesh = this.targets[target].getObject3D('mesh');
+    if (mesh) { mesh.material.opacity = 1; }
+    this.targets[target].emit('color' + this.colorCodes[code], null, false);
   }
 });

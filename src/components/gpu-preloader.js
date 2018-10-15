@@ -6,11 +6,12 @@ let i = 0;
  */
 AFRAME.registerComponent('gpu-preloader', {
   play: function () {
+    this.preloadMineEnvMaps();
+
     setTimeout(() => {
       this.preloadBeamMap();
       this.preloadBeatEnvMap();
       this.preloadCutParticles();
-      this.preloadMineEnvMaps();
       this.preloadMissMap();
       this.preloadWallMap();
       this.preloadWrongMap();
@@ -42,8 +43,12 @@ AFRAME.registerComponent('gpu-preloader', {
 
   preloadMineEnvMaps: function () {
     const stageColors = this.el.sceneEl.components['stage-colors'];
-    this.preloadTexture(stageColors.mineEnvMap.red);
-    this.preloadTexture(stageColors.mineEnvMap.blue);
+    this.el.sceneEl.addEventListener('mineredenvmaploaded', () => {
+      this.preloadTexture(stageColors.mineEnvMap.red);
+    });
+    this.el.sceneEl.addEventListener('mineblueenvmaploaded', () => {
+      this.preloadTexture(stageColors.mineEnvMap.blue);
+    });
   },
 
   preloadMissMap: function () {
