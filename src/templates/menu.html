@@ -42,18 +42,18 @@
     search-song-name-selected="anchor: 0.5; offset: -0.2"></a-entity>
 
   <a-mixin id="searchPageButton"
-    animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #333; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-    animation__mouseleave="property: components.slice9.material.color; type: color; from: #333; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+    animation__mouseenter="property: components.slice9.material.opacity; from: 0; to: 0.3; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+    animation__mouseleave="property: components.slice9.material.opacity; from: 0.3; to: 0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
     mixin="slice"
     raycaster-target="width: 1; height: 0.32"
-    slice9="width: 0.5; height: 0.08; padding: 0.03"></a-mixin>
+    slice9="width: 0.8; color: #067197; height: 0.130; padding: 0.03; opacity: 0"></a-mixin>
 
   <a-entity
     id="searchPrevPage"
     mixin="searchPageButton"
     bind-toggle__raycastable="search.hasPrev && menu.active"
     raycaster-target="bindToggle: search.hasNext && menu.active; position: 0 0.08 0"
-    position="-0.05 0.65 0.01"
+    position="-0 0.69 0.01"
     proxy-event="event: click; to: a-scene; as: searchprevpage; captureBubbles: true"
     bind__visible="search.hasPrev">
     <a-entity geometry="primitive: plane; width: 0.08; height: 0.08" material="shader: flat; src: #downIconImg; transparent: true" rotation="0 0 180" position="0 0 -0.001"></a-entity>
@@ -62,7 +62,7 @@
     id="searchNextPage"
     mixin="searchPageButton"
     raycaster-target="bindToggle: search.hasNext && menu.active; position: 0 -0.08 0"
-    position="-0.05 -0.634 0.01"
+    position="-0 -0.674 0.01"
     proxy-event="event: click; to: a-scene; as: searchnextpage; captureBubbles: true"
     bind__visible="search.hasNext">
     <a-entity geometry="primitive: plane; width: 0.08; height: 0.08" material="shader: flat; src: #downIconImg; transparent: true" position="0 0 -0.001"></a-entity>
@@ -100,10 +100,10 @@
 {% endraw %}
 
 <!-- Menu container begins here. -->
-<a-entity id="menu" bind__visible="menu.active" position="0 1.6 -2">
+<a-entity id="menu" bind__visible="menu.active" position="0 1.65 -2">
   <a-entity id="menuchallengeunselectground"
       mixin="slice"
-      slice9="width: 2.5; height: 1.4"
+      slice9="width: 2.5; height: 1.55"
       position="0 0 -0.005"
       raycastable></a-entity>
 
