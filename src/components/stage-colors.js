@@ -4,8 +4,7 @@ AFRAME.registerComponent('stage-colors', {
   dependencies: ['background', 'fog'],
 
   schema: {
-    color: {default: 'blue', oneOf: ['blue', 'red']},
-    isGameOver: {default: false}
+    color: {default: 'blue', oneOf: ['blue', 'red']}
   },
 
   init: function () {
@@ -51,13 +50,29 @@ AFRAME.registerComponent('stage-colors', {
      });
 
     this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
+
+    this.el.addEventListener('cleargame', this.resetColors.bind(this));
   },
 
   update: function (oldData) {
-    const red = this.data.color === 'red';
+    this.updateColors(this.data.color);
+  },
 
-    // Let game over animations do the work. Only update when leaving game over state.
-    if (!oldData.isGameOver && this.data.isGameOver) { return; }
+  setColor: function (target, code) {
+    const mesh = this.targets[target].getObject3D('mesh');
+    if (mesh) { mesh.material.opacity = 1; }
+    this.targets[target].emit('color' + this.colorCodes[code], null, false);
+  },
+
+  resetColors: function () {
+    this.updateColors('blue');
+    for (let target in this.targets) {
+      this.targets[target].emit('colorblue', null, false);
+    }
+  },
+
+  updateColors: function (color) {
+    const red = color === 'red';
 
     // Init or reset.
     this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
@@ -72,11 +87,5 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
-  },
-
-  setColor: function (target, code) {
-    const mesh = this.targets[target].getObject3D('mesh');
-    if (mesh) { mesh.material.opacity = 1; }
-    this.targets[target].emit('color' + this.colorCodes[code], null, false);
   }
 });
