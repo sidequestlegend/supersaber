@@ -110,6 +110,27 @@ AFRAME.registerState({
       state.challenge.isLoading = true;
     },
 
+    gamemenuresume: (state) => {
+      state.isPaused = false;
+    },
+
+    gamemenurestart: (state) => {
+      resetScore(state);
+      state.isBeatsPreloaded = false;
+      state.isGameOver = false;
+      state.isPaused = false;
+    },
+
+    gamemenuexit: (state) => {
+      resetScore(state);
+      state.isBeatsPreloaded = false;
+      state.isGameOver = false;
+      state.isPaused = false;
+      state.isVictory = false;
+      state.menu.active = true;
+      state.challenge.id = '';
+    },
+
     keyboardclose: (state) => {
       state.keyboardActive = false;
     },
@@ -151,27 +172,6 @@ AFRAME.registerState({
     pausegame: (state) => {
       if (!state.isPlaying) { return; }
       state.isPaused = true;
-    },
-
-    pausemenuresume: (state) => {
-      state.isPaused = false;
-    },
-
-    pausemenurestart: (state) => {
-      resetScore(state);
-      state.isBeatsPreloaded = false;
-      state.isGameOver = false;
-      state.isPaused = false;
-    },
-
-    pausemenuexit: (state) => {
-      resetScore(state);
-      state.isBeatsPreloaded = false;
-      state.isGameOver = false;
-      state.isPaused = false;
-      state.isVictory = false;
-      state.menu.active = true;
-      state.challenge.id = '';
     },
 
     /**

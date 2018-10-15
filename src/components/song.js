@@ -26,7 +26,7 @@ AFRAME.registerComponent('song', {
     // Base volume.
     this.audioAnalyser.gainNode.gain.value = BASE_VOLUME;
 
-    this.el.addEventListener('pausemenurestart', this.onRestart.bind(this));
+    this.el.addEventListener('gamemenurestart', this.onRestart.bind(this));
     this.el.addEventListener('wallhitstart', this.onWallHitStart.bind(this));
     this.el.addEventListener('wallhitend', this.onWallHitEnd.bind(this));
   },

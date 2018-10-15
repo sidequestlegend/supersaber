@@ -23,7 +23,7 @@
     mixin="dialogButton"
     bind-toggle__raycastable="isPaused"
     position="0 0.35 0"
-    proxy-event="event: click; to: a-scene; as: pausemenuresume"
+    proxy-event="event: click; to: a-scene; as: gamemenuresume"
     bind__visible="!isGameOver">
     <a-entity mixin="dialogButtonText" text="value: RESUME"></a-entity>
   </a-entity>
@@ -32,7 +32,7 @@
     id="restartButton"
     bind-toggle__raycastable="isPaused || isGameOver"
     mixin="dialogButton"
-    proxy-event="event: click; to: a-scene; as: pausemenurestart">
+    proxy-event="event: click; to: a-scene; as: gamemenurestart">
     <a-entity mixin="dialogButtonText" text="value: RESTART SONG"></a-entity>
   </a-entity>
 
@@ -41,7 +41,7 @@
     mixin="dialogButton"
     bind-toggle__raycastable="isPaused || isGameOver || isVictory"
     position="0 -0.35 0"
-    proxy-event="event: click; to: a-scene; as: pausemenuexit">
+    proxy-event="event: click; to: a-scene; as: gamemenuexit">
     <a-entity mixin="dialogButtonText" text="value: EXIT TO MENU"></a-entity>
   </a-entity>
 
