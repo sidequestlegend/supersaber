@@ -35,7 +35,7 @@
   },
 
   tick: function (time, delta) {
-    //if (!this.data.bladeEnabled) { return; }
+    if (!this.data.bladeEnabled) { return; }
     this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
     this.detectStroke(delta);
   },
