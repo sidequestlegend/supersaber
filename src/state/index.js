@@ -311,6 +311,7 @@ function difficultyComparator (a, b) {
 }
 
 function takeDamage (state) {
+  if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   if (!state.isPlaying) { return; }
   state.damage++;
   state.score.combo = 0;
