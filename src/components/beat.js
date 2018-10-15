@@ -428,7 +428,7 @@ AFRAME.registerComponent('beat', {
     if (!this.hitColliderEl.getObject3D('mesh')) { return; }
 
     const saberEls = this.saberEls;
-    const boundingBox = this.boundingBox.setFromObject(
+    const hitBoundingBox = this.beatBoundingBox.setFromObject(
       this.hitColliderEl.getObject3D('mesh'));
     const beatBoundingBox = this.beatBoundingBox.setFromObject(
       this.blockEl.getObject3D('mesh'));
@@ -436,10 +436,14 @@ AFRAME.registerComponent('beat', {
     for (let i = 0; i < saberEls.length; i++) {
       let saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
 
-      if (!boundingBox || !saberBoundingBox) { break; }
+      if (!hitBoundingBox || !saberBoundingBox) { break; }
 
-      if (saberBoundingBox.intersectsBox(boundingBox)) {
-        this.el.emit('beathit', null, true);
+      if (saberBoundingBox.intersectsBox(hitBoundingBox)) {
+        if (saberEls[i].components['saber-controls'].swinging) {
+          this.el.emit('beathit', null, true);
+        } else {
+          this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
+        }
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
         this.destroyBeat(saberEls[i]);
         break;
@@ -448,7 +452,7 @@ AFRAME.registerComponent('beat', {
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
         this.destroyBeat(saberEls[i]);
-        if (this.data.type === 'dot') {
+        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging) {
           this.el.emit('beathit', null, true);
         } else {
           this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);

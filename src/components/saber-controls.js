@@ -1,4 +1,4 @@
-AFRAME.registerComponent('saber-controls', {
+  AFRAME.registerComponent('saber-controls', {
   schema: {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
@@ -11,6 +11,10 @@ AFRAME.registerComponent('saber-controls', {
 
     this.boundingBox = new THREE.Box3();
     this.controllerType = '';
+    this.bladeEl = el.querySelector('.blade');
+    this.bladeTipPosition = new THREE.Vector3();
+    this.swinging = false;
+    this.strokeCount = 0;
 
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
 
@@ -28,9 +32,40 @@ AFRAME.registerComponent('saber-controls', {
     }
   },
 
-  tick: function () {
-    if (!this.data.bladeEnabled) { return; }
+  tick: function (time, delta) {
+    //if (!this.data.bladeEnabled) { return; }
     this.boundingBox.setFromObject(this.bladeEl.getObject3D('mesh'));
+    this.detectStroke(delta);
+  },
+
+  detectStroke: function (delta) {
+    var bladeObject
+    var distance;
+    this.bladeTipPosition.set(0, 0.4, 0);
+    bladeObject = this.el.object3D;
+    bladeObject.parent.updateMatrixWorld();
+    bladeObject.localToWorld(this.bladeTipPosition);
+    if (!this.bladeTipPreviousPosition) {
+      this.bladeTipPreviousPosition = this.bladeTipPosition.clone();
+      return;
+    }
+    distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
+    if (distance > 2000) {
+      if (!this.startSwinging) {
+        this.startSwinging = true;
+        this.swingDuration = 0;
+      }
+      if (this.swingDuration > 100) {
+        this.swinging = true;
+      } else {
+        this.swingDuration += delta;
+      }
+    } else {
+      this.swinging = false;
+      this.startSwinging = false;
+    }
+
+    this.bladeTipPreviousPosition = this.bladeTipPosition.clone();
   },
 
   initSaber: function (evt) {
