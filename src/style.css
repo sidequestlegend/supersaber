@@ -28,11 +28,18 @@ html {
 }
 
 .a-loader-title {
-  color: #ff99b6;
+  animation: loaderTitle 1s infinite alternate;
+  color: #FAFAFA;
   font-family: monospace;
-  font-size: 48px;
+  font-size: 72px;
   font-style: italic;
   font-weight: bold;
-  margin-top: 24px;
+  margin-top: 108px;
   text-transform: uppercase;
+}
+
+@keyframes loaderTitle {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
