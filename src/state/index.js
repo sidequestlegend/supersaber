@@ -259,8 +259,11 @@ AFRAME.registerState({
     state.isPlaying =
       !state.menu.active && !state.isPaused && !state.isVictory && !state.isGameOver &&
       !state.challenge.isLoading && !state.isSongLoading;
-    state.leftRaycasterActive = !state.isPlaying && state.activeHand === 'left' && state.inVR;
-    state.rightRaycasterActive = !state.isPlaying && state.activeHand === 'right' && state.inVR;
+
+    const anyMenuOpen = state.menu.active || state.isPaused || state.isVictory || state.isGameOver;
+    state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
+    state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
+
     state.multiplierText = `${state.score.multiplier}x`;
   }
 });
