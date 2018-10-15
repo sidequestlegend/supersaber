@@ -60,7 +60,7 @@
     position="0 0 -50"
     scale="20 20 20"></a-entity>
 
-  <a-entity id="twister" position="0 0 -60" rotation="90 0 0" bind__twister="enabled: !menu.active"></a-entity>
+  <a-entity id="twister" position="0 0 -60" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
 
   <a-entity
     id="audioColumns"
@@ -87,14 +87,14 @@
   <a-entity id="stageNeon" obj-model="obj:#stageNeonObj" mixin="neonAnimation"></a-entity>
 
   <!-- Lasers left. -->
-  <a-entity bind__stage-lasers="enabled: !menu.active" id="leftStageLasers">
+  <a-entity id="leftStageLasers" bind__stage-lasers="enabled: isPlaying">
     <a-entity id="leftStageLaser0" mixin="stageLaser neonAnimation" position=" -6 2.3 -40"></a-entity>
     <a-entity id="leftStageLaser1" mixin="stageLaser neonAnimation" position="-10 0 -38"></a-entity>
     <a-entity id="leftStageLaser2" mixin="stageLaser neonAnimation" position="-14 -3 -36"></a-entity>
   </a-entity>
 
   <!-- Lasers right. -->
-  <a-entity bind__stage-lasers="enabled: !menu.active" id="rightStageLasers">
+  <a-entity id="rightStageLasers" bind__stage-lasers="enabled: isPlaying">
     <a-entity id="rightStageLaser0" mixin="stageLaser neonAnimation" position=" 6 4 -40"></a-entity>
     <a-entity id="rightStageLaser1" mixin="stageLaser neonAnimation" position="10 2 -38"></a-entity>
     <a-entity id="rightStageLaser2" mixin="stageLaser neonAnimation" position="14 -1.5 -36"></a-entity>
