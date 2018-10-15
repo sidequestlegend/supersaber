@@ -47,7 +47,7 @@
 
 <a-entity
   id="audioAnalyser"
-  bind__audioanalyser="beatDetectionThrottle: menu.active && 5000 || 1000"
+  bind__audioanalyser="beatDetectionThrottle: menuActive && 5000 || 1000"
   audioanalyser="src: #introSong; fftSize: 64; enableBeatDetection: true; enableLevels: false; enableWaveform: false; beatDetectionThrottle: 5000; unique: true"
   proxy-event="event: audioanalyserbeat; to: #logolight"></a-entity>
 
@@ -141,11 +141,11 @@
     logo-light
     animation__rotate="property: object3D.rotation.y; from: 50; to: -50; dur: 300; easing: linear; startEvents: audioanalyserbeat"></a-entity>
 
-  <a-entity id="logosparks" bind__visible="menu.active" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 1000; on: logoflicker; animateScale: true; initialScale: 1.5 1.5 1.5; finalScale: 0.3 0.3 0.3" position="-2.8 5.5 -7.2"></a-entity>
-  <a-entity id="logo" bind__visible="menu.active" position="0 6 -7.5" rotation="90 0 0">
+  <a-entity id="logosparks" bind__visible="menuActive" particleplayer="src: #logoSparks; scale: 1.4; pscale: 0.35; count: 10; dur: 1000; on: logoflicker; animateScale: true; initialScale: 1.5 1.5 1.5; finalScale: 0.3 0.3 0.3" position="-2.8 5.5 -7.2"></a-entity>
+  <a-entity id="logo" bind__visible="menuActive" position="0 6 -7.5" rotation="90 0 0">
     <a-entity id="logoBack" obj-model="obj: #logobackObj" material="color: #001b29"></a-entity>
     <a-entity id="logoFront" obj-model="obj: #logofrontObj"  material="color: #e81e23"></a-entity>
-    <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menu.active"></a-entity>
+    <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menuActive"></a-entity>
   </a-entity>
 
   <a-entity

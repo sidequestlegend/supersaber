@@ -41,7 +41,7 @@ AFRAME.registerState({
     isSongLoading: false,  // Either fetching or decoding.
     isVictory: false,  // Victory screen.
     keyboardActive: false,  // Whether search is open.
-    menu: {active: true},
+    menuActive: true,
     menuDifficulties: [],
     menuSelectedChallenge: {
       author: '',
@@ -127,7 +127,7 @@ AFRAME.registerState({
       state.isGameOver = false;
       state.isPaused = false;
       state.isVictory = false;
-      state.menu.active = true;
+      state.menuActive = true;
       state.challenge.id = '';
     },
 
@@ -185,7 +185,7 @@ AFRAME.registerState({
       Object.assign(state.challenge, state.menuSelectedChallenge);
 
       // Reset menu.
-      state.menu.active = false;
+      state.menuActive = false;
       state.menuSelectedChallenge.id = '';
 
       state.keyboardActive = false;
@@ -261,10 +261,10 @@ AFRAME.registerState({
    */
   computeState: (state) => {
     state.isPlaying =
-      !state.menu.active && !state.isPaused && !state.isVictory && !state.isGameOver &&
+      !state.menuActive && !state.isPaused && !state.isVictory && !state.isGameOver &&
       !state.challenge.isLoading && !state.isSongLoading;
 
-    const anyMenuOpen = state.menu.active || state.isPaused || state.isVictory || state.isGameOver;
+    const anyMenuOpen = state.menuActive || state.isPaused || state.isVictory || state.isGameOver;
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
 

@@ -17,7 +17,7 @@
       mixin="gameoverAnimation fogAnimation"
       bind__beat-loader="challengeId: challenge.id; difficulty: challenge.difficulty; isPlaying: isPlaying"
       bind__gameover="isGameOver: isGameOver"
-      bind__intro-song="isPlaying: menu.active && !menuSelectedChallenge.id"
+      bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id"
       bind__overlay="enabled: !isPlaying"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver"
       bind__song-preview-system="challengeId: challenge.id; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
@@ -176,7 +176,7 @@
             trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
-              bind__visible="menu.active && activeHand === '{{ hand }}'"
+              bind__visible="menuActive && activeHand === '{{ hand }}'"
               cursor-laser="hand: {{ hand }}"
               sub-object="from: #cursorLaser; name: beam"
               material="color: {{ beamColor }}; shader: flat; transparent: true; opacity: 0.04"></a-entity>
@@ -235,7 +235,7 @@
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
                   bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
-                  bind__cursor-mesh="active: menu.active"></a-entity>
+                  bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}
     </a-scene>
     <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
