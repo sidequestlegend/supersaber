@@ -2,7 +2,7 @@
  * Score text fade in animation.
  */
 AFRAME.registerComponent('score-texts', {
-  dependencies: {
+  schema: {
     isSongLoading: {default: false}
   },
 
