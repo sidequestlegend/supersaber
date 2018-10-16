@@ -160,6 +160,8 @@ AFRAME.registerState({
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
       computeMenuSelectedChallengeIndex(state);
+
+      state.keyboardActive = false;
     },
 
     menuchallengeunselect: state => {
