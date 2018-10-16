@@ -154,7 +154,6 @@ AFRAME.registerComponent('debug-controller', {
     secondaryHand.object3D.position.set(-0.2, 1.5, -0.5);
     primaryHand.object3D.position.set(0.2, 1.5, -0.5);
     secondaryHand.setAttribute('rotation', {x: 35, y: 0, z: 0});
-    // primaryHand.object3D.rotation.x = Math.PI / 2;
   },
 
   onMouseMove: (function () {

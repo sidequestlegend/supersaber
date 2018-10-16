@@ -143,7 +143,7 @@
       <!-- Player. -->
       <a-mixin
         id="raycaster"
-        raycaster="objects: [raycastable]; far: 3; showLine: false"
+        raycaster="objects: [raycastable]; far: 3"
         line="opacity: 0.75"></a-mixin>
       <a-mixin
         id="cursorMesh"
@@ -178,14 +178,10 @@
             trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
-              class="laser"
-              bind__visible="menuActive && activeHand === '{{ hand }}'">
-              <a-entity
-                class="laserMesh"
-                cursor-laser="hand: {{ hand }}"
-                sub-object="from: #cursorLaser; name: beam"
-                material="color: {{ beamColor }}; shader: flat; transparent: true; opacity: 0.04"></a-entity>
-            </a-entity>
+              bind__visible="menuActive && activeHand === '{{ hand }}'"
+              cursor-laser="hand: {{ hand }}"
+              sub-object="from: #cursorLaser; name: beam"
+              material="color: {{ beamColor }}; shader: flat; transparent: true; opacity: 0.04"></a-entity>
 
             <a-entity class="saberContainer" rotation="90 0 0">
               <a-entity
@@ -242,12 +238,12 @@
 
       {% if not IS_PRODUCTION %}
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
-                  bind__raycaster="enabled: !inVR"></a-entity>
+                  bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
                   bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}
-    </a-scene>
 
+    </a-scene>
     <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
   </body>
 </html>
