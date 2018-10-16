@@ -16,6 +16,7 @@ AFRAME.registerComponent('cursor-laser', {
 
     this.currentLength = undefined;
     this.originalSize = undefined;
+    this.raycasterEl = el.closest('[mixin~="raycaster"], [raycaster]');
 
     // Calculate size to position beam at tip of controller.
     el.addEventListener('subobjectloaded', () => {
@@ -29,11 +30,12 @@ AFRAME.registerComponent('cursor-laser', {
 
   tick: function () {
     const el = this.el;
+    const raycasterEl = this.raycasterEl;
 
     // Not yet ready.
     if (this.currentLength === undefined) { return; }
 
-    const cursor = el.parentNode.components.cursor;
+    const cursor = raycasterEl.components.cursor;
     if (!cursor) { return; }
 
     // Toggle beam.
@@ -49,7 +51,7 @@ AFRAME.registerComponent('cursor-laser', {
     }
 
     // Set appropriate length of beam on intersection.
-    const intersection = el.parentNode.components.raycaster.intersections[0];
+    const intersection = raycasterEl.components.raycaster.intersections[0];
     const ratio = intersection.distance / this.currentLength;
     el.object3D.scale.x = 1;
     el.object3D.position.z *= ratio;

@@ -44,6 +44,27 @@ AFRAME.registerComponent('saber-controls', {
     this.detectStroke(delta);
   },
 
+  initSaber: function (evt) {
+    this.controllerType = evt.detail.name;
+    const config = this.config[this.controllerType] || {};
+    this.configureRaycaster(config);
+  },
+
+  /**
+   * Rotate laser to match raycaster origin and direction, which are angled down for comfort.
+   */
+  configureRaycaster: function (config) {
+    this.el.setAttribute('cursor', config.cursor);
+    this.el.setAttribute('raycaster', config.raycaster);
+
+    const laser = this.el.querySelector('.laser');
+    laser.object3D.position.copy(config.raycaster.origin);
+    laser.object3D.rotation.x = -Math.atan(
+      Math.abs(config.raycaster.direction.y) /
+      Math.abs(config.raycaster.direction.z)
+    )
+  },
+
   detectStroke: function (delta) {
     var bladeObject
     var distance;
@@ -73,11 +94,6 @@ AFRAME.registerComponent('saber-controls', {
     this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
   },
 
-  initSaber: function (evt) {
-    this.controllerType = evt.detail.name;
-    this.el.setAttribute('cursor', this.config[this.controllerType].cursor || {});
-  },
-
   config: {
     'oculus-touch-controls': {
       cursor: {
@@ -97,6 +113,10 @@ AFRAME.registerComponent('saber-controls', {
           'xbuttonup',
           'ybuttonup'
         ]
+      },
+      raycaster: {
+        direction: new THREE.Vector3(0, -2, -1).normalize(),
+        origin: {x: 0, y: 0, z: -0.1}
       }
     },
 
@@ -104,6 +124,10 @@ AFRAME.registerComponent('saber-controls', {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
         upEvents: ['trackpadup', 'triggerup', 'gripup']
+      },
+      raycaster: {
+        direction: new THREE.Vector3(0, -0.6, -1).normalize(),
+        origin: {x: 0, y: 0, z: -0.1}
       }
     },
 
@@ -111,6 +135,10 @@ AFRAME.registerComponent('saber-controls', {
       cursor: {
         downEvents: ['trackpaddown', 'triggerdown', 'gripdown'],
         upEvents: ['trackpadup', 'triggerup', 'gripup']
+      },
+      raycaster: {
+        direction: new THREE.Vector3(0, -2, -1).normalize(),
+        origin: {x: 0, y: 0, z: -0.1}
       }
     }
   }
