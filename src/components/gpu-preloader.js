@@ -12,6 +12,7 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadBeamMap();
       this.preloadBeatEnvMap();
       this.preloadCutParticles();
+      this.preloadKeyboard();
       this.preloadMissMap();
       this.preloadWallMap();
       this.preloadWrongMap();
@@ -39,6 +40,12 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadCutParticles: function () {
     const particles = document.querySelector('#saberParticles');
     this.preloadTexture(particles.components.particleplayer.material.map);
+  },
+
+  preloadKeyboard: function () {
+    const keyboard = document.getElementById('keyboard')
+    const kbImg = keyboard.components['super-keyboard'].kbImg;
+    this.preloadTexture(kbImg.getObject3D('mesh').material.map);
   },
 
   preloadMineEnvMaps: function () {
@@ -69,6 +76,10 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadTexture: function (texture) {
     if (!texture || !texture.image) {
       console.warn('[gpu-preloader] Error preloading texture', texture);
+      return;
+    }
+    if (!texture.image.complete) {
+      console.warn('[gpu-preloader] Error preloading, image not loaded', texture);
       return;
     }
     this.el.renderer.setTexture2D(texture, i++ % 8);
