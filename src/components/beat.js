@@ -454,7 +454,6 @@ AFRAME.registerComponent('beat', {
       if (!saberBoundingBox) { break; }
 
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
-        debugger;
         if (saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
         } else {
