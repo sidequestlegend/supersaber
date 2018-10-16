@@ -52,11 +52,8 @@ AFRAME.registerComponent('saber-controls', {
     this.bladeTipPosition.set(0, 0.4, 0);
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
+
     bladeObject.localToWorld(this.bladeTipPosition);
-    if (!this.bladeTipPreviousPosition) {
-      this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
-      return;
-    }
     distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
     if (distance > data.strokeSpeed) {
       if (!this.startSwinging) {
