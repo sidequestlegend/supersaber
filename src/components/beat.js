@@ -42,8 +42,16 @@ AFRAME.registerComponent('beat', {
     this.backToPool = false;
     this.gravityVelocity = 0;
     this.returnToPoolTimer = 800;
-    this.rightCutPlanePoints = [];
-    this.leftCutPlanePoints = [];
+    this.rightCutPlanePoints = [
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3()
+    ];
+    this.leftCutPlanePoints = [
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3()
+    ];
 
     this.wrongElLeft = document.getElementById('wrongLeft');
     this.wrongElRight = document.getElementById('wrongRight');
@@ -269,23 +277,21 @@ AFRAME.registerComponent('beat', {
       point3.copy(trailPoints[trailPoints.length - 1].top);
       direction.copy(point1).sub(point3);
 
-      this.partLeftEl.object3D.position.set(0, 0, 0);
-      this.partLeftEl.object3D.rotation.set(0, 0, 0);
-      this.partLeftEl.object3D.updateMatrixWorld();
-
       this.partRightEl.object3D.position.set(0, 0, 0);
       this.partRightEl.object3D.rotation.set(0, 0, 0);
       this.partRightEl.object3D.updateMatrixWorld();
 
-      this.rightCutPlanePoints.length = 0;
-      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point1.clone()));
-      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point2.clone()));
-      this.rightCutPlanePoints.push(this.partRightEl.object3D.worldToLocal(point3.clone()));
+      this.partRightEl.object3D.worldToLocal(this.rightCutPlanePoints[0].copy(point1));
+      this.partRightEl.object3D.worldToLocal(this.rightCutPlanePoints[1].copy(point2));
+      this.partRightEl.object3D.worldToLocal(this.rightCutPlanePoints[2].copy(point3));
 
-      this.leftCutPlanePoints.length = 0;
-      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point3.clone()));
-      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point2.clone()));
-      this.leftCutPlanePoints.push(this.partLeftEl.object3D.worldToLocal(point1.clone()));
+      this.partLeftEl.object3D.position.set(0, 0, 0);
+      this.partLeftEl.object3D.rotation.set(0, 0, 0);
+      this.partLeftEl.object3D.updateMatrixWorld();
+
+      this.partLeftEl.object3D.worldToLocal(this.leftCutPlanePoints[0].copy(point3));
+      this.partLeftEl.object3D.worldToLocal(this.leftCutPlanePoints[1].copy(point2));
+      this.partLeftEl.object3D.worldToLocal(this.leftCutPlanePoints[2].copy(point1));
 
       this.generateCutClippingPlanes();
 
