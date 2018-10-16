@@ -18,6 +18,7 @@ AFRAME.registerComponent('saber-controls', {
     this.controllerType = '';
     this.bladeEl = el.querySelector('.blade');
     this.bladeTipPosition = new THREE.Vector3();
+    this.bladeTipPreviousPosition = new THREE.Vector3();
     this.swinging = false;
     this.strokeCount = 0;
 
