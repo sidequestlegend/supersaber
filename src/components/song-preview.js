@@ -19,24 +19,6 @@ AFRAME.registerComponent('song-preview-system', {
     this.audioStore = {};
     this.preloadedAudioIds = [];
     this.preloadQueue = [];
-
-    this.el.setAttribute('animation__songpreviewfadein', {
-      property: 'components.song-preview-system.audio.volume',
-      dur: 1500,
-      easing: 'linear',
-      from: 0,
-      to: PREVIEW_VOLUME,
-      autoplay: false
-    });
-
-    this.el.setAttribute('animation__songpreviewfadedown', {
-      property: 'components.song-preview-system.audio.volume',
-      dur: 500,
-      easing: 'linear',
-      from: 0.5,
-      to: 0.05,
-      autoplay: false
-    });
   },
 
   update: function (oldData) {
@@ -49,7 +31,7 @@ AFRAME.registerComponent('song-preview-system', {
           this.audio.currentTime < 1) {
         this.stopSong();
       } else {
-        this.el.components['animation__songpreviewfadedown'].beginAnimation();
+        this.fadeDown();
       }
       return;
     }
@@ -124,7 +106,6 @@ AFRAME.registerComponent('song-preview-system', {
     const audio = document.createElement('audio');
     audio.crossOrigin = 'anonymous';
     audio.dataset.previewStartTime = previewStartTime;
-    audio.volume = 0;
     this.audioStore[challengeId] = audio;
 
     let src = utils.getS3FileUrl(challengeId, 'song.ogg');
@@ -176,9 +157,7 @@ AFRAME.registerComponent('song-preview-system', {
 
   stopSong: function () {
     if (!this.audio) { return; }
-    this.el.components['animation__songpreviewfadein'].pauseAnimation();
     if (!this.audio.paused) { this.audio.pause(); }
-    this.audio.volume = PREVIEW_VOLUME;
   },
 
   playSong: function (challengeId) {
@@ -186,11 +165,10 @@ AFRAME.registerComponent('song-preview-system', {
 
     const audioanalyser = this.analyserEl.components.audioanalyser;
     this.audio = this.audioStore[challengeId];
-    this.audio.volume = 0;
     audioanalyser.resumeContext();
     this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.play();
-    this.el.components['animation__songpreviewfadein'].beginAnimation();
+    this.fadeIn();
     this.updateAnalyser();
 
     // Prefetch buffer for playing.
@@ -219,6 +197,18 @@ AFRAME.registerComponent('song-preview-system', {
     }
     if (!index) { return; }
     this.preloadQueue.splice(index, 1);
+  },
+
+  fadeIn: function () {
+    const context = this.analyserEl.components.audioanalyser.context;
+    const gainNode = this.analyserEl.components.audioanalyser.gainNode;
+    gainNode.gain.linearRampToValueAtTime(PREVIEW_VOLUME, context.currentTime + 1.5);
+  },
+
+  fadeDown: function () {
+    const context = this.analyserEl.components.audioanalyser.context;
+    const gainNode = this.analyserEl.components.audioanalyser.gainNode;
+    gainNode.gain.linearRampToValueAtTime(0.05, context.currentTime + 1.5);
   }
 });
 

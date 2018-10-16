@@ -1,5 +1,3 @@
-const VOLUME = 0.5;
-
 AFRAME.registerComponent('intro-song', {
   schema: {
     isPlaying: {default: true}
@@ -9,15 +7,6 @@ AFRAME.registerComponent('intro-song', {
     this.analyserEl = document.getElementById('audioAnalyser');
     this.audio = document.getElementById('introSong');
     this.timeout = null;
-
-    this.el.setAttribute('animation__introsong', {
-      property: 'components.intro-song.audio.volume',
-      dur: 500,
-      easing: 'easeInQuad',
-      from: 0,
-      to: 0.5,
-      autoplay: false
-    });
   },
 
   update: function (oldData) {
@@ -37,13 +26,14 @@ AFRAME.registerComponent('intro-song', {
   },
 
   play: function () {
-    this.audio.volume = VOLUME;
-    this.audio.play();
+    this.fadeInAudio();
   },
 
   fadeInAudio: function () {
-    this.audio.volume = 0;
+    const context = this.analyserEl.components.audioanalyser.context;
+    const gainNode = this.analyserEl.components.audioanalyser.gainNode;
+    gainNode.gain.setValueAtTime(0, context.currentTime);
     this.audio.play();
-    this.el.components['animation__introsong'].beginAnimation();
+    gainNode.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.5);
   }
 });
