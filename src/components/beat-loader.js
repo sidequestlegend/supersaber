@@ -76,7 +76,7 @@ AFRAME.registerComponent('beat-loader', {
           _lineIndex: 2,
           _lineLayer: 1,
           _cutDirection: 1,
-          _type: 3
+          _type: 1
         });
         break;
       default:

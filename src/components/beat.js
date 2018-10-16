@@ -37,7 +37,7 @@ AFRAME.registerComponent('beat', {
 
   init: function () {
     this.beatBoundingBox = new THREE.Box3();
-    this.boundingBox = new THREE.Box3();
+    this.hitBoundingBox = new THREE.Box3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.backToPool = false;
     this.gravityVelocity = 0;
@@ -128,12 +128,17 @@ AFRAME.registerComponent('beat', {
 
   initColliders: function () {
     var data = this.data;
-    var hitColliderConfiguration = {
+    var hitColliderConfiguration;
+    var hitColliderEl;
+
+    if (this.data.type === 'dot') { return; }
+
+    hitColliderConfiguration = {
       position: {x: 0, y: data.size / 2, z: 0},
       size: {width: data.size, height: data.size / 5.0, depth: data.size}
     };
 
-    var hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
+    hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
     hitColliderEl.setAttribute('geometry', {
       primitive: 'box',
       height: hitColliderConfiguration.size.height,
@@ -425,10 +430,8 @@ AFRAME.registerComponent('beat', {
   },
 
   checkCollisions: function () {
-    if (!this.hitColliderEl.getObject3D('mesh')) { return; }
-
     const saberEls = this.saberEls;
-    const hitBoundingBox = this.beatBoundingBox.setFromObject(
+    const hitBoundingBox = this.hitColliderEl && this.hitBoundingBox.setFromObject(
       this.hitColliderEl.getObject3D('mesh'));
     const beatBoundingBox = this.beatBoundingBox.setFromObject(
       this.blockEl.getObject3D('mesh'));
@@ -436,9 +439,9 @@ AFRAME.registerComponent('beat', {
     for (let i = 0; i < saberEls.length; i++) {
       let saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
 
-      if (!hitBoundingBox || !saberBoundingBox) { break; }
+      if (!saberBoundingBox) { break; }
 
-      if (saberBoundingBox.intersectsBox(hitBoundingBox)) {
+      if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
         if (saberEls[i].components['saber-controls'].swinging) {
           this.el.emit('beathit', null, true);
         } else {
