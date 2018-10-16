@@ -56,9 +56,14 @@ AFRAME.registerState({
     },
     multiplierText: '1x',
     score: {
+      accuracy: '',
+      beatsHit: 0,
+      beatsMissed: 0,
       combo: 0,
-      score: 0,
-      multiplier: 1
+      maxCombo: 0,
+      multiplier: 1,
+      rank: '',
+      score: 0
     },
     search: {
       active: true,
@@ -85,16 +90,24 @@ AFRAME.registerState({
       if (state.damage > DAMAGE_DECAY) {
         state.damage -= DAMAGE_DECAY;
       }
-      state.score.score += 1;
-      state.score.combo += 1;
-      state.score.multiplier = state.score.combo >= 8 ? 8 : 2 * Math.floor(Math.log2(state.score.combo));
+      state.score.beatsHit++;
+      state.score.score++;
+      state.score.combo++;
+      if (state.score.combo > state.score.maxCombo) {
+        state.score.maxCombo = state.score.combo;
+      }
+      state.score.multiplier = state.score.combo >= 8
+        ? 8
+        : 2 * Math.floor(Math.log2(state.score.combo));
     },
 
     beatmiss: state => {
+      state.score.beatsMissed++;
       takeDamage(state);
     },
 
     beatwrong: state => {
+      state.score.beatsMissed++;
       takeDamage(state);
     },
 
@@ -252,6 +265,23 @@ AFRAME.registerState({
 
     victory: function (state) {
       state.isVictory = true;
+
+      const accuracy = state.beatsHit / (state.beatsMissed + state.beatsHit);
+      state.score.accuracy = `${(accuracy * 100).toFixed()}%`;
+
+      if (accuracy === 1) {
+        state.rank = 'S';
+      } else if (accuracy >= .90) {
+        state.rank = 'A';
+      } else if (accuracy >= .80) {
+        state.rank = 'B';
+      } else if (accuracy >= .70) {
+        state.rank = 'C';
+      } else if (accuracy >= .60) {
+        state.rank = 'D';
+      } else {
+        state.rank = 'F';
+      }
     },
 
     wallhitstart: function (state) {
@@ -345,7 +375,10 @@ function checkGameOver (state) {
 
 function resetScore (state) {
   state.damage = 0;
+  state.score.beatsHit = 0;
+  state.score.beatsMissed = 0;
   state.score.combo = 0;
+  state.score.maxCombo = 0;
   state.score.score = 0;
   state.score.multiplier = 1;
 }
