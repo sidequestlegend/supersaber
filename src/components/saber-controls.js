@@ -1,4 +1,7 @@
-  AFRAME.registerComponent('saber-controls', {
+/**
+ * Controller, cursor, raycaster.
+ */
+AFRAME.registerComponent('saber-controls', {
   schema: {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
@@ -44,12 +47,13 @@
     var bladeObject
     var distance;
     var data = this.data;
+
     this.bladeTipPosition.set(0, 0.4, 0);
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
     bladeObject.localToWorld(this.bladeTipPosition);
     if (!this.bladeTipPreviousPosition) {
-      this.bladeTipPreviousPosition = this.bladeTipPosition.clone();
+      this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
       return;
     }
     distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
@@ -68,7 +72,7 @@
       this.startSwinging = false;
     }
 
-    this.bladeTipPreviousPosition = this.bladeTipPosition.clone();
+    this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
   },
 
   initSaber: function (evt) {
