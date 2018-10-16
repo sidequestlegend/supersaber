@@ -1,28 +1,37 @@
+<a-mixin
+  id="scoreText"
+  mixin="textFont"
+  text="color: #FEFFC1; letterSpacing: -2; align: center"></a-mixin>
+
 <a-entity
   id="scoreContainer"
+  bind__score-texts="isSongLoading: isSongLoading"
   bind__visible="isPlaying || isPaused">
-  <a-entity position="0 0.01 -1.3">
+
+  <a-entity id="scoreTextContainer" position="0 0.01 -1.3">
     <a-entity
       id="score"
+      mixin="scoreText"
       bind__text="value: score.score"
-      mixin="textFont"
-      text="width: 2; color: #feffc1; letterSpacing: -2; align: center"
+      text="width: 2"
       rotation="-90 0 0">
     </a-entity>
   </a-entity>
+
   <a-entity
     id="combo"
+    mixin="scoreText"
     bind__text="value: score.combo"
-    mixin="textFont"
-    text="width: 1; color: #feffc1; letterSpacing: -2; align: center"
+    text="width: 1"
     position="-1.8 1.2 -4"
     scale="5 5 5">
   </a-entity>
+
   <a-entity
     id="multiplier"
+    mixin="scoreText"
     bind__text="value: multiplierText"
-    mixin="textFont"
-    text="width: 1; color: #feffc1; letterSpacing: -2; align: center"
+    text="width: 1"
     position="1.8 1.2 -4"
     scale="5 5 5">
   </a-entity>
