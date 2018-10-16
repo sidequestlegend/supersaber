@@ -171,6 +171,7 @@
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
+            haptics__beat="eventsFrom: #beatContainer; events: beathit; dur: 80; force: 0.2"
             saber-controls="hand: {{ hand }}"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
