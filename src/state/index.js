@@ -186,6 +186,10 @@ AFRAME.registerState({
       state.menuSelectedChallenge.difficulty = difficulty;
     },
 
+    minehit: state => {
+      takeDamage(state);
+    },
+
     pausegame: (state) => {
       if (!state.isPlaying) { return; }
       state.isPaused = true;
