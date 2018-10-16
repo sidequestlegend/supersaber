@@ -467,7 +467,7 @@ AFRAME.registerComponent('beat', {
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
         this.destroyBeat(saberEls[i]);
-        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging && saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
+        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
         } else {
           this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
