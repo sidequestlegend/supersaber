@@ -133,6 +133,7 @@ AFRAME.registerState({
       state.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
+      state.isSongLoading = true;
     },
 
     gamemenuexit: (state) => {

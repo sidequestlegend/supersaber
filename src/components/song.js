@@ -124,6 +124,7 @@ AFRAME.registerComponent('song', {
     if (this.source) { this.source.disconnect(); }
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
+      this.el.sceneEl.emit('songloadfinish', null, false);
       if (this.data.isBeatsPreloaded) { this.source.start(); }
     }, ONCE);
     this.audioAnalyser.refreshSource();
