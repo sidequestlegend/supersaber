@@ -211,11 +211,12 @@
               </a-entity>
             </a-entity>
 
-            <a-entity class="fakeGlow" rotation="90 0 0" position="0 0.01 0" bind__visible="!isPlaying">
-              <a-entity geometry="primitive: cylinder; height: 0.1831; radius: 0.0055" material="color: {{ beamColor }}; shader: flat; opacity: 0.11"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1832; radius: 0.0065" material="color: {{ beamColor }}; shader: flat; opacity: 0.09"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1833; radius: 0.0075" material="color: {{ beamColor }}; shader: flat; opacity: 0.06"></a-entity>
-              <a-entity geometry="primitive: cylinder; height: 0.1834; radius: 0.0085" material="color: {{ beamColor }}; shader: flat; opacity: 0.04"></a-entity>
+            <a-entity
+              class="fakeGlow"
+              fake-glow="color: {{ beamColor }}"
+              position="0 0.01 0"
+              rotation="90 0 0"
+              bind__visible="!isPlaying">
             </a-entity>
           </a-entity>
 
