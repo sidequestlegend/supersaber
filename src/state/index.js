@@ -87,6 +87,7 @@ AFRAME.registerState({
       }
       state.score.score += 1;
       state.score.combo += 1;
+      state.score.multiplier = state.score.combo >= 8 ? 8 : 2 * Math.floor(Math.log2(state.score.combo));
     },
 
     beatmiss: state => {
@@ -329,6 +330,7 @@ function takeDamage (state) {
   if (!state.isPlaying) { return; }
   state.damage++;
   state.score.combo = 0;
+  state.score.multiplier = 1;
   checkGameOver(state);
 }
 
