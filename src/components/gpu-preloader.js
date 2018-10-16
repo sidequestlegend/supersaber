@@ -1,7 +1,7 @@
 let i = 0;
 
 /**
- * Preload stuff to GPU.
+ * Preload textures to GPU that are not visible from the start..
  * three.js renderer by default will not upload textures from non-visible entities.
  */
 AFRAME.registerComponent('gpu-preloader', {
@@ -14,6 +14,8 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadCutParticles();
       this.preloadKeyboard();
       this.preloadMissMap();
+      this.preloadPlayButton();
+      this.preloadSearchPrevPage();
       this.preloadWallMap();
       this.preloadWrongMap();
     }, 1000);
@@ -61,6 +63,16 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadMissMap: function () {
     const miss = document.querySelector('#missLeft');
     this.preloadTexture(miss.getObject3D('mesh').material.map);
+  },
+
+  preloadPlayButton: function () {
+    const playButton = document.querySelector('#playButton');
+    this.preloadTexture(playButton.getObject3D('mesh').material.map);
+  },
+
+  preloadSearchPrevPage : function () {
+    const prevPage = document.querySelector('#searchPrevPage');
+    this.preloadTexture(prevPage.children[0].getObject3D('mesh').material.map);
   },
 
   preloadWallMap: function () {
