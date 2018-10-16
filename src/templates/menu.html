@@ -100,7 +100,7 @@
 {% endraw %}
 
 <!-- Menu container begins here. -->
-<a-entity id="menu" bind__visible="menuActive" position="0 1.65 -2">
+<a-entity id="menu" bind__visible="menuActive" position="0 1.1 -2">
   <a-entity id="menuchallengeunselectground"
       mixin="slice"
       slice9="width: 2.5; height: 1.55"
@@ -201,7 +201,7 @@
 
 </a-entity>
 
-<a-entity id="searchButton" position="0 0.76 -1.8"
+<a-entity id="searchButton" position="0 0.1 -1.8" rotation="-35 0 0"
   mixin="slice" slice9="src: #slicebtnImg; color: #999; width: 1; left: 70; top: 70; height: 0.2; padding: 0.1"
   animation__mouseenter1="property: slice9.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
   animation__mouseleave1="property: slice9.color; type: color; from: #FFF; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
@@ -217,8 +217,8 @@
   id="keyboard"
   bind__super-keyboard="hand: activeHand === 'left' && '#leftHand' || '#rightHand'; show: keyboardActive"
   super-keyboard="label: Search from over 2500 songs!; labelColor: #FAFAFA; width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false"
-  position="0 0.5 -1"
-  rotation="-40 0 0"
+  position="0 0.15 -1.4"
+  rotation="-35 0 0"
   keyboard-raycastable
   search
   proxy-event__dismiss="event: superkeyboarddismiss; to: a-scene; as: keyboardclose"
