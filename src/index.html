@@ -115,7 +115,6 @@
       <a-entity id="beatObjTemplate" obj-model="obj: #beatObj" visible="false"></a-entity>
       <a-entity id="dotObjTemplate" obj-model="obj: #dotObj" visible="false"></a-entity>
       <a-entity id="mineObjTemplate" obj-model="obj: #mineObj" visible="false"></a-entity>
-
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
       <a-entity id="container">
@@ -143,7 +142,7 @@
       <!-- Player. -->
       <a-mixin
         id="raycaster"
-        raycaster="objects: [raycastable]; far: 3"
+        raycaster="objects: [raycastable]; far: 3; showLine: false"
         line="opacity: 0.75"></a-mixin>
       <a-mixin
         id="cursorMesh"
@@ -180,8 +179,9 @@
               id="{{ hand }}Laser"
               bind__visible="menuActive && activeHand === '{{ hand }}'"
               cursor-laser="hand: {{ hand }}"
-              sub-object="from: #cursorLaser; name: beam"
-              material="color: {{ beamColor }}; shader: flat; transparent: true; opacity: 0.04"></a-entity>
+              geometry="primitive: cylinder; height: 1; radius: 0.005"
+              material="color: {{ beamColor }}; shader: flat"
+              rotation="-90 0 0"></a-entity>
 
             <a-entity class="saberContainer" rotation="90 0 0">
               <a-entity
@@ -238,7 +238,7 @@
 
       {% if not IS_PRODUCTION %}
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
-                  bind__raycaster="enabled: !inVR" raycaster="showLine: false"></a-entity>
+                  bind__raycaster="enabled: !inVR"></a-entity>
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
                   bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}

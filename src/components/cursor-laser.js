@@ -3,11 +3,7 @@
  * Automatically set length on intersection.
  */
 AFRAME.registerComponent('cursor-laser', {
-  dependencies: ['sub-object'],
-
-  schema: {
-    hand: {type: 'string'}
-  },
+  dependencies: ['geometry'],
 
   init: function () {
     const el = this.el;
@@ -18,20 +14,15 @@ AFRAME.registerComponent('cursor-laser', {
     this.originalSize = undefined;
 
     // Calculate size to position beam at tip of controller.
-    el.addEventListener('subobjectloaded', () => {
-      box.setFromObject(el.getObject3D('mesh'));
-      box.getSize(size);
-      el.object3D.position.z -= size.z;
-      this.originalSize = size.z;
-      this.currentLength = size.z;
-    });
+    box.setFromObject(el.getObject3D('mesh'));
+    box.getSize(size);
+    el.object3D.position.z = -0.3;
+    this.originalSize = size.y;
+    this.currentLength = size.y;
   },
 
   tick: function () {
     const el = this.el;
-
-    // Not yet ready.
-    if (this.currentLength === undefined) { return; }
 
     const cursor = el.parentNode.components.cursor;
     if (!cursor) { return; }
@@ -41,19 +32,17 @@ AFRAME.registerComponent('cursor-laser', {
 
     if (!intersectedEl) {
       // Retract the beam if not intersecting.
-      el.object3D.position.z = this.originalSize * -0.35;
-      el.object3D.scale.x = 0.25;
-      el.object3D.scale.z = this.originalSize * 0.35;
-      this.currentLength = this.originalSize * 0.35;
+      el.object3D.position.z = -25;
+      el.object3D.scale.x = 0.75;
+      el.getObject3D('mesh').scale.y = 50;
+      this.currentLength = 1;
       return;
     }
 
     // Set appropriate length of beam on intersection.
     const intersection = el.parentNode.components.raycaster.intersections[0];
-    const ratio = intersection.distance / this.currentLength;
     el.object3D.scale.x = 1;
-    el.object3D.position.z *= ratio;
-    el.object3D.scale.z *= ratio;
-    this.currentLength = el.object3D.scale.z;
+    el.object3D.position.z = (-intersection.distance / 2);
+    el.getObject3D('mesh').scale.y = this.currentLength = intersection.distance;
   }
 });
