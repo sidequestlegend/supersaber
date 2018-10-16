@@ -132,7 +132,7 @@ AFRAME.registerComponent('song', {
   onWallHitStart: function () {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.linearRampToValueAtTime(0.2, this.context.currentTime + 0.1);
-    this.source.detune.linearRampToValueAtTime(-1000, this.context.currentTime + 0.1);
+    this.source.detune.linearRampToValueAtTime(-1200, this.context.currentTime + 0.1);
   },
 
   onWallHitEnd: function () {
