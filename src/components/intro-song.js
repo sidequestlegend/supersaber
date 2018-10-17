@@ -1,6 +1,7 @@
 AFRAME.registerComponent('intro-song', {
   schema: {
-    isPlaying: {default: true}
+    isPlaying: {default: true},
+    isSearching: {default: false}
   },
 
   init: function () {
@@ -13,6 +14,8 @@ AFRAME.registerComponent('intro-song', {
     const audio = this.audio;
 
     if (!this.el.sceneEl.isPlaying) { return; }
+
+    if (!oldData.isSearching && this.data.isSearching) { return; }
 
     // Play.
     if (!oldData.isPlaying && this.data.isPlaying) {

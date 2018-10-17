@@ -9,6 +9,7 @@ AFRAME.registerComponent('song-preview-system', {
   schema: {
     challengeId: {default: ''},
     debug: {default: false},
+    isSearching: {default: false},
     isSongLoading: {default: false},  // Continue to play preview song during loading.
     selectedChallengeId: {type: 'string'}
   },
@@ -37,7 +38,7 @@ AFRAME.registerComponent('song-preview-system', {
     }
 
     // Unselect.
-    if (oldData.selectedChallengeId && !data.selectedChallengeId) {
+    if (oldData.selectedChallengeId && !data.selectedChallengeId && !data.isSearching) {
       this.stopSong();
     }
 
