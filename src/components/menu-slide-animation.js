@@ -5,34 +5,40 @@ AFRAME.registerComponent('menu-slide-animation', {
   },
 
   init: function () {
-    this.isOpen = false;  // Means toleft.
+    this.isLeft = false;  // Means toleft.
   },
 
   update: function (oldData) {
     const data = this.data;
 
-    if (this.isOpen) {
+    if (this.isLeft) {
       // Unselect.
-      if (oldData.menuSelectedChallengeId && !data.menuSelectedChallengeId) { this.closeMenu(); }
+      if (oldData.menuSelectedChallengeId && !data.menuSelectedChallengeId &&
+          !data.isSearching) { this.rightMenu(); }
       // Keyboard close.
-      if (oldData.isSearching && !data.isSearching) { this.closeMenu(); }
+      if (oldData.isSearching && !data.isSearching && !data.menuSelectedChallengeId) {
+        this.rightMenu();
+      }
+      return;
     }
 
-    if (!this.isOpen) {
+    if (!this.isLeft) {
       // Select.
-      if (!oldData.menuSelectedChallengeId && data.menuSelectedChallengeId) { this.openMenu(); }
+      if (!oldData.menuSelectedChallengeId && data.menuSelectedChallengeId) { this.leftMenu(); }
       // Keyboard open.
-      if (!oldData.isSearching && data.isSearching) { this.openMenu(); }
+      if (!oldData.isSearching && data.isSearching) { this.leftMenu(); }
     }
   },
 
-  closeMenu: function () {
+  rightMenu: function () {
+    if (!this.isLeft) { return; }
     this.el.components.animation__menuright.beginAnimation();
-    this.isOpen = false;
+    this.isLeft = false;
   },
 
-  openMenu: function () {
+  leftMenu: function () {
+    if (this.isLeft) { return; }
     this.el.components.animation__menuleft.beginAnimation();
-    this.isOpen = true;
+    this.isLeft = true;
   }
 });
