@@ -29,6 +29,7 @@ AFRAME.registerState({
       image: '',
       isLoading: false,
       isBeatsPreloaded: false,
+      numBeats: 0,
       songName: '',
       songSubName: '',
       songLength: 0
@@ -46,7 +47,6 @@ AFRAME.registerState({
     menuDifficulties: [],
     menuSelectedChallenge: {
       author: '',
-      bpm: 0,
       difficulty: '',
       downloads: '',
       downloadsText: '',
@@ -218,7 +218,6 @@ AFRAME.registerState({
       state.menuSelectedChallenge.id = '';
 
       state.isSearching = false;
-      state.challenge.isLoading = true;
       state.isSongLoading = true;
     },
 

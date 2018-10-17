@@ -8,9 +8,10 @@ AFRAME.registerComponent('beat-loader', {
   schema: {
     beatAnticipationTime: {default: 2.0},
     beatSpeed: {default: 4.0},
-    challengeId: {type: 'string'},
+    challengeId: {type: 'string'},  // If clicked play.
     difficulty: {type: 'string'},
-    isPlaying: {default: false}
+    isPlaying: {default: false},
+    menuSelectedChallengeId: {type: 'string'}  // If menu selected.
   },
 
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
@@ -21,12 +22,14 @@ AFRAME.registerComponent('beat-loader', {
     this.audioAnalyserEl = document.getElementById('audioanalyser');
     this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
+    this.beatDataProcessed = false;
     this.beatContainer = document.getElementById('beatContainer');
     this.beatsTime = undefined;
     this.beatsTimeOffset = undefined;
     this.bpm = undefined;
     this.songCurrentTime = undefined;
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.xhr = null;
 
     this.stageColors = this.el.components['stage-colors'];
     this.twister = document.getElementById('twister');
@@ -35,52 +38,24 @@ AFRAME.registerComponent('beat-loader', {
 
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
 
-    //this.addDebugControls();
+    // this.addDebugControls();
   },
 
   update: function (oldData) {
     const data = this.data;
 
-    if (!data.challengeId || !data.difficulty) { return; }
-
-    if (data.challengeId !== oldData.challengeId ||
-        data.difficulty !== oldData.difficulty) {
-      this.loadBeats();
+    // Start playing.
+    if (!oldData.challengeId && data.challengeId) {
+      this.processBeats();
+      return;
     }
-  },
 
-  /**
-   * XHR.
-   */
-  loadBeats: function () {
-    var el = this.el;
-    var xhr;
+    if (!data.menuSelectedChallengeId || !data.difficulty) { return; }
 
-    // Load beats.
-    let url = utils.getS3FileUrl(this.data.challengeId, `${this.data.difficulty}.json`);
-    xhr = new XMLHttpRequest();
-    el.emit('beatloaderstart');
-    console.log(`Fetching ${url}...`);
-    xhr.open('GET', url);
-    xhr.addEventListener('load', () => {
-      this.handleBeats(JSON.parse(xhr.responseText));
-    });
-    xhr.send();
-  },
-
-  onKeyDown: function (event) {
-    var keyCode = event.keyCode;
-    switch (keyCode) {
-      case 32: // Space
-        this.generateBeat({
-          _lineIndex: 2,
-          _lineLayer: 1,
-          _cutDirection: 1,
-          _type: 1
-        });
-        break;
-      default:
-        break;
+    // Prefetch beats.
+    if (data.menuSelectedChallengeId !== oldData.menuSelectedChallengeId ||
+        data.difficulty !== oldData.difficulty) {
+      this.fetchBeats();
     }
   },
 
@@ -93,29 +68,53 @@ AFRAME.registerComponent('beat-loader', {
   },
 
   /**
+   * XHR. Beat data is prefetched when user selects a menu challenge, and stored away
+   * to be processed later.
+   */
+  fetchBeats: function () {
+    var el = this.el;
+
+    if (this.xhr) { this.xhr.abort(); }
+
+    // Load beats.
+    let url = utils.getS3FileUrl(this.data.menuSelectedChallengeId,
+                                 `${this.data.difficulty}.json`);
+    const xhr = this.xhr = new XMLHttpRequest();
+    el.emit('beatloaderstart');
+    console.log(`[beat-loader] Fetching ${url}...`);
+    xhr.open('GET', url);
+    xhr.addEventListener('load', () => {
+      this.beatData = JSON.parse(xhr.responseText);
+      this.beatDataProcessed = false;
+      this.xhr = null;
+      this.el.sceneEl.emit('beatloaderfinish', null, false);
+    });
+    xhr.send();
+  },
+
+  /**
    * Load the beat data into the game.
    */
-  handleBeats: function (beatData) {
-    this.el.sceneEl.emit('beatloaderfinish', beatData, false);
-
+  processBeats: function () {
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
     this.beatsTime = 0;
-    this.beatData = beatData;
     this.beatData._events.sort(lessThan);
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
     this.bpm = this.beatData._beatsPerMinute;
 
-    // some events have negative time stamp to inicialize the stage
-    var events = this.beatData._events;
+    // Some events have negative time stamp to initialize the stage.
+    const events = this.beatData._events;
     if (events.length && events[0]._time < 0) {
       for (let i = 0; events[i]._time < 0; i++) {
         this.generateEvent(events[i]);
       }
     }
-    console.log('Finished loading challenge data.');
+
+    this.beatDataProcessed = true;
+    console.log('[beat-loader] Finished processing beat data.');
   },
 
   /**
@@ -134,7 +133,8 @@ AFRAME.registerComponent('beat-loader', {
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
     // Re-sync song with beats playback.
-    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.context.currentTime) {
+    if (this.beatsTimeOffset !== undefined &&
+        this.songCurrentTime !== this.el.components.song.context.currentTime) {
       this.songCurrentTime = this.el.components.song.context.currentTime;
       this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
@@ -303,7 +303,8 @@ AFRAME.registerComponent('beat-loader', {
   addDebugControls: function () {
     var self = this;
     var currControl = 0;
-    function addControl(i, name, type){
+
+    function addControl (i, name, type) {
       var div = document.createElement('div');
       div.style.position = 'absolute';
       div.id = 'stagecontrol' + i;
@@ -324,18 +325,22 @@ AFRAME.registerComponent('beat-loader', {
           document.getElementById('stagecontrol' + currControl).style.background = '#000';
           div.style.background = '#66f';
           currControl = i;
-        } )
+        });
       } else {
-        div.addEventListener('click', () => { self.generateEvent({_type: currControl, _value: i}) })
+        div.addEventListener('click', () => {
+          self.generateEvent({_type: currControl, _value: i})
+        })
       }
       document.body.appendChild(div);
     }
 
-    [ 'sky',
+    [
+      'sky',
       'tunnelNeon',
       'leftStageLasers',
       'rightStageLasers',
-      'floor'].forEach((id, i) => {addControl(i, id, 'element'); });
+      'floor'
+    ].forEach((id, i) => { addControl(i, id, 'element'); });
 
     [
       'off',
@@ -346,11 +351,27 @@ AFRAME.registerComponent('beat-loader', {
       'red',
       'red',
       'redfade'
-    ].forEach((id, i) => {addControl(i, id, 'value'); });
-;
+    ].forEach((id, i) => { addControl(i, id, 'value'); });
+  },
+
+  /**
+   * Debug generate beats.
+   */
+  onKeyDown: function (event) {
+    const keyCode = event.keyCode;
+    switch (keyCode) {
+      case 32:  // Space.
+        this.generateBeat({
+          _lineIndex: 2,
+          _lineLayer: 1,
+          _cutDirection: 1,
+          _type: 1
+        });
+        break;
+      default:
+        break;
+    }
   }
 });
 
-function lessThan (a, b) {
-  return a._time - b._time;
-}
+function lessThan (a, b) { return a._time - b._time; }
