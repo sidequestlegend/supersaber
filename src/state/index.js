@@ -22,13 +22,13 @@ const DAMAGE_MAX = 10;
 AFRAME.registerState({
   initialState: {
     activeHand: localStorage.getItem('hand') || 'right',
-    challenge: {
+    challenge: {  // Actively playing challenge.
       author: '',
       difficulty: '',
-      id: AFRAME.utils.getUrlParameter('challenge'),
+      id: AFRAME.utils.getUrlParameter('challenge'),  // Will be empty string if not playing.
       image: '',
       isLoading: false,
-      isBeatsPreloaded: false,
+      isBeatsPreloaded: false,  // Whether we have passed the negative time.
       songName: '',
       songLength: 0,
       songSubName: ''
@@ -42,9 +42,9 @@ AFRAME.registerState({
     isSongFetching: false,  // Fetching stage.
     isSongLoading: false,  // Either fetching or decoding.
     isVictory: false,  // Victory screen.
-    menuActive: true,
-    menuDifficulties: [],
-    menuSelectedChallenge: {
+    menuActive: true,  // Main menu active.
+    menuDifficulties: [],  // List of strings of available difficulties for selected.
+    menuSelectedChallenge: {  // Currently selected challenge in the main menu.
       author: '',
       difficulty: '',
       downloads: '',
@@ -58,7 +58,6 @@ AFRAME.registerState({
       songName: '',
       songSubName: ''
     },
-    multiplierText: '1x',
     score: {
       accuracy: '',
       beatsHit: 0,
@@ -67,7 +66,7 @@ AFRAME.registerState({
       maxCombo: 0,
       maxComboText: 0,
       multiplier: 1,
-      rank: '',
+      rank: '',  // Grade (S to F).
       score: 0,
       scoreText: 0
     },
@@ -77,8 +76,8 @@ AFRAME.registerState({
       hasNext: false,
       hasPrev: false,
       results: [],
-      songNameTexts: '',
-      songSubNameTexts: ''
+      songNameTexts: '',  // All names in search results merged together.
+      songSubNameTexts: ''  // All sub names in search results merged together.
     },
     searchResultsPage: []
   },
@@ -360,7 +359,8 @@ AFRAME.registerState({
       !state.menuActive && !state.isPaused && !state.isVictory && !state.isGameOver &&
       !state.challenge.isLoading && !state.isSongLoading;
 
-    const anyMenuOpen = state.menuActive || state.isPaused || state.isVictory || state.isGameOver;
+    const anyMenuOpen = state.menuActive || state.isPaused || state.isVictory ||
+                        state.isGameOver;
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
 
@@ -370,8 +370,6 @@ AFRAME.registerState({
     } else {
       state.loadingText = '';
     }
-
-    state.multiplierText = `${state.score.multiplier}x`;
   }
 });
 
