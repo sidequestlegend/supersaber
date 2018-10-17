@@ -35,14 +35,8 @@ AFRAME.registerComponent('song', {
     var data = this.data;
 
     // Game over, slow down audio, and then stop.
-    if (!oldData.isGameOver && data.isGameOver && this.source) {
-      this.source.playbackRate.setValueAtTime(this.source.playbackRate.value,
-                                              this.context.currentTime);
-      this.source.playbackRate.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
-      this.audioAnalyser.gainNode.gain.setValueAtTime(this.audioAnalyser.gainNode.gain.value,
-                                                      this.context.currentTime);
-      this.audioAnalyser.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
-      setTimeout(() => { this.stopAudio(); }, 3500);
+    if (!oldData.isGameOver && data.isGameOver) {
+      this.onGameOver();
       return;
     }
 
@@ -52,7 +46,7 @@ AFRAME.registerComponent('song', {
 
     // New challenge, play if we have loaded and were waiting for beats to preload.
     if (!oldData.isBeatsPreloaded && this.data.isBeatsPreloaded && this.source) {
-      this.source.start();
+      this.startAudio();
     }
 
     if (oldData.challengeId && !data.challengeId) {
@@ -65,7 +59,7 @@ AFRAME.registerComponent('song', {
       this.el.sceneEl.emit('songloadstart', null, false);
       this.getAudio().then(source => {
         this.el.sceneEl.emit('songloadfinish', null, false);
-        if (this.data.isBeatsPreloaded) { source.start(); }
+        if (this.data.isBeatsPreloaded) { this.startAudio(); }
       }).catch(console.error);
     }
 
@@ -119,13 +113,26 @@ AFRAME.registerComponent('song', {
     if (progress >= 1) { this.el.sceneEl.emit('songfetchfinish', null, false); }
   },
 
+  onGameOver: function () {
+    this.source.playbackRate.setValueAtTime(this.source.playbackRate.value,
+                                            this.context.currentTime);
+    this.source.playbackRate.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
+    this.audioAnalyser.gainNode.gain.setValueAtTime(this.audioAnalyser.gainNode.gain.value,
+                                                    this.context.currentTime);
+    this.audioAnalyser.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
+    setTimeout(() => {
+      if (!this.data.isGameOver) { return; }
+      this.stopAudio();
+    }, 3500);
+  },
+
   onRestart: function () {
     // Restart, get new buffer source node and play.
     if (this.source) { this.source.disconnect(); }
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
       this.el.sceneEl.emit('songloadfinish', null, false);
-      if (this.data.isBeatsPreloaded) { this.source.start(); }
+      if (this.data.isBeatsPreloaded) { this.startAudio(); }
     }, ONCE);
     this.audioAnalyser.refreshSource();
   },
@@ -140,5 +147,10 @@ AFRAME.registerComponent('song', {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.linearRampToValueAtTime(BASE_VOLUME, this.context.currentTime + 0.2);
     this.source.detune.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
+  },
+
+  startAudio: function () {
+    this.audioAnalyser.gainNode.gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
+    this.source.start();
   }
 });

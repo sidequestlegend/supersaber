@@ -176,7 +176,7 @@
             <a-entity
               id="{{ hand }}Laser"
               bind__visible="menuActive && activeHand === '{{ hand }}'"
-              cursor-laser="hand: {{ hand }}"
+              cursor-laser
               geometry="primitive: cylinder; height: 1; radius: 0.005"
               material="color: {{ beamColor }}; shader: flat"
               rotation="-90 0 0"></a-entity>
