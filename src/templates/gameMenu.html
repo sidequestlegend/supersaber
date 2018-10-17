@@ -37,9 +37,8 @@
 
   <a-entity
     id="restartButton"
-    bind-toggle__raycastable="isPaused || isGameOver"
-    bind__visible="isPaused || isGameOver"
     mixin="gameMenuButton"
+    bind-toggle__raycastable="isPaused || isGameOver || isVictory"
     proxy-event="event: click; to: a-scene; as: gamemenurestart">
     <a-entity mixin="gameMenuButtonText" text="value: RESTART SONG"></a-entity>
   </a-entity>
@@ -48,7 +47,6 @@
     id="exitButton"
     mixin="gameMenuButton"
     bind-toggle__raycastable="isPaused || isGameOver || isVictory"
-    bind__visible="isPaused || isGameOver || isVictory"
     position="0 -0.35 0"
     proxy-event="event: click; to: a-scene; as: gamemenuexit">
     <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
