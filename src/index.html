@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Super Saber</title>
+    <meta name="description" content="Beat Saber on the VR Web with searchable and playable community songs from Beat Saver.">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
     {% if IS_PRODUCTION %}
       <script src="vendor/aframe-master.min.js"></script>
@@ -42,72 +43,9 @@
       stage-colors="color: blue"
       fog="color: #a00; density: 0.035; type: exponential"
       vr-mode-ui="enterVRButton: #vrButton">
+
       <a-assets timeout="10000">
-        <a-asset-item id="arrowObj" src="assets/models/arrow.obj"></a-asset-item>
-        <a-asset-item id="backglowObj" src="assets/models/backglow.obj"></a-asset-item>
-        <a-asset-item id="beatObj" src="assets/models/beat.obj"></a-asset-item>
-        <a-asset-item id="dotObj" src="assets/models/dot.obj"></a-asset-item>
-        <a-asset-item id="logofrontObj" src="assets/models/logofront.obj"></a-asset-item>
-        <a-asset-item id="logobackObj" src="assets/models/logoback.obj"></a-asset-item>
-        <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
-        <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
-        <a-asset-item id="laserNeonObj" src="assets/models/laserneon.obj"></a-asset-item>
-        <a-asset-item id="logoSparks" src="assets/models/logosparks.json"></a-asset-item>
-        <a-asset-item id="mineObj" src="assets/models/mine.obj"></a-asset-item>
-        <a-asset-item id="sabercutParticles" src="assets/models/sabercut.json"></a-asset-item>
-        <a-asset-item id="stageNeonObj" src="assets/models/neons.obj"></a-asset-item>
-        <a-asset-item id="tunnelObj" src="assets/models/tunnel.obj"></a-asset-item>
-        <a-asset-item id="tunnelNeonObj" src="assets/models/tunnelneon.obj"></a-asset-item>
-
-        <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
-
-        <img id="backglowTexture" src="assets/img/stage/backglow.png">
-        <img id="cursorMeshImg" src="assets/models/laser/laser.png">
-        <img id="downIconImg" src="assets/img/downIcon.png">
-        <img id="envmapTexture" src="assets/img/envMap.png">
-        <img id="floorImg" src="assets/img/stage/floor.png">
-        <img id="gridImg" src="assets/img/grid.png">
-        <img id="playImg" src="assets/img/play.png">
-        <img id="skyTexture" src="assets/img/stage/sky.jpg">
-        <img id="sliceImg" src="assets/img/slice.png">
-        <img id="slicebtnImg" src="assets/img/slicebtn.png">
-        <img id="smokeTexture" src="assets/img/stage/smoke.png">
-        <img id="beamImg" src="assets/img/beam.png">
-        <img id="wrongImg" src="assets/img/wrong.png">
-        <img id="missImg" src="assets/img/miss.png">
-        <img id="noiseTexture" src="assets/img/noise.png">
-        <img id="neonImg" src="assets/img/neon.png">
-        <img id="sparkImg" src="assets/img/spark.png">
-        <img id="stepbackImg" src="assets/img/stepback.png">
-
-        <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
-        <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
-        <a-mixin id="textFont" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
-
-        <a-mixin id="beat" visible="false"></a-mixin>
-        <a-mixin id="beatBlock" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover"></a-mixin>
-        <a-mixin id="beatSign" mixin="gameoverAnimation" animation__gameover="property: components.material.material.opacity; from: 1; to: 0; startEvents: gameover"></a-mixin>
-        <a-mixin id="arrowBlueBeat" mixin="beat" beat="color: blue; type: arrow"></a-mixin>
-        <a-mixin id="arrowRedBeat" mixin="beat" beat="color: red; type: arrow"></a-mixin>
-        <a-mixin id="dotBlueBeat" mixin="beat" beat="color: blue; type: dot"></a-mixin>
-        <a-mixin id="dotRedBeat" mixin="beat" beat="color: red; type: dot"></a-mixin>
-        <a-mixin id="gameoverAnimation" animation__gameover="dur: 1000; easing: easeOutQuad"></a-mixin>
-        <a-mixin id="mine" mixin="beat" beat="type: mine"></a-mixin>
-        <a-mixin id="wall" geometry wall material="shader: wall-shader; tex: #noiseTexture; repeat: 2 2; transparent: true; side: double">
-
-        <a-mixin id="beatWrong"
-          geometry="primitive: plane; height: 0.3; width: 0.3"
-          material="shader: flat; transparent: true; src: #wrongImg"
-          visible="false"
-          animation__posz="property: object3D.position.z; to: -8; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"
-          animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"></a-mixin>
-
-        <a-mixin id="beatMiss"
-          geometry="primitive: plane; height: 0.25; width: 0.5"
-          material="shader: flat; transparent: true; src: #missImg"
-          visible="false"
-          animation__posz="property: object3D.position.z; to: -8; startEvents: beatmiss; easing: easeOutQuart; dur: 4000"
-          animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatmiss; easing: easeOutQuart; dur: 4000"></a-mixin>
+        {% include './assets.html' %}
       </a-assets>
 
       <a-entity id="arrowObjTemplate" obj-model="obj: #arrowObj" visible="false"></a-entity>
@@ -137,7 +75,9 @@
         <a-entity id="missRight" mixin='beatMiss'></a-entity>
       </a-entity>
 
-      <a-entity id="saberParticles" particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"> </a-entity>
+      <a-entity
+        id="saberParticles"
+        particleplayer="src: #sabercutParticles; pscale: 0.5; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"></a-entity>
 
       <!-- Player. -->
       <a-mixin
@@ -234,7 +174,11 @@
         {{ saber('right', 'left', '#78AAFF', 'cyan') }}
       </a-entity>
 
-      <a-entity id="stepback" geometry="primitive: plane; width: 0.5; height: 0.25;" position="0 1.6 -1.55" material="shader: flat; src: #stepbackImg; transparent: true; opacity: 0;"></a-entity>
+      <a-entity
+        id="stepback"
+        geometry="primitive: plane; width: 0.5; height: 0.25;"
+        position="0 1.6 -1.55"
+        material="shader: flat; src: #stepbackImg; transparent: true; opacity: 0"></a-entity>
 
       {% if not IS_PRODUCTION %}
         <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
@@ -242,8 +186,8 @@
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
                   bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}
-
     </a-scene>
+
     <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
   </body>
 </html>
