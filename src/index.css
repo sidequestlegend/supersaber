@@ -29,17 +29,19 @@ html {
 
 .a-loader-title {
   animation: loaderTitle 1s infinite alternate;
-  color: #FAFAFA;
-  font-family: monospace;
-  font-size: 72px;
-  font-style: italic;
-  font-weight: bold;
-  margin-top: 108px;
-  text-transform: uppercase;
+  color: rgba(0,0,0,0);
+  background: none;
+  background-image: url('../assets/img/loadingLogo.png');
+  height: 21.2vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 6vh;
+  background-size: contain;
+  margin-left: -4vh;
 }
 
 @keyframes loaderTitle {
   0% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.8; }
   100% { opacity: 1; }
 }
