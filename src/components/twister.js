@@ -3,10 +3,10 @@ AFRAME.registerComponent('twister', {
     enabled: {default: false},
     twist: {default: 0},
     vertices: {default: 4, type: 'int'},
-    count: {default: 20, type: 'int'},
-    positionIncrement: {default: 2},
-    radiusIncrement: {default: 0.5},
-    thickness: {default: 0.4}
+    count: {default: 12, type: 'int'},
+    positionIncrement: {default: 1.4},
+    radiusIncrement: {default: 0.40},
+    thickness: {default: 0.37}
   },
 
   init: function () {
@@ -17,8 +17,8 @@ AFRAME.registerComponent('twister', {
 
   pulse: function (twist) {
     if (!this.data.enabled) { return; }
-    if (twist == 0) { twist = 0.05 + Math.random() * 0.15; }
-    else twist = Math.min(twist * 0.5, 0.5);
+    if (twist == 0) { twist = 0.03 + Math.random() * 0.25; }
+    else twist = Math.min(twist * 0.4, 0.4);
     twist *= Math.random() < 0.5 ? -1 : 1; // random direction
     this.el.setAttribute('twister', {twist: twist});
   },
@@ -30,7 +30,7 @@ AFRAME.registerComponent('twister', {
   },
 
   update: function (oldData) {
-    var radius = 4;
+    var radius = 6;
     var segment;
     var lastSegment;
 

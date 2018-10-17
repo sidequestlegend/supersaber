@@ -13,21 +13,21 @@ AFRAME.registerComponent('stage-lasers', {
   },
 
   pulse: function (speed) {
-    this.speed = speed / 5;
+    this.speed = speed / 8;
   },
 
   tick: function (time, delta) {
     if (this.speed === 0) { return; }
     delta /= 1000;
     if (!this.data.enabled) {
-      this.speed *= 0.96;
+      this.speed *= 0.97;
       if (Math.abs(this.speed) < 0.01) {
         this.speed = 0;
         return;
       }
     }
     this.lasers[0].rotation.z += this.speed * delta;
-    this.lasers[1].rotation.z -= this.speed * delta * 1.04;
-    this.lasers[2].rotation.z += this.speed * delta * 1.1;
+    this.lasers[1].rotation.z -= this.speed * delta * 1.01;
+    this.lasers[2].rotation.z += this.speed * delta * 1.02;
   }
 })

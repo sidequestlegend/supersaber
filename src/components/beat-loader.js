@@ -258,7 +258,8 @@ AFRAME.registerComponent('beat-loader', {
         this.twister.components.twister.pulse(event._value);
         break;
       case 9:
-        this.twister.components.twister.zoom(event._value);
+        // zoom was a bit disturbing
+        this.twister.components.twister.pulse(event._value);
         break;
       case 12:
         this.leftStageLasers.components['stage-lasers'].pulse(event._value);
