@@ -30,7 +30,8 @@ AFRAME.registerState({
       isLoading: false,
       isBeatsPreloaded: false,
       songName: '',
-      songSubName: ''
+      songSubName: '',
+      songLength: 0
     },
     damage: 0,
     inVR: false,
@@ -45,6 +46,7 @@ AFRAME.registerState({
     menuDifficulties: [],
     menuSelectedChallenge: {
       author: '',
+      bpm: 0,
       difficulty: '',
       downloads: '',
       downloadsText: '',
@@ -52,6 +54,7 @@ AFRAME.registerState({
       index: -1,
       image: '',
       songName: '',
+      songLength: 0,
       songSubName: ''
     },
     multiplierText: '1x',
@@ -111,7 +114,7 @@ AFRAME.registerState({
       takeDamage(state);
     },
 
-    beatloaderfinish: (state) => {
+    beatloaderfinish: (state, payload) => {
       state.challenge.isLoading = false;
     },
 
@@ -185,6 +188,10 @@ AFRAME.registerState({
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
+    },
+
+    menuselectedchallengesonglength: (state, seconds) => {
+      state.menuSelectedChallenge.songLength = seconds;
     },
 
     minehit: state => {

@@ -177,6 +177,8 @@ AFRAME.registerComponent('song-preview-system', {
     this.fadeIn();
     this.updateAnalyser();
 
+    this.el.sceneEl.emit('menuselectedchallengesonglength', this.audio.duration, false);
+
     // Prefetch buffer for playing.
     if (audioanalyser.xhr) { audioanalyser.xhr.abort(); }
     audioanalyser.fetchAudioBuffer(utils.getS3FileUrl(challengeId, 'song.ogg'));

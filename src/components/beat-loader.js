@@ -97,6 +97,7 @@ AFRAME.registerComponent('beat-loader', {
    */
   handleBeats: function (beatData) {
     this.el.sceneEl.emit('beatloaderfinish', beatData, false);
+
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
     this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
