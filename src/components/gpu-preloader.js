@@ -45,9 +45,9 @@ AFRAME.registerComponent('gpu-preloader', {
   },
 
   preloadKeyboard: function () {
-    const keyboard = document.getElementById('keyboard')
-    const kbImg = keyboard.components['super-keyboard'].kbImg;
-    this.preloadTexture(kbImg.getObject3D('mesh').material.map);
+    const keyboard = document.getElementById('keyboard').components['super-keyboard'];
+    this.preloadTexture(keyboard.kbImg.getObject3D('mesh').material.map);
+    this.preloadTexture(keyboard.keyColorPlane.getObject3D('mesh').material.map);
   },
 
   preloadMineEnvMaps: function () {

@@ -13,7 +13,6 @@ require('aframe-orbit-controls');
 require('aframe-proxy-event-component');
 require('aframe-state-component');
 require('aframe-slice9-component');
-require('aframe-super-keyboard');
 require('aframe-thumb-controls-component');
 
 requireAll(require.context('./components/', true, /\.js$/));

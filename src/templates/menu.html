@@ -231,7 +231,7 @@
 <a-entity
   id="keyboard"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
-  super-keyboard="label: Search from over 2500 songs!; labelColor: #FAFAFA; width: 1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; injectToRaycasterObjects: false"
+  super-keyboard="label: Search from over 2500 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false"
   position="0.6 1.1 -1.999"
   keyboard-raycastable
   search
