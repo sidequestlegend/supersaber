@@ -29,10 +29,9 @@ AFRAME.registerState({
       image: '',
       isLoading: false,
       isBeatsPreloaded: false,
-      numBeats: 0,
       songName: '',
-      songSubName: '',
-      songLength: 0
+      songLength: 0,
+      songSubName: ''
     },
     damage: 0,
     inVR: false,
@@ -53,8 +52,10 @@ AFRAME.registerState({
       id: '',
       index: -1,
       image: '',
+      numBeats: undefined,
+      songInfoText: '',
+      songLength: undefined,
       songName: '',
-      songLength: 0,
       songSubName: ''
     },
     multiplierText: '1x',
@@ -116,6 +117,8 @@ AFRAME.registerState({
 
     beatloaderfinish: (state, payload) => {
       state.challenge.isLoading = false;
+      state.menuSelectedChallenge.numBeats = payload.numBeats;
+      computeMenuSelectedChallengeInfoText(state);
     },
 
     beatloaderpreloadfinish: (state) => {
@@ -125,6 +128,9 @@ AFRAME.registerState({
     beatloaderstart: (state) => {
       state.challenge.isBeatsPreloaded = false;
       state.challenge.isLoading = true;
+      state.menuSelectedChallenge.songInfoText = '';
+      state.menuSelectedChallenge.numBeats = undefined;
+      state.menuSelectedChallenge.songLength = undefined;
     },
 
     gamemenuresume: (state) => {
@@ -172,6 +178,7 @@ AFRAME.registerState({
         state.menuDifficulties.unshift(challengeData.difficulties[i]);
       }
       state.menuDifficulties.sort(difficultyComparator);
+
       // Default to easiest difficulty.
       state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
 
@@ -192,6 +199,7 @@ AFRAME.registerState({
 
     menuselectedchallengesonglength: (state, seconds) => {
       state.menuSelectedChallenge.songLength = seconds;
+      computeMenuSelectedChallengeInfoText(state);
     },
 
     minehit: state => {
@@ -403,4 +411,18 @@ function computeMenuSelectedChallengeIndex (state) {
       break;
     }
   }
+}
+
+function computeMenuSelectedChallengeInfoText (state) {
+  const numBeats = state.menuSelectedChallenge.numBeats;
+  const songLength = state.menuSelectedChallenge.songLength;
+  if (!numBeats || !songLength) { return; }
+  state.menuSelectedChallenge.songInfoText =
+    `${formatSongLength(songLength)} / ${numBeats} beats`;
+}
+
+function formatSongLength (songLength) {
+  songLength /= 60;
+  const minutes = `${Math.floor(songLength)}`;
+  return `${minutes}:${Math.round((songLength - minutes) * 60)}`;
 }

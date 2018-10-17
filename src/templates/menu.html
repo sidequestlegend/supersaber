@@ -177,22 +177,44 @@
       geometry="primitive: plane; height: 0.3; width: 0.3"
       material="shader: flat"
       position="0 0.382 0"></a-entity>
+
     <a-entity id="menuSelectedChallengeInfo">
-      <a-entity class="menuSelectedChallengeSongAuthor" position="0 0.058 0"
-        mixin="textFont" text="wrapCount: 40; align: center; color: #FF185B" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
-      <a-entity class="menuSelectedChallengeSongName" position="0 -0.031 0"
-        mixin="textFont" text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+      <a-entity
+        id="menuSelectedChallengeSongAuthor"
+        position="0 0.058 0"
+        mixin="textFont"
+        text="wrapCount: 40; align: center; color: #FF185B"
+        bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+      <a-entity
+        id="menuSelectedChallengeSongName"
+        position="0 -0.031 0"
+        mixin="textFont"
+        text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
-      <a-entity class="menuSelectedChallengeAuthor" position="0 -0.257 0"
-        mixin="textFont" text="align: center; color: #FFF; wrapCount: 33; width: 0.78; baseline: bottom" bind__text="value: menuSelectedChallenge.author"></a-entity>
-      <a-entity class="menuSelectedChallengeDownloads" position="0 -0.325 0"
-        mixin="textFont" text="align: center; color: #FFF; wrapCount: 35" bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
+      <a-entity
+        id="menuSelectedChallengeAuthor"
+        position="0 -0.257 0"
+        mixin="textFont"
+        text="align: center; color: #FFF; wrapCount: 33; width: 0.78; baseline: bottom"
+        bind__text="value: menuSelectedChallenge.author"></a-entity>
+      <a-entity
+        id="menuSelectedChallengeDownloads"
+        position="0 -0.325 0"
+        mixin="textFont"
+        text="align: center; color: #FFF; wrapCount: 35"
+        bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
+      <a-entity
+        id="menuSelectedChallengeSongInfo"
+        position="0 -0.395 0"
+        mixin="textFont"
+        text="align: center; color: #FFF; wrapCount: 35"
+        bind__text="value: menuSelectedChallenge.songInfoText"></a-entity>
     </a-entity>
 
     <a-plane
       id="playButton"
       play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-      position="0 -0.482 0"
+      position="0 -0.51 0"
       proxy-event="event: click; to: a-scene; as: playbuttonclick"
       material="shader: flat; src: #playImg; transparent: true; color: #CCC"
       width="0.4"
