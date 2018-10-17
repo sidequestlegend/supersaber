@@ -36,6 +36,11 @@ AFRAME.registerComponent('song-preview-system', {
       return;
     }
 
+    // Unselect.
+    if (oldData.selectedChallengeId && !data.selectedChallengeId) {
+      this.stopSong();
+    }
+
     // Song finished loading.
     // Continue to play preview song during loading to keep entertained.
     if (oldData.isSongLoading && !data.isSongLoading) {

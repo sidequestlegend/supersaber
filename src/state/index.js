@@ -37,10 +37,10 @@ AFRAME.registerState({
     isGameOver: false,  // Game over screen.
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Actively playing (slicing beats).
+    isSearching: false,  // Whether search is open.
     isSongFetching: false,  // Fetching stage.
     isSongLoading: false,  // Either fetching or decoding.
     isVictory: false,  // Victory screen.
-    keyboardActive: false,  // Whether search is open.
     menuActive: true,
     menuDifficulties: [],
     menuSelectedChallenge: {
@@ -147,11 +147,12 @@ AFRAME.registerState({
     },
 
     keyboardclose: (state) => {
-      state.keyboardActive = false;
+      state.isSearching = false;
     },
 
     keyboardopen: (state) => {
-      state.keyboardActive = true;
+      state.isSearching = true;
+      state.menuSelectedChallenge.id = '';
     },
 
     /**
@@ -175,7 +176,7 @@ AFRAME.registerState({
       state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
       computeMenuSelectedChallengeIndex(state);
 
-      state.keyboardActive = false;
+      state.isSearching = false;
     },
 
     menuchallengeunselect: state => {
@@ -209,7 +210,7 @@ AFRAME.registerState({
       state.menuActive = false;
       state.menuSelectedChallenge.id = '';
 
-      state.keyboardActive = false;
+      state.isSearching = false;
       state.challenge.isLoading = true;
       state.isSongLoading = true;
     },
