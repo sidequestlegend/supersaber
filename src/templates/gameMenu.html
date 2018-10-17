@@ -11,6 +11,7 @@
   position="0 -0.07 0.01"
   text="align: center; wrapCount: 17; color: #F0F0F0"></a-mixin>
 
+<!-- Titles. -->
 <a-entity id="inGameMenuTitles" position="0 1.7 -2.3">
   <a-entity mixin="gameMenuButtonText" text="value: GAME OVER; color: #ff7171; width: 4" bind__visible="isGameOver"></a-entity>
 
@@ -22,6 +23,8 @@
   bind__visible="isGameOver || isPaused || isVictory"
   position="0 1.1 -2"
   play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03">
+
+  <!-- Actions. -->
   <a-entity
     id="resumeButton"
     mixin="gameMenuButton"
@@ -31,7 +34,6 @@
     bind__visible="!isGameOver">
     <a-entity mixin="gameMenuButtonText" text="value: RESUME"></a-entity>
   </a-entity>
-
   <a-entity
     id="restartButton"
     bind-toggle__raycastable="isPaused || isGameOver"
@@ -39,7 +41,6 @@
     proxy-event="event: click; to: a-scene; as: gamemenurestart">
     <a-entity mixin="gameMenuButtonText" text="value: RESTART SONG"></a-entity>
   </a-entity>
-
   <a-entity
     id="exitButton"
     mixin="gameMenuButton"
@@ -49,6 +50,7 @@
     <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
   </a-entity>
 
+  <!-- Song info. -->
   <a-entity id="gameMenuSongInfoContainer" position="-1.64 -0.12 0.798" rotation="0 55 0">
     <a-entity mixin="slice" slice9="width: 0.77; height: 1; padding: 0.04" position="0 0.110 -0.03"></a-entity>
 
@@ -67,27 +69,35 @@
     </a-entity>
   </a-entity>
 
+  <!-- Victory. -->
   <a-entity id="victoryInfoContainer" position="1.64 -0.12 0.798" rotation="0 -55 0" bind__visible="isVictory">
     <a-entity mixin="slice" slice9="width: 0.77; height: 1; padding: 0.04" position="0 0.110 -0.03"></a-entity>
 
-    <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.9">
+    <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1">
+      <!-- TODO: Different color text based on rank. (bind__rank-text="rank: score.rank") -->
       <a-entity
         id="victoryInfoRank"
         mixin="textFont"
-        text="wrapCount: 40; align: center; color: #FF185B"
+        text="wrapCount: 1; align: center; color: #AAFFAA; width: 0.5"
         bind__text="value: score.rank"></a-entity>
 
       <a-entity
         id="victoryInfoScore"
         mixin="textFont"
-        text="wrapCount: 40; align: center; color: #FF185B"
-        bind__text="value: score.score"></a-entity>
+        text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+        bind__text="value: score.scoreText"></a-entity>
 
       <a-entity
         id="victoryInfoAccuracy"
         mixin="textFont"
-        text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+        text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
         bind__text="value: score.accuracy"></a-entity>
+
+      <a-entity
+        id="victoryInfoMaxCombo"
+        mixin="textFont"
+        text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+        bind__text="value: score.maxComboText"></a-entity>
     </a-entity>
   </a-entity>
 </a-entity>

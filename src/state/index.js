@@ -65,9 +65,11 @@ AFRAME.registerState({
       beatsMissed: 0,
       combo: 0,
       maxCombo: 0,
+      maxComboText: 0,
       multiplier: 1,
       rank: '',
-      score: 0
+      score: 0,
+      scoreText: 0
     },
     search: {
       active: true,
@@ -95,7 +97,7 @@ AFRAME.registerState({
         state.damage -= DAMAGE_DECAY;
       }
       state.score.beatsHit++;
-      state.score.score++;
+      state.score.score += 1000;
       state.score.combo++;
       if (state.score.combo > state.score.maxCombo) {
         state.score.maxCombo = state.score.combo;
@@ -131,6 +133,47 @@ AFRAME.registerState({
       state.menuSelectedChallenge.songInfoText = '';
       state.menuSelectedChallenge.numBeats = undefined;
       state.menuSelectedChallenge.songLength = undefined;
+    },
+
+    /**
+     * To work on game over page.
+     *
+     * ?debugstate=gameover
+     */
+    debuggameover: state => {
+      state.isGameOver = true;
+      state.menuActive = false;
+    },
+
+    /**
+     * To work on victory page.
+     *
+     * ?debugstate=loading
+     */
+    debugloading: state => {
+      state.menuActive = false;
+      state.isSongFetching = true;
+      state.isSongLoading = true;
+      state.menuSelectedChallenge.songName = 'Friday';
+      state.menuSelectedChallenge.songSubName = 'Rebecca Black';
+      $('#loadingSongImage').setAttribute('material', 'src', 'assets/img/molerat.jpg');
+    },
+
+    /**
+     * To work on victory page.
+     *
+     * ?debugstate=victory
+     */
+    debugvictory: state => {
+      state.isVictory = true;
+      state.menuActive = false;
+      state.score.accuracy = 'Accuracy: 99.99%';
+      state.score.maxComboText = 'Max Combo: 123';
+      state.score.rank = 'S';
+      state.score.scoreText = 'Score: 9001';
+      state.menuSelectedChallenge.songName = 'Friday';
+      state.menuSelectedChallenge.songSubName = 'Rebecca Black';
+      $('#gameMenuSongImage').setAttribute('material', 'src', 'assets/img/molerat.jpg');
     },
 
     gamemenuresume: (state) => {
