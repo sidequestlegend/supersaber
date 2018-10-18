@@ -6,8 +6,8 @@ AFRAME.registerComponent('saber-controls', {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
-    strokeDuration: {default: 100},
-    strokeSpeed: {default: 2000}
+    strokeMinSpeed: {default: 1000},
+    strokeMinAngle: {default: 5}
   },
 
   init: function () {
@@ -17,9 +17,13 @@ AFRAME.registerComponent('saber-controls', {
     this.boundingBox = new THREE.Box3();
     this.controllerType = '';
     this.bladeEl = el.querySelector('.blade');
+    this.swingStartPosition = new THREE.Vector3();
+    this.swingEndPosition = new THREE.Vector3();
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
+    this.saberPosition = new THREE.Vector3();
     this.swinging = false;
+    this.strokeAngle = 0;
     this.strokeCount = 0;
 
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
@@ -49,25 +53,21 @@ AFRAME.registerComponent('saber-controls', {
     var distance;
     var data = this.data;
 
-    this.bladeTipPosition.set(0, 0.4, 0);
+    this.bladeTipPosition.set(0, 0.9, 0);
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
 
     bladeObject.localToWorld(this.bladeTipPosition);
     distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
-    if (distance > data.strokeSpeed) {
-      if (!this.startSwinging) {
-        this.startSwinging = true;
-        this.swingDuration = 0;
-      }
-      if (this.swingDuration > data.strokeDuration) {
-        this.swinging = true;
-      } else {
-        this.swingDuration += delta;
-      }
+    if (distance > data.strokeMinSpeed) {
+      if (!this.startSwinging) { this.startSwinging = true; }
+      this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) / (2 * Math.PI)) * 360;
+      if (this.strokeAngle > data.strokeMinAngle) { this.swinging = true; } 
     } else {
+      if (this.swinging) { console.log("ANGLE " + this.strokeAngle); }
       this.swinging = false;
       this.startSwinging = false;
+      this.strokeAngle = 0;
     }
 
     this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
