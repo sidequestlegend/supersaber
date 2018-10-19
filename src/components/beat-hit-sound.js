@@ -1,6 +1,10 @@
 var audioContext = new window.AudioContext();
 var sourceCreatedCallback = null;
 
+const LAYER_BOTTOM = 'bottom';
+const LAYER_MIDDLE = 'middle';
+const LAYER_TOP = 'top';
+
 // Allows for modifying detune. PR has been sent to three.js.
 THREE.Audio.prototype.play = function () {
   if (this.isPlaying === true) {
@@ -33,8 +37,6 @@ THREE.Audio.prototype.play = function () {
  * Beat hit sound using positional audio and audio buffer source.
  */
 AFRAME.registerComponent('beat-hit-sound', {
-  dependencies: ['sound__beathit'],
-
   init: function () {
     this.currentBeatEl = null;
     this.currentCutDirection = '';
@@ -61,12 +63,26 @@ AFRAME.registerComponent('beat-hit-sound', {
   },
 
   sourceCreatedCallback: function (source) {
-    source.detune.setValueAtTime(0, 0);
+    // Pitch.
+    const layer = this.getLayer(this.currentBeatEl.object3D.position.y);
+    if (layer === LAYER_BOTTOM) {
+      source.detune.setValueAtTime(-400, 0);
+    } else if (layer === LAYER_TOP) {
+      source.detune.setValueAtTime(400, 0);
+    }
+
+    // Inflection.
     if (this.currentCutDirection === 'down') {
-      source.detune.linearRampToValueAtTime(-200, 1.5);
+      source.detune.linearRampToValueAtTime(-400, 1);
     }
     if (this.currentCutDirection === 'up') {
-      source.detune.linearRampToValueAtTime(200, 1.5);
+      source.detune.linearRampToValueAtTime(400, 1);
     }
+  },
+
+  getLayer: function (y) {
+    if (y === 1) { return LAYER_BOTTOM; }
+    if (y === 1.70) { return LAYER_TOP; }
+    return LAYER_MIDDLE;
   }
 });
