@@ -1,24 +1,9 @@
-<a-entity
-  id="songLoadingIndicator"
-  bind__visible="isSongFetching"
-  geometry="primitive: ring; radiusInner: 0.05; radiusOuter: 0.08"
-  material="shader: flat; color: #FAFAFA; opacity: 0.75; side: back"
-  position="0 1 -2.5"
-  rotation="0 180 0">
-</a-entity>
-
-<a-entity
-  id="loadingText"
-  mixin="textFont"
-  bind__animation__color="enabled: isSongLoading"
-  bind__text="value: loadingText"
-  animation__color="property: components.text.material.uniforms.color.value; type: color; from: #AAF; to: #88D; dir: alternate; loop: true; dur: 750; easing: easeInOutCubic; enabled: false"
-  text="align: center; color: #aaf; wrapCount: 18; width: 2"
-  position="0 1.1 -2.5"
-  bind__visible="isSongLoading"></a-entity>
-
-<a-entity id="loadingSongInfoContainer" position="0 1.86 -2.5" bind__visible="isSongLoading">
-  <a-entity mixin="slice" slice9="width: 0.77; height: 0.9; padding: 0.08" position="0 0.08 -0.03"></a-entity>
+<a-entity id="loadingSongInfoContainer"
+  bind__animation__scale="enabled: isSongLoading"
+  bind__visible="isSongLoading"
+  animation__scale="property: scale; from: 1 1 1; to: 1.05 1.05 1.05; dir: alternate; loop: true; dur: 1200; easing: easeInOutCubic"
+  position="0 1.1 -2">
+  <a-entity mixin="slice" slice9="opacity: 0.9; width: 0.77; height: 1; padding: 0.08" position="0 0 -0.03"></a-entity>
   <a-entity id="loadingSongImage"
     copy-texture="from: #menuSelectedChallengeImage"
     geometry="primitive: plane; buffer: false; skipCache: true; height: 0.3; width: 0.3"
@@ -32,5 +17,23 @@
     <a-entity position="0 -0.13 0"
       mixin="textFont" text="align: center; color: #FFF; wrapCount: 21; baseline: top; lineHeight: 36; width: 0.81"
       bind__text="value: menuSelectedChallenge.songName"></a-entity>
+
+    <a-entity
+      id="loadingText"
+      mixin="textFont"
+      bind__animation__color="enabled: isSongLoading"
+      bind__text="value: loadingText"
+      bind__visible="isSongLoading"
+      text="align: center; color: #FAFAFA; wrapCount: 18; width: 0.65"
+      position="0 -0.32 0"></a-entity>
+
+    <a-entity
+      id="songLoadingIndicator"
+      bind__visible="isSongFetching"
+      geometry="primitive: ring; radiusInner: 0.025; radiusOuter: 0.04"
+      material="shader: flat; color: #FAFAFA; opacity: 0.75; side: back"
+      position="0 -0.38 0"
+      rotation="0 180 0">
+    </a-entity>
   </a-entity>
 </a-entity>
