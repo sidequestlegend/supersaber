@@ -62,9 +62,9 @@ AFRAME.registerComponent('saber-controls', {
     if (distance > data.strokeMinSpeed) {
       if (!this.startSwinging) { this.startSwinging = true; }
       this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) / (2 * Math.PI)) * 360;
-      if (this.strokeAngle > data.strokeMinAngle) { this.swinging = true; } 
+      if (this.strokeAngle > data.strokeMinAngle) { this.swinging = true; }
     } else {
-      if (this.swinging) { console.log("ANGLE " + this.strokeAngle); }
+      // if (this.swinging) { console.log("ANGLE " + this.strokeAngle); }
       this.swinging = false;
       this.startSwinging = false;
       this.strokeAngle = 0;
