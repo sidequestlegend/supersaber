@@ -56,7 +56,7 @@ AFRAME.registerComponent('beat-loader', {
     const data = this.data;
 
     // Start playing.
-    if (!oldData.challengeId && data.challengeId) {
+    if (!oldData.challengeId && data.challengeId && this.beatData) {
       this.processBeats();
       return;
     }

@@ -9,6 +9,16 @@ const SONG_SUB_NAME_TRUNCATE = 32;
 const DAMAGE_DECAY = 0.25;
 const DAMAGE_MAX = 10;
 
+const DEBUG_CHALLENGE = {
+  author: 'Superman',
+  difficulty: 'Normal',
+  id: '517',
+  image: 'assets/img/molerat.jpg',
+  songName: 'Friday',
+  songLength: 100,
+  songSubName: 'Rebecca Black'
+};
+
 /**
  * State handler.
  *
@@ -150,12 +160,11 @@ AFRAME.registerState({
      * ?debugstate=loading
      */
     debugloading: state => {
+      Object.assign(state.menuSelectedChallenge, DEBUG_CHALLENGE);
+      Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.menuActive = false;
       state.isSongFetching = true;
       state.isSongLoading = true;
-      state.menuSelectedChallenge.songName = 'Friday';
-      state.menuSelectedChallenge.songSubName = 'Rebecca Black';
-      $('#loadingSongImage').setAttribute('material', 'src', 'assets/img/molerat.jpg');
     },
 
     /**
@@ -164,15 +173,14 @@ AFRAME.registerState({
      * ?debugstate=victory
      */
     debugvictory: state => {
+      Object.assign(state.menuSelectedChallenge, DEBUG_CHALLENGE);
+      Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.isVictory = true;
       state.menuActive = false;
       state.score.accuracy = 'Accuracy: 99.99%';
       state.score.maxComboText = 'Max Combo: 123';
       state.score.rank = 'S';
       state.score.scoreText = 'Score: 9001';
-      state.menuSelectedChallenge.songName = 'Friday';
-      state.menuSelectedChallenge.songSubName = 'Rebecca Black';
-      $('#gameMenuSongImage').setAttribute('material', 'src', 'assets/img/molerat.jpg');
     },
 
     gamemenuresume: (state) => {
@@ -185,6 +193,7 @@ AFRAME.registerState({
       state.isGameOver = false;
       state.isPaused = false;
       state.isSongLoading = true;
+      state.isVictory = false;
     },
 
     gamemenuexit: (state) => {
