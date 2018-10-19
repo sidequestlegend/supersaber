@@ -8,6 +8,7 @@ var auxObj3D = new THREE.Object3D();
 AFRAME.registerComponent('beat', {
   schema: {
     color: {default: 'red', oneOf: ['red', 'blue']},
+    cutDirection: {type: 'string'},
     debug: {default: false},
     size: {default: 0.30},
     speed: {default: 1.0},
@@ -454,12 +455,14 @@ AFRAME.registerComponent('beat', {
       if (!saberBoundingBox) { break; }
 
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
-        if (saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
+        if (saberEls[i].components['saber-controls'].swinging &&
+            this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
         } else {
           this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
         }
-        this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
+        this.el.parentNode.components['beat-hit-sound'].playSound(
+          this.el, this.data.cutDirection);
         this.destroyBeat(saberEls[i]);
         break;
       }
@@ -472,7 +475,8 @@ AFRAME.registerComponent('beat', {
           break;
         }
 
-        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
+        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
+            this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
         } else {
           this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);

@@ -1,4 +1,5 @@
 var audioContext = new window.AudioContext();
+var sourceCreatedCallback = null;
 
 // Allows for modifying detune. PR has been sent to three.js.
 THREE.Audio.prototype.play = function () {
@@ -19,6 +20,7 @@ THREE.Audio.prototype.play = function () {
   source.onended = this.onEnded.bind(this);
   source.playbackRate.setValueAtTime(this.playbackRate, this.startTime);
   this.startTime = this.context.currentTime;
+  if (sourceCreatedCallback) { sourceCreatedCallback(source); }
   source.start(this.startTime, this.offset);
 
   this.isPlaying = true;
@@ -34,19 +36,37 @@ AFRAME.registerComponent('beat-hit-sound', {
   dependencies: ['sound__beathit'],
 
   init: function () {
+    this.currentBeatEl = null;
+    this.currentCutDirection = '';
+    this.el.setAttribute('sound__beathit', {
+      poolSize: 12,
+      src: 'assets/sounds/beatHit.ogg',
+      volume: 0.5
+    });
     this.processSound = this.processSound.bind(this);
+
+    sourceCreatedCallback = this.sourceCreatedCallback.bind(this);
   },
 
-  playSound: function (beatEl) {
+  playSound: function (beatEl, cutDirection) {
     const soundPool = this.el.components.sound__beathit;
     this.currentBeatEl = beatEl;
+    this.currentCutDirection = cutDirection;
     soundPool.playSound(this.processSound);
   },
 
   processSound: function (audio) {
-    // Randomize a bit.
-    audio.detune = (Math.random() * 2000);
-    audio.playbackRate = 1 - (Math.random() * 0.20);
+    audio.detune = 0;
     this.currentBeatEl.object3D.getWorldPosition(audio.position);
+  },
+
+  sourceCreatedCallback: function (source) {
+    source.detune.setValueAtTime(0, 0);
+    if (this.currentCutDirection === 'down') {
+      source.detune.linearRampToValueAtTime(-200, 1.5);
+    }
+    if (this.currentCutDirection === 'up') {
+      source.detune.linearRampToValueAtTime(200, 1.5);
+    }
   }
 });

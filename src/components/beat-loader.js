@@ -15,6 +15,16 @@ AFRAME.registerComponent('beat-loader', {
   },
 
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
+  orientationsHumanized: {
+    0: 'down',
+    45: 'downright',
+    90: 'right',
+    135: 'upright',
+    180: 'up',
+    225: 'upleft',
+    270: 'left',
+    315: 'downleft'
+  },
   horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
   verticalPositions: [1.00, 1.35, 1.70],
 
@@ -201,15 +211,19 @@ AFRAME.registerComponent('beat-loader', {
       if (!beatEl) { return; }
 
       beatObj.color = color;
-      beatObj.type = type;
+      beatObj.cutDirection =
+        this.orientationsHumanized[this.orientations[noteInfo._cutDirection]];
       beatObj.speed = this.data.beatSpeed;
+      beatObj.type = type;
       beatEl.setAttribute('beat', beatObj);
       beatEl.object3D.position.set(
         this.horizontalPositions[noteInfo._lineIndex],
         this.verticalPositions[noteInfo._lineLayer],
         -this.data.beatAnticipationTime * this.data.beatSpeed - swordOffset
       );
-      beatEl.object3D.rotation.z = THREE.Math.degToRad(this.orientations[noteInfo._cutDirection]);
+      beatEl.object3D.rotation.z = THREE.Math.degToRad(
+        this.orientations[noteInfo._cutDirection]);
+
       beatEl.play();
 
       this.beams.newBeam(color, beatEl.object3D.position);
