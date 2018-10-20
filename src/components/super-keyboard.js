@@ -84,6 +84,7 @@ AFRAME.registerComponent('super-keyboard', {
 
     // Create input.
     this.textInput = document.createElement('a-entity');
+    this.textInput.setAttribute('mixin', 'superKeyboardTextInput');
     this.textInput.setAttribute('text', {
       align: this.data.align,
       font: this.data.font,
