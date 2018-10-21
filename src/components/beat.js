@@ -454,12 +454,14 @@ AFRAME.registerComponent('beat', {
 
       if (!saberBoundingBox) { break; }
 
+      const hand = saberEls[i].getAttribute('saber-controls').hand;
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
         if (saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
+          this.el.emit(`beathit${hand}`, null, true);
         } else {
-          this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
+          this.wrongHit(hand);
         }
         this.el.parentNode.components['beat-hit-sound'].playSound(
           this.el, this.data.cutDirection);
@@ -478,8 +480,9 @@ AFRAME.registerComponent('beat', {
         if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
           this.el.emit('beathit', null, true);
+          this.el.emit(`beathit${hand}`, null, true);
         } else {
-          this.wrongHit(saberEls[i].getAttribute('saber-controls').hand);
+          this.wrongHit(hand);
         }
         break;
       }
