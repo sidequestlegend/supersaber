@@ -93,7 +93,7 @@
           <a-entity
             id="cameraCollider"
             bind__aabb-collider="enabled: isPlaying"
-            aabb-collider="objects: [collidable]; interval: 50; collideNonVisible: false"
+            aabb-collider="objects: [data-collidable-head]; interval: 50; collideNonVisible: false"
             geometry="primitive: box; width: 0.25; height: 0.25; depth: 0.25"
             proxy-event__wallhitstart="event: hitstart; to: a-scene; as: wallhitstart"
             proxy-event__wallhitend="event: hitend; to: a-scene; as: wallhitend"
@@ -103,19 +103,22 @@
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
             mixin="raycaster"
+            bind__aabb-collider="enabled: isPlaying"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
             bind__pauser="enabled: isPlaying"
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
             bind__trail="enabled: isPlaying"
+            aabb-collider="objects: [data-collidable-saber]; interval: 50; collideNonVisible: false"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beathit{{ hand }}; dur: 80; force: 0.2"
             haptics__draw="events: drawblade; dur: 750; force: 0.025"
             saber-controls="hand: {{ hand }}"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
-            trail="color: {{ bladeColor }}; hand: {{ hand }}">
+            trail="color: {{ bladeColor }}; hand: {{ hand }}"
+            wall-haptics>
             <a-entity
               id="{{ hand }}Laser"
               bind__visible="menuActive && activeHand === '{{ hand }}'"
