@@ -457,7 +457,7 @@ AFRAME.registerComponent('beat', {
       const hand = saberEls[i].getAttribute('saber-controls').hand;
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
         if (saberEls[i].components['saber-controls'].swinging &&
-            this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
+            this.data.color === saberColors[hand]) {
           this.el.emit('beathit', null, true);
           this.el.emit(`beathit${hand}`, null, true);
         } else {
@@ -478,7 +478,7 @@ AFRAME.registerComponent('beat', {
         }
 
         if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
-            this.data.color === saberColors[saberEls[i].getAttribute('saber-controls').hand]) {
+            this.data.color === saberColors[hand]) {
           this.el.emit('beathit', null, true);
           this.el.emit(`beathit${hand}`, null, true);
         } else {

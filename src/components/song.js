@@ -1,7 +1,8 @@
 const utils = require('../utils');
 
-var ONCE = {once: true};
-var BASE_VOLUME = 0.75;
+const GAME_OVER_LENGTH = 3.5;
+const ONCE = {once: true};
+const BASE_VOLUME = 0.75;
 
 /**
  * Active challenge song / audio.
@@ -114,12 +115,16 @@ AFRAME.registerComponent('song', {
   },
 
   onGameOver: function () {
-    this.source.playbackRate.setValueAtTime(this.source.playbackRate.value,
-                                            this.context.currentTime);
-    this.source.playbackRate.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
-    this.audioAnalyser.gainNode.gain.setValueAtTime(this.audioAnalyser.gainNode.gain.value,
-                                                    this.context.currentTime);
-    this.audioAnalyser.gainNode.gain.linearRampToValueAtTime(0, this.context.currentTime + 3.5);
+    // Playback rate.
+    const playbackRate = this.source.playbackRate;
+    playbackRate.setValueAtTime(playbackRate.value, this.context.currentTime);
+    playbackRate.linearRampToValueAtTime(0, this.context.currentTime + GAME_OVER_LENGTH);
+
+    // Gain.
+    const gain = this.audioAnalyser.gainNode.gain;
+    gain.setValueAtTime(gain.value, this.context.currentTime);
+    gain.linearRampToValueAtTime(0, this.context.currentTime + GAME_OVER_LENGTH);
+
     setTimeout(() => {
       if (!this.data.isGameOver) { return; }
       this.stopAudio();
@@ -129,6 +134,11 @@ AFRAME.registerComponent('song', {
   onRestart: function () {
     // Restart, get new buffer source node and play.
     if (this.source) { this.source.disconnect(); }
+
+    // Clear gain interpolation values from game over.
+    const gain = this.audioAnalyser.gainNode.gain;
+    gain.cancelScheduledValues(0);
+
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
       this.el.sceneEl.emit('songloadfinish', null, false);
@@ -150,7 +160,8 @@ AFRAME.registerComponent('song', {
   },
 
   startAudio: function () {
-    this.audioAnalyser.gainNode.gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
+    const gain = this.audioAnalyser.gainNode.gain;
+    gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
     this.source.start();
   }
 });
