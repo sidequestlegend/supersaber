@@ -1,5 +1,7 @@
-import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
+import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED} from '../constants/beat';
 import utils from '../utils';
+
+const WARMUP_TIME = (BEAT_WARMUP_OFFSET / BEAT_WARMUP_SPEED) * 1000;  // ms.
 
 /**
  * Load beat data (all the beats and such).
@@ -149,7 +151,7 @@ AFRAME.registerComponent('beat-loader', {
         this.songCurrentTime !== this.el.components.song.context.currentTime) {
       this.songCurrentTime = this.el.components.song.context.currentTime;
       this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000 +
-                       BEAT_WARMUP_TIME;
+                       WARMUP_TIME;
     }
 
     notes = this.beatData._notes;

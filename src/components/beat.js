@@ -1,9 +1,6 @@
-import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
+import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED} from '../constants/beat';
 
 const auxObj3D = new THREE.Object3D();
-const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
-const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
-const BEAT_WARMUP_ROTATION_TIME = 750;
 const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
 /**
@@ -44,7 +41,6 @@ AFRAME.registerComponent('beat', {
     this.backToPool = false;
     this.beams = document.getElementById('beams').components.beams;
     this.beatBoundingBox = new THREE.Box3();
-    this.currentRotationWarmupTime = 0;
     this.cutDirection = new THREE.Vector3();
     this.destroyed = false;
     this.gravityVelocity = 0;
@@ -110,38 +106,27 @@ AFRAME.registerComponent('beat', {
   },
 
   tock: function (time, timeDelta) {
-    const el = this.el;
-    const position = el.object3D.position;
-
     if (this.destroyed) {
       this.tockDestroyed(timeDelta);
     } else {
       // Only check collisions when close.
       const collisionZThreshold = -4;
-      if (position.z > collisionZThreshold) { this.checkCollisions(); }
+      if (this.el.object3D.position.z > collisionZThreshold) { this.checkCollisions(); }
 
       // Move.
-      if (position.z < this.startPositionZ) {
+      if (this.el.object3D.position.z < this.startPositionZ) {
         // Warm up / warp in.
-        position.z += BEAT_WARMUP_SPEED * (timeDelta / 1000);
-        if (position.z >= this.startPositionZ) {
-          this.beams.newBeam(this.data.color, position);
+        this.el.object3D.position.z += BEAT_WARMUP_SPEED * (timeDelta / 1000);
+        if (this.el.object3D.position.z >= this.startPositionZ) {
+          this.beams.newBeam(this.data.color, this.el.object3D.position);
         }
       } else {
         // Standard moving.
-        position.z += this.data.speed * (timeDelta / 1000);
-      }
-
-      if (position.z > (this.startPositionZ - BEAT_WARMUP_ROTATION_OFFSET) &&
-          this.currentRotationWarmupTime < BEAT_WARMUP_ROTATION_TIME) {
-        const progress = AFRAME.ANIME.easings.easeOutBack(
-          this.currentRotationWarmupTime / BEAT_WARMUP_ROTATION_TIME);
-        el.object3D.rotation.z = this.rotationZStart + (progress * this.rotationZChange);
-        this.currentRotationWarmupTime += timeDelta;
+        this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
       }
 
       // Check.
-      this.backToPool = position.z >= 2;
+      this.backToPool = this.el.object3D.position.z >= 2;
       if (this.backToPool) { this.missHit(); }
     }
     this.returnToPool();
@@ -153,13 +138,6 @@ AFRAME.registerComponent('beat', {
   onGenerate: function () {
     this.startPositionZ = this.el.object3D.position.z;
     this.el.object3D.position.z -= BEAT_WARMUP_OFFSET;
-
-    // Set up rotation warmup.
-    this.currentRotationWarmupTime = 0;
-    this.rotationZChange = BEAT_WARMUP_ROTATION_CHANGE;
-    if (Math.random > 0.5) { this.rotationZChange *= -1; }
-    this.el.object3D.rotation.z -= this.rotationZChange;
-    this.rotationZStart = this.el.object3D.rotation.z;
   },
 
   initBlock: function () {
