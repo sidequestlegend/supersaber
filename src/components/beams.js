@@ -7,34 +7,27 @@ AFRAME.registerComponent('beams', {
   },
 
   init: function () {
-    var redMaterial;
-    var blueMaterial;
-    var materialOptions;
-    var geo;
-    var beam;
-
     this.beams = [];
     this.redBeams = [];
     this.blueBeams = [];
     this.currentRed = 0;
     this.currentBlue = 0;
 
-    materialOptions = {
+    const materialOptions = {
       color: 0xaa3333,
       map: new THREE.TextureLoader().load('assets/img/beam.png'),
       transparent: true,
       blending: THREE.AdditiveBlending
     };
-    redMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    materialOptions.color = 0x3333aa;
-    blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    geo = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
+    const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
+    const blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
+    const geo = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
 
     this.texture = materialOptions.map;
 
-    for (var j = 0; j < 2; j++) {
-      for (var i = 0; i < this.data.poolSize; i++) {
-        beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
+    for (let j = 0; j < 2; j++) {
+      for (let i = 0; i < this.data.poolSize; i++) {
+        let beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
         beam.visible = false;
         beam.animation = ANIME({
           autoplay: false,
@@ -53,6 +46,14 @@ AFRAME.registerComponent('beams', {
 
     this.clearBeams = this.clearBeams.bind(this);
     this.el.sceneEl.addEventListener('cleargame', this.clearBeams);
+  },
+
+  update: function () {
+    for (let i = 0; i < this.beams.length; i++) {
+      if (this.beams[i].time) {
+        this.beams[i].visible = this.data.isPlaying;
+      }
+    }
   },
 
   /**
