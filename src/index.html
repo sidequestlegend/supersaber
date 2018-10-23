@@ -102,6 +102,7 @@
 
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
+            class="saber"
             mixin="raycaster"
             bind__aabb-collider="enabled: isPlaying"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
@@ -110,15 +111,17 @@
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
             bind__trail="enabled: isPlaying"
+            bind-toggle__data-collidable-saber="isPlaying"
             aabb-collider="objects: [data-collidable-saber]; interval: 50; collideNonVisible: false"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beathit{{ hand }}; dur: 80; force: 0.2"
             haptics__draw="events: drawblade; dur: 750; force: 0.025"
             saber-controls="hand: {{ hand }}"
+            haptics-saber
+            haptics-wall
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
-            trail="color: {{ bladeColor }}; hand: {{ hand }}"
-            wall-haptics>
+            trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
               bind__visible="menuActive && activeHand === '{{ hand }}'"

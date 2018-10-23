@@ -1,7 +1,7 @@
 /**
  * Listen to aabb-collider event for wall haptics.
  */
-AFRAME.registerComponent('wall-haptics', {
+AFRAME.registerComponent('haptics-wall', {
   dependencies: ['aabb-collider'],
 
   init: function () {
