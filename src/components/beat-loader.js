@@ -148,7 +148,7 @@ AFRAME.registerComponent('beat-loader', {
     if (this.beatsTimeOffset !== undefined &&
         this.songCurrentTime !== this.el.components.song.context.currentTime) {
       this.songCurrentTime = this.el.components.song.context.currentTime;
-      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000 +
+      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000 -
                        BEAT_WARMUP_TIME;
     }
 
