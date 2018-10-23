@@ -228,6 +228,7 @@ AFRAME.registerComponent('beat-loader', {
         this.orientations[noteInfo._cutDirection]);
 
       beatEl.play();
+      beatEl.components.beat.onGenerate();
     };
   })(),
 

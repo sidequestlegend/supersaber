@@ -85,12 +85,16 @@ AFRAME.registerComponent('beat', {
     }
   },
 
+  pause: function () {
+    this.el.object3D.visible = false;
+    this.partLeftEl.object3D.visible = false;
+    this.partRightEl.object3D.visible = false;
+  },
+
   play: function () {
     this.blockEl.object3D.visible = true;
     this.destroyed = false;
     this.el.object3D.visible = true;
-    this.startPositionZ = this.el.object3D.position.z;
-    this.el.object3D.position.z -= BEAT_WARMUP_OFFSET;
   },
 
   tock: function (time, timeDelta) {
@@ -118,6 +122,14 @@ AFRAME.registerComponent('beat', {
       if (this.backToPool) { this.missHit(); }
     }
     this.returnToPool();
+  },
+
+  /**
+   * Called when summoned by beat-loader.
+   */
+  onGenerate: function () {
+    this.startPositionZ = this.el.object3D.position.z;
+    this.el.object3D.position.z -= BEAT_WARMUP_OFFSET;
   },
 
   initBlock: function () {
@@ -380,12 +392,6 @@ AFRAME.registerComponent('beat', {
       });
     };
   })(),
-
-  pause: function () {
-    this.el.object3D.visible = false;
-    this.partLeftEl.object3D.visible = false;
-    this.partRightEl.object3D.visible = false;
-  },
 
   initCuttingClippingPlanes: function () {
     this.leftCutPlanePointsWorld = [
