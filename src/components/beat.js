@@ -1,7 +1,6 @@
-import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED} from '../constants/beat';
+var SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
-const auxObj3D = new THREE.Object3D();
-const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
+var auxObj3D = new THREE.Object3D();
 
 /**
  * Create beat from pool, collision detection, clipping planes.
@@ -39,7 +38,6 @@ AFRAME.registerComponent('beat', {
 
   init: function () {
     this.backToPool = false;
-    this.beams = document.getElementById('beams').components.beams;
     this.beatBoundingBox = new THREE.Box3();
     this.cutDirection = new THREE.Vector3();
     this.destroyed = false;
@@ -49,7 +47,6 @@ AFRAME.registerComponent('beat', {
     this.returnToPoolTimer = 800;
     this.rotationAxis = new THREE.Vector3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
-    this.startPositionZ = undefined;
     this.rightCutPlanePoints = [
       new THREE.Vector3(),
       new THREE.Vector3(),
@@ -100,9 +97,9 @@ AFRAME.registerComponent('beat', {
   },
 
   play: function () {
-    this.blockEl.object3D.visible = true;
     this.destroyed = false;
     this.el.object3D.visible = true;
+    this.blockEl.object3D.visible = true;
   },
 
   tock: function (time, timeDelta) {
@@ -112,20 +109,7 @@ AFRAME.registerComponent('beat', {
       // Only check collisions when close.
       const collisionZThreshold = -4;
       if (this.el.object3D.position.z > collisionZThreshold) { this.checkCollisions(); }
-
-      // Move.
-      if (this.el.object3D.position.z < this.startPositionZ) {
-        // Warm up / warp in.
-        this.el.object3D.position.z += BEAT_WARMUP_SPEED * (timeDelta / 1000);
-        if (this.el.object3D.position.z >= this.startPositionZ) {
-          this.beams.newBeam(this.data.color, this.el.object3D.position);
-        }
-      } else {
-        // Standard moving.
-        this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
-      }
-
-      // Check.
+      this.el.object3D.position.z += this.data.speed * (timeDelta / 1000);
       this.backToPool = this.el.object3D.position.z >= 2;
       if (this.backToPool) { this.missHit(); }
     }

@@ -1,7 +1,4 @@
-import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED} from '../constants/beat';
-import utils from '../utils';
-
-const WARMUP_TIME = (BEAT_WARMUP_OFFSET / BEAT_WARMUP_SPEED) * 1000;  // ms.
+var utils = require('../utils');
 
 /**
  * Load beat data (all the beats and such).
@@ -33,6 +30,7 @@ AFRAME.registerComponent('beat-loader', {
 
   init: function () {
     this.audioAnalyserEl = document.getElementById('audioanalyser');
+    this.beams = document.getElementById('beams').components.beams;
     this.beatData = null;
     this.beatDataProcessed = false;
     this.beatContainer = document.getElementById('beatContainer');
@@ -150,8 +148,7 @@ AFRAME.registerComponent('beat-loader', {
     if (this.beatsTimeOffset !== undefined &&
         this.songCurrentTime !== this.el.components.song.context.currentTime) {
       this.songCurrentTime = this.el.components.song.context.currentTime;
-      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000 +
-                       WARMUP_TIME;
+      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
 
     notes = this.beatData._notes;
@@ -231,7 +228,7 @@ AFRAME.registerComponent('beat-loader', {
         this.orientations[noteInfo._cutDirection]);
 
       beatEl.play();
-      beatEl.components.beat.onGenerate();
+      this.beams.newBeam(color, beatEl.object3D.position);
     };
   })(),
 
