@@ -201,6 +201,9 @@ AFRAME.registerComponent('beat-loader', {
     return function (noteInfo) {
       var beatEl;
       var color;
+
+      // if (Math.random() < 0.8) noteInfo._type = 3; // just to DEBUG MINES!
+
       var type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
 
       color = noteInfo._type === 0 ? 'red' : 'blue';

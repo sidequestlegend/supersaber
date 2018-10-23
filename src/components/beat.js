@@ -70,12 +70,18 @@ AFRAME.registerComponent('beat', {
     this.missElLeft = document.getElementById('missLeft');
     this.missElRight = document.getElementById('missRight');
     this.particles = document.getElementById('saberParticles');
+    this.mineParticles = document.getElementById('mineParticles');
 
     this.saberColors = {right: 'blue', left: 'red'};
 
     this.initBlock();
     this.initColliders();
-    this.initFragments();
+    if (this.data.type === 'mine') {
+      this.initMineFragments();
+    }
+    else {
+      this.initFragments();
+    };
   },
 
   update: function () {
@@ -91,8 +97,10 @@ AFRAME.registerComponent('beat', {
 
   pause: function () {
     this.el.object3D.visible = false;
-    this.partLeftEl.object3D.visible = false;
-    this.partRightEl.object3D.visible = false;
+    if (this.data.type !== 'mine') {
+      this.partLeftEl.object3D.visible = false;
+      this.partRightEl.object3D.visible = false;
+    }
   },
 
   play: function () {
@@ -241,11 +249,46 @@ AFRAME.registerComponent('beat', {
     this.initCuttingClippingPlanes();
   },
 
+  initMineFragments: function () {
+    var fragment;
+    var fragments = this.el.sceneEl.systems['mine-fragments-loader'].fragments.children;
+    var material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+
+    this.randVec = new THREE.Vector3(
+      Math.random() * Math.PI,
+      Math.random() * Math.PI,
+      Math.random() * Math.PI);
+
+    this.mineFragments = [];
+    this.mineBroken = document.createElement('a-entity');
+    this.el.appendChild(this.mineBroken);
+
+    for (var i = 0; i < fragments.length; i++) {
+      fragment = new THREE.Mesh(fragments[i].geometry, material);
+      fragment.speed = new THREE.Vector3();
+      fragment.speed.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+      this.mineFragments.push(fragment);
+      this.mineBroken.object3D.add(fragment);
+    }
+  },
+
   updateFragments: function () {
     var cutLeftEl = this.cutLeftEl;
     var cutRightEl = this.cutRightEl;
     var partLeftEl = this.partLeftEl;
     var partRightEl = this.partRightEl;
+    var fragment;
+
+    if (this.data.type === 'mine') {
+      for (var i = 0; i < this.mineFragments.length; i++) {
+        fragment = this.mineFragments[i];
+        fragment.visible = false;
+        fragment.position.set(0, 0, 0);
+        fragment.scale.set(1, 1, 1);
+        fragment.speed.set(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
+      }
+      return;
+    }
 
     partLeftEl.setAttribute('material', {
       metalness: 0.8,
@@ -415,6 +458,24 @@ AFRAME.registerComponent('beat', {
     };
   })(),
 
+  destroyMine: function () {
+    var fragment;
+
+    for (var i = 0; i < this.mineFragments.length; i++) {
+      this.mineFragments[i].visible = true;
+    }
+
+    this.blockEl.object3D.visible = false;
+    this.destroyed = true;
+    this.gravityVelocity = 0.1;
+    this.returnToPoolTimer = 800;
+
+    this.mineParticles.emit('explode', {
+      position: this.el.object3D.position,
+      rotation: this.randVec
+    });
+  },
+
   initCuttingClippingPlanes: function () {
     this.leftCutPlanePointsWorld = [
       new THREE.Vector3(),
@@ -508,17 +569,24 @@ AFRAME.registerComponent('beat', {
         }
         this.el.parentNode.components['beat-hit-sound'].playSound(
           this.el, this.data.cutDirection);
-        this.destroyBeat(saberEls[i]);
+        if (this.data.type === 'mine') {
+          this.destroyMine();
+        } else {
+          this.destroyBeat(saberEls[i]);
+        }
         break;
       }
 
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
-        this.destroyBeat(saberEls[i]);
+
         if (this.data.type === 'mine') {
           this.el.emit('minehit', null, true);
+          this.destroyMine();
           break;
         }
+
+        this.destroyBeat(saberEls[i]);
 
         if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[hand]) {
@@ -541,11 +609,25 @@ AFRAME.registerComponent('beat', {
     var rightCutNormal = new THREE.Vector3();
     var rightRotation = 0;
     var rotationStep = 2 * Math.PI / 150;
+    var fragment;
 
     return function (timeDelta) {
       // Update gravity velocity.
       this.gravityVelocity = getGravityVelocity(this.gravityVelocity, timeDelta);
       this.el.object3D.position.y += this.gravityVelocity * (timeDelta / 1000);
+
+      if (this.data.type == 'mine') {
+        for (var i = 0; i < this.mineFragments.length; i++) {
+          fragment = this.mineFragments[i];
+          if (!fragment.visible) { continue; }
+          fragment.position.addScaledVector(fragment.speed, timeDelta / 1000);
+          fragment.scale.multiplyScalar(0.97)
+          if (fragment.scale.y < 0.1){
+            fragment.visible = false;
+          }
+        }
+        return;
+      }
 
       rightCutNormal.copy(this.rightCutPlane.normal)
                     .multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
