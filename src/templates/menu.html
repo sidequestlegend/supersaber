@@ -232,7 +232,7 @@
 <a-entity
   id="keyboard"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
-  super-keyboard="label: Search from over 2500 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false"
+  super-keyboard="label: Search from over 2500 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.6 1.1 -1.999"
   keyboard-raycastable
   search
@@ -240,7 +240,7 @@
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose">
 </a-entity>
 
-<a-entity id="searchButton" position="0 0.2 -2"
+<a-entity id="searchButton" position="0 0.2 -1.9"
   mixin="slice"
   slice9="src: #slicebtnImg; color: #999; width: 1; left: 70; top: 70; height: 0.2; padding: 0.1"
   animation__mouseenter1="property: slice9.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
