@@ -72,17 +72,21 @@ AFRAME.registerComponent('saber-controls', {
     // Calculate angle covered by the saber in one frame.
     // Trig: Triangle formed by the laser and the linear distance covered by it's tip
     // Arcsin((distanceCoveredByTip / 2.0) / Length of the blade)
-    this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) / (2 * Math.PI)) * 360;
+    this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) /
+                        (2 * Math.PI)) * 360;
 
     // Sample distance of the last 5 frames.
-    if (this.distanceSamples.length === 5) { this.accumulatedDistance -= this.distanceSamples.shift(); }
+    if (this.distanceSamples.length === 5) {
+      this.accumulatedDistance -= this.distanceSamples.shift();
+    }
     this.distanceSamples.push(distance);
     this.accumulatedDistance += distance;
 
-    // Filter out saber movements that are too slow. Too slow or small angle is considered wrong hit. 
+    // Filter out saber movements that are too slow.
+    // Too slow or small angle is considered wrong hit.
     if (this.accumulatedDistance > this.data.strokeMinSpeed * minSpeedFactor) {
-      // Saber has to move more than strokeMinAngle to consider a swing. This filters out
-      // unintentional swings.
+      // Saber has to move more than strokeMinAngle to consider a swing.
+      // This filters out unintentional swings.
       if (!this.swinging && this.strokeAngle > data.strokeMinAngle) {
         startSpeed = this.accumulatedDistance;
         this.swinging = true;
@@ -90,11 +94,13 @@ AFRAME.registerComponent('saber-controls', {
     } else {
       // Stroke finishes. Reset swinging state.
       if (this.swinging) {
-        console.log("Angle " + this.strokeAngle);
+        // console.log("Angle " + this.strokeAngle);
         this.swinging = false;
         this.strokeAngle = 0;
         this.accumulatedDistance = 0;
-        this.distanceSamples.forEach(function(el, i) { distanceSamples[i] = 0; });
+        for (let i = 0; i < this.distanceSamples.length; i++) {
+          this.distanceSamples[i] = 0;
+        }
       }
     }
 
