@@ -37,12 +37,16 @@ AFRAME.registerComponent('beat', {
   },
 
   init: function () {
-    this.beatBoundingBox = new THREE.Box3();
-    this.hitBoundingBox = new THREE.Box3();
-    this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.backToPool = false;
+    this.beatBoundingBox = new THREE.Box3();
+    this.cutDirection = new THREE.Vector3();
+    this.destroyed = false;
     this.gravityVelocity = 0;
+    this.hitBoundingBox = new THREE.Box3();
+    this.poolName = undefined;
     this.returnToPoolTimer = 800;
+    this.rotationAxis = new THREE.Vector3();
+    this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
     this.rightCutPlanePoints = [
       new THREE.Vector3(),
       new THREE.Vector3(),
@@ -58,13 +62,9 @@ AFRAME.registerComponent('beat', {
     this.wrongElRight = document.getElementById('wrongRight');
     this.missElLeft = document.getElementById('missLeft');
     this.missElRight = document.getElementById('missRight');
-
     this.particles = document.getElementById('saberParticles');
 
-    this.saberColors = {
-      right: 'blue',
-      left: 'red'
-    };
+    this.saberColors = {right: 'blue', left: 'red'};
 
     this.initBlock();
     this.initColliders();
@@ -132,7 +132,7 @@ AFRAME.registerComponent('beat', {
     blockEl.object3D.scale.multiplyScalar(3.45).multiplyScalar(this.data.size);
 
     if (this.data.type === 'mine') {
-      let model = blockEl.getObject3D('mesh');
+      const model = blockEl.getObject3D('mesh');
       model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
     } else {
       signEl.setAttribute('material', SIGN_MATERIAL);
@@ -173,9 +173,6 @@ AFRAME.registerComponent('beat', {
   initFragments: function () {
     var cutEl;
     var partEl;
-
-    this.cutDirection = new THREE.Vector3();
-    this.rotationAxis = new THREE.Vector3();
 
     partEl = this.partLeftEl = document.createElement('a-entity');
     cutEl = this.cutLeftEl = document.createElement('a-entity');
