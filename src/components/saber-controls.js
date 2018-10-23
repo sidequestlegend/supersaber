@@ -6,7 +6,7 @@ AFRAME.registerComponent('saber-controls', {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
-    strokeMinSpeed: {default: 1000},
+    strokeMinSpeed: {default: 250000},
     strokeMinAngle: {default: 5}
   },
 
@@ -15,16 +15,16 @@ AFRAME.registerComponent('saber-controls', {
     var data = this.data;
 
     this.boundingBox = new THREE.Box3();
-    this.controllerType = '';
     this.bladeEl = el.querySelector('.blade');
-    this.swingStartPosition = new THREE.Vector3();
-    this.swingEndPosition = new THREE.Vector3();
+    this.controllerType = '';
     this.bladeTipPosition = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
     this.saberPosition = new THREE.Vector3();
     this.swinging = false;
     this.strokeAngle = 0;
     this.strokeCount = 0;
+    this.distanceSamples = [];
+    this.accumulatedDistance = 0;
 
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
 
@@ -51,23 +51,51 @@ AFRAME.registerComponent('saber-controls', {
   detectStroke: function (delta) {
     var bladeObject
     var distance;
+    var distanceSamples = this.distanceSamples;
     var data = this.data;
+    var directionChange;
+    var minSpeedFactor = this.swinging ? 1 : 1;
+    var startSpeed;
+    var strokeMinSpeed = this.swinging ? startSpeed : this.data.strokeMinSpeed;
 
+    if (this.data.hand === 'left') { return; }
+
+    // Tip of the blade position in world coordinates.
     this.bladeTipPosition.set(0, 0.9, 0);
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
-
     bladeObject.localToWorld(this.bladeTipPosition);
+
+    // Distance covered but the saber tip in one frame.
     distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
-    if (distance > data.strokeMinSpeed) {
-      if (!this.startSwinging) { this.startSwinging = true; }
-      this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) / (2 * Math.PI)) * 360;
-      if (this.strokeAngle > data.strokeMinAngle) { this.swinging = true; }
+
+    // Calculate angle covered by the saber in one frame.
+    // Trig: Triangle formed by the laser and the linear distance covered by it's tip
+    // Arcsin((distanceCoveredByTip / 2.0) / Length of the blade)
+    this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) / (2 * Math.PI)) * 360;
+
+    // Sample distance of the last 5 frames.
+    if (this.distanceSamples.length === 5) { this.accumulatedDistance -= this.distanceSamples.shift(); }
+    this.distanceSamples.push(distance);
+    this.accumulatedDistance += distance;
+
+    // Filter out saber movements that are too slow. Too slow or small angle is considered wrong hit. 
+    if (this.accumulatedDistance > this.data.strokeMinSpeed * minSpeedFactor) {
+      // Saber has to move more than strokeMinAngle to consider a swing. This filters out
+      // unintentional swings.
+      if (!this.swinging && this.strokeAngle > data.strokeMinAngle) {
+        startSpeed = this.accumulatedDistance;
+        this.swinging = true;
+      }
     } else {
-      // if (this.swinging) { console.log("ANGLE " + this.strokeAngle); }
-      this.swinging = false;
-      this.startSwinging = false;
-      this.strokeAngle = 0;
+      // Stroke finishes. Reset swinging state.
+      if (this.swinging) {
+        console.log("Angle " + this.strokeAngle);
+        this.swinging = false;
+        this.strokeAngle = 0;
+        this.accumulatedDistance = 0;
+        this.distanceSamples.forEach(function(el, i) { distanceSamples[i] = 0; });
+      }
     }
 
     this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
