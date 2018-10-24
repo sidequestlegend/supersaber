@@ -6,7 +6,7 @@ AFRAME.registerComponent('saber-controls', {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
-    strokeMinSpeed: {default: 250000},
+    strokeMinSpeed: {default: 100000},
     strokeMinAngle: {default: 5}
   },
 
@@ -54,7 +54,6 @@ AFRAME.registerComponent('saber-controls', {
     var distanceSamples = this.distanceSamples;
     var data = this.data;
     var directionChange;
-    var minSpeedFactor = this.swinging ? 1 : 1;
     var startSpeed;
     var strokeMinSpeed = this.swinging ? startSpeed : this.data.strokeMinSpeed;
 
@@ -67,13 +66,7 @@ AFRAME.registerComponent('saber-controls', {
     bladeObject.localToWorld(this.bladeTipPosition);
 
     // Distance covered but the saber tip in one frame.
-    distance = this.bladeTipPosition.distanceTo(this.bladeTipPreviousPosition) * 1000000;
-
-    // Calculate angle covered by the saber in one frame.
-    // Trig: Triangle formed by the laser and the linear distance covered by it's tip
-    // Arcsin((distanceCoveredByTip / 2.0) / Length of the blade)
-    this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) /
-                        (2 * Math.PI)) * 360;
+    distance = this.bladeTipPreviousPosition.sub(this.bladeTipPosition).length() * 1000000;
 
     // Sample distance of the last 5 frames.
     if (this.distanceSamples.length === 5) {
@@ -84,7 +77,12 @@ AFRAME.registerComponent('saber-controls', {
 
     // Filter out saber movements that are too slow.
     // Too slow or small angle is considered wrong hit.
-    if (this.accumulatedDistance > this.data.strokeMinSpeed * minSpeedFactor) {
+    if (this.accumulatedDistance > this.data.strokeMinSpeed && this.strokeAngle < 180) {
+      // Calculate angle covered by the saber in one frame.
+      // Trig: Triangle formed by the saber and the linear distance covered by its tip
+      // Arcsin((distanceCoveredByTip / 2.0) / Length of the blade)
+      this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) /
+                          (2 * Math.PI)) * 360 * 2;
       // Saber has to move more than strokeMinAngle to consider a swing.
       // This filters out unintentional swings.
       if (!this.swinging && this.strokeAngle > data.strokeMinAngle) {
@@ -94,13 +92,11 @@ AFRAME.registerComponent('saber-controls', {
     } else {
       // Stroke finishes. Reset swinging state.
       if (this.swinging) {
-        // console.log("Angle " + this.strokeAngle);
+        console.log("Angle " + this.strokeAngle);
         this.swinging = false;
         this.strokeAngle = 0;
         this.accumulatedDistance = 0;
-        for (let i = 0; i < this.distanceSamples.length; i++) {
-          this.distanceSamples[i] = 0;
-        }
+        for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
       }
     }
 
