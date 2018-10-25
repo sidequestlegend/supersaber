@@ -20,7 +20,7 @@
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
       bind__overlay="enabled: !isPlaying"
-      bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver"
+      bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
       bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
       animation__gameover="property: object3D.background; type: color; to: #750000; startEvents: gameover"
       animation__gameoverfog="property: components.fog.el.object3D.fog.color; type: color; to: #330000; startEvents: gameover; dur: 500; easing: easeInQuad"

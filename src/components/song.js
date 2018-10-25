@@ -13,7 +13,8 @@ AFRAME.registerComponent('song', {
     challengeId: {default: ''},
     isBeatsPreloaded: {default: false},
     isGameOver: {default: false},
-    isPlaying: {default: false}
+    isPlaying: {default: false},
+    isVictory: {default: false}
   },
 
   init: function () {
@@ -30,6 +31,14 @@ AFRAME.registerComponent('song', {
     this.el.addEventListener('gamemenurestart', this.onRestart.bind(this));
     this.el.addEventListener('wallhitstart', this.onWallHitStart.bind(this));
     this.el.addEventListener('wallhitend', this.onWallHitEnd.bind(this));
+
+    if (process.env.NODE_ENV !== 'production') {
+      this.el.addEventListener('fakevictory', () => {
+        this.source.stop();
+        this.source.disconnect();
+        this.victory();
+      });
+    }
   },
 
   update: function (oldData) {
@@ -43,6 +52,20 @@ AFRAME.registerComponent('song', {
 
     if (oldData.isGameOver && !data.isGameOver) {
       this.audioAnalyser.gainNode.value = BASE_VOLUME;
+    }
+
+    // On victory screen, play song in background.
+    if (!oldData.isVictory && data.isVictory) {
+      this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
+        this.audioAnalyser.resumeContext();
+        const gain = this.audioAnalyser.gainNode.gain;
+        gain.cancelScheduledValues(0);
+        gain.setValueAtTime(0.05, 0);
+        this.source = evt.detail;
+        this.source.start();
+      }, ONCE);
+      this.audioAnalyser.refreshSource();
+      return;
     }
 
     // New challenge, play if we have loaded and were waiting for beats to preload.
