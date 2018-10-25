@@ -130,9 +130,20 @@
   </a-entity>
 
   <a-entity
-    id="floor" mixin="neonAnimation"
+    id="floor"
+    mixin="neonAnimation"
     geometry="primitive: plane; width: 3; height: 3"
     material="color: #AAF; shader: flat; src: #floorImg"
     rotation="-90 0 0"
     stepback></a-entity>
+
+  <a-entity
+    id="songProgressRing"
+    bind__song-progress-ring="challengeId: challenge.id; enabled: isPlaying"
+    bind__visible="isPlaying"
+    geometry="primitive: plane; width: 0.1; height: 0.1"
+    material="shader: ring; progress: 0; transparent: true; radiusInner: 0.5; color: #ABABAB"
+    position="0 0.1 -1.5"
+    rotation="-45 0 0">
+  </a-entity>
 </a-entity>
