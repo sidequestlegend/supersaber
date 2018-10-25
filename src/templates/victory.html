@@ -23,30 +23,25 @@
     position="0 0.48 0"></a-entity>
 
   <a-entity
-    id="victoryBackground"
-    mixin="slice"
-    slice9="width: 0.77; height: 0.4; padding: 0.04"
-    position="0 -0.15 -0.03"></a-entity>
+    id="victoryInfoAccuracy"
+    mixin="font"
+    bind__text="value: score.accuracyText"
+    text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+    position="0.45 0.75 0"></a-entity>
 
-  <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1" position="0 -0.06 0">
-    <a-entity
-      id="victoryInfoScore"
-      mixin="font"
-      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
-      bind__text="value: score.scoreText"></a-entity>
+  <a-entity
+    id="victoryInfoScore"
+    mixin="font"
+    bind__text="value: score.score"
+    text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 2.25"
+    position="0 -0.15 0"></a-entity>
 
-    <a-entity
-      id="victoryInfoAccuracy"
-      mixin="font"
-      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
-      bind__text="value: score.accuracyText"></a-entity>
-
-    <a-entity
-      id="victoryInfoMaxCombo"
-      mixin="font"
-      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
-      bind__text="value: score.maxComboText"></a-entity>
-  </a-entity>
+  <a-entity
+    id="victoryInfoMaxCombo"
+    mixin="font"
+    bind__text="value: score.maxComboText"
+    text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 1"
+    position="0 -0.28 0"></a-entity>
 </a-entity>
 
 <a-timeline id="victoryTimeline">

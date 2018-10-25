@@ -78,8 +78,7 @@ AFRAME.registerState({
       maxComboText: 0,
       multiplier: 1,
       rank: '',  // Grade (S to F).
-      score: 0,
-      scoreText: 0
+      score: 0
     },
     search: {
       active: true,
@@ -186,10 +185,10 @@ AFRAME.registerState({
       state.isVictory = true;
       state.menuActive = false;
       state.score.accuracy = .88;
-      state.score.accuracyText = 'Accuracy: 99.99%';
-      state.score.maxComboText = 'Max Combo: 123';
+      state.score.accuracyText = '99.99%';
+      state.score.maxComboText = 'MAX COMBO - 123';
       state.score.rank = 'S';
-      state.score.scoreText = 'Score: 9001';
+      state.score.score = 9001;
     },
 
     gamemenuresume: (state) => {
