@@ -48,6 +48,7 @@ AFRAME.registerComponent('beat', {
     this.cutDirection = new THREE.Vector3();
     this.destroyed = false;
     this.gravityVelocity = 0;
+    this.hitEventDetail = {};
     this.hitBoundingBox = new THREE.Box3();
     this.poolName = undefined;
     this.returnToPoolTimer = 800;
@@ -73,6 +74,8 @@ AFRAME.registerComponent('beat', {
     this.mineParticles = document.getElementById('mineParticles');
 
     this.saberColors = {right: 'blue', left: 'red'};
+
+    this.onEndStroke = this.onEndStroke.bind(this);
 
     this.initBlock();
     this.initColliders();
@@ -546,6 +549,7 @@ AFRAME.registerComponent('beat', {
   },
 
   checkCollisions: function () {
+    const cutDirection = this.data.cutDirection;
     const saberColors = this.saberColors;
     const saberEls = this.saberEls;
     const hitBoundingBox = this.hitColliderEl && this.hitBoundingBox.setFromObject(
@@ -555,15 +559,29 @@ AFRAME.registerComponent('beat', {
 
     for (let i = 0; i < saberEls.length; i++) {
       let saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
+      let saberControls;
+      let maxAngle;
 
       if (!saberBoundingBox) { break; }
 
       const hand = saberEls[i].getAttribute('saber-controls').hand;
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
-        if (saberEls[i].components['saber-controls'].swinging &&
-            this.data.color === saberColors[hand]) {
-          this.el.emit('beathit', null, true);
-          this.el.emit(`beathit${hand}`, null, true);
+        if (saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[hand]) {
+          saberControls = saberEls[i].components['saber-controls'];
+          this.hitHand = hand;
+          this.hitSaberEl =  saberEls[i];
+          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke);
+          if (cutDirection === 'up' || cutDirection === 'down') {
+            maxAngle = saberControls.maxAnglePlaneX;
+          } else if (cutDirection === 'left' || cutDirection === 'right') {
+            maxAngle = saberControls.maxAnglePlaneY;
+          } else {
+            maxAngle = saberControls.maxAnglePlaneXY;
+          }
+          this.angleBeforeHit = maxAngle;
+          saberControls.maxAnglePlaneX = 0;
+          saberControls.maxAnglePlaneY = 0;
+          saberControls.maxAnglePlaneXY = 0;
         } else {
           this.wrongHit(hand);
         }
@@ -590,14 +608,43 @@ AFRAME.registerComponent('beat', {
 
         if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[hand]) {
-          this.el.emit('beathit', null, true);
-          this.el.emit(`beathit${hand}`, null, true);
+          this.hitSaberEl = saberEls[i];
+          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke);
+          saberControls = saberEls[i].components['saber-controls'];
+          maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY, saberControls.maxAnglePlaneXY);
+          this.hitHand = hand;
+          this.angleBeforeHit = maxAngle;
+          saberControls.maxAnglePlaneX = 0;
+          saberControls.maxAnglePlaneY = 0;
+          saberControls.maxAnglePlaneXY = 0;
         } else {
           this.wrongHit(hand);
         }
         break;
       }
     }
+  },
+
+  onEndStroke: function () {
+    var saberControls = this.hitSaberEl.components['saber-controls'];
+    var maxAngle;
+    var cutDirection = this.data.cutDirection;
+    var hitEventDetail = this.hitEventDetail;
+    if (cutDirection === 'up' || cutDirection === 'down') {
+      maxAngle = saberControls.maxAnglePlaneX;
+    } else if (cutDirection === 'left' || cutDirection === 'right') {
+      maxAngle = saberControls.maxAnglePlaneY;
+    } else {
+      maxAngle = saberControls.maxAnglePlaneXY;
+    }
+    hitEventDetail.angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
+    hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
+    console.log("MAX ANGLE BEORE: " + this.angleBeforeHit * 180 / Math.PI);
+    console.log("MAX ANGLE AFTER: " + maxAngle  * 180 / Math.PI);
+    this.hitSaberEl.removeEventListener('strokeend', this.onEndStroke);
+
+    this.el.emit('beathit', hitEventDetail, true);
+    this.el.emit(`beathit${this.hitHand}`, null, true); 
   },
 
   /**

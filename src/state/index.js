@@ -101,19 +101,25 @@ AFRAME.registerState({
       localStorage.setItem('activeHand', state.activeHand);
     },
 
-    beathit: state => {
+    beathit: (state, payload) => {
+      var score = 0;
       if (state.damage > DAMAGE_DECAY) {
         state.damage -= DAMAGE_DECAY;
       }
       state.score.beatsHit++;
-      state.score.score += 1000;
       state.score.combo++;
       if (state.score.combo > state.score.maxCombo) {
         state.score.maxCombo = state.score.combo;
       }
+
+      score += payload.angleBeforeHit >= 90 ? 70 : (payload.angleBeforeHit / 90) * 70;
+      score += payload.angleAfterHit >= 60 ? 30 : (payload.angleAfterHit / 60) * 30;
+      state.score.score += Math.floor(score * state.score.multiplier);
+
       state.score.multiplier = state.score.combo >= 8
         ? 8
         : 2 * Math.floor(Math.log2(state.score.combo));
+      // console.log("BEAT SCORE: " + score);
     },
 
     beatmiss: state => {
