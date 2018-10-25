@@ -192,6 +192,7 @@ AFRAME.registerComponent('beat', {
     this.setObjModelFromTemplate(blockEl, this.models[this.data.type]);
 
     // Model is 0.29 size. We make it 1.0 so we can easily scale based on 1m size.
+    blockEl.object3D.scale.set(1, 1, 1);
     blockEl.object3D.scale.multiplyScalar(3.45).multiplyScalar(this.data.size);
 
     if (this.data.type === 'mine') {
@@ -288,7 +289,10 @@ AFRAME.registerComponent('beat', {
         fragment.visible = false;
         fragment.position.set(0, 0, 0);
         fragment.scale.set(1, 1, 1);
-        fragment.speed.set(Math.random() * 5 - 2.5, Math.random() * 5 - 2.5, Math.random() * 5 - 2.5);
+        fragment.speed.set(
+          Math.random() * 5 - 2.5,
+          Math.random() * 5 - 2.5,
+          Math.random() * 5 - 2.5);
       }
       return;
     }
@@ -566,7 +570,8 @@ AFRAME.registerComponent('beat', {
 
       const hand = saberEls[i].getAttribute('saber-controls').hand;
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
-        if (saberEls[i].components['saber-controls'].swinging && this.data.color === saberColors[hand]) {
+        if (saberEls[i].components['saber-controls'].swinging &&
+            this.data.color === saberColors[hand]) {
           saberControls = saberEls[i].components['saber-controls'];
           this.hitHand = hand;
           this.hitSaberEl =  saberEls[i];
@@ -611,7 +616,8 @@ AFRAME.registerComponent('beat', {
           this.hitSaberEl = saberEls[i];
           this.hitSaberEl.addEventListener('strokeend', this.onEndStroke);
           saberControls = saberEls[i].components['saber-controls'];
-          maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY, saberControls.maxAnglePlaneXY);
+          maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY,
+                              saberControls.maxAnglePlaneXY);
           this.hitHand = hand;
           this.angleBeforeHit = maxAngle;
           saberControls.maxAnglePlaneX = 0;
@@ -639,12 +645,12 @@ AFRAME.registerComponent('beat', {
     }
     hitEventDetail.angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
     hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
-    console.log("MAX ANGLE BEORE: " + this.angleBeforeHit * 180 / Math.PI);
-    console.log("MAX ANGLE AFTER: " + maxAngle  * 180 / Math.PI);
+    // console.log("MAX ANGLE BEORE: " + this.angleBeforeHit * 180 / Math.PI);
+    // console.log("MAX ANGLE AFTER: " + maxAngle  * 180 / Math.PI);
     this.hitSaberEl.removeEventListener('strokeend', this.onEndStroke);
 
     this.el.emit('beathit', hitEventDetail, true);
-    this.el.emit(`beathit${this.hitHand}`, null, true); 
+    this.el.emit(`beathit${this.hitHand}`, null, true);
   },
 
   /**
