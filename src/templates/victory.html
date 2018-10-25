@@ -5,7 +5,14 @@
   position="1.64 1 -1.2"
   rotation="0 -55 0"
   bind__visible="isVictory">
-  <a-entity mixin="slice" slice9="width: 0.77; height: 1; padding: 0.04" position="0 0.110 -0.03"></a-entity>
+
+  <a-entity
+    id="victoryInfoRank"
+    bind__animation="enabled: isVictory"
+    animation="property: object3D.rotation.y; from: 0; to: 360; loop: true; easing: linear; dur: 3000"
+    mixin="textFont"
+    bind__victory-rank="rank: score.rank"
+    text="wrapCount: 1; align: center; color: #AAFFAA; width: 0.5; side: double"></a-entity>
 
  <a-entity
     id="victoryAccuracyRing"
@@ -15,13 +22,13 @@
     material="shader: ring; transparent: true; color: #ABABAB; radiusInner: 0.8; color: #FAFAFA"
     position="0 0.48 0"></a-entity>
 
-  <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1">
-    <a-entity
-      id="victoryInfoRank"
-      mixin="textFont"
-      bind__victory-rank="rank: score.rank"
-      text="wrapCount: 1; align: center; color: #AAFFAA; width: 0.5"></a-entity>
+  <a-entity
+    id="victoryBackground"
+    mixin="slice"
+    slice9="width: 0.77; height: 0.4; padding: 0.04"
+    position="0 -0.15 -0.03"></a-entity>
 
+  <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1" position="0 -0.06 0">
     <a-entity
       id="victoryInfoScore"
       mixin="textFont"
