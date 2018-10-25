@@ -22,6 +22,7 @@ AFRAME.registerComponent('song', {
     this.audioAnalyser = this.data.analyserEl.components.audioanalyser;
     this.context = this.audioAnalyser.context;
     this.songLoadingIndicator = document.getElementById('songLoadingIndicator');
+    this.songStartTime = 0;
 
     this.victory = this.victory.bind(this);
 
@@ -194,6 +195,7 @@ AFRAME.registerComponent('song', {
   startAudio: function () {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
+    this.songStartTime = this.context.currentTime;
     this.source.start();
   }
 });

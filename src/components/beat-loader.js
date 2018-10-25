@@ -133,19 +133,21 @@ AFRAME.registerComponent('beat-loader', {
    * Generate beats and stuff according to timestamp.
    */
   tick: function (time, delta) {
-    const beatsTime = this.beatsTime;
     var i;
     var noteTime;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
     // Re-sync song with beats playback.
-    if (this.beatsTimeOffset !== undefined &&
-        this.songCurrentTime !== this.el.components.song.context.currentTime) {
-      this.songCurrentTime = this.el.components.song.context.currentTime;
+    const songComponent = this.el.components.song;
+    const currentTime = songComponent.context.currentTime - songComponent.songStartTime;
+    if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
+        this.songCurrentTime !== currentTime) {
+      this.songCurrentTime = currentTime;
       this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
 
+    const beatsTime = this.beatsTime;
     const bpm = this.beatData._beatsPerMinute;
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
 
