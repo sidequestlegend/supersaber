@@ -187,7 +187,7 @@ AFRAME.registerState({
       state.score.accuracy = .88;
       state.score.accuracyText = '99.99%';
       state.score.maxComboText = 'MAX COMBO - 123';
-      state.score.rank = 'S';
+      state.score.rank = 'B';
       state.score.score = 9001;
     },
 
