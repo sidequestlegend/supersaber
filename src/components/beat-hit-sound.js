@@ -68,7 +68,7 @@ AFRAME.registerComponent('beat-hit-sound', {
     if (layer === LAYER_BOTTOM) {
       source.detune.setValueAtTime(-400, 0);
     } else if (layer === LAYER_TOP) {
-      source.detune.setValueAtTime(400, 0);
+      source.detune.setValueAtTime(200, 0);
     }
 
     // Inflection.
