@@ -196,41 +196,29 @@
     <a-entity
       id="menuSelectedChallengeImage"
       bind__menu-selected-challenge-image="selectedChallengeId: menuSelectedChallenge.id"
-      geometry="primitive: plane; height: 0.3; width: 0.3"
+      geometry="primitive: plane; height: 0.4; width: 0.4"
       material="shader: flat"
-      position="0 0.382 0"></a-entity>
+      position="0 0.42 0"></a-entity>
 
-    <a-entity id="menuSelectedChallengeInfo">
+    <a-entity id="menuSelectedChallengeInfo" position="0 0.058 0">
       <a-entity
         id="menuSelectedChallengeSongAuthor"
-        position="0 0.058 0"
+        position="0 0.042 0"
         mixin="font"
-        text="wrapCount: 40; align: center; color: #FF185B"
+        text="wrapCount: 30; lineHeight: 40; width: 0.8; align: center; baseline: center; color: #FFF"
         bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
       <a-entity
         id="menuSelectedChallengeSongName"
-        position="0 -0.031 0"
+        position="0 -0.059 0"
         mixin="font"
-        text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+        text="align: center; color: #FFF; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
       <a-entity
-        id="menuSelectedChallengeAuthor"
-        position="0 -0.257 0"
+        id="menuSelectedChallengeInfo"
+        position="0 -0.282 0"
         mixin="font"
-        text="align: center; color: #FFF; wrapCount: 33; width: 0.78; baseline: bottom"
-        bind__text="value: menuSelectedChallenge.author"></a-entity>
-      <a-entity
-        id="menuSelectedChallengeDownloads"
-        position="0 -0.325 0"
-        mixin="font"
-        text="align: center; color: #FFF; wrapCount: 35"
-        bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
-      <a-entity
-        id="menuSelectedChallengeSongInfo"
-        position="0 -0.395 0"
-        mixin="font"
-        text="align: center; color: #FFF; wrapCount: 35"
-        bind__text="value: menuSelectedChallenge.songInfoText"></a-entity>
+        text="align: center; color: #999; wrapCount: 30; lineHeight: 40; width: 0.8; baseline: bottom"
+        bind__text="value: menuSelectedChallenge.info"></a-entity>
     </a-entity>
 
     <a-plane
