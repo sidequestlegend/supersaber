@@ -86,8 +86,15 @@ AFRAME.registerComponent('song', {
       }, ONCE);
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
       data.analyserEl.setAttribute('audioanalyser', this.analyserSetter);
+
+      // Already loaded.
+      if (this.audioAnalyser.xhr.response) {
+        this.songLoadingIndicator.setAttribute('material', 'progress', 1);
+        this.el.sceneEl.emit('songfetchfinish', null, false);
+        return;
+      }
+
       this.audioAnalyser.xhr.addEventListener('progress', evt => {
-        // Finished fetching.
         this.onFetchProgress(evt);
       });
     });
@@ -110,8 +117,10 @@ AFRAME.registerComponent('song', {
 
   onFetchProgress: function (evt) {
     const progress = evt.loaded / evt.total;
-    this.songLoadingIndicator.setAttribute('geometry', 'thetaLength', progress * 360);
-    if (progress >= 1) { this.el.sceneEl.emit('songfetchfinish', null, false); }
+    this.songLoadingIndicator.setAttribute('material', 'progress', progress);
+    if (progress >= 1) {
+      this.el.sceneEl.emit('songfetchfinish', null, false);
+    }
   },
 
   onGameOver: function () {

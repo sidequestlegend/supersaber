@@ -25,15 +25,25 @@
       bind__text="value: loadingText"
       bind__visible="isSongLoading"
       text="align: center; color: #FAFAFA; wrapCount: 18; width: 0.65"
-      position="0 -0.32 0"></a-entity>
+      position="0 -0.32 0.001"></a-entity>
 
     <a-entity
       id="songLoadingIndicator"
-      bind__visible="isSongFetching"
-      geometry="primitive: ring; radiusInner: 0.025; radiusOuter: 0.04"
-      material="shader: flat; color: #FAFAFA; opacity: 0.75; side: back"
-      position="0 -0.38 0"
-      rotation="0 180 0">
+      bind__visible="isSongLoading"
+      geometry="primitive: plane; height: 0.1; width: 0.1"
+      material="shader: ring; color: #FAFAFA; radiusInner: 0.2; radiusOuter: 0.9; progress: 0; transparent: true"
+      position="0 -0.38 0.002">
+    </a-entity>
+
+    <a-entity
+      id="songProcessingIndicator"
+      bind__animation__spin="enabled: isSongLoading && !isSongFetching"
+      bind__visible="isSongLoading && !isSongFetching"
+      animation__spin="property: components.material.material.uniforms.progress.value; from: 0; to: 1; easing: easeInOutCubic; dur: 2000; loop: true"
+      geometry="primitive: plane; height: 0.2; width: 0.2"
+      material="shader: ring; color: #ABABAB; radiusInner: 0.2; radiusOuter: 0.4; transparent: true"
+      position="0 -0.38 0.004"
+      visible="false">
     </a-entity>
   </a-entity>
 </a-entity>
