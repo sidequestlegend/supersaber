@@ -1,0 +1,46 @@
+<!-- Victory. -->
+<a-entity
+  id="victoryInfoContainer"
+  class="overlay"
+  position="1.64 1 -1.2"
+  rotation="0 -55 0"
+  bind__visible="isVictory">
+  <a-entity mixin="slice" slice9="width: 0.77; height: 1; padding: 0.04" position="0 0.110 -0.03"></a-entity>
+
+ <a-entity
+    id="victoryAccuracyRing"
+    bind__victory-accuracy-ring="accuracy: score.accuracy"
+    animation="property: components.material.material.uniforms.progress.value; from: 0; easing: easeOutQuad; delay: 500; dur: 2000; autoplay: false"
+    geometry="primitive: plane; width: 0.7; height: 0.7"
+    material="shader: ring; transparent: true; color: #ABABAB; radiusInner: 0.8; color: #FAFAFA"
+    position="0 0.48 0"></a-entity>
+
+  <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1">
+    <a-entity
+      id="victoryInfoRank"
+      mixin="textFont"
+      bind__victory-rank="rank: score.rank"
+      text="wrapCount: 1; align: center; color: #AAFFAA; width: 0.5"></a-entity>
+
+    <a-entity
+      id="victoryInfoScore"
+      mixin="textFont"
+      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+      bind__text="value: score.scoreText"></a-entity>
+
+    <a-entity
+      id="victoryInfoAccuracy"
+      mixin="textFont"
+      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+      bind__text="value: score.accuracyText"></a-entity>
+
+    <a-entity
+      id="victoryInfoMaxCombo"
+      mixin="textFont"
+      text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+      bind__text="value: score.maxComboText"></a-entity>
+  </a-entity>
+</a-entity>
+
+<a-timeline id="victoryTimeline">
+</a-timeline>

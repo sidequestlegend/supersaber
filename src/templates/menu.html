@@ -102,6 +102,7 @@
 <!-- Menu container begins here. -->
 <a-entity
   id="menu"
+  class="overlay"
   bind__visible="menuActive"
   position="0 1.1 -2"
   visible="false">
@@ -232,6 +233,7 @@
 
 <a-entity
   id="keyboard"
+  class="overlay"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
   super-keyboard="label: Search from over 2500 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.6 1.1 -1.999"

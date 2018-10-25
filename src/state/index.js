@@ -351,12 +351,24 @@ AFRAME.registerState({
 
       if (accuracy === 1) {
         state.rank = 'S';
-      } else if (accuracy >= .90) {
+      } else if (accuracy >= .98) {
+        state.rank = 'A+';
+      } else if (accuracy >= .93) {
         state.rank = 'A';
-      } else if (accuracy >= .80) {
+      } else if (accuracy >= .9) {
+        state.rank = 'A-';
+      } else if (accuracy >= .88) {
+        state.rank = 'B+';
+      } else if (accuracy >= .83) {
         state.rank = 'B';
-      } else if (accuracy >= .70) {
+      } else if (accuracy >= .8) {
+        state.rank = 'B-';
+      } else if (accuracy >= .78) {
+        state.rank = 'C+';
+      } else if (accuracy >= .73) {
         state.rank = 'C';
+      } else if (accuracy >= .7) {
+        state.rank = 'C-';
       } else if (accuracy >= .60) {
         state.rank = 'D';
       } else {
