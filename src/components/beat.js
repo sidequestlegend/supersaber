@@ -81,8 +81,7 @@ AFRAME.registerComponent('beat', {
     this.initColliders();
     if (this.data.type === 'mine') {
       this.initMineFragments();
-    }
-    else {
+    } else {
       this.initFragments();
     };
   },
@@ -163,6 +162,9 @@ AFRAME.registerComponent('beat', {
     if (Math.random > 0.5) { this.rotationZChange *= -1; }
     this.el.object3D.rotation.z -= this.rotationZChange;
     this.rotationZStart = this.el.object3D.rotation.z;
+
+    // Reset mine.
+    if (this.data.type == 'mine') { this.resetMineFragments(); }
   },
 
   initBlock: function () {
@@ -284,16 +286,7 @@ AFRAME.registerComponent('beat', {
     var fragment;
 
     if (this.data.type === 'mine') {
-      for (var i = 0; i < this.mineFragments.length; i++) {
-        fragment = this.mineFragments[i];
-        fragment.visible = false;
-        fragment.position.set(0, 0, 0);
-        fragment.scale.set(1, 1, 1);
-        fragment.speed.set(
-          Math.random() * 5 - 2.5,
-          Math.random() * 5 - 2.5,
-          Math.random() * 5 - 2.5);
-      }
+      this.resetMineFragments();
       return;
     }
 
@@ -330,6 +323,20 @@ AFRAME.registerComponent('beat', {
       side: 'double'
     });
     this.setObjModelFromTemplate(cutRightEl, this.models.dot);
+  },
+
+  resetMineFragments: function () {
+    if (this.data.type !== 'mine') { return; }
+    for (let i = 0; i < this.mineFragments.length; i++) {
+      let fragment = this.mineFragments[i];
+      fragment.visible = false;
+      fragment.position.set(0, 0, 0);
+      fragment.scale.set(1, 1, 1);
+      fragment.speed.set(
+        Math.random() * 5 - 2.5,
+        Math.random() * 5 - 2.5,
+        Math.random() * 5 - 2.5);
+    }
   },
 
   wrongHit: function (hand) {
@@ -466,9 +473,7 @@ AFRAME.registerComponent('beat', {
   })(),
 
   destroyMine: function () {
-    var fragment;
-
-    for (var i = 0; i < this.mineFragments.length; i++) {
+    for (let i = 0; i < this.mineFragments.length; i++) {
       this.mineFragments[i].visible = true;
     }
 
