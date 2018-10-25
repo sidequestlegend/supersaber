@@ -69,7 +69,8 @@ AFRAME.registerState({
       songSubName: ''
     },
     score: {
-      accuracy: '',
+      accuracy: 0,
+      accuracyText: '',
       beatsHit: 0,
       beatsMissed: 0,
       combo: 0,
@@ -183,7 +184,8 @@ AFRAME.registerState({
       Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.isVictory = true;
       state.menuActive = false;
-      state.score.accuracy = 'Accuracy: 99.99%';
+      state.score.accuracy = .88;
+      state.score.accuracyText = 'Accuracy: 99.99%';
       state.score.maxComboText = 'Max Combo: 123';
       state.score.rank = 'S';
       state.score.scoreText = 'Score: 9001';
@@ -344,7 +346,8 @@ AFRAME.registerState({
       state.isVictory = true;
 
       const accuracy = state.beatsHit / (state.beatsMissed + state.beatsHit);
-      state.score.accuracy = `${(accuracy * 100).toFixed()}%`;
+      state.score.accuracy = accuracy;
+      state.score.accuracyText = `${(accuracy * 100).toFixed()}%`;
 
       if (accuracy === 1) {
         state.rank = 'S';
