@@ -4,6 +4,7 @@ const auxObj3D = new THREE.Object3D();
 const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
 const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
 const BEAT_WARMUP_ROTATION_TIME = 750;
+const ONCE = {once: true};
 const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
 /**
@@ -579,8 +580,8 @@ AFRAME.registerComponent('beat', {
             this.data.color === saberColors[hand]) {
           saberControls = saberEls[i].components['saber-controls'];
           this.hitHand = hand;
-          this.hitSaberEl =  saberEls[i];
-          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke);
+          this.hitSaberEl = saberEls[i];
+          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke, ONCE);
           if (cutDirection === 'up' || cutDirection === 'down') {
             maxAngle = saberControls.maxAnglePlaneX;
           } else if (cutDirection === 'left' || cutDirection === 'right') {
@@ -652,7 +653,6 @@ AFRAME.registerComponent('beat', {
     hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
     // console.log("MAX ANGLE BEORE: " + this.angleBeforeHit * 180 / Math.PI);
     // console.log("MAX ANGLE AFTER: " + maxAngle  * 180 / Math.PI);
-    this.hitSaberEl.removeEventListener('strokeend', this.onEndStroke);
 
     this.el.emit('beathit', hitEventDetail, true);
     this.el.emit(`beathit${this.hitHand}`, null, true);
