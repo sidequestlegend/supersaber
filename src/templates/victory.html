@@ -10,7 +10,7 @@
     id="victoryInfoRank"
     bind__animation="enabled: isVictory"
     animation="property: object3D.rotation.y; from: 0; to: 360; loop: true; easing: linear; dur: 3000"
-    mixin="textFont"
+    mixin="font"
     bind__victory-rank="rank: score.rank"
     text="wrapCount: 1; align: center; color: #AAFFAA; width: 0.5; side: double"></a-entity>
 
@@ -31,19 +31,19 @@
   <a-entity id="victoryInfo" layout="type: box; columns: 1; margin: -0.1" position="0 -0.06 0">
     <a-entity
       id="victoryInfoScore"
-      mixin="textFont"
+      mixin="font"
       text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
       bind__text="value: score.scoreText"></a-entity>
 
     <a-entity
       id="victoryInfoAccuracy"
-      mixin="textFont"
+      mixin="font"
       text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
       bind__text="value: score.accuracyText"></a-entity>
 
     <a-entity
       id="victoryInfoMaxCombo"
-      mixin="textFont"
+      mixin="font"
       text="align: center; color: #FAFAFA; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
       bind__text="value: score.maxComboText"></a-entity>
   </a-entity>

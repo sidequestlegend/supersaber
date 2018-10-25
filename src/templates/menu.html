@@ -10,14 +10,14 @@
   <!-- All search result text merged and spaced out. -->
   <a-entity
     id="searchSongNameTexts"
-    mixin="textFont"
+    mixin="font"
     bind__text="value: search.songNameTexts"
     text="baseline: top; align: left; color: #FAFAFA; wrapCount: 28; lineHeight: 112"
     position="0.181 0.51 0.001">
   </a-entity>
   <a-entity
     id="searchSongSubNameTexts"
-    mixin="textFont"
+    mixin="font"
     bind__text="value: search.songSubNameTexts"
     text="baseline: top; align: left; color: #999; wrapCount: 42; lineHeight: 166"
     position="0.181 0.445 0.001">
@@ -34,7 +34,7 @@
 
   <a-entity
     id="searchSongNameTextSelected"
-    mixin="textFont"
+    mixin="font"
     bind__search-song-name-selected="index: menuSelectedChallenge.index; selectedChallengeId: menuSelectedChallenge.id"
     bind__text="value: menuSelectedChallenge.shortSongName"
     text="align: left; color: #333; wrapCount: 28"
@@ -161,7 +161,7 @@
               animation__mouseentervisible="property: visible; from: false; to: true; startEvents: mouseenter; pauseEvents: mouseleave; dur: 1"
               animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
               animation__mouseleavevisible="property: visible; from: true; to: false; startEvents: mouseleave; pauseEvents: mouseenter; dur: 160"></a-entity>
-          <a-entity class="difficultyText" mixin="textFont" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #333" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
+          <a-entity class="difficultyText" mixin="font" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #333" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
         </a-entity>
       </template>
     {% endraw %}
@@ -184,31 +184,31 @@
       <a-entity
         id="menuSelectedChallengeSongAuthor"
         position="0 0.058 0"
-        mixin="textFont"
+        mixin="font"
         text="wrapCount: 40; align: center; color: #FF185B"
         bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
       <a-entity
         id="menuSelectedChallengeSongName"
         position="0 -0.031 0"
-        mixin="textFont"
+        mixin="font"
         text="align: center; color: #FF185B; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
       <a-entity
         id="menuSelectedChallengeAuthor"
         position="0 -0.257 0"
-        mixin="textFont"
+        mixin="font"
         text="align: center; color: #FFF; wrapCount: 33; width: 0.78; baseline: bottom"
         bind__text="value: menuSelectedChallenge.author"></a-entity>
       <a-entity
         id="menuSelectedChallengeDownloads"
         position="0 -0.325 0"
-        mixin="textFont"
+        mixin="font"
         text="align: center; color: #FFF; wrapCount: 35"
         bind__text="value: menuSelectedChallenge.downloadsText"></a-entity>
       <a-entity
         id="menuSelectedChallengeSongInfo"
         position="0 -0.395 0"
-        mixin="textFont"
+        mixin="font"
         text="align: center; color: #FFF; wrapCount: 35"
         bind__text="value: menuSelectedChallenge.songInfoText"></a-entity>
     </a-entity>
@@ -233,7 +233,7 @@
   <a-entity
     id="searchError"
     bind__visible="search.hasError"
-    mixin="textFont"
+    mixin="font"
     text="align: center; value: Sorry, there was an issue fetching search results. Please try again."
     position="0 0 0.01"></a-entity>
 </a-entity>
@@ -260,5 +260,5 @@
   bind-toggle__raycastable="menuActive && !isSearching"
   bind__visible="menuActive && !isSearching"
   proxy-event="event: click; to: a-scene; as: keyboardopen">
-  <a-entity mixin="textFont" text="align: center; color: #AAA; wrapCount: 20; value: SEARCH SONGS" position="0 -0.07 0.01"></a-entity>
+  <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: SEARCH SONGS" position="0 -0.07 0.01"></a-entity>
 </a-entity>
