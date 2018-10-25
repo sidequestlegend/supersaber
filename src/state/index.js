@@ -84,6 +84,7 @@ AFRAME.registerState({
     search: {
       active: true,
       page: 0,
+      hasError: false,
       hasNext: false,
       hasPrev: false,
       results: [],
@@ -288,6 +289,10 @@ AFRAME.registerState({
       state.isSongLoading = true;
     },
 
+    searcherror: (state, payload) => {
+      state.search.hasError = true;
+    },
+
     searchprevpage: function (state) {
       if (state.search.page === 0) { return; }
       state.search.page--;
@@ -307,6 +312,7 @@ AFRAME.registerState({
      */
     searchresults: (state, payload) => {
       var i;
+      state.search.hasError = false;
       state.search.page = 0;
       state.search.results = payload.results;
       for (i = 0; i < payload.results.length; i++) {

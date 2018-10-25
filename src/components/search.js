@@ -36,7 +36,12 @@ AFRAME.registerComponent('search', {
     this.queryObject.query = query;
     algolia.search(this.queryObject, (err, content) => {
       // Cache popular hits.
-      if (err) { console.error(err); }
+      if (err) {
+        this.el.sceneEl.emit('searcherror', null, false);
+        console.error(err);
+        return;
+      }
+
       if (!query) { this.popularHits = content.hits; }
       this.eventDetail.results = content.hits;
       this.el.sceneEl.emit('searchresults', this.eventDetail);

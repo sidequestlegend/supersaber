@@ -229,6 +229,13 @@
       bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id"
       bind__visible="menuActive && !!menuSelectedChallenge.id"></a-plane>
   </a-entity>
+
+  <a-entity
+    id="searchError"
+    bind__visible="search.hasError"
+    mixin="textFont"
+    text="align: center; value: Sorry, there was an issue fetching search results. Please try again."
+    position="0 0 0.01"></a-entity>
 </a-entity>
 
 <a-entity
