@@ -490,11 +490,14 @@ function computeMenuSelectedChallengeIndex (state) {
 }
 
 function computeMenuSelectedChallengeInfoText (state) {
-  const numBeats = state.menuSelectedChallenge.numBeats;
-  const songLength = state.menuSelectedChallenge.songLength;
+  const challenge = state.menuSelectedChallenge;
+
+  const numBeats = challenge.numBeats;
+  const songLength = challenge.songLength;
   if (!numBeats || !songLength) { return; }
-  state.menuSelectedChallenge.songInfoText =
-    `${formatSongLength(songLength)} / ${numBeats} beats`;
+
+  challenge.songInfoText =
+    `${challenge.author}\n${challenge.downloadsText}\n${formatSongLength(songLength)} / ${numBeats} beats`;
 }
 
 function formatSongLength (songLength) {
