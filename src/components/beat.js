@@ -115,6 +115,7 @@ AFRAME.registerComponent('beat', {
   tock: function (time, timeDelta) {
     const el = this.el;
     const position = el.object3D.position;
+    const rotation = el.object3D.rotation;
 
     if (this.destroyed) {
       this.tockDestroyed(timeDelta);
@@ -137,6 +138,7 @@ AFRAME.registerComponent('beat', {
       } else {
         // Standard moving.
         position.z += this.data.speed * (timeDelta / 1000);
+        rotation.z = this.startRotationZ;
       }
 
       if (position.z > (this.startPositionZ - BEAT_WARMUP_ROTATION_OFFSET) &&
@@ -159,6 +161,8 @@ AFRAME.registerComponent('beat', {
    */
   onGenerate: function () {
     this.startPositionZ = this.el.object3D.position.z;
+    this.startRotationZ = this.el.object3D.rotation.z;
+
     this.el.object3D.position.z -= BEAT_WARMUP_OFFSET;
 
     // Set up rotation warmup.
