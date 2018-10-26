@@ -126,9 +126,10 @@
 
     {{ searchResults() }}
 
-    <a-entity id="soundboxing"
-      bind__visible="!menuSelectedChallenge.id && !isSearching" position="0.95 -0.57 0.01">
-      <a-entity id="soundboxing-button"
+    <a-entity id="soundboxingLink"
+      bind__visible="!menuSelectedChallenge.id && !isSearching"
+      position="0.95 -0.57 0.01">
+      <a-entity id="soundboxingButton"
         link="href: https://webvr.soundboxing.co/; on: click"
         geometry="primitive:plane; width: 0.38; height: 0.19;"
         material="shader: flat; src: #soundboxingImg"
@@ -142,7 +143,7 @@
           mixin="font"
           animation__show="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: show; dur: 100"
           animation__hide="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; startEvents: hide; dur: 100"
-          text="value:Did you try SoundBoxing?; opacity: 0; baseline: bottom; width: 0.7; wrapCount: 24; align: center"></a-entity>
+          text="value: If you liked Super Saber, you'll love Soundboxing! Play it now instantly.; opacity: 0; baseline: bottom; width: 0.7; wrapCount: 24; align: center"></a-entity>
       </a-entity>
     </a-entity>
   </a-entity>
