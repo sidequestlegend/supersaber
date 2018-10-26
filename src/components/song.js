@@ -183,13 +183,13 @@ AFRAME.registerComponent('song', {
   onWallHitStart: function () {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.linearRampToValueAtTime(0.2, this.context.currentTime + 0.1);
-    this.source.detune.linearRampToValueAtTime(-1200, this.context.currentTime + 0.1);
+    // this.source.detune.linearRampToValueAtTime(-1200, this.context.currentTime + 0.1);
   },
 
   onWallHitEnd: function () {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.linearRampToValueAtTime(BASE_VOLUME, this.context.currentTime + 0.2);
-    this.source.detune.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
+    // this.source.detune.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
   },
 
   startAudio: function () {
