@@ -121,14 +121,18 @@ AFRAME.registerComponent('beat', {
     } else {
       // Only check collisions when close.
       const collisionZThreshold = -4;
+
       if (position.z > collisionZThreshold) { this.checkCollisions(); }
 
       // Move.
       if (position.z < this.startPositionZ) {
+        let newPositionZ = position.z + BEAT_WARMUP_SPEED * (timeDelta / 1000);
         // Warm up / warp in.
-        position.z += BEAT_WARMUP_SPEED * (timeDelta / 1000);
-        if (position.z >= this.startPositionZ) {
+        if (newPositionZ < this.startPositionZ) {
           this.beams.newBeam(this.data.color, position);
+          position.z = newPositionZ;
+        } else {
+          position.z = this.startPositionZ;
         }
       } else {
         // Standard moving.
