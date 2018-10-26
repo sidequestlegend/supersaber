@@ -140,7 +140,7 @@ AFRAME.registerComponent('beat-loader', {
 
     // Re-sync song with beats playback.
     const songComponent = this.el.components.song;
-    const currentTime = songComponent.context.currentTime - songComponent.songStartTime;
+    const currentTime = songComponent.getCurrentTime();
     if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
         this.songCurrentTime !== currentTime) {
       this.songCurrentTime = currentTime;
@@ -177,11 +177,10 @@ AFRAME.registerComponent('beat-loader', {
       }
     }
 
-
     if (this.beatsTimeOffset !== undefined) {
       if (this.beatsTimeOffset <= 0) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
-        this.songCurrentTime = this.el.components.song.context.currentTime;
+        this.songCurrentTime = songComponent.getCurrentTime();
         this.beatsTimeOffset = undefined;
       } else {
         this.beatsTimeOffset -= delta;

@@ -197,5 +197,9 @@ AFRAME.registerComponent('song', {
     gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
     this.songStartTime = this.context.currentTime;
     this.source.start();
+  },
+
+  getCurrentTime: function () {
+    return this.context.currentTime - this.songStartTime;
   }
 });
