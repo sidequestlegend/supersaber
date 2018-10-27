@@ -39,8 +39,8 @@ AFRAME.registerState({
       image: '',
       isLoading: false,
       isBeatsPreloaded: false,  // Whether we have passed the negative time.
+      songDuration: 0,
       songName: '',
-      songLength: 0,
       songSubName: ''
     },
     damage: 0,
@@ -59,10 +59,12 @@ AFRAME.registerState({
       difficulty: '',
       downloads: '',
       downloadsText: '',
+      genre: '',
       id: '',
       index: -1,
       image: '',
       numBeats: undefined,
+      songDuration: 0,
       songInfoText: '',
       songLength: undefined,
       songName: '',
@@ -135,8 +137,6 @@ AFRAME.registerState({
 
     beatloaderfinish: (state, payload) => {
       state.challenge.isLoading = false;
-      state.menuSelectedChallenge.numBeats = payload.numBeats;
-      computeMenuSelectedChallengeInfoText(state);
     },
 
     beatloaderpreloadfinish: (state) => {
@@ -146,9 +146,6 @@ AFRAME.registerState({
     beatloaderstart: (state) => {
       state.challenge.isBeatsPreloaded = false;
       state.challenge.isLoading = true;
-      state.menuSelectedChallenge.songInfoText = '';
-      state.menuSelectedChallenge.numBeats = undefined;
-      state.menuSelectedChallenge.songLength = undefined;
     },
 
     /**
@@ -228,13 +225,13 @@ AFRAME.registerState({
      */
     menuchallengeselect: (state, id) => {
       // Copy from challenge store populated from search results.
-      let challengeData = challengeDataStore[id];
-      Object.assign(state.menuSelectedChallenge, challengeData);
+      let challenge = challengeDataStore[id];
+      Object.assign(state.menuSelectedChallenge, challenge);
 
       // Populate difficulty options.
       state.menuDifficulties.length = 0;
-      for (let i = 0; i < challengeData.difficulties.length; i++) {
-        state.menuDifficulties.unshift(challengeData.difficulties[i]);
+      for (let i = 0; i < challenge.difficulties.length; i++) {
+        state.menuDifficulties.unshift(challenge.difficulties[i]);
       }
       state.menuDifficulties.sort(difficultyComparator);
 
@@ -242,9 +239,9 @@ AFRAME.registerState({
       state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
 
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
-      state.menuSelectedChallenge.downloadsText = `${challengeData.downloads} Plays`;
-      computeMenuSelectedChallengeIndex(state);
+      state.menuSelectedChallenge.songInfoText = `By ${challenge.author} / ${challenge.genre || 'Uncategorized'}\n${challenge.downloads} Downloads\nUpvotes: ${challenge.upvotes} / Downvotes: ${challenge.downvotes}\n${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
 
+      computeMenuSelectedChallengeIndex(state);
       state.isSearching = false;
     },
 
@@ -254,11 +251,6 @@ AFRAME.registerState({
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
-    },
-
-    menuselectedchallengesonglength: (state, seconds) => {
-      state.menuSelectedChallenge.songLength = seconds;
-      computeMenuSelectedChallengeInfoText(state);
     },
 
     minehit: state => {
@@ -487,17 +479,6 @@ function computeMenuSelectedChallengeIndex (state) {
       break;
     }
   }
-}
-
-function computeMenuSelectedChallengeInfoText (state) {
-  const challenge = state.menuSelectedChallenge;
-
-  const numBeats = challenge.numBeats;
-  const songLength = challenge.songLength;
-  if (!numBeats || !songLength) { return; }
-
-  challenge.songInfoText =
-    `${challenge.author}\n${challenge.downloadsText}\n${formatSongLength(songLength)} / ${numBeats} beats`;
 }
 
 function formatSongLength (songLength) {
