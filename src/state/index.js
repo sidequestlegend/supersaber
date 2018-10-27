@@ -239,7 +239,7 @@ AFRAME.registerState({
       state.menuSelectedChallenge.difficulty = state.menuDifficulties[0];
 
       state.menuSelectedChallenge.image = utils.getS3FileUrl(id, 'image.jpg');
-      state.menuSelectedChallenge.songInfoText = `By ${challenge.author} / ${challenge.genre || 'Uncategorized'}\n${challenge.downloads} Downloads\nUpvotes: ${challenge.upvotes} / Downvotes: ${challenge.downvotes}\n${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
+      state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, 12)} ${challenge.genre && challenge.genre !== 'Uncategorized' ? '/' + challenge.genre : ''}\n${challenge.downloads} Downloads\nUpvotes: ${challenge.upvotes} / Downvotes: ${challenge.downvotes}\n${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
 
       computeMenuSelectedChallengeIndex(state);
       state.isSearching = false;
