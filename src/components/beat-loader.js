@@ -37,7 +37,6 @@ AFRAME.registerComponent('beat-loader', {
     this.beatsTime = undefined;
     this.beatsTimeOffset = undefined;
     this.bpm = undefined;
-    this.loadFinishEventDetail = {numBeats: undefined};
     this.songCurrentTime = undefined;
     this.onKeyDown = this.onKeyDown.bind(this);
     this.xhr = null;
@@ -98,8 +97,7 @@ AFRAME.registerComponent('beat-loader', {
       this.beatData = JSON.parse(xhr.responseText);
       this.beatDataProcessed = false;
       this.xhr = null;
-      this.loadFinishEventDetail.numBeats = this.beatData._notes.length;
-      this.el.sceneEl.emit('beatloaderfinish', this.loadFinishEventDetail, false);
+      this.el.sceneEl.emit('beatloaderfinish', null, false);
     });
     xhr.send();
   },
