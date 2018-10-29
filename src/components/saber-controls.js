@@ -26,7 +26,6 @@ AFRAME.registerComponent('saber-controls', {
     this.bladeTipPreviousPosition = new THREE.Vector3();
     this.saberPosition = new THREE.Vector3();
     this.swinging = false;
-    this.strokeAngle = 0;
     this.strokeCount = 0;
     this.distanceSamples = [];
     this.accumulatedDistance = 0;
@@ -88,17 +87,10 @@ AFRAME.registerComponent('saber-controls', {
 
     // Filter out saber movements that are too slow. Too slow or small angle is considered wrong hit.
     // Cap stroke to 180 degrees.
-    if (this.accumulatedDistance > this.data.strokeMinSpeed && this.strokeAngle < 180) {
-      // Calculate angle covered by the saber in one frame and accumulate.
-      // Trig: Triangle formed by the saber and the linear distance covered by its tip
-      // Arcsin((distanceCoveredByTip / 2.0) / Length of the blade) * 2
-      // This is not exact becasuse assumes wrist as pivot point, ignoring elbow and shoulder.
-      // It seems to work well in practice but might need tweaking.
-      this.strokeAngle += ((Math.asin(((distance / 1000000) / 2.0) / 0.9)) /
-                          (2 * Math.PI)) * 360 * 2;
+    if (this.accumulatedDistance > this.data.strokeMinSpeed) {
       // Saber has to move more than strokeMinAngle to consider a swing.
       // This filters out unintentional swings.
-      if (!this.swinging && this.strokeAngle > data.strokeMinAngle) {
+      if (!this.swinging) {
         startSpeed = this.accumulatedDistance;
         this.swinging = true;
         this.maxAnglePlaneX = 0;
@@ -114,7 +106,6 @@ AFRAME.registerComponent('saber-controls', {
         // console.log("MaxAngle " + this.maxAnglePlaneX * 180 / Math.PI);
         this.el.emit('strokeend');
         this.swinging = false;
-        this.strokeAngle = 0;
         this.accumulatedDistance = 0;
         for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
       }
