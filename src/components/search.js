@@ -19,6 +19,10 @@ AFRAME.registerComponent('search', {
 
     // Less hits on normal searches.
     this.queryObject.hitsPerPage = 30;
+
+    this.el.sceneEl.addEventListener('genreclear', () => {
+      this.search('');
+    });
   },
 
   superkeyboardchange: bindEvent(function (evt) {
@@ -43,6 +47,42 @@ AFRAME.registerComponent('search', {
       }
 
       if (!query) { this.popularHits = content.hits; }
+      this.eventDetail.results = content.hits;
+      this.el.sceneEl.emit('searchresults', this.eventDetail);
+    });
+  }
+});
+
+/**
+ * Select genre filter.
+ */
+AFRAME.registerComponent('search-genre', {
+  init: function () {
+    this.eventDetail = {isGenreSearch: true, genre: '', results: []};
+    this.queryObject = {
+      filters: '',
+      hitsPerPage: 100
+    };
+
+    this.el.addEventListener('click', evt => {
+      this.search(evt.target.closest('.genre').dataset.genre);
+    });
+  },
+
+  search: function (genre) {
+    if (genre === 'Video Game') {
+      this.queryObject.filters = `genre:"Video Game" OR genre:"Video Games"`;
+    } else {
+      this.queryObject.filters = `genre:"${genre}"`;
+    }
+    algolia.search(this.queryObject, (err, content) => {
+      if (err) {
+        this.el.sceneEl.emit('searcherror', null, false);
+        console.error(err);
+        return;
+      }
+
+      this.eventDetail.genre = genre;
       this.eventDetail.results = content.hits;
       this.el.sceneEl.emit('searchresults', this.eventDetail);
     });

@@ -106,145 +106,169 @@
   bind__visible="menuActive"
   position="0 1.1 -2"
   visible="false">
-  <a-entity id="menuchallengeunselectground"
-      mixin="slice"
-      slice9="width: 2.5; height: 1.55"
-      position="0 0 -0.005"
-      raycastable></a-entity>
 
-  <a-entity id="searchResultsContainer" position="0 0 0.001"
-    class="menuAnimation"
-    bind__menu-slide-animation="isSearching: isSearching; menuSelectedChallengeId: menuSelectedChallenge.id"
-    animation__menuleft="property: object3D.position.x; to: -0.59; dur: 200; easing: easeOutCubic; autoplay: false"
-    animation__menuright="property: object3D.position.x; from: -0.59; to: 0; dur: 200; easing: easeOutCubic; autoplay: false">
+  <a-entity
+    id="menuBackground"
+    mixin="slice"
+    slice9="width: 2.5; height: 1.55"
+    position="0 0 -0.005"
+    raycastable></a-entity>
 
-    <a-entity id="divisorA"
-      position="0.566 0 -0.0025"
-      geometry="primitive: plane; height: 1.17; width: 0.005"
-      material="shader: flat; color: #fff"
-      bind__visible="!!menuSelectedChallenge.id"></a-entity>
+  <a-entity id="mainMenu" bind__visible="!genreMenuOpen">
+    <a-entity id="searchResultsContainer" position="0 0 0.001"
+      class="menuAnimation"
+      bind__menu-slide-animation="isSearching: isSearching; menuSelectedChallengeId: menuSelectedChallenge.id"
+      animation__menuleft="property: object3D.position.x; to: -0.59; dur: 200; easing: easeOutCubic; autoplay: false"
+      animation__menuright="property: object3D.position.x; from: -0.59; to: 0; dur: 200; easing: easeOutCubic; autoplay: false">
 
-    {{ searchResults() }}
+      <a-entity id="divisorA"
+        position="0.566 0 -0.0025"
+        geometry="primitive: plane; height: 1.17; width: 0.005"
+        material="shader: flat; color: #fff"
+        bind__visible="!!menuSelectedChallenge.id"></a-entity>
 
-    <a-entity id="soundboxingLink"
-      bind__visible="!menuSelectedChallenge.id && !isSearching"
-      position="0.95 -0.57 0.01">
-      <a-entity id="soundboxingButton"
-        link="href: https://webvr.soundboxing.co/; on: click"
-        geometry="primitive:plane; width: 0.38; height: 0.19;"
-        material="shader: flat; src: #soundboxingImg"
-        animation__mouseenter="property: object3D.position.z; from: 0.01; to: 0.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-        animation__mouseleave="property: object3D.position.z; from: 0.03; to: 0.01; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
-        proxy-event__mouseenter="event: mouseenter; to: CHILDREN; as: show"
-        proxy-event__mouseleave="event: mouseleave; to: CHILDREN; as: hide"
-        bind__raycastable="!menuSelectedChallenge.id">
-        <a-entity id="soundboxing-popup"
-          position="0 0.12 0.015"
-          mixin="font"
-          animation__show="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: show; dur: 100"
-          animation__hide="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; startEvents: hide; dur: 100"
-          text="value: If you liked Super Saber, you'll love Soundboxing! Play it now instantly.; opacity: 0; baseline: bottom; width: 0.7; wrapCount: 24; align: center"></a-entity>
+      {{ searchResults() }}
+
+      <a-entity id="soundboxingLink"
+        bind__visible="!menuSelectedChallenge.id && !isSearching && !genre"
+        position="0.95 -0.57 0.01">
+        <a-entity id="soundboxingButton"
+          link="href: https://webvr.soundboxing.co/; on: click"
+          geometry="primitive:plane; width: 0.38; height: 0.19;"
+          material="shader: flat; src: #soundboxingImg"
+          animation__mouseenter="property: object3D.position.z; from: 0.01; to: 0.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+          animation__mouseleave="property: object3D.position.z; from: 0.03; to: 0.01; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+          proxy-event__mouseenter="event: mouseenter; to: CHILDREN; as: show"
+          proxy-event__mouseleave="event: mouseleave; to: CHILDREN; as: hide"
+          bind__raycastable="!menuSelectedChallenge.id">
+          <a-entity id="soundboxing-popup"
+            position="0 0.12 0.015"
+            mixin="font"
+            animation__show="property: components.text.material.uniforms.opacity.value; from: 0; to: 1; startEvents: show; dur: 100"
+            animation__hide="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; startEvents: hide; dur: 100"
+            text="value: If you liked Super Saber, you'll love Soundboxing! Play it now instantly.; opacity: 0; baseline: bottom; width: 0.7; wrapCount: 24; align: center"></a-entity>
+        </a-entity>
       </a-entity>
     </a-entity>
-  </a-entity>
 
-  <a-entity id="menuDifficultiesGroup" position="0.195 0.18 0">
-    <a-entity id="divisorB"
-      position="0.218 -0.179 -0.003"
-      geometry="primitive: plane; height: 1.17; width: 0.005"
-      material="shader: flat; color: #fff"
-      bind__visible="!!menuSelectedChallenge.id"></a-entity>
+    <a-entity id="menuDifficultiesGroup" position="0.195 0.18 0">
+      <a-entity id="divisorB"
+        position="0.218 -0.179 -0.003"
+        geometry="primitive: plane; height: 1.17; width: 0.005"
+        material="shader: flat; color: #fff"
+        bind__visible="!!menuSelectedChallenge.id"></a-entity>
 
-    <!-- Top-aligned. TODO: Smart-centering. -->
-    <!-- Uses bind-for and bind-item to render difficulties. -->
-    <a-entity id="menuDifficulties"
-      bind-for="for: item; in: menuDifficulties; updateInPlace: true; pool: 5"
-      bind__visible="!!menuSelectedChallenge.id"
-      layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-bind-for-key"
-      position="0 0.34 0"
-      menu-difficulty-select>
-      {% raw %}
-      <template>
-        <!-- Item is a string representing the difficulty. -->
-        <a-entity class="difficultyOption" bind-item__data-difficulty="item">
-          <a-entity class="difficultyBackground"
-              bind-item__active-color="active: menuSelectedChallenge.difficulty === item"
-              bind-item__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== item"
-              bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
-              bind-item__animation__mouseentervisible="enabled: menuSelectedChallenge.difficulty !== item"
-              bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.difficulty !== item"
-              bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
-              geometry="primitive: plane; width: 0.4; height: 0.2"
-              material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
-              position="0 -0.005 0"
-              play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-              animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-              animation__mouseentervisible="property: visible; from: false; to: true; startEvents: mouseenter; pauseEvents: mouseleave; dur: 1"
-              animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-              animation__mouseleavevisible="property: visible; from: true; to: false; startEvents: mouseleave; pauseEvents: mouseenter; dur: 160"></a-entity>
-          <a-entity class="difficultyText" mixin="font" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #333" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
-        </a-entity>
-      </template>
-    {% endraw %}
+      <!-- Top-aligned. TODO: Smart-centering. -->
+      <!-- Uses bind-for and bind-item to render difficulties. -->
+      <a-entity id="menuDifficulties"
+        bind-for="for: item; in: menuDifficulties; updateInPlace: true; pool: 5"
+        bind__visible="!!menuSelectedChallenge.id"
+        layout="type: box; columns: 1; marginRow: -0.2; orderAttribute: data-bind-for-key"
+        position="0 0.34 0"
+        menu-difficulty-select>
+        {% raw %}
+        <template>
+          <!-- Item is a string representing the difficulty. -->
+          <a-entity class="difficultyOption" bind-item__data-difficulty="item">
+            <a-entity class="difficultyBackground"
+                bind-item__active-color="active: menuSelectedChallenge.difficulty === item"
+                bind-item__animation__mouseenter="enabled: menuSelectedChallenge.difficulty !== item"
+                bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
+                bind-item__animation__mouseentervisible="enabled: menuSelectedChallenge.difficulty !== item"
+                bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.difficulty !== item"
+                bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
+                geometry="primitive: plane; width: 0.4; height: 0.2"
+                material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
+                position="0 -0.005 0"
+                play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
+                animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+                animation__mouseentervisible="property: visible; from: false; to: true; startEvents: mouseenter; pauseEvents: mouseleave; dur: 1"
+                animation__mouseleave="property: components.material.material.opacity; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+                animation__mouseleavevisible="property: visible; from: true; to: false; startEvents: mouseleave; pauseEvents: mouseenter; dur: 160"></a-entity>
+            <a-entity class="difficultyText" mixin="font" bind-item__active-text-color="active: menuSelectedChallenge.difficulty === item" active-text-color="color: #333" bind-item__text-uppercase="value: item" text="wrapCount: 28; align: center; color: #FAFAFA" position="0 -0.057 0.001"></a-entity>
+          </a-entity>
+        </template>
+      {% endraw %}
+      </a-entity>
     </a-entity>
-  </a-entity>
 
-  <!-- Selected challenge info. -->
-  <a-entity
-    id="menuSelectedChallengePanel"
-    bind__visible="!!menuSelectedChallenge.id"
-    position="0.82 0 0.001">
+    <!-- Selected challenge info. -->
     <a-entity
-      id="menuSelectedChallengeImage"
-      bind__menu-selected-challenge-image="selectedChallengeId: menuSelectedChallenge.id"
-      geometry="primitive: plane; height: 0.4; width: 0.4"
-      material="shader: flat"
-      position="0 0.42 0"></a-entity>
+      id="menuSelectedChallengePanel"
+      bind__visible="!!menuSelectedChallenge.id"
+      position="0.82 0 0.001">
+      <a-entity
+        id="menuSelectedChallengeImage"
+        bind__menu-selected-challenge-image="selectedChallengeId: menuSelectedChallenge.id"
+        geometry="primitive: plane; height: 0.4; width: 0.4"
+        material="shader: flat"
+        position="0 0.42 0"></a-entity>
 
-    <a-entity id="menuSelectedChallengeInfo" position="0 0.058 0">
-      <a-entity
-        id="menuSelectedChallengeSongAuthor"
-        position="0 0.042 0"
-        mixin="font"
-        text="wrapCount: 30; lineHeight: 40; width: 0.8; align: center; baseline: center; color: #FFF"
-        bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
-      <a-entity
-        id="menuSelectedChallengeSongName"
-        position="0 -0.059 0"
-        mixin="font"
-        text="align: center; color: #FFF; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
-        bind__text="value: menuSelectedChallenge.songName"></a-entity>
-      <a-entity
-        id="menuSelectedChallengeInfo"
-        position="0 -0.482 0"
-        mixin="font"
-        text="align: center; color: #999; wrapCount: 30; lineHeight: 60; width: 0.8; baseline: bottom"
-        bind__text="value: menuSelectedChallenge.songInfoText"></a-entity>
+      <a-entity id="menuSelectedChallengeInfo" position="0 0.058 0">
+        <a-entity
+          id="menuSelectedChallengeSongAuthor"
+          position="0 0.042 0"
+          mixin="font"
+          text="wrapCount: 30; lineHeight: 40; width: 0.8; align: center; baseline: center; color: #FFF"
+          bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+        <a-entity
+          id="menuSelectedChallengeSongName"
+          position="0 -0.059 0"
+          mixin="font"
+          text="align: center; color: #FFF; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+          bind__text="value: menuSelectedChallenge.songName"></a-entity>
+        <a-entity
+          id="menuSelectedChallengeInfo"
+          position="0 -0.482 0"
+          mixin="font"
+          text="align: center; color: #999; wrapCount: 30; lineHeight: 60; width: 0.8; baseline: bottom"
+          bind__text="value: menuSelectedChallenge.songInfoText"></a-entity>
+      </a-entity>
+
+      <a-plane
+        id="playButton"
+        play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
+        play-sound__click="event: click; sound: #confirmSound; volume: 0.25"
+        position="0 -0.51 0"
+        proxy-event="event: click; to: a-scene; as: playbuttonclick"
+        material="shader: flat; src: #playImg; transparent: true; color: #CCC"
+        width="0.4"
+        height="0.2"
+        animation__mouseenter1="property: components.material.material.color; type: color; from: #CCC; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+        animation__mouseleave1="property: components.material.material.color; type: color; from: #FFF; to: #CCC; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+        animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+        animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+        bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id"
+        bind__visible="menuActive && !!menuSelectedChallenge.id"></a-plane>
     </a-entity>
 
-    <a-plane
-      id="playButton"
-      play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-      play-sound__click="event: click; sound: #confirmSound; volume: 0.25"
-      position="0 -0.51 0"
-      proxy-event="event: click; to: a-scene; as: playbuttonclick"
-      material="shader: flat; src: #playImg; transparent: true; color: #CCC"
-      width="0.4"
-      height="0.2"
-      animation__mouseenter1="property: components.material.material.color; type: color; from: #CCC; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-      animation__mouseleave1="property: components.material.material.color; type: color; from: #FFF; to: #CCC; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-      animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-      animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-      bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id"
-      bind__visible="menuActive && !!menuSelectedChallenge.id"></a-plane>
+    <a-entity
+      id="searchError"
+      bind__visible="search.hasError"
+      mixin="font"
+      text="align: center; value: Sorry, there was an issue fetching search results. Please try again."
+      position="0 0 0.01"></a-entity>
   </a-entity>
 
   <a-entity
-    id="searchError"
-    bind__visible="search.hasError"
-    mixin="font"
-    text="align: center; value: Sorry, there was an issue fetching search results. Please try again."
-    position="0 0 0.01"></a-entity>
+    id="genreMenu"
+    bind-for="for: genre; in: genres; updateInPlace: true"
+    bind__visible="genreMenuOpen"
+    layout="type: box; columns: 6; marginRow: 0.4; marginColumn: 0.4; align: center"
+    search-genre>
+    <template>
+      <a-entity class="genre" bind-item__data-genre="item">
+        <a-entity
+          geometry="primitive: plane; height: 0.35; width: 0.35"
+          material="color: #222; shader: flat"
+          animation__mouseenter1="property: components.material.material.color; type: color; from: #222; to: #444; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+          animation__mouseleave1="property: components.material.material.color; type: color; from: #444; to: #222; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+          raycaster-target="bindToggle: genreMenuOpen; width: 0.35; height: 0.35">
+          <a-entity mixin="font" text="align: center; width: 1.1" bind-item__text="value: item" position="0 -0.04 0.001"></a-entity>
+        </a-entity>
+      </a-entity>
+    </template>
+  </a-entity>
 </a-entity>
 
 <a-entity
@@ -259,15 +283,48 @@
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose">
 </a-entity>
 
-<a-entity id="searchButton" position="0 0.2 -1.9"
+<a-mixin
+  id="bigMenuButton"
   mixin="slice"
   slice9="src: #slicebtnImg; color: #999; width: 1; left: 70; top: 70; height: 0.2; padding: 0.1"
   animation__mouseenter1="property: slice9.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
   animation__mouseleave1="property: slice9.color; type: color; from: #FFF; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
   animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-  bind-toggle__raycastable="menuActive && !isSearching"
-  bind__visible="menuActive && !isSearching"
+  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150">
+</a-mixin>
+
+<a-entity id="genreButton"
+  mixin="bigMenuButton"
+  bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching && !genre"
+  bind__visible="menuActive && !genreMenuOpen && !isSearching && !genre"
+  position="-0.55 0.2 -1.9"
+  proxy-event="event: click; to: a-scene; as: genremenuopen">
+  <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: BROWSE GENRES" position="0 -0.07 0.01"></a-entity>
+</a-entity>
+
+<a-entity id="clearGenreButton"
+  mixin="bigMenuButton"
+  bind-toggle__raycastable="!!genre"
+  bind__visible="!!genre"
+  position="-0.55 0.2 -1.9"
+  proxy-event="event: click; to: a-scene; as: genreclear">
+  <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: CLEAR GENRE" position="0 -0.07 0.01"></a-entity>
+</a-entity>
+
+<a-entity id="backButton"
+  mixin="bigMenuButton"
+  bind-toggle__raycastable="genreMenuOpen"
+  bind__visible="genreMenuOpen"
+  position="0 0.2 -1.9"
+  proxy-event="event: click; to: a-scene; as: genremenuclose">
+  <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
+</a-entity>
+
+<a-entity id="searchButton"
+  mixin="bigMenuButton"
+  position="0.55 0.2 -1.9"
+  bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching"
+  bind__visible="menuActive && !genreMenuOpen && !isSearching"
   proxy-event="event: click; to: a-scene; as: keyboardopen">
   <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: SEARCH SONGS" position="0 -0.07 0.01"></a-entity>
 </a-entity>

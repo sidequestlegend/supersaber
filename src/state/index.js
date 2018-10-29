@@ -30,6 +30,8 @@ const DEBUG_CHALLENGE = {
  *    `bind__<componentName>="<propertyName>: some.item.in.state"`
  */
 AFRAME.registerState({
+  nonBindedStateKeys: ['genres'],
+
   initialState: {
     activeHand: localStorage.getItem('hand') || 'right',
     challenge: {  // Actively playing challenge.
@@ -44,6 +46,9 @@ AFRAME.registerState({
       songSubName: ''
     },
     damage: 0,
+    genre: '',
+    genres: require('../constants/genres'),
+    genreMenuOpen: false,
     inVR: false,
     isGameOver: false,  // Game over screen.
     isPaused: false,  // Playing, but paused. Not active during menu.
@@ -211,6 +216,18 @@ AFRAME.registerState({
       state.challenge.id = '';
     },
 
+    genreclear: (state) => {
+      state.genre = '';
+    },
+
+    genremenuclose: (state) => {
+      state.genreMenuOpen = false;
+    },
+
+    genremenuopen: (state) => {
+      state.genreMenuOpen = true;
+    },
+
     keyboardclose: (state) => {
       state.isSearching = false;
     },
@@ -314,7 +331,15 @@ AFRAME.registerState({
         challengeDataStore[result.id] = result;
       }
       computeSearchPagination(state);
-      computeMenuSelectedChallengeIndex(state);
+
+      if (payload.isGenreSearch) {
+        state.genreMenuOpen = false;
+        state.genre = payload.genre;
+        state.menuSelectedChallenge.id = '';
+      } else {
+        state.genre = '';
+        computeMenuSelectedChallengeIndex(state);
+      }
     },
 
     songfetchfinish: (state) => {
