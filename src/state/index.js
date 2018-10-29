@@ -471,11 +471,11 @@ function difficultyComparator (a, b) {
 }
 
 function takeDamage (state) {
-  if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   if (!state.isPlaying) { return; }
-  state.damage++;
   state.score.combo = 0;
   state.score.multiplier = 1;
+  if (AFRAME.utils.getUrlParameter('godmode')) { return; }
+  state.damage++;
   checkGameOver(state);
 }
 
