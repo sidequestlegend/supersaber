@@ -628,7 +628,7 @@ AFRAME.registerComponent('beat', {
         if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[hand]) {
           this.hitSaberEl = saberEls[i];
-          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke);
+          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke, ONCE);
           saberControls = saberEls[i].components['saber-controls'];
           maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY,
                               saberControls.maxAnglePlaneXY);
@@ -659,9 +659,6 @@ AFRAME.registerComponent('beat', {
     }
     hitEventDetail.angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
     hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
-    // console.log("MAX ANGLE BEORE: " + this.angleBeforeHit * 180 / Math.PI);
-    // console.log("MAX ANGLE AFTER: " + maxAngle  * 180 / Math.PI);
-
     this.el.emit('beathit', hitEventDetail, true);
     this.el.emit(`beathit${this.hitHand}`, null, true);
   },
