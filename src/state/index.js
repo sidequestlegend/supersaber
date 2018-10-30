@@ -375,29 +375,29 @@ AFRAME.registerState({
       state.score.maxComboText = `MAX COMBO - ${state.score.maxCombo}`;
 
       if (accuracy === 1) {
-        state.rank = 'S';
+        state.score.rank = 'S';
       } else if (accuracy >= .98) {
-        state.rank = 'A+';
+        state.score.rank = 'A+';
       } else if (accuracy >= .93) {
-        state.rank = 'A';
+        state.score.rank = 'A';
       } else if (accuracy >= .9) {
-        state.rank = 'A-';
+        state.score.rank = 'A-';
       } else if (accuracy >= .88) {
-        state.rank = 'B+';
+        state.score.rank = 'B+';
       } else if (accuracy >= .83) {
-        state.rank = 'B';
+        state.score.rank = 'B';
       } else if (accuracy >= .8) {
-        state.rank = 'B-';
+        state.score.rank = 'B-';
       } else if (accuracy >= .78) {
-        state.rank = 'C+';
+        state.score.rank = 'C+';
       } else if (accuracy >= .73) {
-        state.rank = 'C';
+        state.score.rank = 'C';
       } else if (accuracy >= .7) {
-        state.rank = 'C-';
+        state.score.rank = 'C-';
       } else if (accuracy >= .60) {
-        state.rank = 'D';
+        state.score.rank = 'D';
       } else {
-        state.rank = 'F';
+        state.score.rank = 'F';
       }
     },
 
