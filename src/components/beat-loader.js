@@ -139,8 +139,7 @@ AFRAME.registerComponent('beat-loader', {
     // Re-sync song with beats playback.
     const songComponent = this.el.components.song;
     const currentTime = songComponent.getCurrentTime();
-
-    if (currentTime !== undefined && this.beatsTimeOffset !== undefined &&
+    if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
         this.songCurrentTime !== currentTime) {
       this.songCurrentTime = currentTime;
       this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
@@ -176,7 +175,6 @@ AFRAME.registerComponent('beat-loader', {
       }
     }
 
-    // Update preload beat offset.
     if (this.beatsTimeOffset !== undefined) {
       if (this.beatsTimeOffset <= 0) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
@@ -187,7 +185,7 @@ AFRAME.registerComponent('beat-loader', {
       }
     }
 
-    this.beatsTime += delta;
+    this.beatsTime = beatsTime + delta;
   },
 
   generateBeat: (function () {
@@ -304,7 +302,7 @@ AFRAME.registerComponent('beat-loader', {
    */
   clearBeats: function () {
     this.beatsTime = 0;
-    this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
+    this.beatsTimeOffset = undefined;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       let child = this.beatContainer.children[i];
       if (child.components.beat) {
