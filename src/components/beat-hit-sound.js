@@ -42,12 +42,21 @@ AFRAME.registerComponent('beat-hit-sound', {
     this.currentCutDirection = '';
     this.el.setAttribute('sound__beathit', {
       poolSize: 12,
-      src: 'assets/sounds/beatHit.ogg',
+      src: '#beatHitSound',
       volume: 0.5
     });
     this.processSound = this.processSound.bind(this);
 
     sourceCreatedCallback = this.sourceCreatedCallback.bind(this);
+  },
+
+  play: function () {
+    // Kick three.js loader...Don't know why sometimes doesn't load.
+    if (!this.el.components.sound__beathit.loaded) {
+      console.log('[beat-hit-sound] Kicking three.js AudioLoader / sound component...');
+      this.el.setAttribute('sound__beathit', 'src', '');
+      this.el.setAttribute('sound__beathit', 'src', '#beatHitSound');
+    }
   },
 
   playSound: function (beatEl, cutDirection) {
