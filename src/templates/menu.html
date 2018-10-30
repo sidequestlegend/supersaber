@@ -110,7 +110,7 @@
   <a-entity
     id="menuBackground"
     mixin="slice"
-    slice9="width: 2.5; height: 1.55; opacity: 0.9"
+    slice9="left: 70; width: 2.5; height: 1.55; opacity: 0.9"
     position="0 0 -0.005"
     raycastable></a-entity>
 
@@ -252,19 +252,37 @@
 
   <a-entity
     id="genreMenu"
-    bind-for="for: genre; in: genres; updateInPlace: true"
+    bind-for="for: genre; in: genres; updateInPlace: true; key: name"
     bind__visible="genreMenuOpen"
     layout="type: box; columns: 6; marginRow: 0.4; marginColumn: 0.4; align: center"
     search-genre>
     <template>
       <a-entity class="genre" bind-item__data-genre="item">
         <a-entity
-          geometry="primitive: plane; height: 0.35; width: 0.35"
-          material="color: #222; shader: flat"
-          animation__mouseenter1="property: components.material.material.color; type: color; from: #222; to: #444; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-          animation__mouseleave1="property: components.material.material.color; type: color; from: #444; to: #222; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+          mixin="slice"
+          slice9="src: #slicebtnImg; color: #333; width: 0.35; left: 70; top: 70; height: 0.35; padding: 0.07"
+          animation__mouseenter1="property: slice9.color; type: color; from: #333; to: #fff; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+          animation__mouseleave1="property: slice9.color; type: color; from: #fff; to: #333; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+          animation__mouseenter2="property: scale; from: 1 1 1; to: 1.03 1.03 1.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+          animation__mouseleave2="property: scale; from: 1.03 1.03 1.03; to: 1 1 1; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+          proxy-event__enter="event: mouseenter; to: CHILDREN; captureBubbles: true"
+          proxy-event__leave="event: mouseleave; to: CHILDREN; captureBubbles: true"
           raycaster-target="bindToggle: genreMenuOpen; width: 0.35; height: 0.35">
-          <a-entity mixin="font" text="align: center; width: 1.1" bind-item__text="value: item" position="0 -0.04 0.001"></a-entity>
+          <a-entity
+            mixin="font"
+            text="align: center; width: 1.1; color: #555"
+            animation__mouseenter="property: text.color; from: #555; to: #fff; type: color; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+            animation__mouseleave="property: text.color; from: #fff; to: #555; type: color; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+            bind-item__text="value: item.name"
+            position="0 -0.16 0.001"></a-entity>
+          <a-entity
+            class="genreIcon"
+            geometry="primitive: plane; width: 0.22; height: 0.22; buffer: false; skipCache: true"
+            position="0 0.04 0.002"
+            material="shader: flat; src: #genresImg; transparent: true; opacity: 0.6; color: #fff; depthTest: false"
+            animation__mouseenter="property: material.opacity; from: 0.6; to: 1; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+            animation__mouseleave="property: material.opacity; from: 1; to: 0.6; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+            bind-item__atlas-uvs="totalColumns: 6; totalRows: 3; row: item.row; column: item.column"></a-entity>
         </a-entity>
       </a-entity>
     </template>

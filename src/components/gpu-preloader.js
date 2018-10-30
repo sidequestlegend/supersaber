@@ -18,6 +18,7 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadSearchPrevPage();
       this.preloadWallMap();
       this.preloadWrongMap();
+      this.preloadGenres();
     }, 1000);
   },
 
@@ -83,6 +84,11 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadWrongMap: function () {
     const wrong = document.querySelector('#wrongLeft');
     this.preloadTexture(wrong.getObject3D('mesh').material.map);
+  },
+
+  preloadGenres: function () {
+    const genres = document.querySelector('.genreIcon');
+    this.preloadTexture(genres.getObject3D('mesh').material.map);
   },
 
   preloadTexture: function (texture) {

@@ -65,7 +65,7 @@ AFRAME.registerComponent('search-genre', {
     };
 
     this.el.addEventListener('click', evt => {
-      this.search(evt.target.closest('.genre').dataset.genre);
+      this.search(evt.target.closest('.genre').dataset.bindForKey);
     });
   },
 
