@@ -6,7 +6,7 @@ AFRAME.registerComponent('saber-controls', {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
-    strokeMinSpeed: {default: 100000},
+    strokeMinSpeed: {default: 20000},
     strokeMinAngle: {default: 5}
   },
 
