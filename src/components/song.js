@@ -175,6 +175,7 @@ AFRAME.registerComponent('song', {
 
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
+      this.source.onended = this.victory;
       this.el.sceneEl.emit('songloadfinish', null, false);
       if (this.data.isBeatsPreloaded) { this.startAudio(); }
     }, ONCE);
