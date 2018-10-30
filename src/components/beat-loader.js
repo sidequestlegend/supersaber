@@ -1,4 +1,3 @@
-import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
 import utils from '../utils';
 
 /**
@@ -152,8 +151,8 @@ AFRAME.registerComponent('beat-loader', {
     const notes = this.beatData._notes;
     for (i = 0; i < notes.length; ++i) {
       noteTime = notes[i]._time * msPerBeat;
-      if (noteTime > (beatsTime - BEAT_WARMUP_TIME) &&
-          noteTime <= (beatsTime - BEAT_WARMUP_TIME + delta)) {
+      if (noteTime > beatsTime &&
+          noteTime <= (beatsTime + delta)) {
         notes[i].time = noteTime;
         this.generateBeat(notes[i]);
       }
