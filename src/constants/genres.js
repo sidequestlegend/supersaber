@@ -20,4 +20,3 @@ module.exports = [
   {name: 'Dubstep', row: 3, column: 5},
   {name: 'EDM', row: 3, column: 6}
 ];
-3
