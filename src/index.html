@@ -118,7 +118,7 @@
             bind-toggle__data-collidable-saber="isPlaying"
             aabb-collider="objects: [data-collidable-saber]; interval: 50; collideNonVisible: false"
             haptics="events: mouseenter; dur: 35; force: 0.075"
-            haptics__beat="eventsFrom: #beatContainer; events: beathit{{ hand }}; dur: 80; force: 0.2"
+            haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.2"
             haptics__draw="events: drawblade; dur: 750; force: 0.025"
             saber-controls="hand: {{ hand }}"
             haptics-saber

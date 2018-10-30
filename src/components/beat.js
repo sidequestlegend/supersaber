@@ -587,6 +587,7 @@ AFRAME.registerComponent('beat', {
       if (!saberBoundingBox) { break; }
 
       const hand = saberEls[i].getAttribute('saber-controls').hand;
+
       if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
         if (saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[hand]) {
@@ -608,8 +609,14 @@ AFRAME.registerComponent('beat', {
         } else {
           this.wrongHit(hand);
         }
+
+        // Notify for haptics.
+        this.el.emit(`beatcollide${this.hitHand}`, null, true);
+
+        // Sound.
         this.el.parentNode.components['beat-hit-sound'].playSound(
           this.el, this.data.cutDirection);
+
         if (this.data.type === 'mine') {
           this.destroyMine();
         } else {
@@ -619,6 +626,10 @@ AFRAME.registerComponent('beat', {
       }
 
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
+        // Notify for haptics.
+        this.el.emit(`beatcollide${this.hitHand}`, null, true);
+
+        // Sound.
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
 
         if (this.data.type === 'mine') {
@@ -650,10 +661,11 @@ AFRAME.registerComponent('beat', {
   },
 
   onEndStroke: function () {
-    var saberControls = this.hitSaberEl.components['saber-controls'];
-    var maxAngle;
     var cutDirection = this.data.cutDirection;
     var hitEventDetail = this.hitEventDetail;
+    var maxAngle;
+    var saberControls = this.hitSaberEl.components['saber-controls'];
+
     if (cutDirection === 'up' || cutDirection === 'down') {
       maxAngle = saberControls.maxAnglePlaneX;
     } else if (cutDirection === 'left' || cutDirection === 'right') {
@@ -663,8 +675,8 @@ AFRAME.registerComponent('beat', {
     }
     hitEventDetail.angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
     hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
+
     this.el.emit('beathit', hitEventDetail, true);
-    this.el.emit(`beathit${this.hitHand}`, null, true);
   },
 
   /**
