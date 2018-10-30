@@ -132,6 +132,7 @@ AFRAME.registerComponent('song', {
     this.source.stop();
     this.source.disconnect();
     this.source = null;
+    this.songStartTime = undefined;
   },
 
   victory: function () {
@@ -178,6 +179,7 @@ AFRAME.registerComponent('song', {
       if (this.data.isBeatsPreloaded) { this.startAudio(); }
     }, ONCE);
     this.audioAnalyser.refreshSource();
+    this.songStartTime = undefined;
   },
 
   onWallHitStart: function () {
@@ -200,6 +202,7 @@ AFRAME.registerComponent('song', {
   },
 
   getCurrentTime: function () {
+    if (this.songStartTime === undefined) { return undefined; }
     return this.context.currentTime - this.songStartTime;
   }
 });
