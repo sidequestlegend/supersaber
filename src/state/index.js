@@ -367,7 +367,9 @@ AFRAME.registerState({
     victory: function (state) {
       state.isVictory = true;
 
-      const accuracy = state.beatsHit / (state.beatsMissed + state.beatsHit);
+      const accuracy =
+        state.score.beatsHit /
+        (state.score.beatsMissed + state.score.beatsHit);
       state.score.accuracy = accuracy;
       state.score.accuracyText = `${(accuracy * 100).toFixed()}%`;
 
