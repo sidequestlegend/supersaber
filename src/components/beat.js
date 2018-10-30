@@ -361,7 +361,7 @@ AFRAME.registerComponent('beat', {
 
   missHit: function (hand) {
     var missEl = hand === 'left' ? this.missElLeft : this.missElRight;
-    if (!missEl) { return; }
+    if (!missEl || this.data.type === 'mine') { return; }
     missEl.object3D.position.copy(this.el.object3D.position);
     missEl.object3D.position.y += 0.2;
     missEl.object3D.position.z -= 0.5;
