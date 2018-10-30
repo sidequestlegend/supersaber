@@ -10,7 +10,7 @@ var algolia = client.initIndex('supersaber');
  */
 AFRAME.registerComponent('search', {
   init: function () {
-    this.eventDetail = {results: []};
+    this.eventDetail = {query: '', results: []};
     this.popularHits = null;
     this.queryObject = {hitsPerPage: 100, query: ''};
 
@@ -20,9 +20,7 @@ AFRAME.registerComponent('search', {
     // Less hits on normal searches.
     this.queryObject.hitsPerPage = 30;
 
-    this.el.sceneEl.addEventListener('genreclear', () => {
-      this.search('');
-    });
+    this.el.sceneEl.addEventListener('searchclear', () => { this.search(''); });
   },
 
   superkeyboardchange: bindEvent(function (evt) {
@@ -33,10 +31,12 @@ AFRAME.registerComponent('search', {
     // Use cached for popular hits.
     if (!query && this.popularHits) {
       this.eventDetail.results = this.popularHits;
+      this.eventDetail.query = '';
       this.el.sceneEl.emit('searchresults', this.eventDetail);
       return;
     }
 
+    this.eventDetail.query = query;
     this.queryObject.query = query;
     algolia.search(this.queryObject, (err, content) => {
       // Cache popular hits.

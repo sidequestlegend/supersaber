@@ -93,6 +93,7 @@ AFRAME.registerState({
       hasError: false,
       hasNext: false,
       hasPrev: false,
+      query: '',
       results: [],
       songNameTexts: '',  // All names in search results merged together.
       songSubNameTexts: ''  // All sub names in search results merged together.
@@ -322,6 +323,7 @@ AFRAME.registerState({
       var i;
       state.search.hasError = false;
       state.search.page = 0;
+      state.search.query = payload.query;
       state.search.results = payload.results;
       for (i = 0; i < payload.results.length; i++) {
         let result = payload.results[i];
