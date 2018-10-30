@@ -368,6 +368,9 @@ AFRAME.registerComponent('beat', {
     missEl.object3D.position.z -= 0.5;
     missEl.object3D.visible = true;
     missEl.emit('beatmiss', null, true);
+    if (AFRAME.utils.getUrlParameter('synctest')) {
+      console.log(this.el.sceneEl.components.song.getCurrentTime());
+    }
   },
 
   destroyBeat: (function () {
