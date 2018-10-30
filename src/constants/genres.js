@@ -4,7 +4,7 @@ module.exports = [
   {name: 'Rap', row: 1, column: 3},
   {name: 'Rock', row: 1, column: 4},
   {name: 'Soundtrack', row: 1, column: 5},
-  {name: 'Video Game', row: 1, column: 6},
+  {name: 'Video Games', row: 1, column: 6},
 
   {name: 'Electronic', row: 2, column: 1},
   {name: 'Hip Hop', row: 2, column: 2},

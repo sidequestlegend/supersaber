@@ -70,7 +70,7 @@ AFRAME.registerComponent('search-genre', {
   },
 
   search: function (genre) {
-    if (genre === 'Video Game') {
+    if (genre === 'Video Games') {
       this.queryObject.filters = `genre:"Video Game" OR genre:"Video Games"`;
     } else {
       this.queryObject.filters = `genre:"${genre}"`;

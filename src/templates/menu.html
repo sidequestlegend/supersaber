@@ -251,6 +251,14 @@
   </a-entity>
 
   <a-entity
+    id="genreText"
+    mixin="font"
+    bind__text-uppercase="value: genre"
+    bind__visible="!!genre"
+    text="align: center; color: #FAFAFA; wrapCount: 20"
+    position="0 0.8 0.01"></a-entity>
+
+  <a-entity
     id="genreMenu"
     bind-for="for: genre; in: genres; updateInPlace: true; key: name"
     bind__visible="genreMenuOpen"
