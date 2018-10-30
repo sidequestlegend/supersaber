@@ -261,8 +261,8 @@
         <a-entity
           mixin="slice"
           slice9="src: #slicebtnImg; color: #333; width: 0.35; left: 70; top: 70; height: 0.35; padding: 0.07"
-          animation__mouseenter1="property: slice9.color; type: color; from: #333; to: #fff; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-          animation__mouseleave1="property: slice9.color; type: color; from: #fff; to: #333; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+          animation__mouseenter1="property: components.slice9.material.color; type: color; from: #333; to: #fff; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+          animation__mouseleave1="property: components.slice9.material.color; type: color; from: #fff; to: #333; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
           animation__mouseenter2="property: scale; from: 1 1 1; to: 1.03 1.03 1.03; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
           animation__mouseleave2="property: scale; from: 1.03 1.03 1.03; to: 1 1 1; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
           proxy-event__enter="event: mouseenter; to: CHILDREN; captureBubbles: true"
@@ -271,18 +271,18 @@
           <a-entity
             mixin="font"
             text="align: center; width: 1.1; color: #555"
-            animation__mouseenter="property: text.color; from: #555; to: #fff; type: color; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-            animation__mouseleave="property: text.color; from: #fff; to: #555; type: color; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
+            animation__mouseenter="property: components.text.material.uniforms.color.value; from: #555; to: #FAFAFA; type: color; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+            animation__mouseleave="property: components.text.material.uniforms.color.value; from: #FAFAFA; to: #555; type: color; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
             bind-item__text="value: item.name"
             position="0 -0.16 0.001"></a-entity>
           <a-entity
             class="genreIcon"
+            bind-item__atlas-uvs="totalColumns: 6; totalRows: 3; row: item.row; column: item.column"
             geometry="primitive: plane; width: 0.22; height: 0.22; buffer: false; skipCache: true"
             position="0 0.04 0.002"
-            material="shader: flat; src: #genresImg; transparent: true; opacity: 0.7; color: #fff; depthTest: false"
-            animation__mouseenter="property: material.opacity; from: 0.7; to: 1; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
-            animation__mouseleave="property: material.opacity; from: 1; to: 0.7; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
-            bind-item__atlas-uvs="totalColumns: 6; totalRows: 3; row: item.row; column: item.column"></a-entity>
+            material="shader: flat; src: #genresImg; transparent: true; color: #AAA"
+            animation__mouseenter="property: components.material.material.color; type: color; from: #999; to: #FAFAFA; startEvents: mouseenter; pauseEvents: mouseleave; easing: easeOutCubic; dur: 150"
+            animation__mouseleave="property: components.material.material.color; type: color; from: #FAFAFA; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"></a-entity>
         </a-entity>
       </a-entity>
     </template>
