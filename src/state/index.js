@@ -372,6 +372,7 @@ AFRAME.registerState({
         (state.score.beatsMissed + state.score.beatsHit);
       state.score.accuracy = accuracy;
       state.score.accuracyText = `${(accuracy * 100).toFixed()}%`;
+      state.score.maxComboText = `MAX COMBO - ${state.score.maxCombo}`;
 
       if (accuracy === 1) {
         state.rank = 'S';
