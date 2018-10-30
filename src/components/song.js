@@ -105,7 +105,6 @@ AFRAME.registerComponent('song', {
       data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
         // Finished decoding.
         this.source = evt.detail;
-        this.source.onended = this.victory;
         resolve(this.source);
       }, ONCE);
       this.analyserSetter.src = utils.getS3FileUrl(data.challengeId, 'song.ogg');
@@ -175,7 +174,6 @@ AFRAME.registerComponent('song', {
 
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
-      this.source.onended = this.victory;
       this.el.sceneEl.emit('songloadfinish', null, false);
       if (this.data.isBeatsPreloaded) { this.startAudio(); }
     }, ONCE);
@@ -199,6 +197,7 @@ AFRAME.registerComponent('song', {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
     this.songStartTime = this.context.currentTime;
+    this.source.onended = this.victory;
     this.source.start();
   },
 
