@@ -222,9 +222,10 @@ AFRAME.registerComponent('beat', {
 
     if (this.data.type === 'dot' || this.data.type === 'mine') { return; }
 
+    // Hit colliders are 40% larger than the block.
     hitColliderConfiguration = {
       position: {x: 0, y: data.size / 2, z: 0},
-      size: {width: data.size + data.size * 0.2, height: data.size / 5.0, depth: data.size + data.size * 0.2}
+      size: {width: data.size * 1.4, height: data.size / 5.0, depth: data.size* 1.4}
     };
 
     hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
