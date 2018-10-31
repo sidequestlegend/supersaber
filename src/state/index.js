@@ -111,7 +111,6 @@ AFRAME.registerState({
     },
 
     beathit: (state, payload) => {
-      var score = 0;
       if (state.damage > DAMAGE_DECAY) {
         state.damage -= DAMAGE_DECAY;
       }
@@ -121,15 +120,11 @@ AFRAME.registerState({
         state.score.maxCombo = state.score.combo;
       }
 
-      score += payload.angleBeforeHit >= 90 ? 70 : (payload.angleBeforeHit / 90) * 70;
-      score += payload.angleAfterHit >= 60 ? 30 : (payload.angleAfterHit / 60) * 30;
-      state.score.score += Math.floor(score * state.score.multiplier);
+      state.score.score += Math.floor(payload.score * state.score.multiplier);
 
       state.score.multiplier = state.score.combo >= 8
         ? 8
         : 2 * Math.floor(Math.log2(state.score.combo));
-
-      // console.log("BEAT SCORE: " + score + " " + payload.angleBeforeHit + " " + payload.angleAfterHit);
     },
 
     beatmiss: state => {

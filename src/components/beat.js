@@ -665,6 +665,7 @@ AFRAME.registerComponent('beat', {
     var hitEventDetail = this.hitEventDetail;
     var maxAngle;
     var saberControls = this.hitSaberEl.components['saber-controls'];
+    var score = 0;
 
     if (cutDirection === 'up' || cutDirection === 'down') {
       maxAngle = saberControls.maxAnglePlaneX;
@@ -673,10 +674,17 @@ AFRAME.registerComponent('beat', {
     } else {
       maxAngle = saberControls.maxAnglePlaneXY;
     }
-    hitEventDetail.angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
-    hitEventDetail.angleAfterHit = maxAngle * 180 / Math.PI;
+
+    const angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
+    const angleAfterHit = maxAngle * 180 / Math.PI;
+    score += angleBeforeHit >= 90 ? 70 : (angleBeforeHit / 90) * 70;
+    score += angleAfterHit >= 60 ? 30 : (angleAfterHit / 60) * 30;
+
+    hitEventDetail.score = score;
 
     this.el.emit('beathit', hitEventDetail, true);
+
+    // console.log("BEAT SCORE: " + score + " " + angleBeforeHit + " " + angleAfterHit);
   },
 
   /**
