@@ -301,7 +301,7 @@ AFRAME.registerComponent('beat-loader', {
    */
   clearBeats: function () {
     this.beatsTime = 0;
-    this.beatsTimeOffset = undefined;
+    this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       let child = this.beatContainer.children[i];
       if (child.components.beat) {
