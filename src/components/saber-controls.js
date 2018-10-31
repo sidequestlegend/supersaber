@@ -62,8 +62,9 @@ AFRAME.registerComponent('saber-controls', {
     var strokeMinSpeed = this.swinging ? startSpeed : this.data.strokeMinSpeed;
 
     // Tip of the blade position in world coordinates.
-    this.bladeTipPosition.set(0, 0.9, 0);
+    this.bladeTipPosition.set(0, 0.1, 0);
     this.bladePosition.set(0, 0, 0);
+
     bladeObject = this.el.object3D;
     bladeObject.parent.updateMatrixWorld();
     bladeObject.localToWorld(this.bladeTipPosition);
@@ -97,21 +98,31 @@ AFRAME.registerComponent('saber-controls', {
         this.maxAnglePlaneY = 0;
         this.maxAnglePlaneXY = 0;
       }
-      this.maxAnglePlaneX = anglePlaneX > this.maxAnglePlaneX ? anglePlaneX : this.maxAnglePlaneX;
-      this.maxAnglePlaneY = anglePlaneY > this.maxAnglePlaneY ? anglePlaneY : this.maxAnglePlaneY;
-      this.maxAnglePlaneXY = anglePlaneXY > this.maxAnglePlaneXY ? anglePlaneXY : this.maxAnglePlaneXY;
+      const anglePlaneXIncreased = anglePlaneX > this.maxAnglePlaneX;
+      const anglePlaneYIncreased = anglePlaneY > this.maxAnglePlaneY;
+      const anglePlaneXYIncreased = anglePlaneXY > this.maxAnglePlaneXY;
+      this.maxAnglePlaneX = anglePlaneXIncreased ? anglePlaneX : this.maxAnglePlaneX;
+      this.maxAnglePlaneY = anglePlaneYIncreased ? anglePlaneY : this.maxAnglePlaneY;
+      this.maxAnglePlaneXY = anglePlaneXYIncreased ? anglePlaneXY : this.maxAnglePlaneXY;
+      if (!anglePlaneXIncreased && !anglePlaneYIncreased) { this.endStroke(); }
     } else {
       // Stroke finishes. Reset swinging state.
-      if (this.swinging) {
-        // console.log("MaxAngle " + this.maxAnglePlaneX * 180 / Math.PI);
-        this.el.emit('strokeend');
-        this.swinging = false;
-        this.accumulatedDistance = 0;
-        for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
-      }
+      this.swinging = false;
+      this.endStroke();
     }
 
     this.bladeTipPreviousPosition.copy(this.bladeTipPosition);
+  },
+
+  endStroke: function () {
+    // console.log("MaxAngle " + this.maxAnglePlaneX * 180 / Math.PI);
+    this.el.emit('strokeend');
+    if (this.swinging) { return; }
+    this.accumulatedDistance = 0;
+    this.maxAnglePlaneX = 0;
+    this.maxAnglePlaneY = 0;
+    this.maxAnglePlaneXY = 0;
+    for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
   },
 
   initSaber: function (evt) {

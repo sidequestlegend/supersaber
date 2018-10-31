@@ -128,7 +128,8 @@ AFRAME.registerState({
       state.score.multiplier = state.score.combo >= 8
         ? 8
         : 2 * Math.floor(Math.log2(state.score.combo));
-      // console.log("BEAT SCORE: " + score);
+
+      // console.log("BEAT SCORE: " + score + " " + payload.angleBeforeHit + " " + payload.angleAfterHit);
     },
 
     beatmiss: state => {
