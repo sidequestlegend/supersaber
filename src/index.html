@@ -30,7 +30,7 @@
       effect-bloom="strength: 1"
       gpu-preloader
       loading-screen="backgroundColor: #000;"
-      overlay="objects: #rightHand, #leftHand, [mixin~='cursorMesh'], .overlay"
+      overlay="objects: #rightHand, #leftHand, [mixin~='cursorMesh'], .overlay, #tutorial"
       pool__beat-arrow-blue="mixin: arrowBlueBeat; size: 5; container: #beatContainer"
       pool__beat-arrow-red="mixin: arrowRedBeat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
@@ -64,6 +64,7 @@
         {% include './templates/loading.html' %}
         {% include './templates/score.html' %}
         {% include './templates/menu.html' %}
+        {% include './templates/tutorial.html' %}
         {% include './templates/gameMenu.html' %}
         {% include './templates/victory.html' %}
       </a-entity>

@@ -1,0 +1,76 @@
+
+
+<a-entity id="tutorial"
+  position="1.1 1.6 0.2"
+  rotation="0 -90 0"
+  scale="0.8 0.8 0.8"
+  bind__visible="menuActive">
+  <a-entity mixin="slice" slice9="width: 0.94; height: 0.25; left: 70; padding: 0.03; opacity: 0.9" position="-0.62 -0.18 -0.01" raycastable=""></a-entity>
+  <a-entity mixin="slice" slice9="width: 1.1; height: 0.21; left: 70; padding: 0.03; opacity: 0.9" position="-0.54 -0.455 -0.01" raycastable=""></a-entity>
+  <a-entity mixin="slice" slice9="width: 1.21; height: 0.21; left: 70; padding: 0.03; opacity: 0.9" position="-0.48 -0.715 -0.01" raycastable=""></a-entity>
+
+  <a-entity position="-0.3 0 0">
+    <a-entity mixin="font" position="-0.64 -0.18 0" geometry="primitive: ring; radiusInner: 0.07; radiusOuter: 0.085; segmentsPhi: 1; segmentsTheta: 30" material="shader: flat; color: #ffffff"></a-entity>
+    <a-entity mixin="font" position="-0.64 -0.45 0" geometry="primitive: ring; radiusInner: 0.07; radiusOuter: 0.085; segmentsPhi: 1; segmentsTheta: 30" material="shader: flat; color: #ffffff"></a-entity>
+    <a-entity mixin="font" position="-0.64 -0.705 0" geometry="primitive: ring; radiusInner: 0.07; radiusOuter: 0.085; segmentsPhi: 1; segmentsTheta: 30" material="shader: flat; color: #ffffff"></a-entity>
+
+    <a-entity mixin="font" text="align: center; value: 1; wrapCount: 22" position="-0.64 -0.25 0"></a-entity>
+    <a-entity mixin="font" text="align: center; value: 2; wrapCount: 22" position="-0.64 -0.51 0"></a-entity>
+    <a-entity mixin="font" text="align: center; value: 3; wrapCount: 22" position="-0.64 -0.77 0"></a-entity>
+
+    <a-entity mixin="font" text="value: Slice the beats; wrapCount: 30" position="-0.01 -0.2 0"></a-entity>
+    <a-entity mixin="font" text="value: (mind color and direction!)" position="-0.01 -0.26 0"></a-entity>
+    <a-entity mixin="font" text="value: Dodge walls, avoid mines; wrapCount: 30" position="-0.01 -0.5 0"></a-entity>
+    <a-entity mixin="font" text="value: Swing harder for more points!; wrapCount: 30" position="-0.01 -0.75 0"></a-entity>
+  </a-entity>
+
+</a-entity>
+
+<a-entity id="tutorialBloom"
+  position="1.1 1.6 0.2"
+  rotation="0 -90 0"
+  scale="0.8 0.8 0.8"
+  bind__visible="menuActive">
+  <a-entity
+    mixin="font"
+    text="letterSpacing: 2; value: How To Play; color: #aaa; wrapCount: 25"
+    position="-0.3 0.03 0"></a-entity>
+
+  <a-entity
+    obj-model="obj: #tutorial1Obj"
+    material="side: double; shader: flat; transparent: true; src: #tutorialImg"
+    position="0.098 -0.2 0"
+    scale="0.9 0.9 0.9"
+    animation="property: object3D.rotation.y; from: -20; to: 35; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"
+    ></a-entity>
+
+  <a-entity
+    position="0.4 -0.32 0">
+    <a-entity
+      geometry="width: 0.3; height: 0.04; depth: 0.3"
+      animation="property: object3D.position.z; from: -0.5; to: -0.1; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
+      material="shader: wall-shader; tex: #noiseTexture; repeat: 1 2; transparent: true"></a-entity>
+    <a-entity
+      obj-model="obj: #mineObj"
+      scale="0.2 0.2 0.2"
+      position="-0.04 -0.07 0.03"
+      animation="property: object3D.position.z; from: -0.24; to: 0.1; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
+      material="color: #161616; roughness: 0.38; metalness: 0.48;"
+      ></a-entity>
+    <a-entity
+      obj-model="obj: #mineObj"
+      scale="0.2 0.2 0.2"
+      position="-0.09 -0.18 0.01"
+      animation="property: object3D.position.z; from: -0.25; to: -0.04; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
+      material="color: #161616; roughness: 0.38; metalness: 0.48;"
+      ></a-entity>
+    <a-entity
+      obj-model="obj: #tutorial2Obj"
+      material="side: double; shader: flat; transparent: true; src: #tutorialImg"
+      animation__tx="property: object3D.position.x; from: 0.05; to: 0.098; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
+      position="0.098 -0.26 0"
+      scale="0.9 0.9 0.9"
+      ></a-entity>
+  </a-entity>
+
+</a-entity>
