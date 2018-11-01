@@ -12,12 +12,16 @@ const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
  */
 AFRAME.registerComponent('beat', {
   schema: {
+    warmupPosition: {default: 0},
+    anticipationPosition: {default: 0},
     color: {default: 'red', oneOf: ['red', 'blue']},
-    cutDirection: {type: 'string'},
+    cutDirection: {default: 'down'},
     debug: {default: false},
+    horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
     size: {default: 0.30},
     speed: {default: 1.0},
-    type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']}
+    type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
+    verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']}
   },
 
   materialColor: {
@@ -39,6 +43,32 @@ AFRAME.registerComponent('beat', {
   signModels: {
     arrow: 'arrowObjTemplate',
     dot: 'dotObjTemplate'
+  },
+
+  orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
+
+  rotations: {
+    'up': 180,
+    'down': 0,
+    'left': 270,
+    'right': 90,
+    'upleft': 225,
+    'upright': 135,
+    'downleft': 315,
+    'downright': 45
+  },
+
+  horizontalPositions: {
+    'left': -0.60,
+    'middleleft': -0.25,
+    'middleright': 0.25,
+    'right': 0.60
+  },
+
+  verticalPositions: {
+    'bottom': 1.00,
+    'middle': 1.35,
+    'top': 1.70
   },
 
   init: function () {
@@ -87,7 +117,21 @@ AFRAME.registerComponent('beat', {
     };
   },
 
+  updatePosition: function () {
+    const el = this.el;
+    const data = this.data;
+
+    el.object3D.position.set(
+      this.horizontalPositions[data.horizontalPosition],
+      this.verticalPositions[data.verticalPosition],
+      data.anticipationPosition + data.warmupPosition
+    );
+
+    el.object3D.rotation.z = THREE.Math.degToRad(this.rotations[data.cutDirection]);
+  },
+
   update: function () {
+    this.updatePosition();
     this.updateBlock();
     this.updateFragments();
 
@@ -114,6 +158,7 @@ AFRAME.registerComponent('beat', {
 
   tock: function (time, timeDelta) {
     const el = this.el;
+    const data = this.data;
     const position = el.object3D.position;
     const rotation = el.object3D.rotation;
 
@@ -126,14 +171,14 @@ AFRAME.registerComponent('beat', {
       if (position.z > collisionZThreshold) { this.checkCollisions(); }
 
       // Move.
-      if (position.z < this.startPositionZ) {
+      if (position.z < data.anticipationPosition) {
         let newPositionZ = position.z + BEAT_WARMUP_SPEED * (timeDelta / 1000);
         // Warm up / warp in.
-        if (newPositionZ < this.startPositionZ) {
+        if (newPositionZ < data.warmupPosition) {
           this.beams.newBeam(this.data.color, position);
           position.z = newPositionZ;
         } else {
-          position.z = this.startPositionZ;
+          position.z = data.anticipationPosition;
         }
       } else {
         // Standard moving.
@@ -141,7 +186,7 @@ AFRAME.registerComponent('beat', {
         rotation.z = this.startRotationZ;
       }
 
-      if (position.z > (this.startPositionZ - BEAT_WARMUP_ROTATION_OFFSET) &&
+      if (position.z > (data.anticipationPosition - BEAT_WARMUP_ROTATION_OFFSET) &&
           this.currentRotationWarmupTime < BEAT_WARMUP_ROTATION_TIME) {
         const progress = AFRAME.ANIME.easings.easeOutBack(
           this.currentRotationWarmupTime / BEAT_WARMUP_ROTATION_TIME);
@@ -160,10 +205,7 @@ AFRAME.registerComponent('beat', {
    * Called when summoned by beat-loader.
    */
   onGenerate: function () {
-    this.startPositionZ = this.el.object3D.position.z;
     this.startRotationZ = this.el.object3D.rotation.z;
-
-    this.el.object3D.position.z -= BEAT_WARMUP_OFFSET;
 
     // Set up rotation warmup.
     this.currentRotationWarmupTime = 0;
@@ -171,7 +213,6 @@ AFRAME.registerComponent('beat', {
     if (Math.random > 0.5) { this.rotationZChange *= -1; }
     this.el.object3D.rotation.z -= this.rotationZChange;
     this.rotationZStart = this.el.object3D.rotation.z;
-
     // Reset mine.
     if (this.data.type == 'mine') { this.resetMineFragments(); }
   },

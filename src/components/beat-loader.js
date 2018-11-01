@@ -1,3 +1,4 @@
+import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
 import utils from '../utils';
 
 /**
@@ -8,26 +9,40 @@ AFRAME.registerComponent('beat-loader', {
   schema: {
     beatAnticipationTime: {default: 2.0},
     beatSpeed: {default: 4.0},
+    beatWarmupTime: {default: BEAT_WARMUP_TIME / 1000},
+    beatWarmupSpeed: {default: BEAT_WARMUP_SPEED},
     challengeId: {type: 'string'},  // If clicked play.
     difficulty: {type: 'string'},
     isPlaying: {default: false},
     menuSelectedChallengeId: {type: 'string'}  // If menu selected.
   },
 
-  orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
   orientationsHumanized: {
-    0: 'down',
-    45: 'downright',
-    90: 'right',
-    135: 'upright',
-    180: 'up',
-    225: 'upleft',
-    270: 'left',
-    315: 'downleft'
+    0: 'up',
+    1: 'down',
+    2: 'left',
+    3: 'right',
+    4: 'upleft',
+    5: 'upright',
+    6: 'downleft',
+    7: 'downright'
   },
-  horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
-  verticalPositions: [1.00, 1.35, 1.70],
 
+  horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
+
+  horizontalPositionsHumanized: {
+    0: 'left',
+    1: 'middleleft',
+    2: 'middleright',
+    3: 'right'
+  },
+
+  verticalPositionsHumanized: {
+    0: 'bottom',
+    1: 'middle',
+    2: 'top'
+  },
+  
   init: function () {
     this.audioAnalyserEl = document.getElementById('audioanalyser');
     this.beatData = null;
@@ -39,7 +54,6 @@ AFRAME.registerComponent('beat-loader', {
     this.songCurrentTime = undefined;
     this.onKeyDown = this.onKeyDown.bind(this);
     this.xhr = null;
-
     this.stageColors = this.el.components['stage-colors'];
     this.twister = document.getElementById('twister');
     this.leftStageLasers = document.getElementById('leftStageLasers');
@@ -107,7 +121,7 @@ AFRAME.registerComponent('beat-loader', {
   processBeats: function () {
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
-    this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
+    this.beatsTimeOffset = (this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     this.beatsTime = 0;
     this.beatData._events.sort(lessThan);
     this.beatData._obstacles.sort(lessThan);
@@ -130,54 +144,45 @@ AFRAME.registerComponent('beat-loader', {
    * Generate beats and stuff according to timestamp.
    */
   tick: function (time, delta) {
+    var bpm;
     var i;
+    var notes;
+    var obstacles;
+    var beatsTime = this.beatsTime;
+    var msPerBeat;
     var noteTime;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
     // Re-sync song with beats playback.
-    const songComponent = this.el.components.song;
-    const currentTime = songComponent.getCurrentTime();
-    if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
-        this.songCurrentTime !== currentTime) {
-      this.songCurrentTime = currentTime;
-      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
+    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.context.currentTime) {
+      this.songCurrentTime = this.el.components.song.context.currentTime;
+      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     }
 
-    const beatsTime = this.beatsTime;
-    const bpm = this.beatData._beatsPerMinute;
-    const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
-
-    const notes = this.beatData._notes;
+    notes = this.beatData._notes;
+    obstacles = this.beatData._obstacles;
+    bpm = this.beatData._beatsPerMinute;
+    msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     for (i = 0; i < notes.length; ++i) {
       noteTime = notes[i]._time * msPerBeat;
-      if (noteTime > beatsTime &&
-          noteTime <= (beatsTime + delta)) {
+      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         notes[i].time = noteTime;
         this.generateBeat(notes[i]);
       }
     }
 
-    const obstacles = this.beatData._obstacles;
-    for (i = 0; i < obstacles.length; ++i) {
+    for (i=0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         this.generateWall(obstacles[i]);
       }
     }
 
-    const events = this.beatData._events;
-    for (i=0; i < events.length; ++i) {
-      noteTime = events[i]._time * msPerBeat;
-      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
-        this.generateEvent(events[i]);
-      }
-    }
-
     if (this.beatsTimeOffset !== undefined) {
       if (this.beatsTimeOffset <= 0) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
-        this.songCurrentTime = songComponent.getCurrentTime();
+        this.songCurrentTime = this.el.components.song.context.currentTime;
         this.beatsTimeOffset = undefined;
       } else {
         this.beatsTimeOffset -= delta;
@@ -195,6 +200,7 @@ AFRAME.registerComponent('beat-loader', {
     return function (noteInfo) {
       var beatEl;
       var color;
+      const data = this.data;
 
       // if (Math.random() < 0.8) noteInfo._type = 3; // just to DEBUG MINES!
 
@@ -205,22 +211,21 @@ AFRAME.registerComponent('beat-loader', {
         type = 'mine';
         color = undefined;
       }
+
       beatEl = this.requestBeat(type, color);
       if (!beatEl) { return; }
 
+      // Apply sword offset. Blocks arrive on beat in front of the user.
+      beatObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - swordOffset;
       beatObj.color = color;
-      beatObj.cutDirection =
-        this.orientationsHumanized[this.orientations[noteInfo._cutDirection]];
+      beatObj.cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
+      beatObj.horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex];
       beatObj.speed = this.data.beatSpeed;
       beatObj.type = type;
+      beatObj.verticalPosition = this.verticalPositionsHumanized[noteInfo._lineLayer],
+      beatObj.warmupPosition = -data.beatWarmupTime * data.beatWarmupSpeed;
       beatEl.setAttribute('beat', beatObj);
-      beatEl.object3D.position.set(
-        this.horizontalPositions[noteInfo._lineIndex],
-        this.verticalPositions[noteInfo._lineLayer],
-        -this.data.beatAnticipationTime * this.data.beatSpeed - swordOffset
-      );
-      beatEl.object3D.rotation.z = THREE.Math.degToRad(
-        this.orientations[noteInfo._cutDirection]);
+      beatEl.components.beat.updatePosition();
 
       beatEl.play();
       beatEl.components.beat.onGenerate();
@@ -229,6 +234,7 @@ AFRAME.registerComponent('beat-loader', {
 
   generateWall: function (wallInfo) {
     var el = this.el.sceneEl.components.pool__wall.requestEntity();
+    const data = this.data;
     var speed = this.data.beatSpeed;
 
     if (!el) { return; }
@@ -301,7 +307,7 @@ AFRAME.registerComponent('beat-loader', {
    */
   clearBeats: function () {
     this.beatsTime = 0;
-    this.beatsTimeOffset = this.data.beatAnticipationTime * 1000;
+    this.beatsTimeOffset = (this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       let child = this.beatContainer.children[i];
       if (child.components.beat) {
