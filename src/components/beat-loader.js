@@ -144,38 +144,46 @@ AFRAME.registerComponent('beat-loader', {
    * Generate beats and stuff according to timestamp.
    */
   tick: function (time, delta) {
-    var bpm;
     var i;
-    var notes;
-    var obstacles;
-    var beatsTime = this.beatsTime;
-    var msPerBeat;
     var noteTime;
 
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
     // Re-sync song with beats playback.
-    if (this.beatsTimeOffset !== undefined && this.songCurrentTime !== this.el.components.song.context.currentTime) {
-      this.songCurrentTime = this.el.components.song.context.currentTime;
-      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
+    const songComponent = this.el.components.song;
+    const currentTime = songComponent.getCurrentTime();
+
+    if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
+        this.songCurrentTime !== currentTime) {
+      this.songCurrentTime = currentTime;
+      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
     }
 
-    notes = this.beatData._notes;
-    obstacles = this.beatData._obstacles;
-    bpm = this.beatData._beatsPerMinute;
-    msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
+    const beatsTime = this.beatsTime;
+    const bpm = this.beatData._beatsPerMinute;
+    const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
+    const notes = this.beatData._notes;
     for (i = 0; i < notes.length; ++i) {
       noteTime = notes[i]._time * msPerBeat;
-      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
+      if (noteTime > beatsTime && noteTime <= (beatsTime + delta)) {
         notes[i].time = noteTime;
         this.generateBeat(notes[i]);
       }
     }
 
+    const obstacles = this.beatData._obstacles;
     for (i=0; i < obstacles.length; ++i) {
       noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         this.generateWall(obstacles[i]);
+      }
+    }
+
+    const events = this.beatData._events;
+    for (i=0; i < events.length; ++i) {
+      noteTime = events[i]._time * msPerBeat;
+      if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
+        this.generateEvent(events[i]);
       }
     }
 
