@@ -1,28 +1,38 @@
+
 AFRAME.registerShader('wall-shader', {
   schema: {
     iTime: {type: 'time', is: 'uniform'},
-    tex: {type: 'map', is: 'uniform'}
+    tex: {type: 'map', is: 'uniform'},
+    env: {type: 'map', is: 'uniform'}
   },
 
   vertexShader: `
     varying vec2 uvs;
+    varying vec3 nrml;
+    varying vec3 pos;
     void main() {
       uvs.xy = uv.xy;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      nrml.xyz = normal.xyz;
+      vec4 p = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      pos = position;
+      gl_Position = p;
     }
   `,
 
   fragmentShader: `
     // based on https://www.shadertoy.com/view/ldlXRS
     varying vec2 uvs;
+    varying vec3 nrml;
+    varying vec3 pos;
     uniform float iTime;
     uniform sampler2D tex;
+    uniform sampler2D env;
 
     #define time iTime/1000.0*0.15
     #define tau 6.2831853
 
     mat2 makem2(in float theta){float c = cos(theta);float s = sin(theta);return mat2(c,-s,s,c);}
-    float noise( in vec2 x ){return texture2D(tex, x*.01).x;}
+    float noise( in vec2 x ){return texture2D(tex, x*.007).x;}
 
     float fbm(in vec2 p) {
       float z=2.;
@@ -47,6 +57,7 @@ AFRAME.registerShader('wall-shader', {
     }
 
     void main() {
+
       vec2 p = uvs.xy-0.5;// / iResolution.xy-0.5;
       vec2 pp = p;
       p*= 4.0;
@@ -60,10 +71,18 @@ AFRAME.registerShader('wall-shader', {
       col.g = smoothstep(0.6, 1.0, col.r);
       col.b = smoothstep(0.6, 1.0, col.r);
 
-      col += smoothstep(0.49, 0.495, abs(pp.x));
-      col += smoothstep(0.49, 0.495, abs(pp.y));
+      col += smoothstep(0.48, 0.495, abs(pp.x));
+      col += smoothstep(0.48, 0.495, abs(pp.y));
 
-      gl_FragColor = vec4(col, 0.2 + smoothstep(0.0, 0.6, col.x));
+      //gl_FragColor = vec4(col, 1.0);
+
+      // add environment reflection
+
+      vec3 worldNormal = normalize( ( vec4( nrml + col, 0.0 ) * viewMatrix ).xyz );
+      vec3 reflectVec = normalize(reflect(normalize(pos - cameraPosition), worldNormal));
+      vec3 reflectView = normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) );
+
+      gl_FragColor = vec4(texture2D(env, reflectView.xy * 0.5 + 0.5).xyz + col, 1.0);
     }
   `
 });
