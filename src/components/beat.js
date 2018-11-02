@@ -707,6 +707,8 @@ AFRAME.registerComponent('beat', {
     var maxAngle;
     var saberControls = this.hitSaberEl.components['saber-controls'];
     var score = 0;
+    var scoreText;
+    var scoreEl;
 
     if (cutDirection === 'up' || cutDirection === 'down') {
       maxAngle = saberControls.maxAnglePlaneX;
@@ -724,6 +726,22 @@ AFRAME.registerComponent('beat', {
     hitEventDetail.score = score;
 
     this.el.emit('beathit', hitEventDetail, true);
+
+    scoreEl = this.el.sceneEl.components.pool__beatscore.requestEntity();
+    if (scoreEl) {
+      if (score < 60) { scoreText = 'OK'; }
+      else if (score < 80) { scoreText = 'GOOD'; }
+      else if (score < 100) { scoreText = 'EXCELLENT'; }
+      else { scoreText = 'SUPER'; }
+
+      scoreEl.object3D.position.copy(this.el.object3D.position);
+      scoreEl.setAttribute('text', {value: scoreText});
+      scoreEl.play();
+      scoreEl.emit('startanim');
+      setTimeout(() => {
+        this.el.sceneEl.components.pool__beatscore.returnEntity(scoreEl);
+      }, 1200);
+    }
 
     // console.log("BEAT SCORE: " + score + " " + angleBeforeHit + " " + angleAfterHit);
   },

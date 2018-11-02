@@ -62,6 +62,16 @@
 <a-mixin id="wall" geometry wall material="shader: wall-shader; tex: #noiseTexture; env: #envmapWallTexture; repeat: 2 2; transparent: true; side: double">
 
 <a-mixin
+  id="beatScore"
+  mixin="font"
+  text="opacity: 0; wrapCount: 19; color: #AAA"
+  animation__opacityin="property: components.text.material.uniforms.opacity.value; from: .5; to: 1; dur: 500; startEvents: startanim"
+  animation__opacityout="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; dur: 500; delay: 700; startEvents: startanim"
+  animation__motionz="property: object3D.position.z; from: -2; to: -6; dur: 500; easing: easeOutQuart; startEvents: startanim"
+  animation__motiony="property: object3D.position.y; to: 0.1; dur: 500; easing: easeOutQuart; startEvents: startanim"
+  ></a-mixin>
+
+<a-mixin
   id="beatWrong"
   geometry="primitive: plane; height: 0.3; width: 0.3"
   material="shader: flat; transparent: true; src: #wrongImg"
