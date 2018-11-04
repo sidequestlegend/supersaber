@@ -87,10 +87,6 @@
 
       <!-- Player. -->
       <a-mixin
-        id="raycaster"
-        raycaster="objects: [raycastable]; far: 3; showLine: false"
-        line="opacity: 0.75"></a-mixin>
-      <a-mixin
         id="cursorMesh"
         material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
         sub-object="from: #cursorLaser; name: glow"></a-mixin>
@@ -114,19 +110,23 @@
             bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
             bind__pauser="enabled: isPlaying"
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
+            bind__raycaster-game="enabled: isPlaying"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.2"
             haptics__draw="events: drawblade; dur: 750; force: 0.025"
+            haptics-saber
+            haptics-wall
+            raycaster="objects: [raycastable]; far: 5"
+            raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50"
             saber-controls="hand: {{ hand }}"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
             trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
-              bind__visible="menuActive && activeHand === '{{ hand }}'"
-              cursor-laser
+              bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
               geometry="primitive: cylinder; height: 1; radius: 0.005"
               material="color: {{ beamColor }}; shader: flat"
               rotation="-90 0 0"></a-entity>
@@ -138,14 +138,10 @@
                 animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
                 scale="0.001 0.001 0.001">
                 <a-entity
-                  class="blade"
-                  bind__aabb-collider="enabled: isPlaying"
-                  bind-toggle__data-collidable-saber="isPlaying"
-                  aabb-collider="objects: [data-collidable-saber]; interval: 50; collideNonVisible: false"
+                  class="blade blade{{ hand }}"
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
-                  haptics-saber
-                  haptics-wall
                   material="shader: flat; color: {{ bladeColor }}"
+                  raycastable-game
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity
@@ -177,8 +173,8 @@
           <a-entity
             id="{{ hand }}CursorMesh"
             mixin="cursorMesh"
-            bind__cursor-mesh="active: {{ hand }}RaycasterActive"
-            cursor-mesh="active: {{ hand }}RaycasterActive; cursorEl: #{{ hand }}Hand"
+            bind__cursor-mesh="active: {{ hand }}RaycasterActive && !isPLaying"
+            cursor-mesh="cursorEl: #{{ hand }}Hand"
             material="color: {{ beamColor }}"
             scale="1.3 1.3 1.3"></a-entity>
         {% endmacro %}
@@ -195,8 +191,12 @@
         material="shader: flat; src: #stepbackImg; transparent: true; opacity: 0"></a-entity>
 
       {% if not IS_PRODUCTION %}
-        <a-entity id="mouseCursor" mixin="raycaster" cursor="rayOrigin: mouse"
-                  bind__raycaster="enabled: !inVR"></a-entity>
+        <a-entity
+          id="mouseCursor"
+          bind__raycaster="enabled: !inVR"
+          mixin="raycaster"
+          cursor="rayOrigin: mouse"
+          raycaster="objects: [raycastable]"></a-entity>
         <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
                   bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}

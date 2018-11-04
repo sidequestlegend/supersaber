@@ -1,1 +1,0 @@
-AFRAME.registerComponent('raycastable', {});

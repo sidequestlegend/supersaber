@@ -13,13 +13,13 @@ AFRAME.registerComponent('wall', {
   pause: function () {
     this.el.object3D.visible = false;
     this.el.removeAttribute('data-collidable-head');
-    this.el.removeAttribute('data-collidable-saber');
+    this.el.removeAttribute('raycastable-game');
   },
 
   play: function () {
     this.el.object3D.visible = true;
     this.el.setAttribute('data-collidable-head', '');
-    this.el.setAttribute('data-collidable-saber', '');
+    this.el.setAttribute('raycastable-game', '');
   },
 
   tock: function (time, delta) {
@@ -35,6 +35,6 @@ AFRAME.registerComponent('wall', {
     this.el.object3D.position.z = 9999;
     this.el.pause();
     this.el.removeAttribute('data-collidable-head');
-    this.el.removeAttribute('data-collidable-saber');
+    this.el.removeAttribute('raycastable-game');
   }
 });

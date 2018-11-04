@@ -5,6 +5,10 @@
 AFRAME.registerComponent('cursor-laser', {
   dependencies: ['geometry'],
 
+  schema: {
+    enabled: {default: true}
+  },
+
   init: function () {
     const el = this.el;
     const box = new THREE.Box3();
@@ -21,8 +25,14 @@ AFRAME.registerComponent('cursor-laser', {
     this.currentLength = size.y;
   },
 
+  update: function () {
+    this.el.object3D.visible = this.data.enabled;
+  },
+
   tick: function () {
     const el = this.el;
+
+    if (!this.data.enabled) { return; }
 
     const cursor = el.parentNode.components.cursor;
     if (!cursor) { return; }
