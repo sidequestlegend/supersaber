@@ -266,7 +266,7 @@ AFRAME.registerComponent('beat', {
     // Hit colliders are 40% larger than the block.
     hitColliderConfiguration = {
       position: {x: 0, y: data.size / 2, z: 0},
-      size: {width: data.size * 1.4, height: data.size / 5.0, depth: data.size* 1.4}
+      size: {width: data.size * 1.4, height: data.size / 3.0, depth: data.size* 1.4}
     };
 
     hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
