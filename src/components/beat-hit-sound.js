@@ -42,8 +42,8 @@ AFRAME.registerComponent('beat-hit-sound', {
     this.currentCutDirection = '';
     this.el.setAttribute('sound__beathit', {
       poolSize: 12,
-      src: '#beatHitSound',
-      volume: 0.5
+      src: '#hitSound9',
+      volume: 0.9
     });
     this.processSound = this.processSound.bind(this);
 
@@ -55,7 +55,7 @@ AFRAME.registerComponent('beat-hit-sound', {
     if (!this.el.components.sound__beathit.loaded) {
       console.log('[beat-hit-sound] Kicking three.js AudioLoader / sound component...');
       this.el.setAttribute('sound__beathit', 'src', '');
-      this.el.setAttribute('sound__beathit', 'src', '#beatHitSound');
+      this.el.setAttribute('sound__beathit', 'src', '#hitSound9');
     }
   },
 
