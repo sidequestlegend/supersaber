@@ -693,6 +693,7 @@ AFRAME.registerComponent('beat', {
           saberControls.maxAnglePlaneX = 0;
           saberControls.maxAnglePlaneY = 0;
           saberControls.maxAnglePlaneXY = 0;
+
         } else {
           this.wrongHit(hand);
         }
@@ -709,6 +710,8 @@ AFRAME.registerComponent('beat', {
     var score = 0;
     var scoreText;
     var scoreEl;
+    // Harcoded temporarily.
+    const saberRotation = 3.14 / 12;
 
     if (cutDirection === 'up' || cutDirection === 'down') {
       maxAngle = saberControls.maxAnglePlaneX;
@@ -718,9 +721,9 @@ AFRAME.registerComponent('beat', {
       maxAngle = saberControls.maxAnglePlaneXY;
     }
 
-    const angleBeforeHit = this.angleBeforeHit * 180 / Math.PI;
-    const angleAfterHit = maxAngle * 180 / Math.PI;
-    score += angleBeforeHit >= 90 ? 70 : (angleBeforeHit / 90) * 70;
+    const angleBeforeHit = Math.max(0, (this.angleBeforeHit - saberRotation) * 180 / Math.PI);
+    const angleAfterHit = Math.max(0, (maxAngle - saberRotation) * 180 / Math.PI);
+    score += angleBeforeHit >= 85 ? 70 : (angleBeforeHit / 80) * 70;
     score += angleAfterHit >= 60 ? 30 : (angleAfterHit / 60) * 30;
 
     hitEventDetail.score = score;

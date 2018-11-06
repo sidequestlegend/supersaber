@@ -15,7 +15,6 @@ AFRAME.registerComponent('saber-controls', {
     var data = this.data;
 
     this.boundingBox = new THREE.Box3();
-    this.bladeEl = el.querySelector('.blade');
     this.controllerType = '';
     this.xPlaneNormal = new THREE.Vector3(0, 1, 0);
     this.yPlaneNormal = new THREE.Vector3(1, 0, 0);
@@ -24,6 +23,7 @@ AFRAME.registerComponent('saber-controls', {
     this.bladePosition = new THREE.Vector3();
     this.bladeVector = new THREE.Vector3();
     this.bladeTipPreviousPosition = new THREE.Vector3();
+    this.projectedBladeVector = new THREE.Vector3();
     this.saberPosition = new THREE.Vector3();
     this.swinging = false;
     this.strokeCount = 0;
@@ -53,7 +53,6 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   detectStroke: function (delta) {
-    var bladeObject
     var distance;
     var distanceSamples = this.distanceSamples;
     var data = this.data;
@@ -62,19 +61,19 @@ AFRAME.registerComponent('saber-controls', {
     var strokeMinSpeed = this.swinging ? startSpeed : this.data.strokeMinSpeed;
 
     // Tip of the blade position in world coordinates.
-    this.bladeTipPosition.set(0, 0.1, 0);
+    this.bladeTipPosition.set(0, 0, -0.8);
     this.bladePosition.set(0, 0, 0);
 
-    bladeObject = this.el.object3D;
-    bladeObject.parent.updateMatrixWorld();
-    bladeObject.localToWorld(this.bladeTipPosition);
-    bladeObject.localToWorld(this.bladePosition);
+    const saberObj = this.el.object3D;
+    saberObj.parent.updateMatrixWorld();
+    saberObj.localToWorld(this.bladeTipPosition);
+    saberObj.localToWorld(this.bladePosition);
 
     // Angles between saber and major planes.
     this.bladeVector.copy(this.bladeTipPosition).sub(this.bladePosition).normalize();
-    var anglePlaneX = this.bladeVector.angleTo(this.xPlaneNormal);
-    var anglePlaneY = this.bladeVector.angleTo(this.yPlaneNormal);
-    var anglePlaneXY = this.bladeVector.angleTo(this.xyPlaneNormal);
+    var anglePlaneX = this.projectedBladeVector.copy(this.bladeTipPosition).projectOnPlane(this.xPlaneNormal).angleTo(this.bladeVector);
+    var anglePlaneY = this.projectedBladeVector.copy(this.bladeTipPosition).projectOnPlane(this.yPlaneNormal).angleTo(this.bladeVector);
+    var anglePlaneXY = this.projectedBladeVector.copy(this.bladeTipPosition).projectOnPlane(this.xyPlaneNormal).angleTo(this.bladeVector);
 
     // Distance covered but the saber tip in one frame.
     distance = this.bladeTipPreviousPosition.sub(this.bladeTipPosition).length() * 1000000;
@@ -86,8 +85,7 @@ AFRAME.registerComponent('saber-controls', {
     this.distanceSamples.push(distance);
     this.accumulatedDistance += distance;
 
-    // Filter out saber movements that are too slow. Too slow or small angle is considered wrong hit.
-    // Cap stroke to 180 degrees.
+    // Filter out saber movements that are too slow. Too slow is considered wrong hit.
     if (this.accumulatedDistance > this.data.strokeMinSpeed) {
       // Saber has to move more than strokeMinAngle to consider a swing.
       // This filters out unintentional swings.
@@ -115,7 +113,6 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   endStroke: function () {
-    // console.log("MaxAngle " + this.maxAnglePlaneX * 180 / Math.PI);
     this.el.emit('strokeend');
     if (this.swinging) { return; }
     this.accumulatedDistance = 0;
