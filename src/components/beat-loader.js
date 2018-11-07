@@ -14,19 +14,10 @@ AFRAME.registerComponent('beat-loader', {
     challengeId: {type: 'string'},  // If clicked play.
     difficulty: {type: 'string'},
     isPlaying: {default: false},
-    menuSelectedChallengeId: {type: 'string'}  // If menu selected.
+    menuSelectedChallengeId: {type: 'string'}
   },
 
-  orientationsHumanized: {
-    0: 'up',
-    1: 'down',
-    2: 'left',
-    3: 'right',
-    4: 'upleft',
-    5: 'upright',
-    6: 'downleft',
-    7: 'downright'
-  },
+  orientationsHumanized: ['up', 'down', 'left', 'right', 'upleft', 'upright', 'downleft', 'downright'],
 
   horizontalPositions: [-0.75, -0.25, 0.25, 0.75],
 
@@ -35,6 +26,23 @@ AFRAME.registerComponent('beat-loader', {
     1: 'middleleft',
     2: 'middleright',
     3: 'right'
+  },
+
+  positionHumanized: {
+    topLeft: {layer: 2, index: 0},
+    topCenterLeft: {layer: 2, index: 1},
+    topCenterRight: {layer: 2, index: 2},
+    topRight: {layer: 2, index: 3},
+
+    middleLeft: {layer: 1, index: 0},
+    middleCenterLeft: {layer: 1, index: 1},
+    middleCenterRight: {layer: 1, index: 2},
+    middleRight: {layer: 1, index: 3},
+
+    bottomLeft: {layer: 0, index: 0},
+    bottomCenterLeft: {layer: 0, index: 1},
+    bottomCenterRight: {layer: 0, index: 2},
+    bottomRight: {layer: 0, index: 3},
   },
 
   verticalPositionsHumanized: {
@@ -62,6 +70,8 @@ AFRAME.registerComponent('beat-loader', {
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
 
     // this.addDebugControls();
+
+    this.addBeatGenerationControls();
   },
 
   update: function (oldData) {
@@ -327,6 +337,131 @@ AFRAME.registerComponent('beat-loader', {
     }
   },
 
+  addBeatGenerationControls: function () {
+    var parentDiv = document.createElement('div');
+    var self = this;
+    this.selectedBeat = {
+      'color': 'red',
+      'position': 'middleCenterLeft',
+      'type': 'arrow',
+      'orientation': 'up'
+    };
+    parentDiv.style.position = 'absolute';
+    parentDiv.style.right = '0';
+    parentDiv.style.top = '0';
+    parentDiv.style.padding = '10px';
+    parentDiv.style.width = '500px';
+    parentDiv.style.height = '600px';
+    document.body.appendChild(parentDiv);
+
+    addTypeBeatMenu();
+    addColorBeatMenu();
+    addOrientationMenu();
+    addBeatPositionMenu();
+
+    addGenerateButton();
+
+    function addOrientationMenu() {
+      var menuDiv = addMenu('orientation');
+      addButton('top', menuDiv);
+      addButton('left', menuDiv);
+      addButton('right', menuDiv);
+      addButton('down', menuDiv);
+      parentDiv.appendChild(menuDiv);
+    }
+
+    function addColorBeatMenu() {
+      var menuDiv = addMenu('color');
+      addButton('blue', menuDiv);
+      addButton('red', menuDiv);
+      parentDiv.appendChild(menuDiv);
+    }
+
+    function addTypeBeatMenu() {
+      var menuDiv = addMenu('type');
+      addButton('arrow', menuDiv);
+      addButton('dot', menuDiv);
+      addButton('mine', menuDiv);
+      parentDiv.appendChild(menuDiv);
+    }
+
+    function addBeatPositionMenu() {
+      var menuDiv = addMenu('position');
+      addButton('topLeft', menuDiv);
+      addButton('topCenterLeft', menuDiv);
+      addButton('topCenterRight', menuDiv);
+      addButton('topRight', menuDiv);
+
+      addButton('middleLeft', menuDiv);
+      addButton('middleCenterLeft', menuDiv);
+      addButton('middleCenterRight', menuDiv);
+      addButton('middleRight', menuDiv);
+
+      addButton('bottomLeft', menuDiv);
+      addButton('bottomCenterLeft', menuDiv);
+      addButton('bottomCenterRight', menuDiv);
+      addButton('bottomRight', menuDiv);
+    }
+
+    function addMenu(name) {
+      var menuDiv = document.createElement('div');
+      menuDiv.id = name;
+      menuDiv.style.marginBottom = '20px';
+      menuDiv.style.width = '500px';
+      menuDiv.style.display = 'inline-block';
+      parentDiv.appendChild(menuDiv);
+      return menuDiv;
+    }
+
+    function addButton(text, containerEl, clickHandler) {
+      var div = document.createElement('div');
+      var handler = clickHandler || function onClick () {
+        var i;
+        var buttons = div.parentElement.querySelectorAll('.button');
+        for (i = 0; i < buttons.length; i++) { buttons[i].style.background = '#000'; }
+        div.style.background = '#66f';
+        self.selectedBeat[div.parentElement.id] = div.innerHTML; 
+      };
+      div.classList.add('button');
+      div.id = 'button' + text;
+      div.style.width = '100px';
+      div.style.height = '30px';
+      div.style.background = '#000';
+      div.style.color = '#fff';
+      div.style.zIndex = 999999999;
+      div.style.padding = '5px';
+      div.style.margin = '5px';
+      div.style.font = '14px sans-serif';
+      div.style.textAlign = 'center';
+      div.style.lineHeight = '30px';
+      div.style.cursor = 'pointer';
+      div.style.display = 'inline-block';
+      div.innerHTML = text;
+      containerEl.appendChild(div);
+      div.addEventListener('click', handler);
+      return div;
+    };
+
+    function addGenerateButton(text, containerEl) {
+      var buttonEl = addButton('Spawn Beat (Space Bar)', parentDiv, function () {
+        var type;
+
+        if (self.selectedBeat.type === 'mine') {
+          type = 3;
+        } else {
+          type = self.selectedBeat.color === 'red' ? 0 : 1; 
+        }
+        self.generateBeat({
+          _lineIndex: self.positionHumanized[self.selectedBeat.position].index,
+          _lineLayer: self.positionHumanized[self.selectedBeat.position].layer,
+          _cutDirection: self.selectedBeat.type === 'dot' ? 8 : self.orientationsHumanized.indexOf[self.selectedBeat.orientation],
+          _type: type
+        });
+      });
+      buttonEl.style.width = '440px';
+    };
+  },
+
   addDebugControls: function () {
     var self = this;
     var currControl = 0;
@@ -387,12 +522,12 @@ AFRAME.registerComponent('beat-loader', {
   onKeyDown: function (event) {
     const keyCode = event.keyCode;
     switch (keyCode) {
-      case 32:  // Space.
-        this.generateBeat({
-          _lineIndex: 2,
-          _lineLayer: 1,
-          _cutDirection: 1,
-          _type: 1
+      case 32:  // Space bar.
+       this.generateBeat({
+          _lineIndex: this.positionHumanized[this.selectedBeat.position].index,
+          _lineLayer: this.positionHumanized[this.selectedBeat.position].layer,
+          _cutDirection: this.selectedBeat.type === 'dot' ? 8 : this.orientationsHumanized.indexOf[this.selectedBeat.orientation],
+          _type: type
         });
         break;
       default:

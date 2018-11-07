@@ -153,6 +153,25 @@ AFRAME.registerState({
     /**
      * To work on game over page.
      *
+     * ?debugstate=gameplay
+     */
+    debuggameplay: state => {
+      resetScore(state);
+
+      // Set challenge. `beat-loader` is listening.
+      Object.assign(state.challenge, state.menuSelectedChallenge);
+
+      // Reset menu.
+      state.menuActive = false;
+      state.menuSelectedChallenge.id = '';
+
+      state.isSearching = false;
+      state.isSongLoading = false;
+    },
+
+    /**
+     * To work on game over page.
+     *
      * ?debugstate=gameover
      */
     debuggameover: state => {
