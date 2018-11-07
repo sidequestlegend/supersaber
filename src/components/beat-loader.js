@@ -28,7 +28,7 @@ AFRAME.registerComponent('beat-loader', {
     7: 'downright'
   },
 
-  horizontalPositions: [-0.60, -0.25, 0.25, 0.60],
+  horizontalPositions: [-0.75, -0.25, 0.25, 0.75],
 
   horizontalPositionsHumanized: {
     0: 'left',

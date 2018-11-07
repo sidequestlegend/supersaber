@@ -59,10 +59,10 @@ AFRAME.registerComponent('beat', {
   },
 
   horizontalPositions: {
-    'left': -0.60,
+    'left': -0.75,
     'middleleft': -0.25,
     'middleright': 0.25,
-    'right': 0.60
+    'right': 0.75
   },
 
   verticalPositions: {
