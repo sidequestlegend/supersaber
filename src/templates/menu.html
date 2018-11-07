@@ -140,7 +140,7 @@
           animation__mouseleave="property: object3D.position.z; from: 0.03; to: 0.01; startEvents: mouseleave; pauseEvents: mouseenter; easing: easeOutCubic; dur: 150"
           proxy-event__mouseenter="event: mouseenter; to: CHILDREN; as: show"
           proxy-event__mouseleave="event: mouseleave; to: CHILDREN; as: hide"
-          bind-toggle__raycastable="menu.active && !menuSelectedChallenge.id && !isSearching && !genre">
+          bind-toggle__raycastable="menuActive && !menuSelectedChallenge.id && !isSearching && !genre">
           <a-entity id="soundboxing-popup"
             position="0 0.12 0.015"
             mixin="font"
