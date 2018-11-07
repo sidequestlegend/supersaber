@@ -14,7 +14,8 @@ AFRAME.registerComponent('beat-loader', {
     challengeId: {type: 'string'},  // If clicked play.
     difficulty: {type: 'string'},
     isPlaying: {default: false},
-    menuSelectedChallengeId: {type: 'string'}
+    menuSelectedChallengeId: {type: 'string'},
+    debugMode: {default: false}
   },
 
   orientationsHumanized: ['up', 'down', 'left', 'right', 'upleft', 'upright', 'downleft', 'downright'],
@@ -70,12 +71,15 @@ AFRAME.registerComponent('beat-loader', {
     this.el.addEventListener('cleargame', this.clearBeats.bind(this));
 
     // this.addDebugControls();
-
-    this.addBeatGenerationControls();
+    if (AFRAME.utils.getUrlParameter('debugstate').trim() === 'gameplay') {
+      this.addBeatGenerationControls();
+    }
   },
 
   update: function (oldData) {
     const data = this.data;
+
+    if (data.debugMode) { this.addBeatGenerationControls(); }
 
     // Start playing.
     if (!oldData.challengeId && data.challengeId && this.beatData) {
