@@ -12,7 +12,6 @@ const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
  */
 AFRAME.registerComponent('beat', {
   schema: {
-    warmupPosition: {default: 0},
     anticipationPosition: {default: 0},
     color: {default: 'red', oneOf: ['red', 'blue']},
     cutDirection: {default: 'down'},
@@ -21,7 +20,8 @@ AFRAME.registerComponent('beat', {
     size: {default: 0.35},
     speed: {default: 1.0},
     type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
-    verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']}
+    verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']},
+    warmupPosition: {default: 0},
   },
 
   materialColor: {
@@ -174,11 +174,11 @@ AFRAME.registerComponent('beat', {
       if (position.z < data.anticipationPosition) {
         let newPositionZ = position.z + BEAT_WARMUP_SPEED * (timeDelta / 1000);
         // Warm up / warp in.
-        if (newPositionZ < data.warmupPosition) {
-          this.beams.newBeam(this.data.color, position);
+        if (newPositionZ < data.anticipationPosition) {
           position.z = newPositionZ;
         } else {
           position.z = data.anticipationPosition;
+          this.beams.newBeam(this.data.color, position);
         }
       } else {
         // Standard moving.

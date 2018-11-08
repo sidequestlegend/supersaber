@@ -75,7 +75,14 @@ AFRAME.registerComponent('stage-colors', {
     const red = color === 'red';
 
     // Init or reset.
-    this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
+    try {
+      this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
+    } catch (e) {
+      this.backglow.addEventListener('object3dset', () => {
+        this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
+      });
+    }
+
     this.sky.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
     this.el.sceneEl.object3D.background.set(red ? '#770100' : '#15252d');
     this.el.sceneEl.object3D.fog.color.set(red ? '#a00' : '#007cb9');
