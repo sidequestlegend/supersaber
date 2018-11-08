@@ -1,4 +1,4 @@
-var BASE_URL = 'https://s3-us-west-2.amazonaws.com/supersaber';
+const BASE_URL = 'https://saber.supermedium.com';
 
 function getS3FileUrl (id, name) {
   return `${BASE_URL}/${id}-${name}`;

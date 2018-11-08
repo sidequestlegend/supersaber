@@ -1,3 +1,5 @@
+import utils from '../utils';
+
 AFRAME.registerComponent('menu-selected-challenge-image', {
   schema: {
     selectedChallengeId: {type: 'string'}
@@ -8,6 +10,6 @@ AFRAME.registerComponent('menu-selected-challenge-image', {
     if (!this.data.selectedChallengeId) { return; }
     el.setAttribute(
       'material', 'src',
-      `https://s3-us-west-2.amazonaws.com/supersaber/${this.data.selectedChallengeId}-image.jpg`);
+      utils.getS3FileUrl(this.data.selectedChallengeId, 'image.jpg'));
   }
 });

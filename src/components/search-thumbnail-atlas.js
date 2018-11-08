@@ -1,3 +1,5 @@
+import utils from '../utils';
+
 var CANVAS_HEIGHT = 512;  // Power-of-two.
 var HEIGHT = 64;
 var NUM_PER_PAGE = 6;
@@ -49,7 +51,7 @@ AFRAME.registerComponent('search-thumbnail-atlas', {
     for (let i = 0; i < results.length; i++) {
       let img = this.images[i] = this.images[i] || document.createElement('img');
       img.crossOrigin = 'anonymous';
-      img.src = `https://s3-us-west-2.amazonaws.com/supersaber/${results[i].id}-image.jpg`;
+      img.src = utils.getS3FileUrl(results[i].id, 'image.jpg');
       if (img.complete) {
         this.draw(img, i);
       } else {
