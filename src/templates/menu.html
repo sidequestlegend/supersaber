@@ -309,16 +309,6 @@
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose">
 </a-entity>
 
-<a-mixin
-  id="bigMenuButton"
-  mixin="slice"
-  slice9="src: #slicebtnImg; color: #999; width: 1; left: 70; top: 70; height: 0.2; padding: 0.1"
-  animation__mouseenter1="property: components.slice9.material.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave1="property: components.slice9.material.color; type: color; from: #FFF; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-  animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150">
-</a-mixin>
-
 <a-entity id="genreButtons" position="-0.55 0.2 -1.9">
   <a-entity id="genreButton"
     mixin="bigMenuButton"

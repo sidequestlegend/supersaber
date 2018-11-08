@@ -98,7 +98,8 @@ AFRAME.registerState({
       songNameTexts: '',  // All names in search results merged together.
       songSubNameTexts: ''  // All sub names in search results merged together.
     },
-    searchResultsPage: []
+    searchResultsPage: [],
+    tutorialActive: false
   },
 
   handlers: {
