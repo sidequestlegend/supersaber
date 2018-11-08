@@ -309,7 +309,7 @@
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose">
 </a-entity>
 
-<a-entity id="genreButtons" position="-0.55 0.2 -1.9">
+<a-entity id="genreButtons" position="-0.68 0.2 -1.9">
   <a-entity id="genreButton"
     mixin="bigMenuButton"
     bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching && !genre"
@@ -337,7 +337,7 @@
   <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: BACK" position="0 -0.07 0.01"></a-entity>
 </a-entity>
 
-<a-entity id="searchButtons" position="0.55 0.2 -1.9">
+<a-entity id="searchButtons" position="0.40 0.2 -1.9">
   <a-entity id="searchButton"
     mixin="bigMenuButton"
     bind-toggle__raycastable="menuActive && !genreMenuOpen && !isSearching && !search.query"
@@ -353,4 +353,14 @@
     proxy-event="event: click; to: a-scene; as: searchclear">
     <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: CLEAR SEARCH" position="0 -0.07 0.01"></a-entity>
   </a-entity>
+</a-entity>
+
+<a-entity id="tutorialButton"
+  position="1.08 0.2 -1.9"
+  mixin="bigMenuButton"
+  bind-toggle__raycastable="menuActive"
+  bind__visible="menuActive"
+  slice9="width: 0.2"
+  proxy-event="event: click; to: a-scene; as: tutorialopen">
+  <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: ?" position="0 -0.07 0.01"></a-entity>
 </a-entity>

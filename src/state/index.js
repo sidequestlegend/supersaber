@@ -374,6 +374,11 @@ AFRAME.registerState({
       state.isSongLoading = true;
     },
 
+    tutorialopen: (state) => {
+      state.menuActive = false;
+      state.tutorialActive = true;
+    },
+
     'enter-vr': (state) => {
       state.inVR = true;
     },
