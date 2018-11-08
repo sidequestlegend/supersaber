@@ -1,10 +1,11 @@
+const objLoader = new THREE.OBJLoader();
+
 AFRAME.registerSystem('mine-fragments-loader', {
   init: function () {
     this.fragments = null;
-    var objData = document.getElementById('mineBrokenObj');
-    objData.addEventListener('loaded', (ev) => {
-      var objLoader = new THREE.OBJLoader();
-      this.fragments = objLoader.parse(ev.target.data);
+    const objData = document.getElementById('mineBrokenObj');
+    objData.addEventListener('loaded', evt => {
+      this.fragments = objLoader.parse(evt.target.data);
     })
   }
 });
