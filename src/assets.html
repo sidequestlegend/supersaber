@@ -20,36 +20,12 @@
 
 <audio id="confirmSound" src="assets/sounds/beatHit.ogg"></audio>
 <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
-<audio id="hitSound1" src="assets/sounds/hit1.ogg"></audio>
-<audio id="hitSound2" src="assets/sounds/hit2.ogg"></audio>
-<audio id="hitSound3" src="assets/sounds/hit3.ogg"></audio>
-<audio id="hitSound4" src="assets/sounds/hit4.ogg"></audio>
-<audio id="hitSound5" src="assets/sounds/hit5.ogg"></audio>
-<audio id="hitSound6" src="assets/sounds/hit6.ogg"></audio>
-<audio id="hitSound7" src="assets/sounds/hit7.ogg"></audio>
-<audio id="hitSound8" src="assets/sounds/hit8.ogg"></audio>
-<audio id="hitSound9" src="assets/sounds/hit9.ogg"></audio>
-<audio id="hitSound10" src="assets/sounds/hit10.ogg"></audio>
-<audio id="hitSound1left" src="assets/sounds/hit1left.ogg"></audio>
-<audio id="hitSound2left" src="assets/sounds/hit2left.ogg"></audio>
-<audio id="hitSound3left" src="assets/sounds/hit3left.ogg"></audio>
-<audio id="hitSound4left" src="assets/sounds/hit4left.ogg"></audio>
-<audio id="hitSound5left" src="assets/sounds/hit5left.ogg"></audio>
-<audio id="hitSound6left" src="assets/sounds/hit6left.ogg"></audio>
-<audio id="hitSound7left" src="assets/sounds/hit7left.ogg"></audio>
-<audio id="hitSound8left" src="assets/sounds/hit8left.ogg"></audio>
-<audio id="hitSound9left" src="assets/sounds/hit9left.ogg"></audio>
-<audio id="hitSound10left" src="assets/sounds/hit10left.ogg"></audio>
-<audio id="hitSound1right" src="assets/sounds/hit1right.ogg"></audio>
-<audio id="hitSound2right" src="assets/sounds/hit2right.ogg"></audio>
-<audio id="hitSound3right" src="assets/sounds/hit3right.ogg"></audio>
-<audio id="hitSound4right" src="assets/sounds/hit4right.ogg"></audio>
-<audio id="hitSound5right" src="assets/sounds/hit5right.ogg"></audio>
-<audio id="hitSound6right" src="assets/sounds/hit6right.ogg"></audio>
-<audio id="hitSound7right" src="assets/sounds/hit7right.ogg"></audio>
-<audio id="hitSound8right" src="assets/sounds/hit8right.ogg"></audio>
-<audio id="hitSound9right" src="assets/sounds/hit9right.ogg"></audio>
-<audio id="hitSound10right" src="assets/sounds/hit10right.ogg"></audio>
+
+{% for i in range(1, 11) %}
+<audio id="hitSound{{ i }}" src="assets/sounds/hit{{ i }}.ogg"></audio>
+<audio id="hitSound{{ i }}left" src="assets/sounds/hit{{ i }}left.ogg"></audio>
+<audio id="hitSound{{ i }}right" src="assets/sounds/hit{{ i }}right.ogg"></audio>
+{% endfor %}
 
 <img id="backglowTexture" src="assets/img/stage/backglow.png">
 <img id="cursorMeshImg" src="assets/models/laser/laser.png">
