@@ -6,6 +6,7 @@ const LAYER_MIDDLE = 'middle';
 const LAYER_TOP = 'top';
 
 // Allows for modifying detune. PR has been sent to three.js.
+/*
 THREE.Audio.prototype.play = function () {
   if (this.isPlaying === true) {
     console.warn('THREE.Audio: Audio is already playing.');
@@ -32,19 +33,41 @@ THREE.Audio.prototype.play = function () {
   this.source = source;
   return this.connect();
 };
+*/
 
 /**
  * Beat hit sound using positional audio and audio buffer source.
  */
 AFRAME.registerComponent('beat-hit-sound', {
+
+  directionsToSounds: {
+    'up': '',
+    'down': '',
+    'upleft': 'left',
+    'upright': 'right',
+    'downleft': 'left',
+    'downright': 'right',
+    'left': 'left',
+    'right': 'right'
+  },
+
   init: function () {
     this.currentBeatEl = null;
     this.currentCutDirection = '';
-    this.el.setAttribute('sound__beathit', {
-      poolSize: 12,
-      src: '#hitSound9',
-      volume: 0.9
-    });
+    for (let i = 1; i <= 10; i++) {
+      this.el.setAttribute(`sound__beathit${i}`, {
+        poolSize: 4,
+        src: `#hitSound${i}`
+      });
+      this.el.setAttribute(`sound__beathit${i}left`, {
+        poolSize: 4,
+        src: `#hitSound${i}left`
+      });
+      this.el.setAttribute(`sound__beathit${i}right`, {
+        poolSize: 4,
+        src: `#hitSound${i}right`
+      });
+    }
     this.processSound = this.processSound.bind(this);
 
     sourceCreatedCallback = this.sourceCreatedCallback.bind(this);
@@ -52,18 +75,34 @@ AFRAME.registerComponent('beat-hit-sound', {
 
   play: function () {
     // Kick three.js loader...Don't know why sometimes doesn't load.
-    if (!this.el.components.sound__beathit.loaded) {
-      console.log('[beat-hit-sound] Kicking three.js AudioLoader / sound component...');
-      this.el.setAttribute('sound__beathit', 'src', '');
-      this.el.setAttribute('sound__beathit', 'src', '#hitSound9');
+    for (let i = 1; i <= 10; i++) {
+      if (!this.el.components[`sound__beathit${i}`].loaded) {
+        console.log(`[beat-hit-sound: hit${i}] Kicking three.js AudioLoader / sound component...`);
+        this.el.setAttribute(`sound__beathit${i}`, 'src', '');
+        this.el.setAttribute(`sound__beathit${i}`, 'src', `#hitSound${i}`);
+      }
+      if (!this.el.components[`sound__beathit${i}left`].loaded) {
+        console.log(`[beat-hit-sound: hit${i}left] Kicking three.js AudioLoader / sound component...`);
+        this.el.setAttribute(`sound__beathit${i}left`, 'src', '');
+        this.el.setAttribute(`sound__beathit${i}left`, 'src', `#hitSound${i}left`);
+      }
+      if (!this.el.components[`sound__beathit${i}right`].loaded) {
+        console.log(`[beat-hit-sound: hit${i}right] Kicking three.js AudioLoader / sound component...`);
+        this.el.setAttribute(`sound__beathit${i}right`, 'src', '');
+        this.el.setAttribute(`sound__beathit${i}right`, 'src', `#hitSound${i}right`);
+      }
     }
   },
 
   playSound: function (beatEl, cutDirection) {
-    const soundPool = this.el.components.sound__beathit;
+    const rand = 1 + Math.floor(Math.random() * 10);
+    const dir = this.directionsToSounds[cutDirection || 'up'];
+    //console.log(`sound__beathit${rand}${dir}`);
+    const soundPool = this.el.components[`sound__beathit${rand}${dir}`];
     this.currentBeatEl = beatEl;
     this.currentCutDirection = cutDirection;
-    soundPool.playSound(this.processSound);
+    //soundPool.playSound(this.processSound);
+    soundPool.playSound();
   },
 
   processSound: function (audio) {
