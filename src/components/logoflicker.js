@@ -1,6 +1,4 @@
 AFRAME.registerComponent('logoflicker', {
-  dependencies: ['text'],
-
   schema: {
     delay: {default: 1000.0},
     active: {default: true}
