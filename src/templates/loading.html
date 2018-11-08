@@ -11,8 +11,7 @@
     geometry="primitive: plane; buffer: false; skipCache: true; height: 0.3; width: 0.3"
     material="shader: flat"
     position="0 0.24 0"></a-entity>
-
-  <a-entity id="loadingSongInfo">
+<a-entity id="loadingSongInfo">
     <a-entity position="0 -0.05 0" mixin="font"
       text="wrapCount: 40; align: center; color: #FF185B"
       bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
@@ -41,9 +40,9 @@
       id="songProcessingIndicator"
       bind__animation__spin="enabled: isSongLoading && !isSongFetching"
       bind__visible="isSongLoading && !isSongFetching"
-      animation__spin="property: components.material.material.uniforms.progress.value; from: 0; to: 1; easing: easeInOutCubic; dur: 2000; loop: true"
+      animation__spin="property: object3D.rotation.z; from: 0; to: -360; easing: linear; dur: 1000; loop: true"
       geometry="primitive: plane; height: 0.2; width: 0.2"
-      material="shader: ring; color: #ABABAB; radiusInner: 0.2; radiusOuter: 0.4; transparent: true"
+      material="shader: ring; color: #ABABAB; radiusInner: 0.2; radiusOuter: 0.4; transparent: true; progress: 0.2"
       position="0 -0.38 0.004"
       visible="false">
     </a-entity>
