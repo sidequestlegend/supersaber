@@ -216,7 +216,7 @@ AFRAME.registerState({
 
     gamemenurestart: (state) => {
       resetScore(state);
-      state.isBeatsPreloaded = false;
+      state.challenge.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
       state.isSongLoading = true;
@@ -225,7 +225,7 @@ AFRAME.registerState({
 
     gamemenuexit: (state) => {
       resetScore(state);
-      state.isBeatsPreloaded = false;
+      state.challenge.isBeatsPreloaded = false;
       state.isGameOver = false;
       state.isPaused = false;
       state.isVictory = false;

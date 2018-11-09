@@ -6,6 +6,16 @@ const BASE_VOLUME = 0.75;
 
 /**
  * Active challenge song / audio.
+ *
+ * Order of song init in conjuction with beat-loader:
+ *
+ * 1. previewStartTime is playing
+ * 2. songloadfinish
+ * 3. beat-loader preloading
+ * 4. preloaded beats generated
+ * 5. beat-loader preloading finish
+ * 6. startAudio / songStartTime is set
+ * 7. beat-loader continues off song current time
  */
 AFRAME.registerComponent('song', {
   schema: {
@@ -84,7 +94,6 @@ AFRAME.registerComponent('song', {
       this.el.sceneEl.emit('songloadstart', null, false);
       this.getAudio().then(source => {
         this.el.sceneEl.emit('songloadfinish', null, false);
-        if (this.data.isBeatsPreloaded) { this.startAudio(); }
       }).catch(console.error);
     }
 
@@ -174,7 +183,6 @@ AFRAME.registerComponent('song', {
     this.data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
       this.source = evt.detail;
       this.el.sceneEl.emit('songloadfinish', null, false);
-      if (this.data.isBeatsPreloaded) { this.startAudio(); }
     }, ONCE);
     this.audioAnalyser.refreshSource();
   },
@@ -182,13 +190,11 @@ AFRAME.registerComponent('song', {
   onWallHitStart: function () {
     const gain = this.audioAnalyser.gainNode.gain;
     gain.linearRampToValueAtTime(0.2, this.context.currentTime + 0.1);
-    // this.source.detune.linearRampToValueAtTime(-1200, this.context.currentTime + 0.1);
   },
 
   onWallHitEnd: function () {
     const gain = this.audioAnalyser.gainNode.gain;
-    gain.linearRampToValueAtTime(BASE_VOLUME, this.context.currentTime + 0.2);
-    // this.source.detune.linearRampToValueAtTime(0, this.context.currentTime + 0.2);
+    gain.linearRampToValueAtTime(BASE_VOLUME, this.context.currentTime + 0.1);
   },
 
   startAudio: function () {
