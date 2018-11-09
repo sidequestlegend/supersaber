@@ -67,9 +67,9 @@ AFRAME.registerComponent('beat-loader', {
     this.beatDataProcessed = false;
     this.beatContainer = document.getElementById('beatContainer');
     this.beatsTime = undefined;
-    this.beatsTimeOffset = undefined;
+    this.beatsPreloadTime = 0;
+    this.beatsPreloadTimeTotal = (this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     this.bpm = undefined;
-    this.songCurrentTime = undefined;
     this.xhr = null;
     this.stageColors = this.el.components['stage-colors'];
     this.twister = document.getElementById('twister');
@@ -128,8 +128,8 @@ AFRAME.registerComponent('beat-loader', {
   processBeats: function () {
     // Reset variables used during playback.
     // Beats spawn ahead of the song and get to the user in sync with the music.
-    this.beatsTimeOffset = (this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     this.beatsTime = 0;
+    this.beatsPreloadTime = 0;
     this.beatData._events.sort(lessThan);
     this.beatData._obstacles.sort(lessThan);
     this.beatData._notes.sort(lessThan);
@@ -151,60 +151,59 @@ AFRAME.registerComponent('beat-loader', {
    * Generate beats and stuff according to timestamp.
    */
   tick: function (time, delta) {
-    var i;
-    var noteTime;
-
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
-    // Re-sync song with beats playback.
-    const songComponent = this.el.components.song;
-    const currentTime = songComponent.getCurrentTime();
-
-    if (songComponent.songStartTime && this.beatsTimeOffset !== undefined &&
-        this.songCurrentTime !== currentTime) {
-      this.songCurrentTime = currentTime;
-      this.beatsTime = (this.songCurrentTime + this.data.beatAnticipationTime) * 1000;
+    if (this.beatsPreloadTime === undefined) {
+      const song = this.el.components.song;
+      if (!song.isPlaying) { return; }
+      this.beatsTime = (song.getCurrentTime() + this.data.beatAnticipationTime) * 1000;
+      if (this.beatsTime < this.beatsPreloadTimeTotal) { return; }
+    } else {
+      // Preloading / anticipating.
+      this.beatsTime = this.beatsPreloadTime;
     }
 
+    // Beats.
     const beatsTime = this.beatsTime;
     const bpm = this.beatData._beatsPerMinute;
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     const notes = this.beatData._notes;
-    for (i = 0; i < notes.length; ++i) {
-      noteTime = notes[i]._time * msPerBeat;
+    for (let i = 0; i < notes.length; ++i) {
+      let noteTime = notes[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= (beatsTime + delta)) {
         notes[i].time = noteTime;
         this.generateBeat(notes[i]);
       }
     }
 
+    // Walls.
     const obstacles = this.beatData._obstacles;
-    for (i=0; i < obstacles.length; ++i) {
-      noteTime = obstacles[i]._time * msPerBeat;
+    for (let i = 0; i < obstacles.length; ++i) {
+      let noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         this.generateWall(obstacles[i]);
       }
     }
 
+    // Stage events.
     const events = this.beatData._events;
-    for (i=0; i < events.length; ++i) {
-      noteTime = events[i]._time * msPerBeat;
+    for (let i = 0; i < events.length; ++i) {
+      let noteTime = events[i]._time * msPerBeat;
       if (noteTime > beatsTime && noteTime <= beatsTime + delta) {
         this.generateEvent(events[i]);
       }
     }
 
-    if (this.beatsTimeOffset !== undefined) {
-      if (this.beatsTimeOffset <= 0) {
+    if (this.beatsPreloadTime === undefined) {
+      this.beatsTime += delta;
+    } else {
+      if (this.beatsPreloadTime >= this.beatsPreloadTimeTotal) {
         this.el.sceneEl.emit('beatloaderpreloadfinish', null, false);
-        this.songCurrentTime = this.el.components.song.context.currentTime;
-        this.beatsTimeOffset = undefined;
+        this.beatsPreloadTime = undefined;
       } else {
-        this.beatsTimeOffset -= delta;
+        this.beatsPreloadTime += delta;
       }
     }
-
-    this.beatsTime = beatsTime + delta;
   },
 
   generateBeat: (function () {
@@ -321,8 +320,8 @@ AFRAME.registerComponent('beat-loader', {
    * Restart by returning all beats to pool.
    */
   clearBeats: function () {
+    this.beatsPreloadTime = 0;
     this.beatsTime = 0;
-    this.beatsTimeOffset = (this.data.beatAnticipationTime + this.data.beatWarmupTime) * 1000;
     for (let i = 0; i < this.beatContainer.children.length; i++) {
       let child = this.beatContainer.children[i];
       if (child.components.beat) {
