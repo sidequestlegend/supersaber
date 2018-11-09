@@ -15,6 +15,8 @@ AFRAME.registerComponent('debug-beat-loader', {
       orientation: 'up'
     };
 
+    this.beats = {};
+
     this.onKeyDown = this.onKeyDown.bind(this);
 
     if (this.data.stageEnabled || AFRAME.utils.getUrlParameter('debugstage')) {
@@ -28,6 +30,31 @@ AFRAME.registerComponent('debug-beat-loader', {
     }
   },
 
+  spawn: function () {
+    var self = this;
+    Object.keys(this.beats).forEach(function (key) {
+      self.generateBeat(self.beats[key]);
+    });
+  },
+
+  generateBeat: function (beatInfo) {
+    var type;
+    if (beatInfo.type === 'mine') {
+      type = 3;
+    } else {
+      type = beatInfo.color === 'red' ? 0 : 1;
+    }
+    debugger;
+    this.beatLoader.generateBeat({
+      _lineIndex: this.beatLoader.positionHumanized[beatInfo.position].index,
+      _lineLayer: this.beatLoader.positionHumanized[beatInfo.position].layer,
+      _cutDirection: beatInfo.type === 'dot'
+        ? 8
+        : this.beatLoader.orientationsHumanized.indexOf(beatInfo.orientation),
+      _type: type
+    });
+  },
+
   /**
    * Debug generate beats.
    */
@@ -35,13 +62,7 @@ AFRAME.registerComponent('debug-beat-loader', {
     const keyCode = event.keyCode;
     switch (keyCode) {
       case 32: {  // Space bar.
-       this.beatLoader.generateBeat({
-          _lineIndex: this.beatLoader.positionHumanized[this.selectedBeat.position].index,
-          _lineLayer: this.beatLoader.positionHumanized[this.selectedBeat.position].layer,
-          _cutDirection: this.selectedBeat.type === 'dot'
-            ? 8
-            : this.beatLoader.orientationsHumanized.indexOf(this.selectedBeat.orientation),
-          _type: type });
+        this.spawn();
         break;
       }
     }
@@ -62,7 +83,10 @@ AFRAME.registerComponent('debug-beat-loader', {
     addTypeBeatMenu();
     addColorBeatMenu();
     addOrientationMenu();
+
+    setBeatButton();
     addBeatPositionMenu();
+
     addGenerateButton();
 
     function addOrientationMenu () {
@@ -123,10 +147,11 @@ AFRAME.registerComponent('debug-beat-loader', {
         const buttons = div.parentElement.querySelectorAll('.button');
         for (let i = 0; i < buttons.length; i++) { buttons[i].style.background = '#000'; }
         div.style.background = '#66f';
-        self.selectedBeat[div.parentElement.id] = div.innerHTML;
+        self.selectedBeat[div.parentElement.id] = this.id;
+        self['selected' + div.parentElement.id.charAt(0).toUpperCase() + div.parentElement.id.slice(1) + 'El'] = this;
       };
       div.classList.add('button');
-      div.id = 'button' + text;
+      div.id = text;
       div.style.width = '100px';
       div.style.height = '30px';
       div.style.background = '#000';
@@ -146,24 +171,34 @@ AFRAME.registerComponent('debug-beat-loader', {
     };
 
     function addGenerateButton (text, containerEl) {
-      const buttonEl = addButton('Spawn Beat (Space Bar)', parentDiv, () => {
-        var type;
-        if (self.selectedBeat.type === 'mine') {
-          type = 3;
-        } else {
-          type = self.selectedBeat.color === 'red' ? 0 : 1;
-        }
-        self.beatLoader.generateBeat({
-          _lineIndex: self.beatLoader.positionHumanized[self.selectedBeat.position].index,
-          _lineLayer: self.beatLoader.positionHumanized[self.selectedBeat.position].layer,
-          _cutDirection: self.selectedBeat.type === 'dot'
-            ? 8
-            : self.beatLoader.orientationsHumanized.indexOf(self.selectedBeat.orientation),
-          _type: type
-        });
-      });
-      buttonEl.style.width = '440px';
+      const buttonEl = addButton('Spawn (Space Bar)', parentDiv, () => { self.spawn(); });
+      buttonEl.style.width = '460px';
+      buttonEl.style.bottomMargin = '10px'
     }
+
+    function setBeatButton(text, containerEl) {
+      var buttonEl = addButton('Set Beat', parentDiv, function () { 
+        var color = self.selectedBeat.type !== 'mine' ? ' ' + self.selectedBeat.color : '';
+        var orientation = self.selectedBeat.type !== 'arrow' ? '' : ' ' + self.selectedBeat.orientation;
+        self.selectedBeat = {
+          position: self.selectedBeat.position,
+          type: self.selectedBeat.type,
+          orientation: self.selectedBeat.orientation,
+          color: self.selectedBeat.color
+        };
+        if (!self.selectedPositionEl) { return; }
+        debugger;
+        self.selectedPositionEl.innerHTML = self.selectedBeat.type + color + orientation;
+        self.beats[self.selectedPositionEl.id] = {
+          position: self.selectedBeat.position,
+          type: self.selectedBeat.type,
+          orientation: self.selectedBeat.orientation,
+          color: self.selectedBeat.color
+        };
+      });
+      buttonEl.style.width = '460px';
+      buttonEl.style.bottomMargin = '10px'
+    };
   },
 
   addDebugStageControls: function () {
