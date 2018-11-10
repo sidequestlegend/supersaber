@@ -28,18 +28,18 @@
 <audio id="hitSound{{ i }}right" src="assets/sounds/hit{{ i }}right.ogg"></audio>
 {% endfor %}
 
-<img id="backglowTexture" src="assets/img/stage/backglow.png">
+<img id="backglowTexture" src="assets/img/backglow.png">
 <img id="cursorMeshImg" src="assets/models/laser/laser.png">
 <img id="downIconImg" src="assets/img/downIcon.png">
 <img id="envmapTexture" src="assets/img/envMap.png">
 <img id="envmapWallTexture" src="assets/img/envmapwall.jpg">
-<img id="floorImg" src="assets/img/stage/floor.png">
+<img id="floorImg" src="assets/img/floor.png">
 <img id="gridImg" src="assets/img/grid.png">
 <img id="playImg" src="assets/img/play.png">
-<img id="skyTexture" src="assets/img/stage/sky.jpg">
+<img id="skyTexture" src="assets/img/sky.jpg">
 <img id="sliceImg" src="assets/img/slice.png">
 <img id="slicebtnImg" src="assets/img/slicebtn.png">
-<img id="smokeTexture" src="assets/img/stage/smoke.png">
+<img id="smokeTexture" src="assets/img/smoke.png">
 <img id="beamImg" src="assets/img/beam.png">
 <img id="wrongImg" src="assets/img/wrong.png">
 <img id="missImg" src="assets/img/miss.png">
@@ -50,6 +50,8 @@
 <img id="soundboxingImg" src="assets/img/soundboxing.png">
 <img id="genresImg" src="assets/img/genres.png">
 <img id="tutorialImg" src="assets/img/tutorial.png">
+<img id="floorEnvImg" src="assets/img/floorenv.jpg">
+<img id="floorNormalsImg" src="assets/img/floornormals.png">
 
 <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
 <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
@@ -80,6 +82,7 @@
   geometry
   material="shader: wall-shader; tex: #noiseTexture; env: #envmapWallTexture; repeat: 2 2; transparent: true; side: double"
   wall
+  saber-intersection
   ></a-mixin>
 
 <a-mixin

@@ -133,9 +133,11 @@
     id="floor"
     mixin="neonAnimation"
     geometry="primitive: plane; width: 3; height: 3"
-    material="color: #AAF; shader: flat; src: #floorImg"
+    material="shader: floor-shader; src: #floorImg; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
     rotation="-90 0 0"
-    stepback></a-entity>
+    stepback
+    saber-intersection
+    ></a-entity>
 
   <a-entity
     id="songProgressRing"
