@@ -123,9 +123,16 @@ AFRAME.registerState({
 
       state.score.score += Math.floor(payload.score * state.score.multiplier);
 
-      state.score.multiplier = state.score.combo >= 8
-        ? 8
-        : 2 * Math.floor(Math.log2(state.score.combo));
+      // Might be a math formula for this, but the multiplier system is easy reduced.
+      if (state.score.combo < 2) {
+        state.score.multiplier = 1;
+      } else if (state.score.combo < 6) {
+        state.score.multiplier = 2;
+      } else if (state.score.combo < 14) {
+        state.score.multiplier = 4;
+      } else {
+        state.score.multiplier = 8;
+      }
     },
 
     beatmiss: state => {
@@ -498,8 +505,12 @@ function difficultyComparator (a, b) {
 
 function takeDamage (state) {
   if (!state.isPlaying) { return; }
+  /*
   state.score.combo = 0;
-  state.score.multiplier = Math.ceil(state.score.multiplier / 2);
+  state.score.multiplier = state.score.multiplier > 1
+    ? Math.ceil(state.score.multiplier / 2)
+    : 1;
+  */
   if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   state.damage++;
   checkGameOver(state);

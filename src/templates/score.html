@@ -21,8 +21,8 @@
   <a-entity
     id="combo"
     mixin="scoreText"
-    bind__text="value: score.combo"
-    text="width: 1"
+    bind__text="value: 'COMBO\n' + score.combo"
+    text="width: 1; lineHeight: 40"
     position="-1.8 1.2 -4"
     scale="5 5 5">
   </a-entity>
@@ -36,11 +36,11 @@
       scale="5 5 5">
     </a-entity>
 
-   <!-- TODO: Hook up material.progress to multiplier progress. -->
    <a-entity
       id="multiplierRing"
+      bind__multiplier-ring="combo: score.combo; multiplier: score.multiplier"
       geometry="primitive: plane; width: 0.5; height: 0.5"
-      material="shader: ring; transparent: true; color: #88A; radiusInner: 0.7; progress: 1"
+      material="shader: ring; transparent: true; color: #88A; radiusInner: 0.7; progress: 0"
       position="0 0.17 0"></a-entity>
   </a-entity>
 </a-entity>
