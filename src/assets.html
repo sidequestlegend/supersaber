@@ -70,11 +70,12 @@
 <a-mixin
   id="beatScore"
   mixin="font"
+  score-beat
   text="opacity: 0; wrapCount: 19; color: #AAA"
-  animation__opacityin="property: components.text.material.uniforms.opacity.value; from: .5; to: 1; dur: 500; startEvents: startanim"
-  animation__opacityout="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; dur: 500; delay: 700; startEvents: startanim"
-  animation__motionz="property: object3D.position.z; from: -2; to: -6; dur: 500; easing: easeOutQuart; startEvents: startanim"
-  animation__motiony="property: object3D.position.y; to: 0.1; dur: 500; easing: easeOutQuart; startEvents: startanim"
+  animation__opacityin="property: components.text.material.uniforms.opacity.value; from: .5; to: 1; dur: 500; startEvents: beatscorestart"
+  animation__opacityout="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; dur: 500; delay: 700; startEvents: beatscorestart"
+  animation__motionz="property: object3D.position.z; from: -2; to: -6; dur: 500; easing: easeOutQuart; startEvents: beatscorestart"
+  animation__motiony="property: object3D.position.y; to: 0.1; dur: 500; easing: easeOutQuart; startEvents: beatscorestart"
 ></a-mixin>
 
 <a-mixin

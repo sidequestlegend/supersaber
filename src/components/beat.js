@@ -7,6 +7,13 @@ const BEAT_WARMUP_ROTATION_TIME = 750;
 const ONCE = {once: true};
 const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
+const SCORE = {
+  OK: 'OK',
+  GOOD: 'GOOD',
+  EXCELLENT: 'EXCELLENT',
+  SUPER: 'SUPER'
+};
+
 /**
  * Create beat from pool, collision detection, clipping planes.
  */
@@ -85,6 +92,8 @@ AFRAME.registerComponent('beat', {
     this.returnToPoolTimer = 800;
     this.rotationAxis = new THREE.Vector3();
     this.saberEls = this.el.sceneEl.querySelectorAll('[saber-controls]');
+    this.scoreEl = null;
+    this.scoreElTime = undefined;
     this.startPositionZ = undefined;
     this.rightCutPlanePoints = [
       new THREE.Vector3(),
@@ -167,6 +176,7 @@ AFRAME.registerComponent('beat', {
 
     if (this.destroyed) {
       this.tockDestroyed(timeDelta);
+      // Check to remove score entity from pool.
     } else {
       // Only check collisions when close.
       const collisionZThreshold = -4;
@@ -708,9 +718,8 @@ AFRAME.registerComponent('beat', {
     var hitEventDetail = this.hitEventDetail;
     var maxAngle;
     var saberControls = this.hitSaberEl.components['saber-controls'];
-    var score = 0;
     var scoreText;
-    var scoreEl;
+
     // Harcoded temporarily.
     const saberRotation = 3.14 / 12;
 
@@ -724,30 +733,26 @@ AFRAME.registerComponent('beat', {
 
     const angleBeforeHit = Math.max(0, (this.angleBeforeHit - saberRotation) * 180 / Math.PI);
     const angleAfterHit = Math.max(0, (maxAngle - saberRotation) * 180 / Math.PI);
+
+    let score = 0;
     score += angleBeforeHit >= 85 ? 70 : (angleBeforeHit / 80) * 70;
     score += angleAfterHit >= 60 ? 30 : (angleAfterHit / 60) * 30;
 
     hitEventDetail.score = score;
-
     this.el.emit('beathit', hitEventDetail, true);
 
-    scoreEl = this.el.sceneEl.components.pool__beatscore.requestEntity();
+    const scoreEl = this.el.sceneEl.components.pool__beatscore.requestEntity();
     if (scoreEl) {
-      if (score < 60) { scoreText = 'OK'; }
-      else if (score < 80) { scoreText = 'GOOD'; }
-      else if (score < 100) { scoreText = 'EXCELLENT'; }
-      else { scoreText = 'SUPER'; }
+      if (score < 60) { scoreText = SCORE.OK; }
+      else if (score < 80) { scoreText = SCORE.GOOD; }
+      else if (score < 100) { scoreText = SCORE.EXCELLENT; }
+      else { scoreText = SCORE.SUPER; }
 
       scoreEl.object3D.position.copy(this.el.object3D.position);
-      scoreEl.setAttribute('text', {value: scoreText});
+      scoreEl.setAttribute('text', 'value', scoreText);
       scoreEl.play();
-      scoreEl.emit('startanim');
-      setTimeout(() => {
-        this.el.sceneEl.components.pool__beatscore.returnEntity(scoreEl);
-      }, 1200);
+      scoreEl.emit('beatscorestart', null, false);
     }
-
-    // console.log("BEAT SCORE: " + score + " " + angleBeforeHit + " " + angleAfterHit);
   },
 
   /**
