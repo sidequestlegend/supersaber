@@ -48,27 +48,27 @@ AFRAME.registerComponent('beat', {
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
 
   rotations: {
-    'up': 180,
-    'down': 0,
-    'left': 270,
-    'right': 90,
-    'upleft': 225,
-    'upright': 135,
-    'downleft': 315,
-    'downright': 45
+    up: 180,
+    down: 0,
+    left: 270,
+    right: 90,
+    upleft: 225,
+    upright: 135,
+    downleft: 315,
+    downright: 45
   },
 
   horizontalPositions: {
-    'left': -0.75,
-    'middleleft': -0.25,
-    'middleright': 0.25,
-    'right': 0.75
+    left: -0.75,
+    middleleft: -0.25,
+    middleright: 0.25,
+    right: 0.75
   },
 
   verticalPositions: {
-    'bottom': 1.00,
-    'middle': 1.35,
-    'top': 1.70
+    bottom: 1.00,
+    middle: 1.35,
+    top: 1.70
   },
 
   init: function () {
@@ -97,7 +97,6 @@ AFRAME.registerComponent('beat', {
       new THREE.Vector3()
     ];
 
-
     this.blockEl = document.createElement('a-entity');
     this.mineParticles = document.getElementById('mineParticles');
     this.missElLeft = document.getElementById('missLeft');
@@ -107,6 +106,7 @@ AFRAME.registerComponent('beat', {
     this.wrongElLeft = document.getElementById('wrongLeft');
     this.wrongElRight = document.getElementById('wrongRight');
 
+    this.explodeEventDetail = {position: null, rotation: null};
     this.saberColors = {right: 'blue', left: 'red'};
 
     this.onEndStroke = this.onEndStroke.bind(this);
@@ -522,10 +522,9 @@ AFRAME.registerComponent('beat', {
 
       auxObj3D.up.copy(rightCutPlane.normal);
       auxObj3D.lookAt(direction);
-      this.particles.emit('explode', {
-        position: this.el.object3D.position,
-        rotation: auxObj3D.rotation
-      });
+      this.explodeEventDetail.position = this.el.object3D.position;
+      this.explodeEventDetail.rotation = auxObj3D.rotation;
+      this.particles.emit('explode', this.explodeEventDetail, false);
     };
   })(),
 
@@ -539,10 +538,9 @@ AFRAME.registerComponent('beat', {
     this.gravityVelocity = 0.1;
     this.returnToPoolTimer = 800;
 
-    this.mineParticles.emit('explode', {
-      position: this.el.object3D.position,
-      rotation: this.randVec
-    });
+    this.explodeEventDetail.position = this.el.object3D.position;
+    this.explodeEventDetail.rotation = this.randVec;
+    this.mineParticles.emit('explode', this.explodeEventDetail, false);
   },
 
   initCuttingClippingPlanes: function () {
