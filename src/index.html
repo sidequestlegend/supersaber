@@ -4,7 +4,9 @@
     <title>Super Saber</title>
     <meta name="description" content="Beat Saber on the VR Web with searchable and playable community songs from Beat Saver.">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
-    {% if IS_PRODUCTION %}
+    {% if DEBUG_AFRAME %}
+      <script src="http://localhost:9000/dist/aframe-master.js"></script>
+    {% elif IS_PRODUCTION %}
       <script src="vendor/aframe-master.min.js"></script>
     {% else %}
       <script src="vendor/aframe-master.js"></script>

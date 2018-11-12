@@ -66294,7 +66294,7 @@ var dummyGeometry = new THREE.Geometry();
 module.exports.Component = registerComponent('geometry', {
   schema: {
     buffer: {default: true},
-    primitive: {default: 'box', oneOf: geometryNames},
+    primitive: {default: 'box', oneOf: geometryNames, schemaChange: true},
     skipCache: {default: false}
   },
 
@@ -66956,7 +66956,11 @@ module.exports.Component = registerComponent('light', {
     distance: {default: 0.0, min: 0, if: {type: ['point', 'spot']}},
     intensity: {default: 1.0, min: 0, if: {type: ['ambient', 'directional', 'hemisphere', 'point', 'spot']}},
     penumbra: {default: 0, min: 0, max: 1, if: {type: ['spot']}},
-    type: {default: 'directional', oneOf: ['ambient', 'directional', 'hemisphere', 'point', 'spot']},
+    type: {
+      default: 'directional',
+      oneOf: ['ambient', 'directional', 'hemisphere', 'point', 'spot'],
+      schemaChange: true
+    },
     target: {type: 'selector', if: {type: ['spot', 'directional']}},
 
     // Shadows.
@@ -68130,7 +68134,7 @@ module.exports.Component = registerComponent('material', {
     offset: {type: 'vec2', default: {x: 0, y: 0}},
     opacity: {default: 1.0, min: 0.0, max: 1.0},
     repeat: {type: 'vec2', default: {x: 1, y: 1}},
-    shader: {default: 'standard', oneOf: shaderNames},
+    shader: {default: 'standard', oneOf: shaderNames, schemaChange: true},
     side: {default: 'front', oneOf: ['front', 'back', 'double']},
     transparent: {default: false},
     vertexColors: {type: 'string', default: 'none', oneOf: ['face', 'vertex']},
@@ -69852,11 +69856,11 @@ module.exports.Component = registerComponent('pool', {
     var el;
     if (this.availableEls.length === 0) {
       if (this.data.dynamic === false) {
-        warn('Requested entity from empty pool: ' + this.name);
+        warn('Requested entity from empty pool: ' + this.attrName);
         return;
       } else {
         warn('Requested entity from empty pool. This pool is dynamic and will resize ' +
-             'automatically. You might want to increase its initial size: ' + this.name);
+             'automatically. You might want to increase its initial size: ' + this.attrName);
       }
       this.createEntity();
     }
@@ -69872,7 +69876,7 @@ module.exports.Component = registerComponent('pool', {
   returnEntity: function (el) {
     var index = this.usedEls.indexOf(el);
     if (index === -1) {
-      warn('The returned entity was not previously pooled from ' + this.name);
+      warn('The returned entity was not previously pooled from ' + this.attrName);
       return;
     }
     this.usedEls.splice(index, 1);
@@ -70579,7 +70583,7 @@ module.exports.Component = registerComponent('sound', {
     this.mustPlay = false;
 
     // Don't pass evt because playSound takes a function as parameter.
-    this.playSoundBound = () => { this.playSound(); };
+    this.playSoundBound = this.playSound.bind(this);
   },
 
   update: function (oldData) {
@@ -73320,6 +73324,7 @@ var proto = Object.create(ANode.prototype, {
   updateComponent: {
     value: function (attr, attrValue, clobber) {
       var component = this.components[attr];
+
       if (component) {
         // Remove component.
         if (attrValue === null && !checkComponentDefined(this, attr)) {
@@ -73440,12 +73445,54 @@ var proto = Object.create(ANode.prototype, {
     }
   },
 
+  /**
+   * When mixins updated, trigger init or optimized-update of relevant components.
+   */
   mixinUpdate: {
-    value: function (newMixins, oldMixins) {
-      oldMixins = oldMixins || this.getAttribute('mixin');
-      this.updateMixins(newMixins, oldMixins);
-      this.updateComponents();
-    }
+    value: (function () {
+      var componentsUpdated = [];
+
+      return function (newMixins, oldMixins) {
+        var component;
+        var mixinEl;
+        var mixinIds;
+        var i;
+
+        oldMixins = oldMixins || this.getAttribute('mixin');
+        mixinIds = this.updateMixins(newMixins, oldMixins);
+
+        // Loop over current mixins.
+        componentsUpdated.length = 0;
+        for (i = 0; i < this.mixinEls.length; i++) {
+          for (component in this.mixinEls[i].componentCache) {
+            if (componentsUpdated.indexOf(component) === -1) {
+              if (this.components[component]) {
+                // Update. Just rebuild data.
+                this.components[component].handleMixinUpdate();
+              } else {
+                // Init. buildData will gather mixin values.
+                this.initComponent(component, null);
+              }
+              componentsUpdated.push(component);
+            }
+          }
+        }
+
+        // Loop over old mixins to call for data rebuild.
+        for (i = 0; i < mixinIds.oldMixinIds.length; i++) {
+          mixinEl = document.getElementById(mixinIds.oldMixinIds[i]);
+          if (!mixinEl) { continue; }
+          for (component in mixinEl.componentCache) {
+            if (componentsUpdated.indexOf(component) === -1) {
+              if (this.components[component]) {
+                // Compoennt removed. Rebuild data if not yet rebuilt.
+                this.components[component].handleMixinUpdate();
+              }
+            }
+          }
+        }
+      };
+    })()
   },
 
   /**
@@ -73958,6 +74005,7 @@ module.exports = registerElement('a-node', {
       value: (function () {
         var newMixinIdArray = [];
         var oldMixinIdArray = [];
+        var mixinIds = {};
 
         return function (newMixins, oldMixins) {
           var i;
@@ -73968,6 +74016,9 @@ module.exports = registerElement('a-node', {
           oldMixinIdArray.length = 0;
           newMixinIds = newMixins ? utils.split(newMixins.trim(), /\s+/) : newMixinIdArray;
           oldMixinIds = oldMixins ? utils.split(oldMixins.trim(), /\s+/) : oldMixinIdArray;
+
+          mixinIds.newMixinIds = newMixinIds;
+          mixinIds.oldMixinIds = oldMixinIds;
 
           // Unregister old mixins.
           for (i = 0; i < oldMixinIds.length; i++) {
@@ -73990,6 +74041,8 @@ module.exports = registerElement('a-node', {
             window.HTMLElement.prototype.setAttribute.call(this, 'mixin',
                                                            this.computedMixinStr);
           }
+
+          return mixinIds;
         };
       })()
     },
@@ -74315,8 +74368,6 @@ var Component = module.exports.Component = function (el, attrValue, id) {
   this.oldData = this.isObjectBased ? this.objectPool.use() : undefined;
   this.previousOldData = this.isObjectBased ? this.objectPool.use() : undefined;
   this.parsingAttrValue = this.isObjectBased ? this.objectPool.use() : undefined;
-  // Purely for deciding to skip type checking.
-  this.previousAttrValue = undefined;
 
   // Last value passed to updateProperties.
   this.throttledEmitComponentChanged = utils.throttle(function emitChange () {
@@ -74509,7 +74560,7 @@ Component.prototype = {
   },
 
   /**
-   * Apply new component data if data has changed.
+   * Apply new component data if data has changed (from setAttribute).
    *
    * @param {string} attrValue - HTML attribute value.
    *        If undefined, use the cached attribute value and continue updating properties.
@@ -74517,10 +74568,6 @@ Component.prototype = {
    */
   updateProperties: function (attrValue, clobber) {
     var el = this.el;
-    var key;
-    var initialOldData;
-    var skipTypeChecking;
-    var hasComponentChanged;
 
     // Just cache the attribute if the entity has not loaded
     // Components are not initialized until the entity has loaded
@@ -74529,89 +74576,142 @@ Component.prototype = {
       return;
     }
 
-    // Disable type checking if the passed attribute is an object and has not changed.
-    skipTypeChecking = attrValue !== null && typeof this.previousAttrValue === 'object' &&
-                       attrValue === this.previousAttrValue;
-    if (skipTypeChecking) {
-      for (key in this.attrValue) {
-        if (!(key in attrValue)) {
-          skipTypeChecking = false;
-          break;
-        }
-      }
-      for (key in attrValue) {
-        if (!(key in this.attrValue)) {
-          skipTypeChecking = false;
-          break;
-        }
-      }
-    }
-
-    // Cache previously passed attribute to decide if we skip type checking.
-    this.previousAttrValue = attrValue;
-
     // Parse the attribute value.
     // Cache current attrValue for future updates. Updates `this.attrValue`.
-    attrValue = this.parseAttrValueForCache(attrValue);
-
-    // Update previous attribute value to later decide if we skip type checking.
-    this.previousAttrValue = attrValue;
+    // `null` means no value on purpose, do not set a default value, let mixins take over.
+    if (attrValue !== null) {
+      attrValue = this.parseAttrValueForCache(attrValue);
+    }
 
     // Cache current attrValue for future updates.
     this.updateCachedAttrValue(attrValue, clobber);
 
-    if (this.updateSchema) { this.updateSchema(this.buildData(this.attrValue, false, true)); }
-    this.data = this.buildData(this.attrValue, clobber, false, skipTypeChecking);
-
-    if (!this.initialized) {
-      // Component is being already initialized.
-      if (el.initializingComponents[this.name]) { return; }
-      // Prevent infinite loop in case of init method setting same component on the entity.
-      el.initializingComponents[this.name] = true;
-      // Initialize component.
-      this.init();
-      this.initialized = true;
-      delete el.initializingComponents[this.name];
-
-      // Store current data as previous data for future updates.
-      this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
-
-      // For oldData, pass empty object to multiple-prop schemas or object single-prop schema.
-      // Pass undefined to rest of types.
-      initialOldData = this.isObjectBased ? this.objectPool.use() : undefined;
-      this.update(initialOldData);
-      if (this.isObjectBased) { this.objectPool.recycle(initialOldData); }
-
-      // Play the component if the entity is playing.
-      if (el.isPlaying) { this.play(); }
-      el.emit('componentinitialized', this.evtDetail, false);
+    if (this.initialized) {
+      this.updateComponent(attrValue, clobber);
+      this.callUpdateHandler();
     } else {
-      // Store the previous old data before we calculate the new oldData.
-      if (this.previousOldData instanceof Object) {
-        utils.objectPool.clearObject(this.previousOldData);
-      }
-      if (this.isObjectBased) {
-        copyData(this.previousOldData, this.oldData);
-      } else {
-        this.previousOldData = this.oldData;
-      }
-
-      hasComponentChanged = !utils.deepEqual(this.oldData, this.data);
-
-      // Don't update if properties haven't changed.
-      // Always update rotation, position, scale.
-      if (!this.isPositionRotationScale && !hasComponentChanged) { return; }
-
-      // Store current data as previous data for future updates.
-      // Reuse `this.oldData` object to try not to allocate another one.
-      if (this.oldData instanceof Object) { utils.objectPool.clearObject(this.oldData); }
-      this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
-
-      // Update component with the previous old data.
-      this.update(this.previousOldData);
-
-      this.throttledEmitComponentChanged();
+      this.initComponent();
     }
+  },
+
+  initComponent: function () {
+    var el = this.el;
+    var initialOldData;
+
+    // Build data.
+    if (this.updateSchema) { this.updateSchema(this.buildData(this.attrValue, false, true)); }
+    this.data = this.buildData(this.attrValue);
+
+    // Component is being already initialized.
+    if (el.initializingComponents[this.name]) { return; }
+
+    // Prevent infinite loop in case of init method setting same component on the entity.
+    el.initializingComponents[this.name] = true;
+    // Initialize component.
+    this.init();
+    this.initialized = true;
+    delete el.initializingComponents[this.name];
+
+    // Store current data as previous data for future updates.
+    this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
+
+    // For oldData, pass empty object to multiple-prop schemas or object single-prop schema.
+    // Pass undefined to rest of types.
+    initialOldData = this.isObjectBased ? this.objectPool.use() : undefined;
+    this.update(initialOldData);
+    if (this.isObjectBased) { this.objectPool.recycle(initialOldData); }
+
+    // Play the component if the entity is playing.
+    if (el.isPlaying) { this.play(); }
+    el.emit('componentinitialized', this.evtDetail, false);
+  },
+
+  /**
+   * @param attrValue - Passed argument from setAttribute.
+   */
+  updateComponent: function (attrValue, clobber) {
+    var key;
+    var mayNeedSchemaUpdate;
+
+    if (clobber) {
+      // Clobber. Rebuild.
+      if (this.updateSchema) {
+        this.updateSchema(this.buildData(this.attrValue, true, true));
+      }
+      this.data = this.buildData(this.attrValue, true, false);
+      return;
+    }
+
+    // Apply new value to this.data in place since direct update.
+    if (this.isSingleProperty) {
+      // Single-property (already parsed).
+      this.data = attrValue;
+      return;
+    }
+
+    parseProperties(attrValue, this.schema, true, this.name);
+
+    // Check if we need to update schema.
+    if (this.schemaChangeKeys.length) {
+      for (key in attrValue) {
+        if (this.schema[key].schemaChange) {
+          mayNeedSchemaUpdate = true;
+          break;
+        }
+      }
+    }
+    if (mayNeedSchemaUpdate) {
+      // Rebuild data if need schema update.
+      if (this.updateSchema) {
+        this.updateSchema(this.buildData(this.attrValue, true, true));
+      }
+      this.data = this.buildData(this.attrValue, true, false);
+      return;
+    }
+
+    // Normal update.
+    for (key in attrValue) {
+      if (attrValue[key] === undefined) { continue; }
+      this.data[key] = attrValue[key];
+    }
+  },
+
+  /**
+   * Check if component should fire update and fire update lifecycle handler.
+   */
+  callUpdateHandler: function () {
+    var hasComponentChanged;
+
+    // Store the previous old data before we calculate the new oldData.
+    if (this.previousOldData instanceof Object) {
+      utils.objectPool.clearObject(this.previousOldData);
+    }
+    if (this.isObjectBased) {
+      copyData(this.previousOldData, this.oldData);
+    } else {
+      this.previousOldData = this.oldData;
+    }
+
+    hasComponentChanged = !utils.deepEqual(this.oldData, this.data);
+
+    // Don't update if properties haven't changed.
+    // Always update rotation, position, scale.
+    if (!this.isPositionRotationScale && !hasComponentChanged) { return; }
+
+    // Store current data as previous data for future updates.
+    // Reuse `this.oldData` object to try not to allocate another one.
+    if (this.oldData instanceof Object) { utils.objectPool.clearObject(this.oldData); }
+    this.oldData = extendProperties(this.oldData, this.data, this.isObjectBased);
+
+    // Update component with the previous old data.
+    this.update(this.previousOldData);
+
+    this.throttledEmitComponentChanged();
+  },
+
+  handleMixinUpdate: function () {
+    this.data = this.buildData(this.attrValue);
+    this.callUpdateHandler();
   },
 
   /**
@@ -74621,11 +74721,13 @@ Component.prototype = {
    * @param {string} propertyName - Name of property to reset.
    */
   resetProperty: function (propertyName) {
-    if (!this.isObjectBased) {
-      this.attrValue = undefined;
-    } else {
+    if (this.isObjectBased) {
       if (!(propertyName in this.attrValue)) { return; }
       delete this.attrValue[propertyName];
+      this.data[propertyName] = this.schema[propertyName].default;
+    } else {
+      this.attrValue = this.schema.default;
+      this.data = this.schema.default;
     }
     this.updateProperties(this.attrValue);
   },
@@ -74650,10 +74752,7 @@ Component.prototype = {
   },
 
   /**
-   * Build component data from the current state of the entity, ultimately
-   * updating this.data.
-   *
-   * If the component was detached completely, set data to null.
+   * Build component data from the current state of the entity.data.
    *
    * Precedence:
    * 1. Defaults data
@@ -74665,10 +74764,9 @@ Component.prototype = {
    * @param {object} newData - Element new data.
    * @param {boolean} clobber - The previous data is completely replaced by the new one.
    * @param {boolean} silent - Suppress warning messages.
-   * @param {boolean} skipTypeChecking - Skip type checking and coercion.
    * @return {object} The component data
    */
-  buildData: function (newData, clobber, silent, skipTypeChecking) {
+  buildData: function (newData, clobber, silent) {
     var componentDefined;
     var data;
     var defaultValue;
@@ -74687,7 +74785,7 @@ Component.prototype = {
 
     if (this.isObjectBased) { utils.objectPool.clearObject(nextData); }
 
-    // 1. Default values (lowest precendence).
+    // 1. Gather default values (lowest precendence).
     if (this.isSingleProperty) {
       if (this.isObjectBased) {
         // If object-based single-prop, then copy over the data to our pooled object.
@@ -74718,17 +74816,16 @@ Component.prototype = {
       }
     }
 
-    // 2. Mixin values.
+    // 2. Gather mixin values.
     for (i = 0; i < mixinEls.length; i++) {
       mixinData = mixinEls[i].getAttribute(this.attrName);
       if (!mixinData) { continue; }
       data = extendProperties(data, mixinData, this.isObjectBased);
     }
 
-    // 3. Attribute values (highest precendence).
+    // 3. Gather attribute values (highest precendence).
     if (componentDefined) {
       if (this.isSingleProperty) {
-        if (skipTypeChecking === true) { return newData; }
         // If object-based, copy the value to not modify the original.
         if (isObject(newData)) {
           copyData(this.parsingAttrValue, newData);
@@ -74738,12 +74835,10 @@ Component.prototype = {
       }
       data = extendProperties(data, newData, this.isObjectBased);
     } else {
-      if (skipTypeChecking === true) { return data; }
       // Parse and coerce using the schema.
       if (this.isSingleProperty) { return parseProperty(data, schema); }
     }
 
-    if (skipTypeChecking === true) { return data; }
     return parseProperties(data, schema, undefined, this.name, silent);
   }
 };
@@ -74762,7 +74857,10 @@ if (window.debug) {
  */
 module.exports.registerComponent = function (name, definition) {
   var NewComponent;
+  var propertyName;
   var proto = {};
+  var schema;
+  var schemaIsSingleProp;
 
   // Warning if component is statically registered after the scene.
   if (document.currentScript && document.currentScript !== aframeScript) {
@@ -74808,18 +74906,34 @@ module.exports.registerComponent = function (name, definition) {
                     'Check that you are not loading two versions of the same component ' +
                     'or two different components of the same name.');
   }
+
   NewComponent = function (el, attr, id) {
     Component.call(this, el, attr, id);
   };
 
   NewComponent.prototype = Object.create(Component.prototype, proto);
   NewComponent.prototype.name = name;
-  NewComponent.prototype.isPositionRotationScale = name === 'position' || name === 'rotation' || name === 'scale';
+  NewComponent.prototype.isPositionRotationScale =
+    name === 'position' || name === 'rotation' || name === 'scale';
   NewComponent.prototype.constructor = NewComponent;
   NewComponent.prototype.system = systems && systems.systems[name];
   NewComponent.prototype.play = wrapPlay(NewComponent.prototype.play);
   NewComponent.prototype.pause = wrapPause(NewComponent.prototype.pause);
   NewComponent.prototype.remove = wrapRemove(NewComponent.prototype.remove);
+
+  schema = utils.extend(processSchema(NewComponent.prototype.schema,
+                                      NewComponent.prototype.name));
+  schemaIsSingleProp = isSingleProp(NewComponent.prototype.schema);
+
+  // Keep track of keys that may potentially change the schema.
+  if (!schemaIsSingleProp) {
+    NewComponent.prototype.schemaChangeKeys = [];
+    for (propertyName in schema) {
+      if (schema[propertyName].schemaChange) {
+        NewComponent.prototype.schemaChangeKeys.push(propertyName);
+      }
+    }
+  }
 
   // Create object pool for class of components.
   objectPools[name] = utils.objectPool.createPool();
@@ -74827,13 +74941,12 @@ module.exports.registerComponent = function (name, definition) {
   components[name] = {
     Component: NewComponent,
     dependencies: NewComponent.prototype.dependencies,
-    isSingleProp: isSingleProp(NewComponent.prototype.schema),
+    isSingleProp: schemaIsSingleProp,
     multiple: NewComponent.prototype.multiple,
     name: name,
     parse: NewComponent.prototype.parse,
     parseAttrValueForCache: NewComponent.prototype.parseAttrValueForCache,
-    schema: utils.extend(processSchema(NewComponent.prototype.schema,
-                                       NewComponent.prototype.name)),
+    schema: schema,
     stringify: NewComponent.prototype.stringify,
     type: NewComponent.prototype.type
   };
@@ -75115,6 +75228,7 @@ var warn = debug('core:propertyTypes:warn');
 
 var propertyTypes = module.exports.propertyTypes = {};
 var nonCharRegex = /[,> .[\]:]/;
+var urlRegex = /\url\((.+)\)/;
 
 // Built-in property types.
 registerPropertyType('audio', '', assetParse);
@@ -75186,7 +75300,7 @@ function assetParse (value) {
   if (typeof value !== 'string') { return value; }
 
   // Wrapped `url()` in case of data URI.
-  parsedUrl = value.match(/\url\((.+)\)/);
+  parsedUrl = value.match(urlRegex);
   if (parsedUrl) { return parsedUrl[1]; }
 
   // ID.
@@ -76476,7 +76590,10 @@ module.exports.parseProperties = (function () {
     var propValue;
 
     propNames.length = 0;
-    for (propName in (getPartialData ? propData : schema)) { propNames.push(propName); }
+    for (propName in (getPartialData ? propData : schema)) {
+      if (getPartialData && propData[propName] === undefined) { continue; }
+      propNames.push(propName);
+    }
 
     if (propData === null || typeof propData !== 'object') { return propData; }
 
@@ -77937,7 +78054,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-11-07, Commit #ffa3bdf4)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-11-12, Commit #d3bb3238)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -79900,7 +80017,7 @@ module.exports.isLandscape = function () {
  * Check if device is iOS and older than version 10.
  */
 module.exports.isIOSOlderThan10 = function (userAgent) {
-  return /(iphone|ipod|ipad).*os.(7|8|9)/i.test(userAgent);
+  return /(iphone|ipod|ipad).*os.(7_|8_|9_)/i.test(userAgent);
 };
 
 /**

@@ -97,12 +97,15 @@ AFRAME.registerComponent('beat', {
       new THREE.Vector3()
     ];
 
-    this.wrongElLeft = document.getElementById('wrongLeft');
-    this.wrongElRight = document.getElementById('wrongRight');
+
+    this.blockEl = document.createElement('a-entity');
+    this.mineParticles = document.getElementById('mineParticles');
     this.missElLeft = document.getElementById('missLeft');
     this.missElRight = document.getElementById('missRight');
     this.particles = document.getElementById('saberParticles');
-    this.mineParticles = document.getElementById('mineParticles');
+    this.signEl = document.createElement('a-entity');
+    this.wrongElLeft = document.getElementById('wrongLeft');
+    this.wrongElRight = document.getElementById('wrongRight');
 
     this.saberColors = {right: 'blue', left: 'red'};
 
@@ -218,9 +221,9 @@ AFRAME.registerComponent('beat', {
   },
 
   initBlock: function () {
-    var el = this.el;
-    var blockEl = this.blockEl = document.createElement('a-entity');
-    var signEl = this.signEl = document.createElement('a-entity');
+    const blockEl = this.blockEl;
+    const el = this.el;
+    const signEl = this.signEl;
 
     blockEl.setAttribute('mixin', 'beatBlock');
     blockEl.setAttribute('mixin', 'beatSign');
@@ -232,8 +235,8 @@ AFRAME.registerComponent('beat', {
   },
 
   updateBlock: function () {
-    var blockEl = this.blockEl;
-    var signEl = this.signEl;
+    const blockEl = this.blockEl;
+    const signEl = this.signEl;
 
     blockEl.setAttribute('material', {
       metalness: 0.6,
