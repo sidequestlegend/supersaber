@@ -134,8 +134,8 @@
 
   <a-entity
     id="songProgressRing"
-    bind__song-progress-ring="challengeId: challenge.id; enabled: isPlaying"
-    bind__visible="isPlaying"
+    bind__song-progress-ring="enabled: isPlaying && challenge.isBeatsPreloaded"
+    bind__visible="isPlaying && challenge.isBeatsPreloaded"
     geometry="primitive: plane; width: 0.1; height: 0.1"
     material="shader: ring; progress: 0; transparent: true; radiusInner: 0.5; color: #ABABAB"
     position="0 0.1 -1.5"
