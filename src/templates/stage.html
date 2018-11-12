@@ -2,41 +2,26 @@
 
 <a-mixin id="neonAnimation"
   material="shader: flat; fog: false; color: #9999ff"
-  animation__coloroff="property: components.material.material.opacity;
-    to: 0.1; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.material.material.color;
-    type: color; to: #AAAAFF; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.material.material.color;
-    type: color; from: #EEF; to: #AAAAff; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.material.material.color;
-    type: color; to: #FFAAAA; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.material.material.color;
-    type: color; from: #FEE; to: #ffAAAA; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
+  animation__coloroff="property: components.material.material.opacity; to: 0.1; dur: 500; easing: linear; startEvents: coloroff"
+  animation__colorblue="property: components.material.material.color; type: color; to: #AAAAFF; dur: 5; easing: linear; startEvents: colorblue"
+  animation__colorbluefade="property: components.material.material.color; type: color; from: #EEF; to: #AAAAff; dur: 500; easing: linear; startEvents: colorbluefade"
+  animation__colorred="property: components.material.material.color; type: color; to: #FFAAAA; dur: 5; easing: linear; startEvents: colorred"
+  animation__colorredfade="property: components.material.material.color; type: color; from: #FEE; to: #ffAAAA; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 
 <a-mixin id="bgAnimation"
-  material="shader: flat; fog: false;"
-  animation__coloroff="property: components.material.material.color;
-    type: color; to: #111; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.material.material.color;
-    type: color; to: #00acfc; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.material.material.color;
-    type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.material.material.color;
-    type: color; to: #fc0000; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.material.material.color;
-    type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
+  material="shader: flat; fog: false"
+  animation__coloroff="property: components.material.material.color; type: color; to: #111; dur: 500; easing: linear; startEvents: coloroff"
+  animation__colorblue="property: components.material.material.color; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: colorblue"
+  animation__colorbluefade="property: components.material.material.color; type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: colorbluefade"
+  animation__colorred="property: components.material.material.color; type: color; to: #fc0000; dur: 5; easing: linear; startEvents: colorred"
+  animation__colorredfade="property: components.material.material.color; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 
 <a-mixin id="fogAnimation"
-  animation__coloroff="property: components.fog.el.object3D.fog.color;
-  type: color; to: #010101; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.fog.el.object3D.fog.color;
-  type: color; to: #007cb9; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.fog.el.object3D.fog.color;
-  type: color; from: #3398CA; to: #007cb9; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.fog.el.object3D.fog.color;
-  type: color; to: #b90000; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.fog.el.object3D.fog.color;
-  type: color; from: #ff0000; to: #b90000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
+  animation__coloroff="property: components.fog.el.object3D.fog.color; type: color; to: #010101; dur: 500; easing: linear; startEvents: coloroff"
+  animation__colorblue="property: components.fog.el.object3D.fog.color; type: color; to: #007cb9; dur: 5; easing: linear; startEvents: colorblue"
+  animation__colorbluefade="property: components.fog.el.object3D.fog.color; type: color; from: #3398CA; to: #007cb9; dur: 500; easing: linear; startEvents: colorbluefade"
+  animation__colorred="property: components.fog.el.object3D.fog.color; type: color; to: #b90000; dur: 5; easing: linear; startEvents: colorred"
+  animation__colorredfade="property: components.fog.el.object3D.fog.color; type: color; from: #ff0000; to: #b90000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 
 <a-sky
   id="sky"
@@ -80,11 +65,21 @@
     <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
   </a-entity>
 
-  <a-entity id="tunnel" obj-model="obj:#tunnelObj" material="shader: flat; flatShading: true; color: #010101"></a-entity>
-  <a-entity id="tunnelNeon" obj-model="obj:#tunnelNeonObj" material="shader: flat; fog: false; transparent: true; color: #9999ff; src: #neonImg; depthWrite: false;"
-  mixin="neonAnimation"></a-entity>
+  <a-entity
+    id="tunnel"
+    obj-model="obj: #tunnelObj"
+    material="shader: flat; flatShading: true; color: #010101"></a-entity>
 
-  <a-entity id="stageNeon" obj-model="obj:#stageNeonObj" mixin="neonAnimation"></a-entity>
+  <a-entity
+    id="tunnelNeon"
+    mixin="neonAnimation"
+    obj-model="obj: #tunnelNeonObj"
+    material="shader: flat; fog: false; transparent: true; color: #9999ff; src: #neonImg; depthWrite: false"></a-entity>
+
+  <a-entity
+    id="stageNeon"
+    mixin="neonAnimation"
+    obj-model="obj: #stageNeonObj"></a-entity>
 
   <!-- Lasers left. -->
   <a-entity id="leftStageLasers" bind__stage-lasers="enabled: isPlaying">
@@ -131,13 +126,11 @@
 
   <a-entity
     id="floor"
-    mixin="neonAnimation"
     geometry="primitive: plane; width: 3; height: 3"
     material="shader: floor-shader; src: #floorImg; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
     rotation="-90 0 0"
-    stepback
     saber-intersection
-    ></a-entity>
+    stepback></a-entity>
 
   <a-entity
     id="songProgressRing"
