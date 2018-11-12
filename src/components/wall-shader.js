@@ -1,5 +1,5 @@
 
-AFRAME.registerShader('wall-shader', {
+AFRAME.registerShader('wallShader', {
   schema: {
     iTime: {type: 'time', is: 'uniform'},
     tex: {type: 'map', is: 'uniform'},

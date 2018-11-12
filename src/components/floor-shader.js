@@ -1,4 +1,4 @@
-AFRAME.registerShader('floor-shader', {
+AFRAME.registerShader('floorShader', {
   schema: {
     src: {type: 'map', is: 'uniform'},
     normalMap: {type: 'map', is: 'uniform'},
