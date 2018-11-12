@@ -31,6 +31,7 @@ AFRAME.registerComponent('song', {
     this.analyserSetter = {buffer: true};
     this.audioAnalyser = this.data.analyserEl.components.audioanalyser;
     this.context = this.audioAnalyser.context;
+    this.isPlaying = false;
     this.songLoadingIndicator = document.getElementById('songLoadingIndicator');
     this.songStartTime = 0;
 
@@ -110,6 +111,8 @@ AFRAME.registerComponent('song', {
 
   getAudio: function () {
     const data = this.data;
+
+    this.isPlaying = false;
     return new Promise(resolve => {
       data.analyserEl.addEventListener('audioanalyserbuffersource', evt => {
         // Finished decoding.
@@ -140,6 +143,7 @@ AFRAME.registerComponent('song', {
     this.source.stop();
     this.source.disconnect();
     this.source = null;
+    this.isPlaying = false;
   },
 
   victory: function () {
@@ -156,6 +160,8 @@ AFRAME.registerComponent('song', {
   },
 
   onGameOver: function () {
+    this.isPlaying = false;
+
     // Playback rate.
     const playbackRate = this.source.playbackRate;
     playbackRate.setValueAtTime(playbackRate.value, this.context.currentTime);
@@ -173,6 +179,8 @@ AFRAME.registerComponent('song', {
   },
 
   onRestart: function () {
+    this.isPlaying = false;
+
     // Restart, get new buffer source node and play.
     if (this.source) { this.source.disconnect(); }
 
@@ -203,6 +211,7 @@ AFRAME.registerComponent('song', {
     this.songStartTime = this.context.currentTime;
     this.source.onended = this.victory;
     this.source.start();
+    this.isPlaying = true;
   },
 
   getCurrentTime: function () {
