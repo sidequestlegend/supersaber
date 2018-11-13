@@ -7,7 +7,7 @@ const SONG_NAME_TRUNCATE = 24;
 const SONG_SUB_NAME_TRUNCATE = 32;
 
 const DAMAGE_DECAY = 0.25;
-const DAMAGE_MAX = 10;
+const DAMAGE_MAX = 1000000;
 
 const DEBUG_CHALLENGE = {
   author: 'Superman',
@@ -77,12 +77,10 @@ AFRAME.registerState({
     },
     score: {
       accuracy: 0,
-      accuracyText: '',
       beatsHit: 0,
       beatsMissed: 0,
       combo: 0,
       maxCombo: 0,
-      maxComboText: 0,
       multiplier: 1,
       rank: '',  // Grade (S to F).
       score: 0
@@ -210,9 +208,8 @@ AFRAME.registerState({
       Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.isVictory = true;
       state.menuActive = false;
-      state.score.accuracy = .88;
-      state.score.accuracyText = '99.99%';
-      state.score.maxComboText = 'MAX COMBO - 123';
+      state.score.accuracy = 74.99;
+      state.score.maxCombo = 123;
       state.score.rank = 'B';
       state.score.score = 9001;
     },
@@ -401,8 +398,6 @@ AFRAME.registerState({
         state.score.beatsHit /
         (state.score.beatsMissed + state.score.beatsHit);
       state.score.accuracy = accuracy;
-      state.score.accuracyText = `${(accuracy * 100).toFixed()}%`;
-      state.score.maxComboText = `MAX COMBO - ${state.score.maxCombo}`;
 
       if (accuracy === 1) {
         state.score.rank = 'S';

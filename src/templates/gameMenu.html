@@ -39,7 +39,8 @@
   <a-entity
     id="restartButton"
     mixin="gameMenuButton"
-    bind-toggle__raycastable="isPaused || isGameOver || isVictory"
+    bind__visible="!isVictory"
+    bind-toggle__raycastable="isPaused || isGameOver"
     proxy-event="event: click; to: a-scene; as: gamemenurestart">
     <a-entity mixin="gameMenuButtonText" text="value: RESTART SONG"></a-entity>
   </a-entity>
@@ -47,11 +48,39 @@
   <a-entity
     id="exitButton"
     mixin="gameMenuButton"
-    bind-toggle__raycastable="isPaused || isGameOver || isVictory"
+    bind__visible="!isVictory"
+    bind-toggle__raycastable="isPaused || isGameOver"
     position="0 -0.35 0"
     proxy-event="event: click; to: a-scene; as: gamemenuexit">
     <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
   </a-entity>
+
+
+  <a-entity
+    id="victoryButtons"
+    visible="false"
+    animation="property: visible; from: false; to: true; delay: 1000; startEvents: appear">
+    <a-entity
+      id="victoryRestartButton"
+      mixin="gameMenuButton"
+      bind__visible="isVictory"
+      position="-0.56 -0.79 0.05"
+      bind-toggle__raycastable="isVictory"
+      proxy-event="event: click; to: a-scene; as: gamemenurestart">
+      <a-entity mixin="gameMenuButtonText" text="value: RESTART SONG"></a-entity>
+    </a-entity>
+
+    <a-entity
+      id="victoryExitButton"
+      mixin="gameMenuButton"
+      bind__visible="isVictory"
+      bind-toggle__raycastable="isVictory"
+      position="0.56 -0.79 0.05"
+      proxy-event="event: click; to: a-scene; as: gamemenuexit">
+      <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
+    </a-entity>
+  </a-entity>
+
 
   <!-- Song info. -->
   <a-entity id="gameMenuSongInfoContainer" position="-1.64 -0.12 0.798" rotation="0 55 0">
