@@ -46,9 +46,9 @@ AFRAME.registerShader('floorShader', {
 
       // environment reflection
       vec3 reflectVec = normalize(reflect(normalize(worldPos - cameraPosition), normal));
-      vec3 reflectView = normalize((viewMatrix * vec4(reflectVec, 0.0)).xyz + vec3(0.0, 0.0, 1.0));
+      //vec3 reflectView = normalize((viewMatrix * vec4(reflectVec, 0.0)).xyz + vec3(0.0, 0.0, 1.0));
 
-      gl_FragColor = vec4(texture2D(envMap, reflectView.xy * vec2(0.5, -1.0) + vec2(0.75, 1.1)).xyz * 0.08 + col, 0.9 + col.x);
+      gl_FragColor = vec4(texture2D(envMap, reflectVec.xy * vec2(0.3, 1.0) + vec2(0.75, -cameraPosition.z * 0.05)).xyz * 0.08 + col, 0.9 + col.x);
     }
   `
 });
