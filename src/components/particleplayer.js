@@ -67,7 +67,9 @@ AFRAME.registerComponent('particleplayer', {
     this.sprite_rotation = false;
     this.systems = null;
     this.useRotation = false;
+    this.useAge = false;
     this.scaleAnim = new THREE.Vector3();
+    this.partScale = new THREE.Vector3(1.0, 1.0, 1.0);
   },
 
   update: function (oldData) {
@@ -85,6 +87,8 @@ AFRAME.registerComponent('particleplayer', {
         this.el.addEventListener(data.on, this.start.bind(this));
       }
     }
+
+    this.partScale.set(1.0, 1.0, 1.0);
 
     this.loadParticlesJSON(data.src, data.scale);
 
@@ -140,6 +144,7 @@ AFRAME.registerComponent('particleplayer', {
     const precision = jsonData.precision;
 
     this.useRotation = jsonData.rotation;
+    this.useAge = jsonData['age'] !== undefined ? jsonData.age : false;
 
     if (jsonData.sprite_rotation !== false) {
       this.sprite_rotation = {
@@ -173,7 +178,7 @@ AFRAME.registerComponent('particleplayer', {
           alive: alive
         });
 
-        if (jsonData.rotation) {
+        if (this.useRotation) {
           p.rotation = alive
             ? {
               x: rawP[3] / precision,
@@ -181,6 +186,10 @@ AFRAME.registerComponent('particleplayer', {
               z: rawP[5] / precision
             }
             : null;
+        }
+
+        if (this.useAge) {
+          p.age = alive ? rawP[6] / precision : 0;
         }
 
         if (alive && frameIndex === 0) {
@@ -215,8 +224,7 @@ AFRAME.registerComponent('particleplayer', {
           loopCount: 0,
           loopTotal: loop,
           mesh: null,
-          time: 0,
-          pscale: data.animateScale ? new THREE.Vector3() : null
+          time: 0
         };
 
         // Fill array of geometries to merge.
@@ -317,10 +325,6 @@ AFRAME.registerComponent('particleplayer', {
     particleSystem.mesh.position.copy(position);
     particleSystem.mesh.rotation.copy(rotation);
     particleSystem.time = 0;
-    if (this.data.animateScale) {
-      particleSystem.pscale.copy(this.data.initialScale);
-    }
-
     this.resetParticles(particleSystem);
   },
 
@@ -328,9 +332,6 @@ AFRAME.registerComponent('particleplayer', {
     particleSystem.loopCount++;
     particleSystem.frame = -1;
     particleSystem.time = 0;
-    if (this.data.animateScale) {
-      particleSystem.pscale.copy(data.initialScale);
-    }
     this.resetParticles(particleSystem);
   },
 
@@ -344,7 +345,7 @@ AFRAME.registerComponent('particleplayer', {
         this.originalVertexPositions,
         this.restPositions[particleIndex],
         this.useRotation && this.restRotations[particleIndex],
-        particleSystem.pscale
+        null
       );
     } else {
       // Hide.
@@ -419,6 +420,8 @@ AFRAME.registerComponent('particleplayer', {
       var frameTime; // time in current frame (for interpolation)
       var relTime; // current particle system relative time (0-1)
       var interpolate; // whether interpolate between frames or not
+      const scaleSystem = this.data.animateScale && !this.useAge;
+      const scaleParticle = this.data.animateScale && this.useAge;
 
       for (
         let particleSystemIndex = 0;
@@ -445,8 +448,8 @@ AFRAME.registerComponent('particleplayer', {
               : null;
         }
 
-        if (this.data.animateScale) {
-          particleSystem.pscale.lerp(this.data.finalScale, relTime);
+        if (scaleSystem) {
+          this.partScale.lerpVectors(this.data.initialScale, this.data.finalScale, relTime);
         }
 
         for (
@@ -457,6 +460,10 @@ AFRAME.registerComponent('particleplayer', {
           let particleIndex =
             particleSystem.activeParticleIndices[activeParticleIndex];
           let rotation = useRotation && fdata[particleIndex].rotation;
+
+          if (scaleParticle) {
+            this.partScale.lerpVectors(this.data.initialScale, this.data.finalScale, fdata[particleIndex].age);
+          }
 
           // TODO: Add vertex position to original position to all vertices of plane...
           if (!fdata[particleIndex].alive) {
@@ -484,7 +491,7 @@ AFRAME.registerComponent('particleplayer', {
               this.originalVertexPositions,
               helperPositionVec3,
               rotation,
-              particleSystem.pscale
+              this.partScale
             );
           } else {
             transformPlane(
@@ -493,7 +500,7 @@ AFRAME.registerComponent('particleplayer', {
               this.originalVertexPositions,
               fdata[particleIndex].position,
               rotation,
-              particleSystem.pscale
+              this.partScale
             );
           }
         }

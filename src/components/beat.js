@@ -247,7 +247,7 @@ AFRAME.registerComponent('beat', {
   updateBlock: function () {
     const blockEl = this.blockEl;
     const signEl = this.signEl;
-
+    if (!blockEl) { return; }
     blockEl.setAttribute('material', {
       metalness: 0.6,
       roughness: 0.12,
@@ -348,7 +348,7 @@ AFRAME.registerComponent('beat', {
     var partLeftEl = this.partLeftEl;
     var partRightEl = this.partRightEl;
     var fragment;
-
+    if (!partLeftEl) { return; }
     if (this.data.type === 'mine') {
       this.resetMineFragments();
       return;

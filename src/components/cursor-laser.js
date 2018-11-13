@@ -51,6 +51,7 @@ AFRAME.registerComponent('cursor-laser', {
 
     // Set appropriate length of beam on intersection.
     const intersection = el.parentNode.components.raycaster.intersections[0];
+    if (!intersection) { return; }
     el.object3D.scale.x = 1;
     el.object3D.position.z = (-intersection.distance / 2);
     el.getObject3D('mesh').scale.y = this.currentLength = intersection.distance;

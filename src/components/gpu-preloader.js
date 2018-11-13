@@ -16,7 +16,7 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadMissMap();
       this.preloadPlayButton();
       this.preloadSearchPrevPage();
-      this.preloadWallMap();
+      //this.preloadWallMap();
       this.preloadWrongMap();
       this.preloadGenres();
     }, 1000);
@@ -79,6 +79,7 @@ AFRAME.registerComponent('gpu-preloader', {
   preloadWallMap: function () {
     const wall = document.querySelector('a-entity[wall]');
     this.preloadTexture(wall.getObject3D('mesh').material.uniforms.tex.value);
+    this.preloadTexture(wall.getObject3D('mesh').material.uniforms.env.value);
   },
 
   preloadWrongMap: function () {
