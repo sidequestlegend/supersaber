@@ -39,7 +39,6 @@ AFRAME.registerComponent('text-counter', {
     if (this.currentValue >= this.data.value) {
       this.currentValue = this.data.value;
       if (this.data.emit) {
-        console.log(this.currentValue, this.data.value);
         this.victoryInfoRank.emit('textcounterdone', null, false);
         this.victoryButtons.emit('textcounterdone', null, false);
       }
