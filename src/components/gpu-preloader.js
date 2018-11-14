@@ -16,7 +16,7 @@ AFRAME.registerComponent('gpu-preloader', {
       this.preloadMissMap();
       this.preloadPlayButton();
       this.preloadSearchPrevPage();
-      //this.preloadWallMap();
+      this.preloadWallMap();
       this.preloadWrongMap();
       this.preloadGenres();
     }, 1000);

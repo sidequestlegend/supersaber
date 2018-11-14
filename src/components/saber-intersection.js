@@ -14,6 +14,7 @@ AFRAME.registerComponent('saber-intersection', {
     this.intersecting = false;
     this.saberEnterFunc = this.saberEnter.bind(this);
     this.saberLeaveFunc = this.saberLeave.bind(this);
+    this.particlesPosition = {position: null, rotation: null};
   },
 
   pause: function () {
@@ -36,10 +37,10 @@ AFRAME.registerComponent('saber-intersection', {
     if (!this.data.active) { return; }
     const saber = this.saberHit[evt.detail.cursorEl.id];
     saber.active = true;
-    int = saber.raycaster.getIntersection(this.el);
-      console.log(int);
-    if (int) {
-      this.particles.emit('start', {position: int.point, rotation: null});
+    var intersection = saber.raycaster.getIntersection(this.el);
+    if (intersection) {
+      this.particlesPosition.position = intersection.point;
+      this.particles.emit('explode', this.particlesPosition, false);
     }
     this.intersecting = true;
   },
@@ -53,14 +54,14 @@ AFRAME.registerComponent('saber-intersection', {
 
   tick: function (time, delta) {
     if (this.data.active && this.intersecting) {
-      var int;
+      var intersection;
       if (this.saberHit.rightHand.active) {
-        int = this.saberHit.rightHand.raycaster.getIntersection(this.el);
-        if (int) { this.material.uniforms.hitRight.value = int.point; }
+        intersection = this.saberHit.rightHand.raycaster.getIntersection(this.el);
+        if (intersection) { this.material.uniforms.hitRight.value = intersection.point; }
       }
       if (this.saberHit.leftHand.active) {
-        int = this.saberHit.leftHand.raycaster.getIntersection(this.el);
-        if (int) { this.material.uniforms.hitLeft.value = int.point; }
+        intersection = this.saberHit.leftHand.raycaster.getIntersection(this.el);
+        if (intersection) { this.material.uniforms.hitLeft.value = intersection.point; }
       }
     }
   }
