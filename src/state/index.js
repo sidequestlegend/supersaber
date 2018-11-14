@@ -7,7 +7,7 @@ const SONG_NAME_TRUNCATE = 24;
 const SONG_SUB_NAME_TRUNCATE = 32;
 
 const DAMAGE_DECAY = 0.25;
-const DAMAGE_MAX = 1000000;
+const DAMAGE_MAX = 10;
 
 const DEBUG_CHALLENGE = {
   author: 'Superman',

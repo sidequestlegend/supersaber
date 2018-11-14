@@ -55,33 +55,6 @@
     <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
   </a-entity>
 
-
-  <a-entity
-    id="victoryButtons"
-    visible="false"
-    animation="property: visible; from: false; to: true; delay: 1000; startEvents: appear">
-    <a-entity
-      id="victoryRestartButton"
-      mixin="gameMenuButton"
-      bind__visible="isVictory"
-      position="-0.56 -0.79 0.05"
-      bind-toggle__raycastable="isVictory"
-      proxy-event="event: click; to: a-scene; as: gamemenurestart">
-      <a-entity mixin="gameMenuButtonText" text="value: RESTART SONG"></a-entity>
-    </a-entity>
-
-    <a-entity
-      id="victoryExitButton"
-      mixin="gameMenuButton"
-      bind__visible="isVictory"
-      bind-toggle__raycastable="isVictory"
-      position="0.56 -0.79 0.05"
-      proxy-event="event: click; to: a-scene; as: gamemenuexit">
-      <a-entity mixin="gameMenuButtonText" text="value: EXIT TO MENU"></a-entity>
-    </a-entity>
-  </a-entity>
-
-
   <!-- Song info. -->
   <a-entity id="gameMenuSongInfoContainer" position="-1.64 -0.12 0.798" rotation="0 55 0">
     <a-entity mixin="slice" slice9="width: 0.77; height: 0.72; padding: 0.04" position="0 0.25 -0.03"></a-entity>
