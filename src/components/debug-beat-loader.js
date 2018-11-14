@@ -39,12 +39,15 @@ AFRAME.registerComponent('debug-beat-loader', {
 
   generateBeat: function (beatInfo) {
     var type;
+    if (beatInfo.type === 'wall') {
+      this.generateWall(beatInfo);
+      return;
+    }
     if (beatInfo.type === 'mine') {
       type = 3;
     } else {
       type = beatInfo.color === 'red' ? 0 : 1;
     }
-    debugger;
     this.beatLoader.generateBeat({
       _lineIndex: this.beatLoader.positionHumanized[beatInfo.position].index,
       _lineLayer: this.beatLoader.positionHumanized[beatInfo.position].layer,
@@ -52,6 +55,16 @@ AFRAME.registerComponent('debug-beat-loader', {
         ? 8
         : this.beatLoader.orientationsHumanized.indexOf(beatInfo.orientation),
       _type: type
+    });
+  },
+
+
+  generateWall: function (wallInfo) {
+    this.beatLoader.bpm = 90;
+    this.beatLoader.generateWall({
+      _lineIndex: this.beatLoader.positionHumanized[wallInfo.position].index,
+      _width: 2,
+      _duration: 3 
     });
   },
 
@@ -110,6 +123,7 @@ AFRAME.registerComponent('debug-beat-loader', {
       addButton('arrow', menuDiv);
       addButton('dot', menuDiv);
       addButton('mine', menuDiv);
+      addButton('wall', menuDiv);
       parentDiv.appendChild(menuDiv);
     }
 
@@ -187,7 +201,6 @@ AFRAME.registerComponent('debug-beat-loader', {
           color: self.selectedBeat.color
         };
         if (!self.selectedPositionEl) { return; }
-        debugger;
         self.selectedPositionEl.innerHTML = self.selectedBeat.type + color + orientation;
         self.beats[self.selectedPositionEl.id] = {
           position: self.selectedBeat.position,

@@ -72,6 +72,8 @@ AFRAME.registerComponent('beat-loader', {
     this.songCurrentTime = undefined;
     this.xhr = null;
     this.stageColors = this.el.components['stage-colors'];
+    // Beats arrive at sword stroke distance synced with the music.
+    this.swordOffset = 1.5;
     this.twister = document.getElementById('twister');
     this.leftStageLasers = document.getElementById('leftStageLasers');
     this.rightStageLasers = document.getElementById('rightStageLasers');
@@ -209,9 +211,7 @@ AFRAME.registerComponent('beat-loader', {
 
   generateBeat: (function () {
     const beatObj = {};
-    // Beats arrive at sword stroke distance synced with the music.
-    const swordOffset = 1.5;
-
+ 
     return function (noteInfo) {
       var beatEl;
       var color;
@@ -231,7 +231,7 @@ AFRAME.registerComponent('beat-loader', {
       if (!beatEl) { return; }
 
       // Apply sword offset. Blocks arrive on beat in front of the user.
-      beatObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - swordOffset;
+      beatObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
       beatObj.color = color;
       beatObj.cutDirection = this.orientationsHumanized[noteInfo._cutDirection];
       beatObj.horizontalPosition = this.horizontalPositionsHumanized[noteInfo._lineIndex];
@@ -251,17 +251,19 @@ AFRAME.registerComponent('beat-loader', {
     var el = this.el.sceneEl.components.pool__wall.requestEntity();
     const data = this.data;
     var speed = this.data.beatSpeed;
+    const wallObj = {};
 
     if (!el) { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    el.setAttribute('wall', 'speed', speed);
-    el.object3D.position.set(
-      this.horizontalPositions[wallInfo._lineIndex],
-      1.30,
-      -(this.data.beatAnticipationTime * speed)
-    );
-    el.object3D.scale.set(wallInfo._width * 0.30, 2.5, durationSeconds * speed);
+    wallObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
+    wallObj.durationSeconds = durationSeconds;
+    wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
+    wallObj.speed = speed;
+    wallObj.warmupPosition = -data.beatWarmupTime * data.beatWarmupSpeed;
+    wallObj.width = wallInfo._width;
+    el.setAttribute('wall', wallObj);
+    el.components.wall.updatePosition();
     el.play();
   },
 
