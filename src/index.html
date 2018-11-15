@@ -46,7 +46,8 @@
       search
       stage-colors="color: blue"
       fog="color: #a00; density: 0.035; type: exponential"
-      vr-mode-ui="enterVRButton: #vrButton">
+      vr-mode-ui="enterVRButton: #vrButton"
+      assets-loaded>
 
       <a-assets timeout="10000">
         {% include './assets.html' %}
@@ -208,6 +209,7 @@
       {% endif %}
     </a-scene>
 
+    <img src="assets/img/tutorial2d.png" id="tutorial2d">
     <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
   </body>
 </html>
