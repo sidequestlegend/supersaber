@@ -97,8 +97,7 @@ AFRAME.registerState({
       songNameTexts: '',  // All names in search results merged together.
       songSubNameTexts: ''  // All sub names in search results merged together.
     },
-    searchResultsPage: [],
-    tutorialActive: false
+    searchResultsPage: []
   },
 
   handlers: {
@@ -380,16 +379,6 @@ AFRAME.registerState({
     songloadstart: (state) => {
       state.isSongFetching = true;
       state.isSongLoading = true;
-    },
-
-    tutorialclose: (state) => {
-      state.menuActive = true;
-      state.tutorialActive = false;
-    },
-
-    tutorialopen: (state) => {
-      state.menuActive = false;
-      state.tutorialActive = true;
     },
 
     'enter-vr': (state) => {
