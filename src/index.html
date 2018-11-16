@@ -33,7 +33,7 @@
       effect-bloom="strength: 1"
       gpu-preloader
       loading-screen="backgroundColor: #000;"
-      overlay="objects: #rightHand, #leftHand, [mixin~='cursorMesh'], .overlay"
+      overlay="objects: .overlay"
       pool__beat-arrow-blue="mixin: arrowBlueBeat; size: 10; container: #beatContainer"
       pool__beat-arrow-red="mixin: arrowRedBeat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
@@ -90,13 +90,18 @@
         id="sparkParticles"
         particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.7; on: explode; scale: 0.3; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
 
-
-      <!-- Player. -->
       <a-mixin
         id="cursorMesh"
         material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
         sub-object="from: #cursorLaser; name: glow"></a-mixin>
-      <a-entity id="cameraRig" bind__recenter="enabled: !isPlaying">
+
+      <!--
+        Player.
+        Apply overlay to camera rig, not controllers, because overlay will reparent to
+        an empty scene, disabling ability to move and rotate the camera rig having effect
+        on controller matrix world.
+       -->
+      <a-entity id="cameraRig" class="overlay" bind__recenter="enabled: !isPlaying">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls>
           <a-entity
             id="cameraCollider"
@@ -178,6 +183,7 @@
 
           <a-entity
             id="{{ hand }}CursorMesh"
+            class="overlay"
             mixin="cursorMesh"
             bind__cursor-mesh="active: {{ hand }}RaycasterActive && !isPLaying"
             cursor-mesh="cursorEl: #{{ hand }}Hand"
@@ -203,8 +209,12 @@
           mixin="raycaster"
           cursor="rayOrigin: mouse"
           raycaster="objects: [raycastable]"></a-entity>
-        <a-entity id="mouseCursorMesh" mixin="cursorMesh" cursor-mesh="cursorEl: #mouseCursor"
-                  bind__cursor-mesh="active: menuActive"></a-entity>
+        <a-entity
+          id="mouseCursorMesh"
+          class="overlay"
+          mixin="cursorMesh"
+          cursor-mesh="cursorEl: #mouseCursor"
+          bind__cursor-mesh="active: menuActive"></a-entity>
       {% endif %}
     </a-scene>
 

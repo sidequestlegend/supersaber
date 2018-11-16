@@ -10,13 +10,10 @@ AFRAME.registerComponent('recenter', {
     var sceneEl = this.el.sceneEl;
     this.recenter = this.recenter.bind(this);
 
-    // Delay to make sure we have a valid pose.
-    this.el.addEventListener('enter-vr', () => setTimeout(this.recenter, 100));
     document.querySelectorAll('[tracked-controls]').forEach(controlEl => {
       controlEl.addEventListener('menudown', this.recenter);
       controlEl.addEventListener('thumbstickdown', this.recenter);
     });
-    window.addEventListener('vrdisplaypresentchange', this.recenter);
   },
 
   recenter: (function () {
@@ -47,9 +44,5 @@ AFRAME.registerComponent('recenter', {
       matrix.decompose(el.object3D.position, el.object3D.quaternion, el.object3D.scale);
       el.object3D.updateMatrixWorld(true);
     };
-  })(),
-
-  remove: function () {
-    this.el.sceneEl.removeEventListener('enter-vr', this.recenter);
-  }
+  })()
 });
