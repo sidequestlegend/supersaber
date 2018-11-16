@@ -378,6 +378,11 @@ AFRAME.registerState({
       state.isSongLoading = true;
     },
 
+    tutorialclose: (state) => {
+      state.menuActive = true;
+      state.tutorialActive = false;
+    },
+
     tutorialopen: (state) => {
       state.menuActive = false;
       state.tutorialActive = true;
