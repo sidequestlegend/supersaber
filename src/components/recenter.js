@@ -14,6 +14,8 @@ AFRAME.registerComponent('recenter', {
       controlEl.addEventListener('menudown', this.recenter);
       controlEl.addEventListener('thumbstickdown', this.recenter);
     });
+
+    this.el.addEventListener('recenter', this.recenter);
   },
 
   recenter: (function () {
@@ -43,6 +45,7 @@ AFRAME.registerComponent('recenter', {
       matrix.multiply(rotationMatrix).multiply(translationMatrix);
       matrix.decompose(el.object3D.position, el.object3D.quaternion, el.object3D.scale);
       el.object3D.updateMatrixWorld(true);
+      el.emit('recentered', null, false);
     };
   })()
 });

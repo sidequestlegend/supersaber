@@ -96,13 +96,8 @@
         material="shader: flat; transparent: true; src: #cursorMeshImg; depthTest: false"
         sub-object="from: #cursorLaser; name: glow"></a-mixin>
 
-      <!--
-        Player.
-        Apply overlay to camera rig, not controllers, because overlay will reparent to
-        an empty scene, disabling ability to move and rotate the camera rig having effect
-        on controller matrix world.
-       -->
-      <a-entity id="cameraRig" class="overlay" bind__recenter="enabled: !isPlaying">
+      <!-- Player. -->
+      <a-entity id="cameraRig" bind__recenter="enabled: !isPlaying">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls>
           <a-entity
             id="cameraCollider"
@@ -113,7 +108,20 @@
             proxy-event__wallhitend="event: hitend; to: a-scene; as: wallhitend"
             visible="false"></a-entity>
         </a-entity>
+      </a-entity>
 
+      <!--
+        We want the recenter transforms to apply to the controllers.
+        Overlay component reparents entity to different scene.
+        Thus need to add overlay to root-level container.
+        But cannot add overlay component to camera else camera would get reparented to wrong.
+        Thus we have a separate controller rig that matches the same transforms as cameraRig.
+      -->
+      <a-entity
+        id="controllerRig"
+        class="overlay"
+        bind__recenter="enabled: !isPlaying"
+        proxy-event="event: recentered; to: #cameraRig; captureBubbles: true; as: recenter">
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
             class="saber"
