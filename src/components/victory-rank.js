@@ -33,7 +33,7 @@ AFRAME.registerComponent('victory-rank', {
         break;
       }
       case 'F': {
-        this.setColor('##960200');
+        this.setColor('#960200');
         break;
       }
     }
