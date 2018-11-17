@@ -20,7 +20,7 @@ AFRAME.registerComponent('text-counter', {
 
   update: function (oldData) {
     this.currentValue = 0;
-    this.textValue.value = `${this.data.prefix} ${this.decimals(0)} ${this.data.suffix}`;
+    this.textValue.value = `${this.data.prefix}${this.decimals(0)}${this.data.suffix}`;
     this.el.setAttribute('text', this.textValue);
   },
 
@@ -35,7 +35,7 @@ AFRAME.registerComponent('text-counter', {
     }
 
     this.textValue.value =
-      `${this.data.prefix} ${this.decimals(this.currentValue)} ${this.data.suffix}`;
+      `${this.data.prefix}${this.decimals(this.currentValue)}${this.data.suffix}`;
     this.el.setAttribute('text', this.textValue);
   },
 
