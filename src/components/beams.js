@@ -7,12 +7,10 @@ AFRAME.registerComponent('beams', {
   },
 
   init: function () {
-    this.beams = [];
-    this.redBeams = [];
-    this.blueBeams = [];
     this.currentRed = 0;
     this.currentBlue = 0;
 
+    // Material.
     const materialOptions = {
       color: 0xaa3333,
       map: new THREE.TextureLoader().load('assets/img/beam.png'),
@@ -20,29 +18,15 @@ AFRAME.registerComponent('beams', {
       blending: THREE.AdditiveBlending
     };
     const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
+    materialOptions.color = 0x4444cc;
     const blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    const geo = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
-
     this.texture = materialOptions.map;
 
-    for (let j = 0; j < 2; j++) {
-      for (let i = 0; i < this.data.poolSize; i++) {
-        let beam = new THREE.Mesh(geo, j === 0 ? redMaterial : blueMaterial);
-        beam.visible = false;
-        beam.animation = ANIME({
-          autoplay: false,
-          targets: beam.scale,
-          x: 0.00001,
-          duration: 300,
-          easing: 'easeInCubic',
-          complete: () => { beam.visible = false; }
-        });
-
-        this.el.object3D.add(beam);
-        this[j === 0 ? 'redBeams' : 'blueBeams'].push(beam);
-        this.beams.push(beam);
-      }
-    }
+    // Beam pools.
+    const geometry = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
+    this.beams = [];
+    this.redBeams = this.createBeamPool(geometry, redMaterial);
+    this.blueBeams = this.createBeamPool(geometry, blueMaterial);
 
     this.clearBeams = this.clearBeams.bind(this);
     this.el.sceneEl.addEventListener('cleargame', this.clearBeams);
@@ -68,6 +52,26 @@ AFRAME.registerComponent('beams', {
       beam.time += dt;
       beam.animation.tick(beam.time);
     }
+  },
+
+  createBeamPool: function (geometry, material) {
+    const beams = [];
+    for (let i = 0; i < this.data.poolSize; i++) {
+      let beam = new THREE.Mesh(geometry, material);
+      beam.visible = false;
+      beam.animation = ANIME({
+        autoplay: false,
+        targets: beam.scale,
+        x: 0.00001,
+        duration: 300,
+        easing: 'easeInCubic',
+        complete: () => { beam.visible = false; }
+      });
+      this.el.object3D.add(beam);
+      beams.push(beam);
+      this.beams.push(beam);
+    }
+    return beams;
   },
 
   newBeam: function (color, position) {

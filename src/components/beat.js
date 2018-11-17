@@ -1,6 +1,7 @@
 import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
 
 const auxObj3D = new THREE.Object3D();
+const collisionZThreshold = -4;
 const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
 const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
 const BEAT_WARMUP_ROTATION_TIME = 750;
@@ -15,7 +16,8 @@ const SCORE = {
 };
 
 /**
- * Create beat from pool, collision detection, clipping planes.
+ * Bears, beats, Battlestar Galactica.
+ * Create beat from pool, collision detection, clipping planes, movement, scoring.
  */
 AFRAME.registerComponent('beat', {
   schema: {
@@ -106,7 +108,6 @@ AFRAME.registerComponent('beat', {
       new THREE.Vector3()
     ];
 
-    this.blockEl = document.createElement('a-entity');
     this.mineParticles = document.getElementById('mineParticles');
     this.wrongElLeft = document.getElementById('wrongLeft');
     this.wrongElRight = document.getElementById('wrongRight');
@@ -179,8 +180,6 @@ AFRAME.registerComponent('beat', {
       // Check to remove score entity from pool.
     } else {
       // Only check collisions when close.
-      const collisionZThreshold = -4;
-
       if (position.z > collisionZThreshold) { this.checkCollisions(); }
 
       // Move.
