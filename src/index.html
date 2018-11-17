@@ -227,7 +227,12 @@
       {% endif %}
     </a-scene>
 
-    <img src="assets/img/tutorial2d.png" id="tutorial2d">
+    <img id="tutorial2d" data-src="assets/img/tutorial2d.png">
+    <script>
+      // Defer image so loading image loads first.
+      const tutorial2d = document.getElementById('tutorial2d');
+      tutorial2d.src = tutorial2d.dataset.src;
+    </script>
     <a id="vrButton" href="#" title="Enter VR / Fullscreen"></a>
   </body>
 </html>
