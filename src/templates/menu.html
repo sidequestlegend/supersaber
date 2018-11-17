@@ -109,10 +109,10 @@
 
   <a-entity
     id="menuBackground"
+    bind-toggle__raycastable="menuActive || genreMenuOpen || isSearching"
     mixin="slice"
     slice9="left: 70; width: 2.5; height: 1.55; opacity: 0.9"
-    position="0 0 -0.005"
-    raycastable></a-entity>
+    position="0 0 -0.005"></a-entity>
 
   <a-entity id="mainMenu" bind__visible="!genreMenuOpen">
     <a-entity id="searchResultsContainer" position="0 0 0.001"
