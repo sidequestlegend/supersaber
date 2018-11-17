@@ -44,7 +44,7 @@ AFRAME.registerComponent('song', {
     this.el.addEventListener('wallhitend', this.onWallHitEnd.bind(this));
 
     if (process.env.NODE_ENV !== 'production') {
-      this.el.addEventListener('fakevictory', () => {
+      this.el.addEventListener('victoryfake', () => {
         this.source.stop();
         this.source.disconnect();
         this.victory();

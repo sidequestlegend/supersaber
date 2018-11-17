@@ -437,6 +437,11 @@ AFRAME.registerState({
       computeBeatsText(state);
     },
 
+    victoryfake: function (state) {
+      state.score.accuracy = '12.34%';
+      state.score.rank = 'F';
+    },
+
     wallhitstart: function (state) {
       takeDamage(state);
     }
