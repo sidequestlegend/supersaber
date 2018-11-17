@@ -79,6 +79,7 @@ AFRAME.registerState({
       accuracy: 0,
       beatsHit: 0,
       beatsMissed: 0,
+      beatsText: '',
       combo: 0,
       maxCombo: 0,
       multiplier: 1,
@@ -209,9 +210,12 @@ AFRAME.registerState({
       state.isVictory = true;
       state.menuActive = false;
       state.score.accuracy = 74.99;
+      state.score.beatsHit = 125;
+      state.score.beatsMissed = 125;
       state.score.maxCombo = 123;
       state.score.rank = 'B';
       state.score.score = 9001;
+      computeBeatsText(state);
     },
 
     gamemenuresume: (state) => {
@@ -429,6 +433,8 @@ AFRAME.registerState({
       } else {
         state.score.rank = 'F';
       }
+
+      computeBeatsText(state);
     },
 
     wallhitstart: function (state) {
@@ -547,4 +553,9 @@ function formatSongLength (songLength) {
   songLength /= 60;
   const minutes = `${Math.floor(songLength)}`;
   return `${minutes}:${Math.round((songLength - minutes) * 60)}`;
+}
+
+function computeBeatsText (state) {
+  state.score.beatsText =
+    `${state.score.beatsHit} / ${state.score.beatsMissed + state.score.beatsHit} BEATS`;
 }
