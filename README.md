@@ -19,8 +19,6 @@ in seconds without any installs!
   <img src="https://user-images.githubusercontent.com/674727/48661906-84127f00-ea2e-11e8-8cd9-6b98cf05eb85.png" width="33%">
 </a>
 
-![Supermedium](https://user-images.githubusercontent.com/674727/45821011-07b52700-bc9d-11e8-9fc6-356c93b13be7.png)
-
 ## Development
 
 Built with [A-Frame](https://aframe.io) and JavaScript, from the creators of A-Frame!
@@ -53,7 +51,7 @@ Hi, we're the [Supermedium](https://supermedium.com) team! We'd love if you
 provide feedback, bug reports, and feature requests! A-Frame and the Web lets
 us iterate and deploy new features very quickly.
 
+<img src="https://user-images.githubusercontent.com/674727/48661968-4b26da00-ea2f-11e8-8dbc-6f00d509f490.png" width="50%">
+
 - Hang out with us on [Discord](https://supermedium.com/discord/).
 - Follow us on [Twitter](https://twitter.com/supermediumvr)!
-
-![](https://user-images.githubusercontent.com/674727/48661968-4b26da00-ea2f-11e8-8dbc-6f00d509f490.png)
