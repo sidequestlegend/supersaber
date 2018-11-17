@@ -60,19 +60,18 @@
       <a-entity id="mineObjTemplate" obj-model="obj: #mineObj" visible="false"></a-entity>
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
-      <a-entity id="container">
-        <a-entity
-          id="beatContainer"
-          bind__pause="isPaused: !isPlaying"
-          beat-hit-sound></a-entity>
-        {% include './templates/stage.html' %}
-        {% include './templates/loading.html' %}
-        {% include './templates/score.html' %}
-        {% include './templates/menu.html' %}
-        {% include './templates/tutorial.html' %}
-        {% include './templates/gameMenu.html' %}
-        {% include './templates/victory.html' %}
-      </a-entity>
+      <a-entity
+        id="beatContainer"
+        bind__pause="isPaused: !isPlaying"
+        beat-hit-sound></a-entity>
+
+      {% include './templates/stage.html' %}
+      {% include './templates/loading.html' %}
+      {% include './templates/score.html' %}
+      {% include './templates/menu.html' %}
+      {% include './templates/tutorial.html' %}
+      {% include './templates/gameMenu.html' %}
+      {% include './templates/victory.html' %}
 
       <!-- Wrong + miss beat visual indicators. -->
       <a-entity id="badContainer" bind__visible="isPlaying">
