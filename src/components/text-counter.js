@@ -1,3 +1,6 @@
+/**
+ * Animate text number value.
+ */
 AFRAME.registerComponent('text-counter', {
   dependencies: ['text'],
 
@@ -14,8 +17,6 @@ AFRAME.registerComponent('text-counter', {
     this.startTime = null;
     this.currentValue = 0;
     this.textValue = {value : ''};
-    this.victoryInfoRank = document.getElementById('victoryInfoRank');
-    this.victoryButtons = document.getElementById('victoryButtons');
   },
 
   decimals: function (n) {
@@ -32,18 +33,26 @@ AFRAME.registerComponent('text-counter', {
 
   tick: function (time) {
     if (this.currentValue >= this.data.value) { return; }
-    if (this.startTime === null) { this.startTime = time; return;   };
+
+    if (this.startTime === null) {
+      this.startTime = time;
+      return;
+    };
+
     const prevValue = Math.floor(this.currentValue);
     this.currentValue = this.data.value * (time - this.startTime) / this.data.dur;
+
     if (Math.floor(this.currentValue) === prevValue) { return; }
+
     if (this.currentValue >= this.data.value) {
       this.currentValue = this.data.value;
       if (this.data.emit) {
-        this.victoryInfoRank.emit('textcounterdone', null, false);
-        this.victoryButtons.emit('textcounterdone', null, false);
+        this.el.emit('textcounterdone', null, false);
       }
     }
-    this.textValue.value = `${this.data.prefix} ${this.decimals(this.currentValue)} ${this.data.suffix}`;
+
+    this.textValue.value =
+      `${this.data.prefix} ${this.decimals(this.currentValue)} ${this.data.suffix}`;
     this.el.setAttribute('text', this.textValue);
   }
 })
