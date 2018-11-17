@@ -161,8 +161,8 @@ AFRAME.registerComponent('beat-loader', {
       // Get current song time.
       const song = this.el.components.song;
       if (!song.isPlaying) { return; }
-      this.beatsTime = (song.getCurrentTime() + this.data.beatAnticipationTime) * 1000;
-      if (this.beatsTime <= this.beatsPreloadTimeTotal) { return; }
+      this.beatsTime = (song.getCurrentTime() + this.data.beatAnticipationTime +
+                        this.data.beatWarmupTime) * 1000;
     } else {
       // Song is not playing and is preloading beats, use maintained beat time.
       this.beatsTime = this.beatsPreloadTime;
@@ -214,7 +214,7 @@ AFRAME.registerComponent('beat-loader', {
 
   generateBeat: (function () {
     const beatObj = {};
- 
+
     return function (noteInfo) {
       var beatEl;
       var color;
