@@ -448,7 +448,7 @@ AFRAME.registerState({
   computeState: (state) => {
     state.isPlaying =
       !state.menuActive && !state.isPaused && !state.isVictory && !state.isGameOver &&
-      !state.challenge.isLoading && !state.isSongLoading;
+      !state.challenge.isLoading && !state.isSongLoading && !!state.challenge.id;
 
     const anyMenuOpen = state.menuActive || state.isPaused || state.isVictory ||
                         state.isGameOver;
