@@ -33,6 +33,7 @@ AFRAME.registerComponent('intro-song', {
   },
 
   fadeInAudio: function () {
+    if (AFRAME.utils.getUrlParameter('mute')) { return; }
     const context = this.analyserEl.components.audioanalyser.context;
     const gainNode = this.analyserEl.components.audioanalyser.gainNode;
     gainNode.gain.setValueAtTime(0, context.currentTime);
