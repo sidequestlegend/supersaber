@@ -100,7 +100,8 @@
 
       <!-- Player. -->
       <a-entity id="cameraRig" bind__recenter="enabled: !isPlaying">
-        <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls>
+        <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls
+                  camera-recorder="enabled: true; positionTo: 0 1.6 -5.5; lookAt: 0 2.5 -30; dur: 2000; showControls: true; holdTimeAfter: 0">
           <a-entity
             id="cameraCollider"
             bind__aabb-collider="enabled: isPlaying"

@@ -50,6 +50,7 @@ AFRAME.registerState({
     genres: require('../constants/genres'),
     genreMenuOpen: false,
     inVR: false,
+    isCameraRecording: !!AFRAME.utils.getUrlParameter('camerarecord'),
     isGameOver: false,  // Game over screen.
     isPaused: false,  // Playing, but paused. Not active during menu.
     isPlaying: false,  // Actively playing (slicing beats).

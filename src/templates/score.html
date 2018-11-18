@@ -6,7 +6,7 @@
 <a-entity
   id="scoreContainer"
   bind__score-texts="isSongLoading: isSongLoading"
-  bind__visible="isPlaying || isPaused">
+  bind__visible="!isCameraRecording && (isPlaying || isPaused)">
 
   <a-entity id="scoreTextContainer" position="0 0.01 -1.3">
     <a-entity

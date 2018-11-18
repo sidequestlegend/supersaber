@@ -10,8 +10,10 @@ AFRAME.registerComponent('stepback', {
   tick: function (time, delta) {
     if (time - this.lastTime < this.throttling) { return; }
 
-    var camPos = this.camera.object3D.position;
-    var msgPos = this.message.object3D.position;
+    if (AFRAME.utils.getUrlParameter('camerarecord')) { return; }
+
+    const camPos = this.camera.object3D.position;
+    const msgPos = this.message.object3D.position;
 
     if (camPos.z < this.limit) {
       this.throttling = 20;

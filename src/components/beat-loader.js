@@ -169,11 +169,21 @@ AFRAME.registerComponent('beat-loader', {
     }
 
     // Load in stuff scheduled between the last timestamp and current timestamp.
-    // Beats.
     const beatsTime = this.beatsTime;
     const bpm = this.beatData._beatsPerMinute;
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     const notes = this.beatData._notes;
+
+    // Stage events.
+    const events = this.beatData._events;
+    for (let i = 0; i < events.length; ++i) {
+      let noteTime = events[i]._time * msPerBeat;
+      if (noteTime > prevBeatsTime && noteTime <= beatsTime) {
+        this.generateEvent(events[i]);
+      }
+    }
+
+    // Beats.
     for (let i = 0; i < notes.length; ++i) {
       let noteTime = notes[i]._time * msPerBeat;
       if (noteTime > prevBeatsTime && noteTime <= beatsTime) {
@@ -188,15 +198,6 @@ AFRAME.registerComponent('beat-loader', {
       let noteTime = obstacles[i]._time * msPerBeat;
       if (noteTime > prevBeatsTime && noteTime <= beatsTime) {
         this.generateWall(obstacles[i]);
-      }
-    }
-
-    // Stage events.
-    const events = this.beatData._events;
-    for (let i = 0; i < events.length; ++i) {
-      let noteTime = events[i]._time * msPerBeat;
-      if (noteTime > prevBeatsTime && noteTime <= beatsTime) {
-        this.generateEvent(events[i]);
       }
     }
 
@@ -221,6 +222,9 @@ AFRAME.registerComponent('beat-loader', {
       const data = this.data;
 
       // if (Math.random() < 0.8) noteInfo._type = 3; // just to DEBUG MINES!
+
+      if (process.env.NODE_ENV !== 'production' &&
+          AFRAME.utils.getUrlParameter('camerarecord')) { return; }
 
       var type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
 
@@ -257,6 +261,9 @@ AFRAME.registerComponent('beat-loader', {
     const wallObj = {};
 
     if (!el) { return; }
+
+    if (process.env.NODE_ENV !== 'production' &&
+        AFRAME.utils.getUrlParameter('camerarecord')) { return; }
 
     const durationSeconds = 60 * (wallInfo._duration / this.bpm);
     wallObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
