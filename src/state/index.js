@@ -2,6 +2,7 @@
 var utils = require('../utils');
 
 const challengeDataStore = {};
+const NUM_LEADERBOARD_DISPLAY = 10;
 const SEARCH_PER_PAGE = 6;
 const SONG_NAME_TRUNCATE = 24;
 const SONG_SUB_NAME_TRUNCATE = 32;
@@ -11,8 +12,8 @@ const DAMAGE_MAX = 10;
 
 const DEBUG_CHALLENGE = {
   author: 'Superman',
-  difficulty: 'Normal',
-  id: '517',
+  difficulty: 'Expert',
+  id: '31',
   image: 'assets/img/molerat.jpg',
   songName: 'Friday',
   songLength: 100,
@@ -57,6 +58,10 @@ AFRAME.registerState({
     isSongFetching: false,  // Fetching stage.
     isSongLoading: false,  // Either fetching or decoding.
     isVictory: false,  // Victory screen.
+    leaderboard: [],
+    leaderboardFetched: false,
+    leaderboardQualified: false,
+    leaderboardText: '',
     menuActive: true,  // Main menu active.
     menuDifficulties: [],  // List of strings of available difficulties for selected.
     menuSelectedChallenge: {  // Currently selected challenge in the main menu.
@@ -207,6 +212,7 @@ AFRAME.registerState({
       Object.assign(state.menuSelectedChallenge, DEBUG_CHALLENGE);
       Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.isVictory = true;
+      state.leaderboardQualified = true;
       state.menuActive = false;
       state.score.accuracy = 74.99;
       state.score.beatsHit = 125;
@@ -228,6 +234,7 @@ AFRAME.registerState({
       state.isPaused = false;
       state.isSongLoading = true;
       state.isVictory = false;
+      state.leaderboardQualified = false;
     },
 
     gamemenuexit: (state) => {
@@ -238,6 +245,7 @@ AFRAME.registerState({
       state.isVictory = false;
       state.menuActive = true;
       state.challenge.id = '';
+      state.leaderboardQualified = false;
     },
 
     genreclear: (state) => {
@@ -259,6 +267,40 @@ AFRAME.registerState({
     keyboardopen: (state) => {
       state.isSearching = true;
       state.menuSelectedChallenge.id = '';
+    },
+
+    /**
+     * High scores.
+     */
+    leaderboard: (state, payload) => {
+      state.leaderboard.length = 0;
+      state.leaderboardFetched = true;
+      state.leaderboardText = '';
+      for (let i = 0; i < payload.scores.length; i++) {
+        let score = payload.scores[i];
+        state.leaderboard.push(score);
+        state.leaderboardText += `${score.username}\t${score.score}\n`;
+      }
+    },
+
+    leaderboardqualify: state => {
+      state.leaderboardQualified = true;
+    },
+
+    /**
+     * Insert new score into leaderboard locally.
+     */
+    leaderboardscoreadded: (state, payload) => {
+      state.leaderboard.splice(payload.index, 0, payload.scoreData);
+      state.leaderboardText = '';
+      for (let i = 0; i < NUM_LEADERBOARD_DISPLAY; i++) {
+        let score = state.leaderboard[i];
+        state.leaderboardText += `${score.username}\t${score.score}\n`;
+      }
+    },
+
+    leaderboardsubmit: state => {
+      state.leaderboardQualified = false;
     },
 
     /**
@@ -284,14 +326,18 @@ AFRAME.registerState({
 
       computeMenuSelectedChallengeIndex(state);
       state.isSearching = false;
+
+      clearLeaderboard(state);
     },
 
     menuchallengeunselect: state => {
       state.menuSelectedChallenge.id = '';
+      clearLeaderboard(state);
     },
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
+      clearLeaderboard(state);
     },
 
     minehit: state => {
@@ -550,4 +596,11 @@ function formatSongLength (songLength) {
 function computeBeatsText (state) {
   state.score.beatsText =
     `${state.score.beatsHit} / ${state.score.beatsMissed + state.score.beatsHit} BEATS`;
+}
+
+function clearLeaderboard (state) {
+  state.leaderboard.length = 0;
+  state.leaderboard.__dirty = true;
+  state.leaderboardText = '';
+  state.leaderboardFetched = false;
 }

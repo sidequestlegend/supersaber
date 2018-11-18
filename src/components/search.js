@@ -24,6 +24,7 @@ AFRAME.registerComponent('search', {
   },
 
   superkeyboardchange: bindEvent(function (evt) {
+    if (evt.target !== this.el) { return; }
     this.search(evt.detail.value);
   }),
 
