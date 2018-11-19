@@ -262,7 +262,13 @@ AFRAME.registerComponent('beat', {
 
     if (this.data.type === 'mine') {
       const model = blockEl.getObject3D('mesh');
-      model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+      if (model) {
+        model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+      } else {
+        blockEl.addEventListener('model-loaded', () => {
+          model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+        }, ONCE);
+      }
     } else {
       signEl.setAttribute('material', SIGN_MATERIAL);
       this.setObjModelFromTemplate(signEl, this.signModels[this.data.type]);
