@@ -1,62 +1,73 @@
+
 <a-entity
   id="leaderboard"
   class="overlay"
-  position="2.44 1.1 -1.24"
-  rotation="0 -30 0"
-  bind__visible="leaderboardFetched && menuActive || isPaused || isVictory">
+  position="2 1.1 -1.27"
+  rotation="0 -50 0"
+  bind__visible="leaderboardFetched && menuActive || isPaused || isVictory"
+  bind__animation="enabled: isVictory"
+   animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack"
+  >
+<!--  animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack" -->
 
   <a-entity
     mixin="slice"
     id="leaderboardBackground"
-    position="0 -0.07 0"
-    slice9="left: 70; width: 1.5; height: 1.79; opacity: 0.9"></a-entity>
+    slice9="left: 70; width: 1.3; height: 1.55; opacity: 0.9"></a-entity>
+
+  <a-entity
+    id="leaderboardChallengeImage"
+    bind__menu-selected-challenge-image="selectedChallengeId: menuSelectedChallenge.id"
+    bind__visible="!isVictory"
+    geometry="primitive: plane; height: 0.12; width: 0.12"
+    material="shader: flat"
+    position="-0.44 0.63 0.001"></a-entity>
 
   <a-entity
     id="leaderboardTitle"
     mixin="font"
     bind__leaderboard-title="leaderboardQualified: leaderboardQualified"
     text="align: center; width: 2.5; value: LEADERBOARD"
-    position="0 0.540 0.001"></a-entity>
+    position="0.04 0.540 0.001"></a-entity>
 
   <a-entity
-    id="leaderboardText"
+    id="leaderboardNames"
     mixin="font"
-    bind__text="value: leaderboardText"
+    bind__text="value: leaderboardNames"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: top; width: 1; anchor: left; color: #00acfc; wrapCount: 20"
-    position="-0.6 0.35 0.001"></a-entity>
+    text="baseline: center; width: 0.9; anchor: left; color: #00acfc; wrapCount: 20; lineHeight: 53;"
+    position="-0.53 -0.16 0.001"></a-entity>
 
   <a-entity
     id="leaderboardScores"
     mixin="font"
-    bind__text="value: leaderboardText"
+    bind__text="value: leaderboardScores"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: top; align: right; width: 1; anchor: right; color: #fff; wrapCount: 20"
-    position="0.6 0.35 0.001"></a-entity>
-
+    text="baseline: center; align: right; width: 0.9; anchor: right; color: #fff; wrapCount: 20; lineHeight: 53;"
+    position="0.53 -0.16 0.001"></a-entity>
 
   <a-entity
     id="leaderboardEmpty"
     mixin="font"
     bind__visible="leaderboard.length === 0"
-    text="align: center; baseline: top; width: 1.6; value: No high scores yet, be the first!"
-    position="0 0.47 0.001"></a-entity>
+    text="align: center; color: #777; baseline: center; width: 1.6; value: No high scores. Be the first!"
+    position="0 0 0.001"></a-entity>
 
   <a-entity
     id="leaderboardKeyboard"
     bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: leaderboardQualified"
-    super-keyboard="label: Enter yourself to the leaderboard!; inputColor: #00acfc; labelColor: #FFF; width: 1.36; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15"
-    position="0 -0.160 0.001"
+    super-keyboard="label: Enter yourself to the leaderboard!; inputColor: #00acfc; labelColor: #575757; width: 1.1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15"
+    position="0 -0.1 0.02"
     proxy-event__change="event: superkeyboardchange; to: a-scene; as: leaderboardusername"
     keyboard-raycastable="condition: leaderboardQualified">
   </a-entity>
 
   <a-entity id="leaderboardSubmit"
-    position="0 -0.730 0.002"
+    position="0 -0.59 0.002"
     mixin="bigMenuButton"
     bind__visible-raycastable="leaderboardQualified"
-    slice9="width: 1"
+    slice9="width: 0.8; height: 0.16"
     proxy-event="event: click; to: a-scene; as: leaderboardsubmit">
-    <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 20; value: SUBMIT HIGH SCORE" position="0 -0.07 0.01"></a-entity>
+    <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 26; value: SUBMIT HIGH SCORE" position="0 -0.055 0.01"></a-entity>
   </a-entity>
 </a-entity>

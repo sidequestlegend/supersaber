@@ -135,7 +135,7 @@ AFRAME.registerComponent('leaderboard-title', {
 
   update: function () {
     const value = this.data.leaderboardQualified
-      ? 'NEW HIGH SCORE'
+      ? 'NEW HIGH SCORE!'
       : 'LEADERBOARD';
     this.el.setAttribute('text', 'value', value);
   }

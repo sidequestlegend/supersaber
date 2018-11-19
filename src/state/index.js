@@ -61,7 +61,8 @@ AFRAME.registerState({
     leaderboard: [],
     leaderboardFetched: false,
     leaderboardQualified: false,
-    leaderboardText: '',
+    leaderboardNames: '',
+    leaderboardScores: '',
     menuActive: true,  // Main menu active.
     menuDifficulties: [],  // List of strings of available difficulties for selected.
     menuSelectedChallenge: {  // Currently selected challenge in the main menu.
@@ -275,11 +276,13 @@ AFRAME.registerState({
     leaderboard: (state, payload) => {
       state.leaderboard.length = 0;
       state.leaderboardFetched = true;
-      state.leaderboardText = '';
+      state.leaderboardNames = '';
+      state.leaderboardScores = '';
       for (let i = 0; i < payload.scores.length; i++) {
         let score = payload.scores[i];
         state.leaderboard.push(score);
-        state.leaderboardText += `${score.username}\t${score.score}\n`;
+        state.leaderboardNames += `${score.username}\n`;
+        state.leaderboardScores += `${score.score}\n`;
       }
     },
 
@@ -292,10 +295,12 @@ AFRAME.registerState({
      */
     leaderboardscoreadded: (state, payload) => {
       state.leaderboard.splice(payload.index, 0, payload.scoreData);
-      state.leaderboardText = '';
+      state.leaderboardNames = '';
+      state.leaderboardScores = '';
       for (let i = 0; i < NUM_LEADERBOARD_DISPLAY; i++) {
         let score = state.leaderboard[i];
-        state.leaderboardText += `${score.username}\t${score.score}\n`;
+        state.leaderboardNames += `${score.username}\n`;
+        state.leaderboardScores += `${score.score}\n`;
       }
     },
 
@@ -601,6 +606,7 @@ function computeBeatsText (state) {
 function clearLeaderboard (state) {
   state.leaderboard.length = 0;
   state.leaderboard.__dirty = true;
-  state.leaderboardText = '';
+  state.leaderboardNames = '';
+  state.leaderboardScores = '';
   state.leaderboardFetched = false;
 }
