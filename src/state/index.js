@@ -516,12 +516,10 @@ function difficultyComparator (a, b) {
 
 function takeDamage (state) {
   if (!state.isPlaying) { return; }
-  /*
   state.score.combo = 0;
   state.score.multiplier = state.score.multiplier > 1
     ? Math.ceil(state.score.multiplier / 2)
     : 1;
-  */
   if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   state.damage++;
   checkGameOver(state);
