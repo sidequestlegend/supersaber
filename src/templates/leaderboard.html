@@ -1,14 +1,13 @@
 
 <a-entity
   id="leaderboard"
-  class="overlay"
+  class="overlay accuracyTextCounterSubscribe"
   position="2 1.1 -1.27"
   rotation="0 -50 0"
-  bind__visible="leaderboardFetched && menuActive || isPaused || isVictory"
   bind__animation="enabled: isVictory"
-   animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack"
-  >
-<!--  animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack" -->
+  bind__scale="isVictory && '0 0 0' || '1 1 1'"
+  bind__visible="(!!menuSelectedChallenge.id || !!challenge.id) && (menuActive || isPaused || isVictory) && !genreMenuOpen"
+  animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack; startEvents: textcounterdone">
 
   <a-entity
     mixin="slice"

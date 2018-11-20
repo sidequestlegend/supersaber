@@ -55,11 +55,12 @@ AFRAME.registerComponent('leaderboard', {
       this.checkLeaderboardQualify();
     }
 
-    if (oldData.menuSelectedChallengeId !== this.data.menuSelectedChallengeId) {
+    if (this.data.menuSelectedChallengeId &&
+        oldData.menuSelectedChallengeId !== this.data.menuSelectedChallengeId) {
       this.fetchScores(this.data.menuSelectedChallengeId);
     }
 
-    if (oldData.challengeId !== this.data.challengeId) {
+    if (this.data.challengeId && oldData.challengeId !== this.data.challengeId) {
       this.fetchScores(this.data.challengeId);
     }
   },
