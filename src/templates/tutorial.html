@@ -1,18 +1,19 @@
 <a-entity
   id="tutorial"
   class="overlay"
-  position="0 1.5 -1.7"
+  position="-2.2 1.3 -0.5"
+  rotation="0 60 0"
   scale="0.7 0.7 0.7"
-  bind__visible="tutorialActive">
+  bind__visible="menuActive">
   <a-entity position="0 0.32 0.001" geometry-merger="preserveOriginal: false" material="shader: flat; color: #ffffff">
     <a-entity position="-1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
     <a-entity position="0 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
     <a-entity position="1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
   </a-entity>
   <a-entity mixin="font" text="align: center; value: 1 2 3; baseline: top; wrapCount: 50; letterSpacing: 180; width: 3" position="0 0.27 0"></a-entity>
-  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: SLICE THE BEATS\nMIND COLOR AND DIRECTION!; wrapCount: 28" position="-1.17 0.1 0"></a-entity>
+  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: SLICE THE BEATS\nMIND COLOR AND DIRECTION!; wrapCount: 30" position="-1.17 0.1 0"></a-entity>
   <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: DODGE WALLS,\nAVOID CUTTING MINES; wrapCount: 28" position="0 0.1 0"></a-entity>
-  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: MORE SWING,\nMORE POINTS!; wrapCount: 28" position="1.17 0.1 0"></a-entity>
+  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: LONGER SWING,\nMORE POINTS!; wrapCount: 28" position="1.17 0.1 0"></a-entity>
 
   <a-entity
     obj-model="obj: #tutorial3Obj"
@@ -25,9 +26,10 @@
 </a-entity>
 
 <a-entity id="tutorialBloom"
-  position="0 1.5 -1.7"
+  position="-2.2 1.3 -0.5"
+  rotation="0 60 0"
   scale="0.7 0.7 0.7"
-  bind__visible="tutorialActive">
+  bind__visible="menuActive">
   <a-entity
     mixin="font"
     text="align: center; value: HOW TO PLAY; color: #aaa; wrapCount: 30; width: 3"
@@ -76,13 +78,5 @@
       position="0.098 -0.26 0"
       scale="0.9 0.9 0.9"
       ></a-entity>
-  </a-entity>
-
-  <a-entity id="tutorialClose"
-    mixin="bigMenuButton"
-    position="0 -0.840 0"
-    bind-toggle__raycastable="tutorialActive"
-    proxy-event="event: click; to: a-scene; as: tutorialclose">
-    <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 15; value: OK" position="0 -0.09 0.01"></a-entity>
   </a-entity>
 </a-entity>
