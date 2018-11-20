@@ -4,6 +4,7 @@ var sourceCreatedCallback;
 const LAYER_BOTTOM = 'bottom';
 const LAYER_MIDDLE = 'middle';
 const LAYER_TOP = 'top';
+const VOLUME = 0.5;
 
 // Allows for modifying detune. PR has been sent to three.js.
 THREE.Audio.prototype.play = function () {
@@ -58,15 +59,18 @@ AFRAME.registerComponent('beat-hit-sound', {
     for (let i = 1; i <= 10; i++) {
       this.el.setAttribute(`sound__beathit${i}`, {
         poolSize: 4,
-        src: `#hitSound${i}`
+        src: `#hitSound${i}`,
+        volume: VOLUME
       });
       this.el.setAttribute(`sound__beathit${i}left`, {
         poolSize: 4,
-        src: `#hitSound${i}left`
+        src: `#hitSound${i}left`,
+        volume: VOLUME
       });
       this.el.setAttribute(`sound__beathit${i}right`, {
         poolSize: 4,
-        src: `#hitSound${i}right`
+        src: `#hitSound${i}right`,
+        volume: VOLUME
       });
     }
   },
