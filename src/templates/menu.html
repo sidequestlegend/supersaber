@@ -238,7 +238,7 @@
         animation__mouseleave1="property: components.material.material.color; type: color; from: #FFF; to: #CCC; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
         animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
         animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-        bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id"
+        bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && !genreMenuOpen"
         bind__visible="menuActive && !!menuSelectedChallenge.id"></a-plane>
     </a-entity>
 
