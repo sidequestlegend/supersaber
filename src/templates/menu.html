@@ -303,7 +303,7 @@
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
   super-keyboard="label: Search from over 6000 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.6 1.1 -1.999"
-  keyboard-raycastable
+  keyboard-raycastable="condition: isSearching"
   search
   proxy-event__dismiss="event: superkeyboarddismiss; to: a-scene; as: keyboardclose"
   proxy-event__accept="event: superkeyboardinput; to: a-scene; as: keyboardclose">

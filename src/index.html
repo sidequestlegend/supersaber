@@ -21,6 +21,7 @@
       bind__beat-loader="challengeId: challenge.id; difficulty: menuSelectedChallenge.difficulty; isPlaying: isPlaying; menuSelectedChallengeId: menuSelectedChallenge.id"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
+      bind__leaderboard="isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
       bind__overlay="enabled: !isPlaying"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
       bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
@@ -33,6 +34,7 @@
       debug-state
       effect-bloom="strength: 1"
       gpu-preloader
+      leaderboard="apiKey: AIzaSyBCnpzND3eN37CBSu1bSYfaKQoe6yD3SnY; authDomain: supersaberrr.firebaseapp.com; databaseURL: https://supersaberrr.firebaseio.com; projectId: supersaberrr; storageBucket: supersaberrr.appspot.com; messagingSenderId: 172125624222"
       loading-screen="backgroundColor: #000;"
       overlay="objects: .overlay"
       pool__beat-arrow-blue="mixin: arrowBlueBeat; size: 10; container: #beatContainer"
@@ -74,6 +76,7 @@
       {% include './templates/tutorial.html' %}
       {% include './templates/gameMenu.html' %}
       {% include './templates/victory.html' %}
+      {% include './templates/leaderboard.html' %}
 
       <!-- Wrong + miss beat visual indicators. -->
       <a-entity id="badContainer" bind__visible="isPlaying">

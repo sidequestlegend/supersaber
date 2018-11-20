@@ -76,6 +76,8 @@ AFRAME.registerComponent('super-keyboard', {
       font: this.data.font,
       baseline: 'bottom',
       lineHeight: 40,
+      shader: 'msdf',
+      negate: true,
       value: this.data.label,
       color: this.data.labelColor,
       width: this.data.width,
@@ -161,7 +163,7 @@ AFRAME.registerComponent('super-keyboard', {
         this.data.width !== oldData.width) {
       this.label.setAttribute('text', {
         value: this.data.label, color: this.data.labelColor, width: this.data.width});
-      this.label.object3D.position.set(0, 0.3 * w, -0.02);
+      this.label.object3D.position.set(0, 0.35 * w, -0.02);
     }
 
     if (this.data.width !== oldData.width ||
