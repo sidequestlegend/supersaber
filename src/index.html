@@ -42,7 +42,10 @@
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: dotRedBeat; size: 10; container: #beatContainer"
       pool__beat-mine="mixin: mine; size: 12; container: #beatContainer"
-      pool__beatscore="mixin: beatScore; size: 5; container: #beatContainer"
+      pool__beatscoreok="mixin: beatScoreOk; size: 2; container: #beatContainer"
+      pool__beatscoregood="mixin: beatScoreGood; size: 2; container: #beatContainer"
+      pool__beatscoreexcellent="mixin: beatScoreExcellent; size: 2; container: #beatContainer"
+      pool__beatscoresuper="mixin: beatScoreSuper; size: 2; container: #beatContainer"
       pool__wall="mixin: wall; size: 10; container: #beatContainer"
       proxy-event__cleargame1="event: gamemenuexit; as: cleargame; to: a-scene"
       proxy-event__cleargame2="event: gamemenurestart; as: cleargame; to: a-scene"
@@ -77,6 +80,11 @@
       {% include './templates/gameMenu.html' %}
       {% include './templates/victory.html' %}
       {% include './templates/leaderboard.html' %}
+
+      <!-- super cut fx rings -->
+      {% for i in range(1, 5) %}
+      <a-entity class="superCutFx" mixin="superCut"></a-entity>
+      {% endfor %}
 
       <!-- Wrong + miss beat visual indicators. -->
       <a-entity id="badContainer" bind__visible="isPlaying">

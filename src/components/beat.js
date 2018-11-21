@@ -8,13 +8,6 @@ const BEAT_WARMUP_ROTATION_TIME = 750;
 const ONCE = {once: true};
 const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
-const SCORE = {
-  OK: 'OK',
-  GOOD: 'GOOD',
-  EXCELLENT: 'EXCELLENT',
-  SUPER: 'SUPER'
-};
-
 /**
  * Bears, beats, Battlestar Galactica.
  * Create beat from pool, collision detection, clipping planes, movement, scoring.
@@ -115,6 +108,9 @@ AFRAME.registerComponent('beat', {
     this.missElRight = document.getElementById('missRight');
     this.particles = document.getElementById('saberParticles');
     this.mineParticles = document.getElementById('mineParticles');
+
+    this.superCuts = document.querySelectorAll('.superCutFx');
+    this.superCutIdx = 0;
 
     this.explodeEventDetail = {position: null, rotation: null};
     this.saberColors = {right: 'blue', left: 'red'};
@@ -747,15 +743,25 @@ AFRAME.registerComponent('beat', {
     hitEventDetail.score = score;
     this.el.emit('beathit', hitEventDetail, true);
 
-    const scoreEl = this.el.sceneEl.components.pool__beatscore.requestEntity();
-    if (scoreEl) {
-      if (score < 60) { scoreText = SCORE.OK; }
-      else if (score < 80) { scoreText = SCORE.GOOD; }
-      else if (score < 100) { scoreText = SCORE.EXCELLENT; }
-      else { scoreText = SCORE.SUPER; }
+    let beatScorePool;
+    if (score < 60) { beatScorePool = 'pool__beatscoreok'; }
+    else if (score < 80) { beatScorePool = 'pool__beatscoregood'; }
+    else if (score < 100) { beatScorePool = 'pool__beatscoreexcellent'; }
+    else {
+      beatScorePool = 'pool__beatscoresuper';
 
+      const supercut = this.superCuts[this.superCutIdx].getObject3D('mesh');
+      supercut.position.copy(this.el.object3D.position);
+      supercut.position.z = -1;
+      supercut.visible = true;
+      setTimeout(() => { supercut.visible = false; }, 1000);
+      supercut.material.uniforms.starttime.value = this.el.sceneEl.time - 50;
+      this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
+    }
+
+    const scoreEl = this.el.sceneEl.components[beatScorePool].requestEntity();
+    if (scoreEl) {
       scoreEl.object3D.position.copy(this.el.object3D.position);
-      scoreEl.setAttribute('text', 'value', scoreText);
       scoreEl.play();
       scoreEl.emit('beatscorestart', null, false);
     }
