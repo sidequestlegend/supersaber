@@ -8,6 +8,13 @@ const BEAT_WARMUP_ROTATION_TIME = 750;
 const ONCE = {once: true};
 const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
+const SCORE_POOL = {
+  OK : 'pool__beatscoreok',
+  GOOD : 'pool__beatscoregood',
+  EXCELLENT : 'pool__beatscoreexcellent',
+  SUPER : 'pool__beatscoresuper'
+};
+
 /**
  * Bears, beats, Battlestar Galactica.
  * Create beat from pool, collision detection, clipping planes, movement, scoring.
@@ -744,18 +751,13 @@ AFRAME.registerComponent('beat', {
     this.el.emit('beathit', hitEventDetail, true);
 
     let beatScorePool;
-    if (score < 60) { beatScorePool = 'pool__beatscoreok'; }
-    else if (score < 80) { beatScorePool = 'pool__beatscoregood'; }
-    else if (score < 100) { beatScorePool = 'pool__beatscoreexcellent'; }
+    if (score < 60) { beatScorePool = SCORE_POOL.OK; }
+    else if (score < 80) { beatScorePool = SCORE_POOL.GOOD; }
+    else if (score < 100) { beatScorePool = SCORE_POOL.EXCELLENT; }
     else {
-      beatScorePool = 'pool__beatscoresuper';
+      beatScorePool = SCORE_POOL.SUPER;
 
-      const supercut = this.superCuts[this.superCutIdx].getObject3D('mesh');
-      supercut.position.copy(this.el.object3D.position);
-      supercut.position.z = -1;
-      supercut.visible = true;
-      setTimeout(() => { supercut.visible = false; }, 1000);
-      supercut.material.uniforms.starttime.value = this.el.sceneEl.time - 50;
+      this.superCuts[this.superCutIdx].components.supercutfx.createSuperCut(this.el.object3D.position);
       this.superCutIdx = (this.superCutIdx + 1) % this.superCuts.length;
     }
 

@@ -84,27 +84,28 @@
 
 <a-mixin
   id="beatScoreOk"
-  score-beat="ok"
+  score-beat="type: ok"
   mixin="beatScore"
   text="value: OK"></a-mixin>
 <a-mixin
   id="beatScoreGood"
-  score-beat="good"
+  score-beat="type: good"
   mixin="beatScore"
   text="value: GOOD; color: #A8E3FF"></a-mixin>
 <a-mixin
   id="beatScoreExcellent"
-  score-beat="excellent"
+  score-beat="type: excellent"
   mixin="beatScore"
   text="value: EXCELLENT; wrapCount: 16; color: #60CCFF"></a-mixin>
 <a-mixin
   id="beatScoreSuper"
-  score-beat="super"
+  score-beat="type: super"
   mixin="beatScore"
   text="value: SUPER!; wrapCount: 13; color: #00acfc"></a-mixin>
 
 <a-mixin
   id="superCut"
+  supercutfx
   geometry="primitive: plane; width: 3; height: 3"
   material="shader: superCutFxShader; transparent: true; depthWrite: false"></a-mixin>
 

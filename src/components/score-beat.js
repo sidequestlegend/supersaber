@@ -3,11 +3,11 @@
  */
 AFRAME.registerComponent('score-beat', {
   schema: {
-    type: 'string'
+    type: { type: 'string' }
   },
 
   play: function () {
-    this.poolComponent = `pool__beatscore${this.data}`;
+    this.poolComponent = `pool__beatscore${this.data.type}`;
     this.startTime = this.el.sceneEl.time;
   },
 
