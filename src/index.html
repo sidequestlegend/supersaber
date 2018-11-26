@@ -138,7 +138,6 @@
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
             class="saber"
-            mixin="raycaster"
             bind__hand-swapper="enabled: {{ otherHand }}RaycasterActive"
             bind__menu-controls="page: search.page; selectedChallengeId: menuSelectedChallenge.id"
             bind__pauser="enabled: isPlaying"
@@ -228,7 +227,6 @@
         <a-entity
           id="mouseCursor"
           bind__raycaster="enabled: !inVR"
-          mixin="raycaster"
           cursor="rayOrigin: mouse"
           raycaster="objects: [raycastable]"></a-entity>
         <a-entity

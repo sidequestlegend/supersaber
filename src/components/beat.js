@@ -1,7 +1,7 @@
 import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
 
 const auxObj3D = new THREE.Object3D();
-const collisionZThreshold = -4;
+const collisionZThreshold = -1.65;
 const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
 const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
 const BEAT_WARMUP_ROTATION_TIME = 750;
