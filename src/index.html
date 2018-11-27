@@ -32,7 +32,7 @@
       debug-controller
       debug-song-time
       debug-state
-      effect-glow
+      effect-bloom="strength: 1"
       gpu-preloader
       leaderboard="apiKey: AIzaSyBCnpzND3eN37CBSu1bSYfaKQoe6yD3SnY; authDomain: supersaberrr.firebaseapp.com; databaseURL: https://supersaberrr.firebaseio.com; projectId: supersaberrr; storageBucket: supersaberrr.appspot.com; messagingSenderId: 172125624222"
       loading-screen="backgroundColor: #000;"
@@ -212,8 +212,8 @@
             scale="1.3 1.3 1.3"></a-entity>
         {% endmacro %}
 
-        {{ saber('left', 'right', 'red', 'pink') }}
-        {{ saber('right', 'left', 'blue', 'cyan') }}
+        {{ saber('left', 'right', '#FFA8A8', 'pink') }}
+        {{ saber('right', 'left', '#78AAFF', 'cyan') }}
       </a-entity>
 
       <a-entity
