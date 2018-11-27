@@ -62615,8 +62615,8 @@ function CardboardViewer(params) {
 }
 DeviceInfo.Viewers = Viewers;
 var format = 1;
-var last_updated = "2018-02-20T22:55:10Z";
-var devices = [{"type":"android","rules":[{"mdmh":"asus/*/Nexus 7/*"},{"ua":"Nexus 7"}],"dpi":[320.8,323],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"asus/*/ASUS_Z00AD/*"},{"ua":"ASUS_Z00AD"}],"dpi":[403,404.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Google/*/Pixel XL/*"},{"ua":"Pixel XL"}],"dpi":[537.9,533],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Google/*/Pixel/*"},{"ua":"Pixel"}],"dpi":[432.6,436.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"HTC/*/HTC6435LVW/*"},{"ua":"HTC6435LVW"}],"dpi":[449.7,443.3],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One XL/*"},{"ua":"HTC One XL"}],"dpi":[315.3,314.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"htc/*/Nexus 9/*"},{"ua":"Nexus 9"}],"dpi":289,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One M9/*"},{"ua":"HTC One M9"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One_M8/*"},{"ua":"HTC One_M8"}],"dpi":[449.7,447.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One/*"},{"ua":"HTC One"}],"dpi":472.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Huawei/*/Nexus 6P/*"},{"ua":"Nexus 6P"}],"dpi":[515.1,518],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LENOVO/*/Lenovo PB2-690Y/*"},{"ua":"Lenovo PB2-690Y"}],"dpi":[457.2,454.713],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 5X/*"},{"ua":"Nexus 5X"}],"dpi":[422,419.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGMS345/*"},{"ua":"LGMS345"}],"dpi":[221.7,219.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/LG-D800/*"},{"ua":"LG-D800"}],"dpi":[422,424.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/LG-D850/*"},{"ua":"LG-D850"}],"dpi":[537.9,541.9],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/VS985 4G/*"},{"ua":"VS985 4G"}],"dpi":[537.9,535.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 5/*"},{"ua":"Nexus 5 B"}],"dpi":[442.4,444.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 4/*"},{"ua":"Nexus 4"}],"dpi":[319.8,318.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LG-P769/*"},{"ua":"LG-P769"}],"dpi":[240.6,247.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGMS323/*"},{"ua":"LGMS323"}],"dpi":[206.6,204.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGLS996/*"},{"ua":"LGLS996"}],"dpi":[403.4,401.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/4560MMX/*"},{"ua":"4560MMX"}],"dpi":[240,219.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/A250/*"},{"ua":"Micromax A250"}],"dpi":[480,446.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/Micromax AQ4501/*"},{"ua":"Micromax AQ4501"}],"dpi":240,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/G5/*"},{"ua":"Moto G (5) Plus"}],"dpi":[403.4,403],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/DROID RAZR/*"},{"ua":"DROID RAZR"}],"dpi":[368.1,256.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT830C/*"},{"ua":"XT830C"}],"dpi":[254,255.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1021/*"},{"ua":"XT1021"}],"dpi":[254,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1023/*"},{"ua":"XT1023"}],"dpi":[254,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1028/*"},{"ua":"XT1028"}],"dpi":[326.6,327.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1034/*"},{"ua":"XT1034"}],"dpi":[326.6,328.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1053/*"},{"ua":"XT1053"}],"dpi":[315.3,316.1],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1562/*"},{"ua":"XT1562"}],"dpi":[403.4,402.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/Nexus 6/*"},{"ua":"Nexus 6 B"}],"dpi":[494.3,489.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1063/*"},{"ua":"XT1063"}],"dpi":[295,296.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1064/*"},{"ua":"XT1064"}],"dpi":[295,295.6],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1092/*"},{"ua":"XT1092"}],"dpi":[422,424.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1095/*"},{"ua":"XT1095"}],"dpi":[422,423.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/G4/*"},{"ua":"Moto G (4)"}],"dpi":401,"bw":4,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/A0001/*"},{"ua":"A0001"}],"dpi":[403.4,401],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE E1005/*"},{"ua":"ONE E1005"}],"dpi":[442.4,441.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE A2005/*"},{"ua":"ONE A2005"}],"dpi":[391.9,405.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONEPLUS A5000/*"},{"ua":"ONEPLUS A5000 "}],"dpi":[403.411,399.737],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE A5010/*"},{"ua":"ONEPLUS A5010"}],"dpi":[403,400],"bw":2,"ac":1000},{"type":"android","rules":[{"mdmh":"OPPO/*/X909/*"},{"ua":"X909"}],"dpi":[442.4,444.1],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9082/*"},{"ua":"GT-I9082"}],"dpi":[184.7,185.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G360P/*"},{"ua":"SM-G360P"}],"dpi":[196.7,205.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/Nexus S/*"},{"ua":"Nexus S"}],"dpi":[234.5,229.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300/*"},{"ua":"GT-I9300"}],"dpi":[304.8,303.9],"bw":5,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-T230NU/*"},{"ua":"SM-T230NU"}],"dpi":216,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SGH-T399/*"},{"ua":"SGH-T399"}],"dpi":[217.7,231.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SGH-M919/*"},{"ua":"SGH-M919"}],"dpi":[440.8,437.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N9005/*"},{"ua":"SM-N9005"}],"dpi":[386.4,387],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SAMSUNG-SM-N900A/*"},{"ua":"SAMSUNG-SM-N900A"}],"dpi":[386.4,387.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9500/*"},{"ua":"GT-I9500"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9505/*"},{"ua":"GT-I9505"}],"dpi":439.4,"bw":4,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G900F/*"},{"ua":"SM-G900F"}],"dpi":[415.6,431.6],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G900M/*"},{"ua":"SM-G900M"}],"dpi":[415.6,431.6],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G800F/*"},{"ua":"SM-G800F"}],"dpi":326.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G906S/*"},{"ua":"SM-G906S"}],"dpi":[562.7,572.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300/*"},{"ua":"GT-I9300"}],"dpi":[306.7,304.8],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-T535/*"},{"ua":"SM-T535"}],"dpi":[142.6,136.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920C/*"},{"ua":"SM-N920C"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920P/*"},{"ua":"SM-N920P"}],"dpi":[386.3655,390.144],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920W8/*"},{"ua":"SM-N920W8"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300I/*"},{"ua":"GT-I9300I"}],"dpi":[304.8,305.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9195/*"},{"ua":"GT-I9195"}],"dpi":[249.4,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SPH-L520/*"},{"ua":"SPH-L520"}],"dpi":[249.4,255.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SAMSUNG-SGH-I717/*"},{"ua":"SAMSUNG-SGH-I717"}],"dpi":285.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SPH-D710/*"},{"ua":"SPH-D710"}],"dpi":[217.7,204.2],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-N7100/*"},{"ua":"GT-N7100"}],"dpi":265.1,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SCH-I605/*"},{"ua":"SCH-I605"}],"dpi":265.1,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/Galaxy Nexus/*"},{"ua":"Galaxy Nexus"}],"dpi":[315.3,314.2],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N910H/*"},{"ua":"SM-N910H"}],"dpi":[515.1,518],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N910C/*"},{"ua":"SM-N910C"}],"dpi":[515.2,520.2],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G130M/*"},{"ua":"SM-G130M"}],"dpi":[165.9,164.8],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G928I/*"},{"ua":"SM-G928I"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G920F/*"},{"ua":"SM-G920F"}],"dpi":580.6,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G920P/*"},{"ua":"SM-G920P"}],"dpi":[522.5,577],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G925F/*"},{"ua":"SM-G925F"}],"dpi":580.6,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G925V/*"},{"ua":"SM-G925V"}],"dpi":[522.5,576.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G930F/*"},{"ua":"SM-G930F"}],"dpi":576.6,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G935F/*"},{"ua":"SM-G935F"}],"dpi":533,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G950F/*"},{"ua":"SM-G950F"}],"dpi":[562.707,565.293],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G955U/*"},{"ua":"SM-G955U"}],"dpi":[522.514,525.762],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"Sony/*/C6903/*"},{"ua":"C6903"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"Sony/*/D6653/*"},{"ua":"D6653"}],"dpi":[428.6,427.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/E6653/*"},{"ua":"E6653"}],"dpi":[428.6,425.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/E6853/*"},{"ua":"E6853"}],"dpi":[403.4,401.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/SGP321/*"},{"ua":"SGP321"}],"dpi":[224.7,224.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"TCT/*/ALCATEL ONE TOUCH Fierce/*"},{"ua":"ALCATEL ONE TOUCH Fierce"}],"dpi":[240,247.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"THL/*/thl 5000/*"},{"ua":"thl 5000"}],"dpi":[480,443.3],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Fly/*/IQ4412/*"},{"ua":"IQ4412"}],"dpi":307.9,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"ZTE/*/ZTE Blade L2/*"},{"ua":"ZTE Blade L2"}],"dpi":240,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"BENEVE/*/VR518/*"},{"ua":"VR518"}],"dpi":480,"bw":3,"ac":500},{"type":"ios","rules":[{"res":[640,960]}],"dpi":[325.1,328.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[640,1136]}],"dpi":[317.1,320.2],"bw":3,"ac":1000},{"type":"ios","rules":[{"res":[750,1334]}],"dpi":326.4,"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1242,2208]}],"dpi":[453.6,458.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1125,2001]}],"dpi":[410.9,415.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1125,2436]}],"dpi":458,"bw":4,"ac":1000}];
+var last_updated = "2018-10-17T15:31:16Z";
+var devices = [{"type":"android","rules":[{"mdmh":"asus/*/Nexus 7/*"},{"ua":"Nexus 7"}],"dpi":[320.8,323],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"asus/*/ASUS_Z00AD/*"},{"ua":"ASUS_Z00AD"}],"dpi":[403,404.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Google/*/Pixel XL/*"},{"ua":"Pixel XL"}],"dpi":[537.9,533],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Google/*/Pixel/*"},{"ua":"Pixel"}],"dpi":[432.6,436.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"HTC/*/HTC6435LVW/*"},{"ua":"HTC6435LVW"}],"dpi":[449.7,443.3],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One XL/*"},{"ua":"HTC One XL"}],"dpi":[315.3,314.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"htc/*/Nexus 9/*"},{"ua":"Nexus 9"}],"dpi":289,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One M9/*"},{"ua":"HTC One M9"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One_M8/*"},{"ua":"HTC One_M8"}],"dpi":[449.7,447.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"HTC/*/HTC One/*"},{"ua":"HTC One"}],"dpi":472.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Huawei/*/Nexus 6P/*"},{"ua":"Nexus 6P"}],"dpi":[515.1,518],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Huawei/*/BLN-L24/*"},{"ua":"HONORBLN-L24"}],"dpi":480,"bw":4,"ac":500},{"type":"android","rules":[{"mdmh":"Huawei/*/BKL-L09/*"},{"ua":"BKL-L09"}],"dpi":403,"bw":3.47,"ac":500},{"type":"android","rules":[{"mdmh":"LENOVO/*/Lenovo PB2-690Y/*"},{"ua":"Lenovo PB2-690Y"}],"dpi":[457.2,454.713],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 5X/*"},{"ua":"Nexus 5X"}],"dpi":[422,419.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGMS345/*"},{"ua":"LGMS345"}],"dpi":[221.7,219.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/LG-D800/*"},{"ua":"LG-D800"}],"dpi":[422,424.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/LG-D850/*"},{"ua":"LG-D850"}],"dpi":[537.9,541.9],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"LGE/*/VS985 4G/*"},{"ua":"VS985 4G"}],"dpi":[537.9,535.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 5/*"},{"ua":"Nexus 5 B"}],"dpi":[442.4,444.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/Nexus 4/*"},{"ua":"Nexus 4"}],"dpi":[319.8,318.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LG-P769/*"},{"ua":"LG-P769"}],"dpi":[240.6,247.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGMS323/*"},{"ua":"LGMS323"}],"dpi":[206.6,204.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"LGE/*/LGLS996/*"},{"ua":"LGLS996"}],"dpi":[403.4,401.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/4560MMX/*"},{"ua":"4560MMX"}],"dpi":[240,219.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/A250/*"},{"ua":"Micromax A250"}],"dpi":[480,446.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Micromax/*/Micromax AQ4501/*"},{"ua":"Micromax AQ4501"}],"dpi":240,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/G5/*"},{"ua":"Moto G (5) Plus"}],"dpi":[403.4,403],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/DROID RAZR/*"},{"ua":"DROID RAZR"}],"dpi":[368.1,256.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT830C/*"},{"ua":"XT830C"}],"dpi":[254,255.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1021/*"},{"ua":"XT1021"}],"dpi":[254,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1023/*"},{"ua":"XT1023"}],"dpi":[254,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1028/*"},{"ua":"XT1028"}],"dpi":[326.6,327.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1034/*"},{"ua":"XT1034"}],"dpi":[326.6,328.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1053/*"},{"ua":"XT1053"}],"dpi":[315.3,316.1],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1562/*"},{"ua":"XT1562"}],"dpi":[403.4,402.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/Nexus 6/*"},{"ua":"Nexus 6 B"}],"dpi":[494.3,489.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1063/*"},{"ua":"XT1063"}],"dpi":[295,296.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/XT1064/*"},{"ua":"XT1064"}],"dpi":[295,295.6],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1092/*"},{"ua":"XT1092"}],"dpi":[422,424.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"motorola/*/XT1095/*"},{"ua":"XT1095"}],"dpi":[422,423.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"motorola/*/G4/*"},{"ua":"Moto G (4)"}],"dpi":401,"bw":4,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/A0001/*"},{"ua":"A0001"}],"dpi":[403.4,401],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE E1005/*"},{"ua":"ONE E1005"}],"dpi":[442.4,441.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE A2005/*"},{"ua":"ONE A2005"}],"dpi":[391.9,405.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONEPLUS A5000/*"},{"ua":"ONEPLUS A5000 "}],"dpi":[403.411,399.737],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"OnePlus/*/ONE A5010/*"},{"ua":"ONEPLUS A5010"}],"dpi":[403,400],"bw":2,"ac":1000},{"type":"android","rules":[{"mdmh":"OPPO/*/X909/*"},{"ua":"X909"}],"dpi":[442.4,444.1],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9082/*"},{"ua":"GT-I9082"}],"dpi":[184.7,185.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G360P/*"},{"ua":"SM-G360P"}],"dpi":[196.7,205.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/Nexus S/*"},{"ua":"Nexus S"}],"dpi":[234.5,229.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300/*"},{"ua":"GT-I9300"}],"dpi":[304.8,303.9],"bw":5,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-T230NU/*"},{"ua":"SM-T230NU"}],"dpi":216,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SGH-T399/*"},{"ua":"SGH-T399"}],"dpi":[217.7,231.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SGH-M919/*"},{"ua":"SGH-M919"}],"dpi":[440.8,437.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N9005/*"},{"ua":"SM-N9005"}],"dpi":[386.4,387],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SAMSUNG-SM-N900A/*"},{"ua":"SAMSUNG-SM-N900A"}],"dpi":[386.4,387.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9500/*"},{"ua":"GT-I9500"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9505/*"},{"ua":"GT-I9505"}],"dpi":439.4,"bw":4,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G900F/*"},{"ua":"SM-G900F"}],"dpi":[415.6,431.6],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G900M/*"},{"ua":"SM-G900M"}],"dpi":[415.6,431.6],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G800F/*"},{"ua":"SM-G800F"}],"dpi":326.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G906S/*"},{"ua":"SM-G906S"}],"dpi":[562.7,572.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300/*"},{"ua":"GT-I9300"}],"dpi":[306.7,304.8],"bw":5,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-T535/*"},{"ua":"SM-T535"}],"dpi":[142.6,136.4],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920C/*"},{"ua":"SM-N920C"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920P/*"},{"ua":"SM-N920P"}],"dpi":[386.3655,390.144],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N920W8/*"},{"ua":"SM-N920W8"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9300I/*"},{"ua":"GT-I9300I"}],"dpi":[304.8,305.8],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-I9195/*"},{"ua":"GT-I9195"}],"dpi":[249.4,256.7],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SPH-L520/*"},{"ua":"SPH-L520"}],"dpi":[249.4,255.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SAMSUNG-SGH-I717/*"},{"ua":"SAMSUNG-SGH-I717"}],"dpi":285.8,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SPH-D710/*"},{"ua":"SPH-D710"}],"dpi":[217.7,204.2],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/GT-N7100/*"},{"ua":"GT-N7100"}],"dpi":265.1,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SCH-I605/*"},{"ua":"SCH-I605"}],"dpi":265.1,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/Galaxy Nexus/*"},{"ua":"Galaxy Nexus"}],"dpi":[315.3,314.2],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N910H/*"},{"ua":"SM-N910H"}],"dpi":[515.1,518],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-N910C/*"},{"ua":"SM-N910C"}],"dpi":[515.2,520.2],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G130M/*"},{"ua":"SM-G130M"}],"dpi":[165.9,164.8],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G928I/*"},{"ua":"SM-G928I"}],"dpi":[515.1,518.4],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G920F/*"},{"ua":"SM-G920F"}],"dpi":580.6,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G920P/*"},{"ua":"SM-G920P"}],"dpi":[522.5,577],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G925F/*"},{"ua":"SM-G925F"}],"dpi":580.6,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G925V/*"},{"ua":"SM-G925V"}],"dpi":[522.5,576.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G930F/*"},{"ua":"SM-G930F"}],"dpi":576.6,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G935F/*"},{"ua":"SM-G935F"}],"dpi":533,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G950F/*"},{"ua":"SM-G950F"}],"dpi":[562.707,565.293],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G955U/*"},{"ua":"SM-G955U"}],"dpi":[522.514,525.762],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"samsung/*/SM-G955F/*"},{"ua":"SM-G955F"}],"dpi":[522.514,525.762],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"Sony/*/C6903/*"},{"ua":"C6903"}],"dpi":[442.5,443.3],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"Sony/*/D6653/*"},{"ua":"D6653"}],"dpi":[428.6,427.6],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/E6653/*"},{"ua":"E6653"}],"dpi":[428.6,425.7],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/E6853/*"},{"ua":"E6853"}],"dpi":[403.4,401.9],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Sony/*/SGP321/*"},{"ua":"SGP321"}],"dpi":[224.7,224.1],"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"TCT/*/ALCATEL ONE TOUCH Fierce/*"},{"ua":"ALCATEL ONE TOUCH Fierce"}],"dpi":[240,247.5],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"THL/*/thl 5000/*"},{"ua":"thl 5000"}],"dpi":[480,443.3],"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"Fly/*/IQ4412/*"},{"ua":"IQ4412"}],"dpi":307.9,"bw":3,"ac":1000},{"type":"android","rules":[{"mdmh":"ZTE/*/ZTE Blade L2/*"},{"ua":"ZTE Blade L2"}],"dpi":240,"bw":3,"ac":500},{"type":"android","rules":[{"mdmh":"BENEVE/*/VR518/*"},{"ua":"VR518"}],"dpi":480,"bw":3,"ac":500},{"type":"ios","rules":[{"res":[640,960]}],"dpi":[325.1,328.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[640,1136]}],"dpi":[317.1,320.2],"bw":3,"ac":1000},{"type":"ios","rules":[{"res":[750,1334]}],"dpi":326.4,"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1242,2208]}],"dpi":[453.6,458.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1125,2001]}],"dpi":[410.9,415.4],"bw":4,"ac":1000},{"type":"ios","rules":[{"res":[1125,2436]}],"dpi":458,"bw":4,"ac":1000}];
 var DPDB_CACHE = {
 	format: format,
 	last_updated: last_updated,
@@ -62706,6 +62706,7 @@ Dpdb.prototype.calcDeviceParams_ = function () {
 };
 Dpdb.prototype.matchRule_ = function (rule, ua, screenWidth, screenHeight) {
   if (!rule.ua && !rule.res) return false;
+  if (rule.ua && rule.ua.substring(0, 2) === 'SM') rule.ua = rule.ua.substring(0, 7);
   if (rule.ua && ua.indexOf(rule.ua) < 0) return false;
   if (rule.res) {
     if (!rule.res[0] || !rule.res[1]) return false;
@@ -63041,18 +63042,6 @@ FusionPoseSensor.prototype.stop = function () {
 var SENSOR_FREQUENCY = 60;
 var X_AXIS = new Vector3(1, 0, 0);
 var Z_AXIS = new Vector3(0, 0, 1);
-var orientation = {};
-if (screen.orientation) {
-  orientation = screen.orientation;
-} else if (screen.msOrientation) {
-  orientation = screen.msOrientation;
-} else {
-  Object.defineProperty(orientation, 'angle', {
-    get: function get$$1() {
-      return window.orientation || 0;
-    }
-  });
-}
 var SENSOR_TO_VR = new Quaternion();
 SENSOR_TO_VR.setFromAxisAngle(X_AXIS, -Math.PI / 2);
 SENSOR_TO_VR.multiply(new Quaternion().setFromAxisAngle(Z_AXIS, Math.PI / 2));
@@ -63066,12 +63055,9 @@ var PoseSensor = function () {
     this.api = null;
     this.errors = [];
     this._sensorQ = new Quaternion();
-    this._worldToScreenQ = new Quaternion();
     this._outQ = new Quaternion();
     this._onSensorRead = this._onSensorRead.bind(this);
     this._onSensorError = this._onSensorError.bind(this);
-    this._onOrientationChange = this._onOrientationChange.bind(this);
-    this._onOrientationChange();
     this.init();
   }
   createClass(PoseSensor, [{
@@ -63079,7 +63065,10 @@ var PoseSensor = function () {
     value: function init() {
       var sensor = null;
       try {
-        sensor = new RelativeOrientationSensor({ frequency: SENSOR_FREQUENCY });
+        sensor = new RelativeOrientationSensor({
+          frequency: SENSOR_FREQUENCY,
+          referenceFrame: 'screen'
+        });
         sensor.addEventListener('error', this._onSensorError);
       } catch (error) {
         this.errors.push(error);
@@ -63099,7 +63088,6 @@ var PoseSensor = function () {
         this.sensor.addEventListener('reading', this._onSensorRead);
         this.sensor.start();
       }
-      window.addEventListener('orientationchange', this._onOrientationChange);
     }
   }, {
     key: 'useDeviceMotion',
@@ -63128,7 +63116,6 @@ var PoseSensor = function () {
       var out = this._outQ;
       out.copy(SENSOR_TO_VR);
       out.multiply(this._sensorQ);
-      out.multiply(this._worldToScreenQ);
       if (this.config.YAW_ONLY) {
         out.x = out.z = 0;
         out.normalize();
@@ -63155,12 +63142,6 @@ var PoseSensor = function () {
   }, {
     key: '_onSensorRead',
     value: function _onSensorRead() {}
-  }, {
-    key: '_onOrientationChange',
-    value: function _onOrientationChange() {
-      var angle = -orientation.angle * Math.PI / 180;
-      this._worldToScreenQ.setFromAxisAngle(Z_AXIS, angle);
-    }
   }]);
   return PoseSensor;
 }();
@@ -63409,7 +63390,7 @@ ViewerSelector.prototype.createButton_ = function (label, onclick) {
 };
 var commonjsGlobal$$1 = typeof window !== 'undefined' ? window : typeof commonjsGlobal !== 'undefined' ? commonjsGlobal : typeof self !== 'undefined' ? self : {};
 function unwrapExports$$1 (x) {
-	return x && x.__esModule ? x['default'] : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 function createCommonjsModule$$1(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -64112,7 +64093,7 @@ return CardboardVRDisplay;
 });
 var CardboardVRDisplay = unwrapExports(cardboardVrDisplay);
 
-var version = "0.10.6";
+var version = "0.10.8";
 
 var DefaultConfig = {
   ADDITIONAL_VIEWERS: [],
@@ -64124,7 +64105,6 @@ var DefaultConfig = {
   DPDB_URL: 'https://dpdb.webvr.rocks/dpdb.json',
   K_FILTER: 0.98,
   PREDICTION_TIME_S: 0.040,
-  TOUCH_PANNER_DISABLED: true,
   CARDBOARD_UI_DISABLED: false,
   ROTATE_INSTRUCTIONS_DISABLED: false,
   YAW_ONLY: false,
@@ -64164,7 +64144,6 @@ WebVRPolyfill.prototype.getPolyfillDisplays = function () {
       CARDBOARD_UI_DISABLED: this.config.CARDBOARD_UI_DISABLED,
       K_FILTER: this.config.K_FILTER,
       PREDICTION_TIME_S: this.config.PREDICTION_TIME_S,
-      TOUCH_PANNER_DISABLED: this.config.TOUCH_PANNER_DISABLED,
       ROTATE_INSTRUCTIONS_DISABLED: this.config.ROTATE_INSTRUCTIONS_DISABLED,
       YAW_ONLY: this.config.YAW_ONLY,
       BUFFER_SCALE: this.config.BUFFER_SCALE,
@@ -64722,7 +64701,7 @@ module.exports={
     "style-attr": "^1.0.2",
     "three": "0.95.0",
     "three-bmfont-text": "^2.1.0",
-    "webvr-polyfill": "^0.10.5"
+    "webvr-polyfill": "^0.10.8"
   },
   "devDependencies": {
     "browserify": "^13.1.0",
@@ -65421,7 +65400,7 @@ function isRawProperty (data) {
          data.property.startsWith(STRING_OBJECT3D);
 }
 
-},{"../core/component":107,"../lib/three":157,"../utils":180,"animejs":2}],53:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils":174,"animejs":2}],53:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -65513,7 +65492,7 @@ module.exports.Component = registerComponent('camera', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157}],54:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151}],54:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 
@@ -65547,7 +65526,7 @@ module.exports.Component = registerComponent('collada-model', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157}],55:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151}],55:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
@@ -65925,7 +65904,7 @@ module.exports.Component = registerComponent('cursor', {
   }
 });
 
-},{"../core/component":107,"../utils/":180}],56:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/":174}],56:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var checkControllerPresentAndSetup = _dereq_('../utils/tracked-controls').checkControllerPresentAndSetup;
@@ -66103,7 +66082,7 @@ module.exports.Component = registerComponent('daydream-controls', {
   }
 });
 
-},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],57:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/bind":168,"../utils/tracked-controls":181}],57:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -66279,7 +66258,7 @@ module.exports.Component = registerComponent('gearvr-controls', {
   }
 });
 
-},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],58:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/bind":168,"../utils/tracked-controls":181}],58:[function(_dereq_,module,exports){
 var geometries = _dereq_('../core/geometry').geometries;
 var geometryNames = _dereq_('../core/geometry').geometryNames;
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -66358,7 +66337,7 @@ module.exports.Component = registerComponent('geometry', {
   }
 });
 
-},{"../core/component":107,"../core/geometry":109,"../lib/three":157}],59:[function(_dereq_,module,exports){
+},{"../core/component":102,"../core/geometry":103,"../lib/three":151}],59:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -66406,7 +66385,7 @@ module.exports.Component = registerComponent('gltf-model', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils/":180}],60:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/":174}],60:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -66789,7 +66768,7 @@ function isViveController (trackedControls) {
   return controllerId && controllerId.indexOf('OpenVR ') === 0;
 }
 
-},{"../core/component":107}],61:[function(_dereq_,module,exports){
+},{"../core/component":102}],61:[function(_dereq_,module,exports){
 _dereq_('./animation');
 _dereq_('./camera');
 _dereq_('./collada-model');
@@ -66823,19 +66802,17 @@ _dereq_('./windows-motion-controls');
 
 _dereq_('./scene/background');
 _dereq_('./scene/debug');
-_dereq_('./scene/effects');
 _dereq_('./scene/embedded');
 _dereq_('./scene/inspector');
 _dereq_('./scene/fog');
 _dereq_('./scene/keyboard-shortcuts');
-_dereq_('./scene/overlay');
 _dereq_('./scene/pool');
 _dereq_('./scene/renderer');
 _dereq_('./scene/screenshot');
 _dereq_('./scene/stats');
 _dereq_('./scene/vr-mode-ui');
 
-},{"./animation":52,"./camera":53,"./collada-model":54,"./cursor":55,"./daydream-controls":56,"./gearvr-controls":57,"./geometry":58,"./gltf-model":59,"./hand-controls":60,"./laser-controls":62,"./light":63,"./line":64,"./link":65,"./look-controls":66,"./material":67,"./obj-model":68,"./oculus-go-controls":69,"./oculus-touch-controls":70,"./position":71,"./raycaster":72,"./rotation":73,"./scale":74,"./scene/background":75,"./scene/debug":76,"./scene/effects":78,"./scene/embedded":81,"./scene/fog":82,"./scene/inspector":83,"./scene/keyboard-shortcuts":84,"./scene/overlay":85,"./scene/pool":86,"./scene/renderer":87,"./scene/screenshot":88,"./scene/stats":89,"./scene/vr-mode-ui":90,"./shadow":91,"./sound":92,"./text":93,"./tracked-controls":94,"./visible":95,"./vive-controls":96,"./wasd-controls":97,"./windows-motion-controls":98}],62:[function(_dereq_,module,exports){
+},{"./animation":52,"./camera":53,"./collada-model":54,"./cursor":55,"./daydream-controls":56,"./gearvr-controls":57,"./geometry":58,"./gltf-model":59,"./hand-controls":60,"./laser-controls":62,"./light":63,"./line":64,"./link":65,"./look-controls":66,"./material":67,"./obj-model":68,"./oculus-go-controls":69,"./oculus-touch-controls":70,"./position":71,"./raycaster":72,"./rotation":73,"./scale":74,"./scene/background":75,"./scene/debug":76,"./scene/embedded":77,"./scene/fog":78,"./scene/inspector":79,"./scene/keyboard-shortcuts":80,"./scene/pool":81,"./scene/renderer":82,"./scene/screenshot":83,"./scene/stats":84,"./scene/vr-mode-ui":85,"./shadow":86,"./sound":87,"./text":88,"./tracked-controls":89,"./visible":90,"./vive-controls":91,"./wasd-controls":92,"./windows-motion-controls":93}],62:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
 
@@ -66934,7 +66911,7 @@ registerComponent('laser-controls', {
   }
 });
 
-},{"../core/component":107,"../utils/":180}],63:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/":174}],63:[function(_dereq_,module,exports){
 var bind = _dereq_('../utils/bind');
 var diff = _dereq_('../utils').diff;
 var debug = _dereq_('../utils/debug');
@@ -67215,7 +67192,7 @@ module.exports.Component = registerComponent('light', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils":180,"../utils/bind":174,"../utils/debug":176}],64:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils":174,"../utils/bind":168,"../utils/debug":170}],64:[function(_dereq_,module,exports){
 /* global THREE */
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -67290,7 +67267,7 @@ function isEqualVec3 (a, b) {
   return (a.x === b.x && a.y === b.y && a.z === b.z);
 }
 
-},{"../core/component":107}],65:[function(_dereq_,module,exports){
+},{"../core/component":102}],65:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
@@ -67662,7 +67639,7 @@ registerShader('portal', {
 });
 /* eslint-enable */
 
-},{"../core/component":107,"../core/shader":118,"../lib/three":157}],66:[function(_dereq_,module,exports){
+},{"../core/component":102,"../core/shader":112,"../lib/three":151}],66:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -67704,7 +67681,6 @@ module.exports.Component = registerComponent('look-controls', {
     this.savedPose = null;
     this.pointerLocked = false;
     this.setupMouseControls();
-    this.setupHMDControls();
     this.bindMethods();
 
     this.savedPose = {
@@ -67740,9 +67716,7 @@ module.exports.Component = registerComponent('look-controls', {
   tick: function (t) {
     var data = this.data;
     if (!data.enabled) { return; }
-    this.controls.update();
     this.updateOrientation();
-    this.updatePosition();
   },
 
   play: function () {
@@ -67779,17 +67753,6 @@ module.exports.Component = registerComponent('look-controls', {
     this.yawObject = new THREE.Object3D();
     this.yawObject.position.y = 10;
     this.yawObject.add(this.pitchObject);
-  },
-
-  /**
-    * Set up VR controls that will copy data to the dolly.
-  */
-  setupHMDControls: function () {
-    this.dolly = new THREE.Object3D();
-    this.euler = new THREE.Euler();
-    this.hmdQuaternion = new THREE.Quaternion();
-    this.controls = new THREE.VRControls(this.dolly);
-    this.controls.userHeight = 0.0;
   },
 
   /**
@@ -67863,37 +67826,21 @@ module.exports.Component = registerComponent('look-controls', {
   updateOrientation: function () {
     var el = this.el;
     var hmdEuler = this.hmdEuler;
-    var hmdQuaternion = this.hmdQuaternion;
     var pitchObject = this.pitchObject;
     var yawObject = this.yawObject;
     var sceneEl = this.el.sceneEl;
 
     // In VR mode, THREE is in charge of updating the camera rotation.
-    if (sceneEl.is('vr-mode') && sceneEl.checkHeadsetConnected()) {
-      hmdQuaternion = hmdQuaternion.copy(this.dolly.quaternion);
-      hmdEuler.setFromQuaternion(hmdQuaternion, 'YXZ');
-      el.object3D.rotation.copy(hmdEuler);
-      return;
-    }
+    if (sceneEl.is('vr-mode') && sceneEl.checkHeadsetConnected()) { return; }
 
     // Calculate polyfilled HMD quaternion.
     this.polyfillControls.update();
     hmdEuler.setFromQuaternion(this.polyfillObject.quaternion, 'YXZ');
+
     // On mobile, do camera rotation with touch events and sensors.
     el.object3D.rotation.x = hmdEuler.x + pitchObject.rotation.x;
     el.object3D.rotation.y = hmdEuler.y + yawObject.rotation.y;
   },
-
-  updatePosition: (function () {
-    var position = new THREE.Vector3();
-    return function () {
-      var el = this.el;
-      if (!el.sceneEl.is('vr-mode')) { return; }
-      this.dolly.updateMatrix();
-      position.setFromMatrixPosition(this.dolly.matrix);
-      el.object3D.position.copy(position);
-    };
-  })(),
 
   /**
    * Translate mouse drag into rotation.
@@ -68105,7 +68052,7 @@ module.exports.Component = registerComponent('look-controls', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils":180,"../utils/":180}],67:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils":174,"../utils/":174}],67:[function(_dereq_,module,exports){
 /* global Promise */
 var utils = _dereq_('../utils/');
 var component = _dereq_('../core/component');
@@ -68374,7 +68321,7 @@ function disposeMaterial (material, system) {
   system.unregisterMaterial(material);
 }
 
-},{"../core/component":107,"../core/shader":118,"../lib/three":157,"../utils/":180}],68:[function(_dereq_,module,exports){
+},{"../core/component":102,"../core/shader":112,"../lib/three":151,"../utils/":174}],68:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -68454,7 +68401,7 @@ module.exports.Component = registerComponent('obj-model', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils/debug":176}],69:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/debug":170}],69:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var bind = _dereq_('../utils/bind');
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -68626,7 +68573,7 @@ module.exports.Component = registerComponent('oculus-go-controls', {
   }
 });
 
-},{"../core/component":107,"../utils/bind":174,"../utils/tracked-controls":186}],70:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/bind":168,"../utils/tracked-controls":181}],70:[function(_dereq_,module,exports){
 var bind = _dereq_('../utils/bind');
 var registerComponent = _dereq_('../core/component').registerComponent;
 var trackedControlsUtils = _dereq_('../utils/tracked-controls');
@@ -68844,7 +68791,7 @@ module.exports.Component = registerComponent('oculus-touch-controls', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils/bind":174,"../utils/tracked-controls":186}],71:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/bind":168,"../utils/tracked-controls":181}],71:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 module.exports.Component = registerComponent('position', {
@@ -68862,7 +68809,7 @@ module.exports.Component = registerComponent('position', {
   }
 });
 
-},{"../core/component":107}],72:[function(_dereq_,module,exports){
+},{"../core/component":102}],72:[function(_dereq_,module,exports){
 /* global MutationObserver */
 
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -69042,7 +68989,7 @@ module.exports.Component = registerComponent('raycaster', {
     // If objects not defined, intersect with everything.
     els = data.objects
       ? this.el.sceneEl.querySelectorAll(data.objects)
-      : this.el.sceneEl.children;
+      : this.el.sceneEl.querySelectorAll('*');
     this.objects = this.flattenObject3DMaps(els);
     this.dirty = false;
   },
@@ -69253,7 +69200,7 @@ module.exports.Component = registerComponent('raycaster', {
    * so that non-recursive raycasting remains useful.
    *
    * Only push children defined as component attachemnts (e.g., setObject3D),
-   * not actual children in the scene graph hierarchy.
+   * NOT actual children in the scene graph hierarchy.
    *
    * @param  {Array<Element>} els
    * @return {Array<THREE.Object3D>}
@@ -69266,7 +69213,7 @@ module.exports.Component = registerComponent('raycaster', {
     // Push meshes and other attachments onto list of objects to intersect.
     objects.length = 0;
     for (i = 0; i < els.length; i++) {
-      if (els[i].object3D) {
+      if (els[i].isEntity && els[i].object3D) {
         for (key in els[i].object3DMap) {
           objects.push(els[i].getObject3D(key));
         }
@@ -69300,7 +69247,7 @@ function copyArray (a, b) {
   }
 }
 
-},{"../core/component":107,"../lib/three":157,"../utils/":180}],73:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/":174}],73:[function(_dereq_,module,exports){
 var degToRad = _dereq_('../lib/three').Math.degToRad;
 var registerComponent = _dereq_('../core/component').registerComponent;
 
@@ -69323,7 +69270,7 @@ module.exports.Component = registerComponent('rotation', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157}],74:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151}],74:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 // Avoids triggering a zero-determinant which makes object3D matrix non-invertible.
@@ -69350,7 +69297,7 @@ module.exports.Component = registerComponent('scale', {
   }
 });
 
-},{"../core/component":107}],75:[function(_dereq_,module,exports){
+},{"../core/component":102}],75:[function(_dereq_,module,exports){
 /* global THREE */
 var register = _dereq_('../../core/component').registerComponent;
 
@@ -69370,102 +69317,14 @@ module.exports.Component = register('background', {
   }
 });
 
-},{"../../core/component":107}],76:[function(_dereq_,module,exports){
+},{"../../core/component":102}],76:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 
 module.exports.Component = register('debug', {
   schema: {default: true}
 });
 
-},{"../../core/component":107}],77:[function(_dereq_,module,exports){
-/* global THREE */
-var registerEffect = _dereq_('../../../core/effect').registerEffect;
-
-_dereq_('../../../../vendor/effects/CopyShader');
-_dereq_('../../../../vendor/effects/ShaderPass');
-_dereq_('../../../../vendor/effects/LuminosityHighPassShader');
-_dereq_('../../../../vendor/effects/UnrealBloomPass');
-
-registerEffect('bloom', {
-  schema: {
-    strength: {default: 1.5},
-    radius: {default: 0.4},
-    threshold: {default: 0.5}
-  },
-
-  initPass: function () {
-    this.pass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-  },
-
-  update: function () {
-    var data = this.data;
-    var pass = this.pass;
-    if (!pass) { return; }
-    pass.strength = data.strength;
-    pass.radius = data.radius;
-    pass.threshold = data.threshold;
-  }
-});
-
-},{"../../../../vendor/effects/CopyShader":189,"../../../../vendor/effects/LuminosityHighPassShader":191,"../../../../vendor/effects/ShaderPass":196,"../../../../vendor/effects/UnrealBloomPass":197,"../../../core/effect":108}],78:[function(_dereq_,module,exports){
-_dereq_('./bloom');
-_dereq_('./sepia');
-_dereq_('./ssao');
-
-
-},{"./bloom":77,"./sepia":79,"./ssao":80}],79:[function(_dereq_,module,exports){
-/* global THREE */
-var registerEffect = _dereq_('../../../core/effect').registerEffect;
-
-_dereq_('../../../../vendor/effects/ShaderPass');
-_dereq_('../../../../vendor/effects/SepiaShader');
-
-registerEffect('sepia', {
-  schema: {
-    amount: {default: 1.0}
-  },
-
-  initPass: function () {
-    this.pass = new THREE.ShaderPass(THREE.SepiaShader);
-    this.update();
-  },
-
-  update: function () {
-    if (!this.pass) { return; }
-    this.pass.uniforms.amount.value = this.data.amount;
-    this.pass.uniforms.needsUpdate = true;
-  }
-});
-
-},{"../../../../vendor/effects/SepiaShader":195,"../../../../vendor/effects/ShaderPass":196,"../../../core/effect":108}],80:[function(_dereq_,module,exports){
-/* global THREE */
-var registerEffect = _dereq_('../../../core/effect').registerEffect;
-
-_dereq_('../../../../vendor/effects/SSAOShader');
-_dereq_('../../../../vendor/effects/SSAOPass');
-
-registerEffect('ssao', {
-  schema: {
-    radius: {default: 32},
-    aoClamp: {default: 0.25},
-    lumInfluence: {default: 0.7}
-  },
-
-  initPass: function () {
-    this.pass = new THREE.SSAOPass(this.el.object3D, this.el.camera);
-  },
-
-  update: function () {
-    var data = this.data;
-    var pass = this.pass;
-    if (!pass) { return; }
-    pass.radius = data.radius;
-    pass.aoClamp = data.aoClamp;
-    pass.lumInfluence = data.lumInfluence;
-  }
-});
-
-},{"../../../../vendor/effects/SSAOPass":193,"../../../../vendor/effects/SSAOShader":194,"../../../core/effect":108}],81:[function(_dereq_,module,exports){
+},{"../../core/component":102}],77:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 
 /**
@@ -69490,7 +69349,7 @@ module.exports.Component = registerComponent('embedded', {
 
 });
 
-},{"../../core/component":107}],82:[function(_dereq_,module,exports){
+},{"../../core/component":102}],78:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 var debug = _dereq_('../../utils/debug');
@@ -69563,7 +69422,7 @@ function getFog (data) {
   return fog;
 }
 
-},{"../../core/component":107,"../../lib/three":157,"../../utils/debug":176}],83:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../lib/three":151,"../../utils/debug":170}],79:[function(_dereq_,module,exports){
 (function (process){
 /* global AFRAME */
 var AFRAME_INJECTED = _dereq_('../../constants').AFRAME_INJECTED;
@@ -69668,7 +69527,7 @@ module.exports.Component = registerComponent('inspector', {
 
 }).call(this,_dereq_('_process'))
 
-},{"../../../package":51,"../../constants":99,"../../core/component":107,"../../utils/bind":174,"_process":6}],84:[function(_dereq_,module,exports){
+},{"../../../package":51,"../../constants":94,"../../core/component":102,"../../utils/bind":168,"_process":6}],80:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var shouldCaptureKeyEvent = _dereq_('../../utils/').shouldCaptureKeyEvent;
 
@@ -69707,69 +69566,7 @@ module.exports.Component = registerComponent('keyboard-shortcuts', {
   }
 });
 
-},{"../../core/component":107,"../../utils/":180}],85:[function(_dereq_,module,exports){
-/* global THREE */
-var register = _dereq_('../../core/component').registerComponent;
-
-module.exports.Component = register('overlay', {
-  schema: {
-    enabled: {default: true},
-    objects: {default: ''}
-  },
-
-  init: function () {
-    this.objectsVisibility = [];
-  },
-
-  update: function () {
-    var data = this.data;
-    this.scene = data.objects && new THREE.Scene();
-    this.restoreObjects();
-    if (!data.enabled) { return; }
-    this.initObjects();
-  },
-
-  initObjects: function () {
-    var els;
-    var scene = this.scene;
-    if (!scene) { return; }
-    els = this.els = this.el.sceneEl.querySelectorAll(this.data.objects);
-    for (var i = 0; i < els.length; ++i) {
-      if (!els[i].object3D) { continue; }
-      scene.add(els[i].object3D);
-    }
-  },
-
-  render: function () {
-    var renderer = this.el.renderer;
-    var autoClear = renderer.autoClear;
-    renderer.autoClear = false;
-    renderer.clearDepth();
-    this.scene.visible = true;
-    this.el.effect.render(this.scene, this.el.camera);
-    // Hide objects so they are not rendered on first pass.
-    this.scene.visible = false;
-    renderer.autoClear = autoClear;
-  },
-
-  /* Return ownership to the a-scene THREE.Scene */
-  restoreObjects: function () {
-    var els = this.els;
-    var scene = this.scene;
-    var i;
-    if (!this.els) { return; }
-    for (i = 0; i < els.length; ++i) {
-      scene && scene.remove(els[i].object3D);
-      this.el.object3D.add(els[i].object3D);
-    }
-  },
-
-  remove: function () {
-    this.restoreObjects();
-  }
-});
-
-},{"../../core/component":107}],86:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../utils/":174}],81:[function(_dereq_,module,exports){
 var debug = _dereq_('../../utils/debug');
 var registerComponent = _dereq_('../../core/component').registerComponent;
 
@@ -69887,7 +69684,7 @@ module.exports.Component = registerComponent('pool', {
   }
 });
 
-},{"../../core/component":107,"../../utils/debug":176}],87:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../utils/debug":170}],82:[function(_dereq_,module,exports){
 var register = _dereq_('../../core/component').registerComponent;
 var debug = _dereq_('../../utils/debug');
 
@@ -69969,7 +69766,7 @@ module.exports.Component = register('renderer', {
   }
 });
 
-},{"../../core/component":107,"../../utils/debug":176}],88:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../utils/debug":170}],83:[function(_dereq_,module,exports){
 /* global ImageData, URL */
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
@@ -70228,7 +70025,7 @@ module.exports.Component = registerComponent('screenshot', {
   }
 });
 
-},{"../../core/component":107,"../../lib/three":157}],89:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../lib/three":151}],84:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var RStats = _dereq_('../../../vendor/rStats');
 var utils = _dereq_('../../utils');
@@ -70308,7 +70105,7 @@ function createStats (scene) {
   });
 }
 
-},{"../../../vendor/rStats":199,"../../../vendor/rStats.extras":198,"../../core/component":107,"../../lib/rStatsAframe":156,"../../utils":180}],90:[function(_dereq_,module,exports){
+},{"../../../vendor/rStats":183,"../../../vendor/rStats.extras":182,"../../core/component":102,"../../lib/rStatsAframe":150,"../../utils":174}],85:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var constants = _dereq_('../../constants/');
 var utils = _dereq_('../../utils/');
@@ -70494,7 +70291,7 @@ function createOrientationModal (onClick) {
   return modal;
 }
 
-},{"../../constants/":99,"../../core/component":107,"../../utils/":180}],91:[function(_dereq_,module,exports){
+},{"../../constants/":94,"../../core/component":102,"../../utils/":174}],86:[function(_dereq_,module,exports){
 var component = _dereq_('../core/component');
 var THREE = _dereq_('../lib/three');
 var bind = _dereq_('../utils/bind');
@@ -70548,7 +70345,7 @@ module.exports.Component = registerComponent('shadow', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils/bind":174}],92:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/bind":168}],87:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var debug = _dereq_('../utils/debug');
 var THREE = _dereq_('../lib/three');
@@ -70799,7 +70596,7 @@ module.exports.Component = registerComponent('sound', {
   }
 });
 
-},{"../core/component":107,"../lib/three":157,"../utils/debug":176}],93:[function(_dereq_,module,exports){
+},{"../core/component":102,"../lib/three":151,"../utils/debug":170}],88:[function(_dereq_,module,exports){
 var createTextGeometry = _dereq_('three-bmfont-text');
 var loadBMFont = _dereq_('load-bmfont');
 
@@ -71284,7 +71081,7 @@ function PromiseCache () {
   };
 }
 
-},{"../core/component":107,"../core/shader":118,"../lib/three":157,"../utils/":180,"load-bmfont":24,"three-bmfont-text":35}],94:[function(_dereq_,module,exports){
+},{"../core/component":102,"../core/shader":112,"../lib/three":151,"../utils/":174,"load-bmfont":24,"three-bmfont-text":35}],89:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var controllerUtils = _dereq_('../utils/tracked-controls');
 var DEFAULT_CAMERA_HEIGHT = _dereq_('../constants').DEFAULT_CAMERA_HEIGHT;
@@ -71472,7 +71269,7 @@ module.exports.Component = registerComponent('tracked-controls', {
 
     // Apply transforms, if 6DOF and in VR.
     if (vrDisplay && pose.position) {
-      standingMatrix = this.el.sceneEl.camera.el.components['look-controls'].controls.getStandingMatrix();
+      standingMatrix = this.el.sceneEl.renderer.vr.getStandingMatrix();
       object3D.matrix.compose(object3D.position, object3D.quaternion, object3D.scale);
       object3D.matrix.multiplyMatrices(standingMatrix, object3D.matrix);
       object3D.matrix.decompose(object3D.position, object3D.quaternion, object3D.scale);
@@ -71614,7 +71411,7 @@ module.exports.Component = registerComponent('tracked-controls', {
   }
 });
 
-},{"../constants":99,"../core/component":107,"../lib/three":157,"../utils/tracked-controls":186}],95:[function(_dereq_,module,exports){
+},{"../constants":94,"../core/component":102,"../lib/three":151,"../utils/tracked-controls":181}],90:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 
 /**
@@ -71628,7 +71425,7 @@ module.exports.Component = registerComponent('visible', {
   }
 });
 
-},{"../core/component":107}],96:[function(_dereq_,module,exports){
+},{"../core/component":102}],91:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../core/component').registerComponent;
 var utils = _dereq_('../utils/');
 
@@ -71857,7 +71654,7 @@ module.exports.Component = registerComponent('vive-controls', {
   }
 });
 
-},{"../core/component":107,"../utils/":180,"../utils/tracked-controls":186}],97:[function(_dereq_,module,exports){
+},{"../core/component":102,"../utils/":174,"../utils/tracked-controls":181}],92:[function(_dereq_,module,exports){
 var KEYCODE_TO_CODE = _dereq_('../constants').keyboardevent.KEYCODE_TO_CODE;
 var registerComponent = _dereq_('../core/component').registerComponent;
 var THREE = _dereq_('../lib/three');
@@ -72066,7 +71863,7 @@ function isEmptyObject (keys) {
   return true;
 }
 
-},{"../constants":99,"../core/component":107,"../lib/three":157,"../utils/":180}],98:[function(_dereq_,module,exports){
+},{"../constants":94,"../core/component":102,"../lib/three":151,"../utils/":174}],93:[function(_dereq_,module,exports){
 /* global THREE */
 var bind = _dereq_('../utils/bind');
 var registerComponent = _dereq_('../core/component').registerComponent;
@@ -72515,7 +72312,7 @@ module.exports.Component = registerComponent('windows-motion-controls', {
   }
 });
 
-},{"../constants":99,"../core/component":107,"../utils/":180,"../utils/bind":174,"../utils/tracked-controls":186}],99:[function(_dereq_,module,exports){
+},{"../constants":94,"../core/component":102,"../utils/":174,"../utils/bind":168,"../utils/tracked-controls":181}],94:[function(_dereq_,module,exports){
 module.exports = {
   AFRAME_INJECTED: 'aframe-injected',
   DEFAULT_CAMERA_HEIGHT: 1.6,
@@ -72523,7 +72320,7 @@ module.exports = {
   keyboardevent: _dereq_('./keyboardevent')
 };
 
-},{"./keyboardevent":100}],100:[function(_dereq_,module,exports){
+},{"./keyboardevent":95}],95:[function(_dereq_,module,exports){
 module.exports = {
   // Tiny KeyboardEvent.code polyfill.
   KEYCODE_TO_CODE: {
@@ -72538,7 +72335,7 @@ module.exports = {
   }
 };
 
-},{}],101:[function(_dereq_,module,exports){
+},{}],96:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var bind = _dereq_('../utils/bind');
 var debug = _dereq_('../utils/debug');
@@ -72803,7 +72600,7 @@ function inferResponseType (src) {
 }
 module.exports.inferResponseType = inferResponseType;
 
-},{"../lib/three":157,"../utils/bind":174,"../utils/debug":176,"./a-node":105,"./a-register-element":106}],102:[function(_dereq_,module,exports){
+},{"../lib/three":151,"../utils/bind":168,"../utils/debug":170,"./a-node":100,"./a-register-element":101}],97:[function(_dereq_,module,exports){
 var debug = _dereq_('../utils/debug');
 var registerElement = _dereq_('./a-register-element').registerElement;
 
@@ -72853,7 +72650,7 @@ module.exports = registerElement('a-cubemap', {
   })
 });
 
-},{"../utils/debug":176,"./a-register-element":106}],103:[function(_dereq_,module,exports){
+},{"../utils/debug":170,"./a-register-element":101}],98:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var COMPONENTS = _dereq_('./component').components;
 var registerElement = _dereq_('./a-register-element').registerElement;
@@ -73745,7 +73542,7 @@ function getRotation (entityEl) {
 AEntity = registerElement('a-entity', {prototype: proto});
 module.exports = AEntity;
 
-},{"../lib/three":157,"../utils/":180,"./a-node":105,"./a-register-element":106,"./component":107}],104:[function(_dereq_,module,exports){
+},{"../lib/three":151,"../utils/":174,"./a-node":100,"./a-register-element":101,"./component":102}],99:[function(_dereq_,module,exports){
 var ANode = _dereq_('./a-node');
 var registerElement = _dereq_('./a-register-element').registerElement;
 var components = _dereq_('./component').components;
@@ -73861,7 +73658,7 @@ module.exports = registerElement('a-mixin', {
   })
 });
 
-},{"../utils":180,"./a-node":105,"./a-register-element":106,"./component":107}],105:[function(_dereq_,module,exports){
+},{"../utils":174,"./a-node":100,"./a-register-element":101,"./component":102}],100:[function(_dereq_,module,exports){
 /* global CustomEvent */
 var registerElement = _dereq_('./a-register-element').registerElement;
 var isNode = _dereq_('./a-register-element').isNode;
@@ -74132,7 +73929,7 @@ module.exports = registerElement('a-node', {
   })
 });
 
-},{"../utils/":180,"./a-register-element":106}],106:[function(_dereq_,module,exports){
+},{"../utils/":174,"./a-register-element":101}],101:[function(_dereq_,module,exports){
 /*
   ------------------------------------------------------------
   ------------- WARNING WARNING WARNING WARNING --------------
@@ -74319,7 +74116,7 @@ function copyProperties (source, destination) {
 ANode = _dereq_('./a-node');
 AEntity = _dereq_('./a-entity');
 
-},{"./a-entity":103,"./a-node":105,"document-register-element":13}],107:[function(_dereq_,module,exports){
+},{"./a-entity":98,"./a-node":100,"document-register-element":13}],102:[function(_dereq_,module,exports){
 /* global Node */
 var schema = _dereq_('./schema');
 var scenes = _dereq_('./scene/scenes');
@@ -75073,86 +74870,7 @@ function isObjectOrArray (value) {
   return value && (value.constructor === Object || value.constructor === Array);
 }
 
-},{"../utils/":180,"./scene/scenes":115,"./schema":117,"./system":119}],108:[function(_dereq_,module,exports){
-_dereq_('../../vendor/effects/EffectComposer');
-_dereq_('../../vendor/effects/RenderPass');
-
-var registerComponent = _dereq_('./component').registerComponent;
-var THREE = _dereq_('../lib/three');
-var warn = _dereq_('../utils/').debug('components:effect:warn');
-
-var lastEffectInitialized;
-
-var effectOrder = ['render', 'bloom', 'sepia', 'ssao'];
-var passes = {};
-
-var proto = {
-  schema: {},
-  init: function () {
-    var sceneEl = this.el;
-    if (!this.el.isScene) {
-      warn('Effect components can only be applied to <a-scene>');
-      return;
-    }
-
-    if (!sceneEl.camera) {
-      sceneEl.addEventListener('camera-set-active', this.init.bind(this));
-      return;
-    }
-    sceneEl.resize();
-    sceneEl.effectComposer || this.initEffectComposer();
-    this.initPass();
-    this.update();
-    lastEffectInitialized.renderToScreen = false;
-    this.pass.renderToScreen = true;
-    lastEffectInitialized = this.pass;
-    passes[this.effectName] = this.pass;
-    this.rebuild();
-  },
-
-  rebuild: function () {
-    var effectComposer = this.el.effectComposer;
-    effectComposer.passes = [];
-    effectOrder.forEach(function (effect) {
-      if (!passes[effect]) { return; }
-      effectComposer.addPass(passes[effect]);
-    });
-    effectComposer.reset();
-  },
-
-  remove: function () {
-    this.el.effectComposer.removePass(this.pass);
-    passes[this.effectName] = undefined;
-  },
-
-  initEffectComposer: function () {
-    var sceneEl = this.el;
-    var effectComposer = sceneEl.effectComposer = new THREE.EffectComposer(sceneEl.renderer, undefined, sceneEl.effect);
-    var renderPass = new THREE.RenderPass(sceneEl.object3D, sceneEl.camera);
-    effectComposer.addPass(renderPass);
-    lastEffectInitialized = renderPass;
-    passes.render = renderPass;
-    return effectComposer;
-  }
-};
-
-/**
- * Registers an effect to A-Frame.
- *
- * @param {string} name - Effect name.
- * @param {object} definition - Effect property and methods.
- */
-module.exports.registerEffect = function (name, definition) {
-  Object.keys(definition).forEach(function (key) {
-    proto[key] = definition[key];
-  });
-
-  proto.effectName = name;
-
-  registerComponent('effect-' + name, proto);
-};
-
-},{"../../vendor/effects/EffectComposer":190,"../../vendor/effects/RenderPass":192,"../lib/three":157,"../utils/":180,"./component":107}],109:[function(_dereq_,module,exports){
+},{"../utils/":174,"./scene/scenes":109,"./schema":111,"./system":113}],103:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -75226,7 +74944,7 @@ module.exports.registerGeometry = function (name, definition) {
   return NewGeometry;
 };
 
-},{"../lib/three":157,"./schema":117}],110:[function(_dereq_,module,exports){
+},{"../lib/three":151,"./schema":111}],104:[function(_dereq_,module,exports){
 var coordinates = _dereq_('../utils/coordinates');
 var debug = _dereq_('debug');
 
@@ -75451,7 +75169,7 @@ function isValidDefaultCoordinate (possibleCoordinates, dimensions) {
 }
 module.exports.isValidDefaultCoordinate = isValidDefaultCoordinate;
 
-},{"../utils/coordinates":175,"debug":10}],111:[function(_dereq_,module,exports){
+},{"../utils/coordinates":169,"debug":10}],105:[function(_dereq_,module,exports){
 /* global Promise, screen */
 var initMetaTags = _dereq_('./metaTags').inject;
 var initWakelock = _dereq_('./wakelock');
@@ -75495,6 +75213,11 @@ module.exports.AScene = registerElement('a-scene', {
         this.isMobile = isMobile;
         this.isScene = true;
         this.object3D = new THREE.Scene();
+        var self = this;
+        this.object3D.onAfterRender = function (renderer, scene, camera) {
+          // THREE may swap the camera used for the rendering if in VR, so we pass it to tock
+          if (self.isPlaying) { self.tock(self.time, self.delta, camera); }
+        };
         this.render = bind(this.render, this);
         this.systems = {};
         this.systemNames = [];
@@ -75701,12 +75424,19 @@ module.exports.AScene = registerElement('a-scene', {
     enterVR: {
       value: function () {
         var self = this;
-        var effect = this.effect;
+        var vrDisplay;
+        var vrManager = self.renderer.vr;
         // Don't enter VR if already in VR.
         if (this.is('vr-mode')) { return Promise.resolve('Already in VR.'); }
         // Enter VR via WebVR API.
         if (this.checkHeadsetConnected() || this.isMobile) {
-          return effect && effect.requestPresent().then(enterVRSuccess, enterVRFailure) || Promise.reject(new Error('VREffect not initialized'));
+          vrDisplay = utils.device.getVRDisplay();
+          vrManager.setDevice(vrDisplay);
+          vrManager.enabled = true;
+          if (!vrDisplay.isPresenting) {
+            return vrDisplay.requestPresent([{source: this.canvas}])
+                            .then(enterVRSuccess, enterVRFailure);
+          }
         }
         enterVRSuccess();
         return Promise.resolve();
@@ -75749,6 +75479,7 @@ module.exports.AScene = registerElement('a-scene', {
     exitVR: {
       value: function () {
         var self = this;
+        var vrDisplay;
 
         // Don't exit VR if not in VR.
         if (!this.is('vr-mode')) { return Promise.resolve('Not in VR.'); }
@@ -75756,7 +75487,11 @@ module.exports.AScene = registerElement('a-scene', {
         exitFullscreen();
         // Handle exiting VR if not yet already and in a headset or polyfill.
         if (this.checkHeadsetConnected() || this.isMobile) {
-          return this.effect.exitPresent().then(exitVRSuccess, exitVRFailure);
+          this.renderer.vr.enabled = false;
+          vrDisplay = utils.device.getVRDisplay();
+          if (vrDisplay.isPresenting) {
+            return vrDisplay.exitPresent().then(exitVRSuccess, exitVRFailure);
+          }
         }
 
         // Handle exiting VR in all other cases (2D fullscreen, external exit VR event).
@@ -75823,8 +75558,7 @@ module.exports.AScene = registerElement('a-scene', {
         var display = evt.display || evt.detail.display;
         // Entering VR.
         if (display.isPresenting) {
-          this.enterVR(true);
-          this.effectComposer && this.effectComposer.reset();
+          this.enterVR();
           return;
         }
         // Exiting VR.
@@ -75912,7 +75646,11 @@ module.exports.AScene = registerElement('a-scene', {
         var embedded;
         var isVRPresenting;
         var size;
-        isVRPresenting = this.effect.isPresenting;
+        var vrDevice;
+
+        vrDevice = this.renderer.vr.getDevice();
+        isVRPresenting = this.renderer.vr.enabled && vrDevice && vrDevice.isPresenting;
+
         // Do not update renderer, if a camera or a canvas have not been injected.
         // In VR mode, three handles canvas resize based on the dimensions returned by
         // the getEyeParameters function of the WebVR API. These dimensions are independent of
@@ -75973,8 +75711,6 @@ module.exports.AScene = registerElement('a-scene', {
         }
 
         renderer = this.renderer = new THREE.WebGLRenderer(rendererConfig);
-        this.effect = new THREE.VREffect(renderer);
-        this.effect.autoSubmitFrame = false;
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.sortObjects = false;
         if (this.camera) { renderer.vr.setPoseTarget(this.camera.el.object3D); }
@@ -76093,26 +75829,15 @@ module.exports.AScene = registerElement('a-scene', {
      */
     render: {
       value: function () {
-        var effectComposer = this.effectComposer;
-        var effect = this.effect;
+        var renderer = this.renderer;
 
         this.delta = this.clock.getDelta() * 1000;
         this.time = this.clock.elapsedTime * 1000;
 
         if (this.isPlaying) { this.tick(this.time, this.delta); }
 
-        effect.requestAnimationFrame(this.render);
-        if (effectComposer) {
-          effectComposer.render();
-        } else {
-          effect.render(this.object3D, this.camera, this.renderTarget);
-        }
-
-        if (this.isPlaying) { this.tock(this.time, this.delta, this.camera); }
-
-        this.components.overlay && this.components.overlay.render();
-
-        effect.submitFrame();
+        renderer.setAnimationLoop(this.render);
+        renderer.render(this.object3D, this.camera, this.renderTarget);
       },
       writable: true
     }
@@ -76233,13 +75958,12 @@ function setupCanvas (sceneEl) {
 }
 module.exports.setupCanvas = setupCanvas;  // For testing.
 
-},{"../../lib/three":157,"../../utils/":180,"../a-entity":103,"../a-node":105,"../a-register-element":106,"../system":119,"./loadingScreen":112,"./metaTags":113,"./postMessage":114,"./scenes":115,"./wakelock":116}],112:[function(_dereq_,module,exports){
+},{"../../lib/three":151,"../../utils/":174,"../a-entity":98,"../a-node":100,"../a-register-element":101,"../system":113,"./loadingScreen":106,"./metaTags":107,"./postMessage":108,"./scenes":109,"./wakelock":110}],106:[function(_dereq_,module,exports){
 /* global THREE */
 var utils = _dereq_('../../utils/');
 var styleParser = utils.styleParser;
 
 var sceneEl;
-var raf;
 var titleEl;
 var getSceneCanvasSize;
 
@@ -76247,16 +75971,16 @@ var ATTR_NAME = 'loading-screen';
 var LOADER_TITLE_CLASS = 'a-loader-title';
 
 // It catches vrdisplayactivate early to ensure we can enter VR mode after the scene loads.
-// window.addEventListener('vrdisplayactivate', function () {
-//   var vrManager = sceneEl.renderer.vr;
-//   var vrDisplay = utils.device.getVRDisplay();
+window.addEventListener('vrdisplayactivate', function () {
+  var vrManager = sceneEl.renderer.vr;
+  var vrDisplay = utils.device.getVRDisplay();
 
-//   vrManager.setDevice(vrDisplay);
-//   vrManager.enabled = true;
-//   if (!vrDisplay.isPresenting) {
-//     return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
-//   }
-// });
+  vrManager.setDevice(vrDisplay);
+  vrManager.enabled = true;
+  if (!vrDisplay.isPresenting) {
+    return vrDisplay.requestPresent([{source: sceneEl.canvas}]).then(function () {}, function () {});
+  }
+});
 
 module.exports.setup = function setup (el, getCanvasSize) {
   sceneEl = el;
@@ -76289,8 +76013,7 @@ module.exports.setup = function setup (el, getCanvasSize) {
   clock = new THREE.Clock();
   time = 0;
   render = function () {
-    raf = sceneEl.effect.requestAnimationFrame(render);
-    sceneEl.effect.render(loaderScene, camera);
+    sceneEl.renderer.render(loaderScene, camera);
     time = clock.getElapsedTime() % 4;
     sphereMesh1.visible = time >= 1;
     sphereMesh2.visible = time >= 2;
@@ -76313,7 +76036,7 @@ module.exports.setup = function setup (el, getCanvasSize) {
     resize(camera);
     titleEl.style.display = 'block';
     window.addEventListener('resize', function () { resize(camera); });
-    render();
+    sceneEl.renderer.setAnimationLoop(render);
   }, 200);
 };
 
@@ -76322,7 +76045,6 @@ module.exports.remove = function remove () {
   if (!titleEl) { return; }
   // Hide title.
   titleEl.style.display = 'none';
-  sceneEl.effect.cancelAnimationFrame(raf);
 };
 
 function resize (camera) {
@@ -76341,7 +76063,7 @@ function setupTitle () {
   sceneEl.appendChild(titleEl);
 }
 
-},{"../../utils/":180}],113:[function(_dereq_,module,exports){
+},{"../../utils/":174}],107:[function(_dereq_,module,exports){
 var constants = _dereq_('../../constants/');
 var extend = _dereq_('../../utils').extend;
 
@@ -76422,7 +76144,7 @@ function createTag (tagObj) {
   return extend(meta, tagObj.attributes);
 }
 
-},{"../../constants/":99,"../../utils":180}],114:[function(_dereq_,module,exports){
+},{"../../constants/":94,"../../utils":174}],108:[function(_dereq_,module,exports){
 var bind = _dereq_('../../utils/bind');
 var isIframed = _dereq_('../../utils/').isIframed;
 
@@ -76455,13 +76177,13 @@ function postMessageAPIHandler (event) {
   }
 }
 
-},{"../../utils/":180,"../../utils/bind":174}],115:[function(_dereq_,module,exports){
+},{"../../utils/":174,"../../utils/bind":168}],109:[function(_dereq_,module,exports){
 /*
   Scene index for keeping track of created scenes.
 */
 module.exports = [];
 
-},{}],116:[function(_dereq_,module,exports){
+},{}],110:[function(_dereq_,module,exports){
 var Wakelock = _dereq_('../../../vendor/wakelock/wakelock');
 
 module.exports = function initWakelock (scene) {
@@ -76472,7 +76194,7 @@ module.exports = function initWakelock (scene) {
   scene.addEventListener('exit-vr', function () { wakelock.release(); });
 };
 
-},{"../../../vendor/wakelock/wakelock":201}],117:[function(_dereq_,module,exports){
+},{"../../../vendor/wakelock/wakelock":185}],111:[function(_dereq_,module,exports){
 var utils = _dereq_('../utils/');
 var PropertyTypes = _dereq_('./propertyTypes');
 
@@ -76676,7 +76398,7 @@ function stringifyProperty (value, propDefinition) {
 }
 module.exports.stringifyProperty = stringifyProperty;
 
-},{"../utils/":180,"./propertyTypes":110}],118:[function(_dereq_,module,exports){
+},{"../utils/":174,"./propertyTypes":104}],112:[function(_dereq_,module,exports){
 var schema = _dereq_('./schema');
 
 var processSchema = schema.process;
@@ -76865,7 +76587,7 @@ module.exports.registerShader = function (name, definition) {
   return NewShader;
 };
 
-},{"../lib/three":157,"../utils":180,"./schema":117}],119:[function(_dereq_,module,exports){
+},{"../lib/three":151,"../utils":174,"./schema":111}],113:[function(_dereq_,module,exports){
 var components = _dereq_('./component');
 var schema = _dereq_('./schema');
 var utils = _dereq_('../utils/');
@@ -77023,10 +76745,10 @@ module.exports.registerSystem = function (name, definition) {
   for (i = 0; i < scenes.length; i++) { scenes[i].initSystem(name); }
 };
 
-},{"../utils/":180,"./component":107,"./schema":117}],120:[function(_dereq_,module,exports){
+},{"../utils/":174,"./component":102,"./schema":111}],114:[function(_dereq_,module,exports){
 _dereq_('./pivot');
 
-},{"./pivot":121}],121:[function(_dereq_,module,exports){
+},{"./pivot":115}],115:[function(_dereq_,module,exports){
 var registerComponent = _dereq_('../../core/component').registerComponent;
 var THREE = _dereq_('../../lib/three');
 
@@ -77075,7 +76797,7 @@ registerComponent('pivot', {
   }
 });
 
-},{"../../core/component":107,"../../lib/three":157}],122:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../lib/three":151}],116:[function(_dereq_,module,exports){
 /**
  * Common mesh defaults, mappings, and transforms.
  */
@@ -77102,7 +76824,7 @@ module.exports = function getMeshMixin () {
   };
 };
 
-},{"../../core/component":107,"../../core/shader":118,"../../utils/":180}],123:[function(_dereq_,module,exports){
+},{"../../core/component":102,"../../core/shader":112,"../../utils/":174}],117:[function(_dereq_,module,exports){
 _dereq_('./primitives/a-camera');
 _dereq_('./primitives/a-collada-model');
 _dereq_('./primitives/a-cursor');
@@ -77119,7 +76841,7 @@ _dereq_('./primitives/a-video');
 _dereq_('./primitives/a-videosphere');
 _dereq_('./primitives/meshPrimitives');
 
-},{"./primitives/a-camera":125,"./primitives/a-collada-model":126,"./primitives/a-cursor":127,"./primitives/a-curvedimage":128,"./primitives/a-gltf-model":129,"./primitives/a-image":130,"./primitives/a-light":131,"./primitives/a-link":132,"./primitives/a-obj-model":133,"./primitives/a-sky":134,"./primitives/a-sound":135,"./primitives/a-text":136,"./primitives/a-video":137,"./primitives/a-videosphere":138,"./primitives/meshPrimitives":139}],124:[function(_dereq_,module,exports){
+},{"./primitives/a-camera":119,"./primitives/a-collada-model":120,"./primitives/a-cursor":121,"./primitives/a-curvedimage":122,"./primitives/a-gltf-model":123,"./primitives/a-image":124,"./primitives/a-light":125,"./primitives/a-link":126,"./primitives/a-obj-model":127,"./primitives/a-sky":128,"./primitives/a-sound":129,"./primitives/a-text":130,"./primitives/a-video":131,"./primitives/a-videosphere":132,"./primitives/meshPrimitives":133}],118:[function(_dereq_,module,exports){
 var AEntity = _dereq_('../../core/a-entity');
 var components = _dereq_('../../core/component').components;
 var registerElement = _dereq_('../../core/a-register-element').registerElement;
@@ -77318,7 +77040,7 @@ function definePrimitive (tagName, defaultComponents, mappings) {
 }
 module.exports.definePrimitive = definePrimitive;
 
-},{"../../core/a-entity":103,"../../core/a-register-element":106,"../../core/component":107,"../../utils/":180}],125:[function(_dereq_,module,exports){
+},{"../../core/a-entity":98,"../../core/a-register-element":101,"../../core/component":102,"../../utils/":174}],119:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-camera', {
@@ -77342,7 +77064,7 @@ registerPrimitive('a-camera', {
   }
 });
 
-},{"../primitives":124}],126:[function(_dereq_,module,exports){
+},{"../primitives":118}],120:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-collada-model', {
@@ -77351,7 +77073,7 @@ registerPrimitive('a-collada-model', {
   }
 });
 
-},{"../primitives":124}],127:[function(_dereq_,module,exports){
+},{"../primitives":118}],121:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77386,7 +77108,7 @@ registerPrimitive('a-cursor', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],128:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],122:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77423,7 +77145,7 @@ registerPrimitive('a-curvedimage', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],129:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],123:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-gltf-model', {
@@ -77432,7 +77154,7 @@ registerPrimitive('a-gltf-model', {
   }
 });
 
-},{"../primitives":124}],130:[function(_dereq_,module,exports){
+},{"../primitives":118}],124:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77456,7 +77178,7 @@ registerPrimitive('a-image', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],131:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],125:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-light', {
@@ -77477,7 +77199,7 @@ registerPrimitive('a-light', {
   }
 });
 
-},{"../primitives":124}],132:[function(_dereq_,module,exports){
+},{"../primitives":118}],126:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-link', {
@@ -77494,7 +77216,7 @@ registerPrimitive('a-link', {
   }
 });
 
-},{"../primitives":124}],133:[function(_dereq_,module,exports){
+},{"../primitives":118}],127:[function(_dereq_,module,exports){
 var meshMixin = _dereq_('../getMeshMixin')();
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77510,7 +77232,7 @@ registerPrimitive('a-obj-model', utils.extendDeep({}, meshMixin, {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],134:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],128:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77536,7 +77258,7 @@ registerPrimitive('a-sky', utils.extendDeep({}, getMeshMixin(), {
   mappings: utils.extendDeep({}, meshPrimitives['a-sphere'].prototype.mappings)
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124,"./meshPrimitives":139}],135:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118,"./meshPrimitives":133}],129:[function(_dereq_,module,exports){
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 
 registerPrimitive('a-sound', {
@@ -77553,12 +77275,12 @@ registerPrimitive('a-sound', {
   }
 });
 
-},{"../primitives":124}],136:[function(_dereq_,module,exports){
+},{"../primitives":118}],130:[function(_dereq_,module,exports){
 // <a-text> using `definePrimitive` helper.
 var definePrimitive = _dereq_('../primitives').definePrimitive;
 definePrimitive('a-text', {text: {anchor: 'align', width: 5}});
 
-},{"../primitives":124}],137:[function(_dereq_,module,exports){
+},{"../primitives":118}],131:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77582,7 +77304,7 @@ registerPrimitive('a-video', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],138:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],132:[function(_dereq_,module,exports){
 var getMeshMixin = _dereq_('../getMeshMixin');
 var registerPrimitive = _dereq_('../primitives').registerPrimitive;
 var utils = _dereq_('../../../utils/');
@@ -77611,7 +77333,7 @@ registerPrimitive('a-videosphere', utils.extendDeep({}, getMeshMixin(), {
   }
 }));
 
-},{"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],139:[function(_dereq_,module,exports){
+},{"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],133:[function(_dereq_,module,exports){
 /**
  * Automated mesh primitive registration.
  */
@@ -77651,7 +77373,7 @@ function unCamelCase (str) {
   return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
-},{"../../../core/geometry":109,"../../../utils/":180,"../getMeshMixin":122,"../primitives":124}],140:[function(_dereq_,module,exports){
+},{"../../../core/geometry":103,"../../../utils/":174,"../getMeshMixin":116,"../primitives":118}],134:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77672,7 +77394,7 @@ registerGeometry('box', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],141:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],135:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77692,7 +77414,7 @@ registerGeometry('circle', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],142:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],136:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77718,7 +77440,7 @@ registerGeometry('cone', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],143:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],137:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77742,7 +77464,7 @@ registerGeometry('cylinder', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],144:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],138:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77757,7 +77479,7 @@ registerGeometry('dodecahedron', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],145:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],139:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77772,7 +77494,7 @@ registerGeometry('icosahedron', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],146:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],140:[function(_dereq_,module,exports){
 _dereq_('./box.js');
 _dereq_('./circle.js');
 _dereq_('./cone.js');
@@ -77788,7 +77510,7 @@ _dereq_('./torus.js');
 _dereq_('./torusKnot.js');
 _dereq_('./triangle.js');
 
-},{"./box.js":140,"./circle.js":141,"./cone.js":142,"./cylinder.js":143,"./dodecahedron.js":144,"./icosahedron.js":145,"./octahedron.js":147,"./plane.js":148,"./ring.js":149,"./sphere.js":150,"./tetrahedron.js":151,"./torus.js":152,"./torusKnot.js":153,"./triangle.js":154}],147:[function(_dereq_,module,exports){
+},{"./box.js":134,"./circle.js":135,"./cone.js":136,"./cylinder.js":137,"./dodecahedron.js":138,"./icosahedron.js":139,"./octahedron.js":141,"./plane.js":142,"./ring.js":143,"./sphere.js":144,"./tetrahedron.js":145,"./torus.js":146,"./torusKnot.js":147,"./triangle.js":148}],141:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77803,7 +77525,7 @@ registerGeometry('octahedron', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],148:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],142:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77820,7 +77542,7 @@ registerGeometry('plane', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],149:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],143:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77843,7 +77565,7 @@ registerGeometry('ring', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],150:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],144:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77867,7 +77589,7 @@ registerGeometry('sphere', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],151:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],145:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77882,7 +77604,7 @@ registerGeometry('tetrahedron', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],152:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],146:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77904,7 +77626,7 @@ registerGeometry('torus', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],153:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],147:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77925,7 +77647,7 @@ registerGeometry('torusKnot', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],154:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../lib/three":151}],148:[function(_dereq_,module,exports){
 var registerGeometry = _dereq_('../core/geometry').registerGeometry;
 var THREE = _dereq_('../lib/three');
 
@@ -77980,10 +77702,31 @@ registerGeometry('triangle', {
   }
 });
 
-},{"../core/geometry":109,"../lib/three":157}],155:[function(_dereq_,module,exports){
-var utils = _dereq_('./utils/');
+},{"../core/geometry":103,"../lib/three":151}],149:[function(_dereq_,module,exports){
+// Polyfill `Promise`.
+window.Promise = window.Promise || _dereq_('promise-polyfill');
 
+// WebVR polyfill
+// Check before the polyfill runs.
+window.hasNativeWebVRImplementation = !!window.navigator.getVRDisplays ||
+                                      !!window.navigator.getVRDevices;
+
+var isIOSOlderThan10 = _dereq_('./utils/isIOSOlderThan10');
+// Workaround for iOS Safari canvas sizing issues in stereo (webvr-polyfill/issues/102).
+// Only for iOS on versions older than 10.
+var bufferScale = isIOSOlderThan10(window.navigator.userAgent) ? 1 / window.devicePixelRatio : 1;
+var WebVRPolyfill = _dereq_('webvr-polyfill');
+var polyfillConfig = {
+  BUFFER_SCALE: bufferScale,
+  CARDBOARD_UI_DISABLED: true,
+  ROTATE_INSTRUCTIONS_DISABLED: true
+};
+
+window.webvrpolyfill = new WebVRPolyfill(polyfillConfig);
+
+var utils = _dereq_('./utils/');
 var debug = utils.debug;
+
 var error = debug('A-Frame:error');
 var warn = debug('A-Frame:warn');
 
@@ -78002,26 +77745,6 @@ if (window.location.protocol === 'file:') {
     'Please use a local or hosted server: ' +
     'https://aframe.io/docs/0.5.0/introduction/getting-started.html#using-a-local-server.');
 }
-
-// Polyfill `Promise`.
-window.Promise = window.Promise || _dereq_('promise-polyfill');
-
-// WebVR polyfill
-// Check before the polyfill runs.
-window.hasNativeWebVRImplementation = !!window.navigator.getVRDisplays ||
-                                      !!window.navigator.getVRDevices;
-var WebVRPolyfill = _dereq_('webvr-polyfill');
-var polyfillConfig = {
-  BUFFER_SCALE: 1,
-  CARDBOARD_UI_DISABLED: true,
-  ROTATE_INSTRUCTIONS_DISABLED: true
-};
-// Workaround for iOS Safari canvas sizing issues in stereo (webvr-polyfill/issues/102).
-// Only for iOS on versions older than 10.
-if (utils.device.isIOSOlderThan10(window.navigator.userAgent)) {
-  polyfillConfig.BUFFER_SCALE = 1 / window.devicePixelRatio;
-}
-window.webvrpolyfill = new WebVRPolyfill(polyfillConfig);
 
 _dereq_('present'); // Polyfill `performance.now()`.
 
@@ -78061,7 +77784,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-11-16, Commit #f9484114)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-11-27, Commit #358c5da56)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -78092,7 +77815,7 @@ module.exports = window.AFRAME = {
   version: pkg.version
 };
 
-},{"../package":51,"./components/index":61,"./core/a-assets":101,"./core/a-cubemap":102,"./core/a-entity":103,"./core/a-mixin":104,"./core/a-node":105,"./core/a-register-element":106,"./core/component":107,"./core/geometry":109,"./core/scene/a-scene":111,"./core/scene/scenes":115,"./core/schema":117,"./core/shader":118,"./core/system":119,"./extras/components/":120,"./extras/primitives/":123,"./extras/primitives/getMeshMixin":122,"./extras/primitives/primitives":124,"./geometries/index":146,"./lib/three":157,"./shaders/index":159,"./style/aframe.css":164,"./style/rStats.css":165,"./systems/index":169,"./utils/":180,"animejs":2,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],156:[function(_dereq_,module,exports){
+},{"../package":51,"./components/index":61,"./core/a-assets":96,"./core/a-cubemap":97,"./core/a-entity":98,"./core/a-mixin":99,"./core/a-node":100,"./core/a-register-element":101,"./core/component":102,"./core/geometry":103,"./core/scene/a-scene":105,"./core/scene/scenes":109,"./core/schema":111,"./core/shader":112,"./core/system":113,"./extras/components/":114,"./extras/primitives/":117,"./extras/primitives/getMeshMixin":116,"./extras/primitives/primitives":118,"./geometries/index":140,"./lib/three":151,"./shaders/index":153,"./style/aframe.css":158,"./style/rStats.css":159,"./systems/index":163,"./utils/":174,"./utils/isIOSOlderThan10":175,"animejs":2,"present":32,"promise-polyfill":33,"webvr-polyfill":46}],150:[function(_dereq_,module,exports){
 window.aframeStats = function (scene) {
   var _rS = null;
   var _scene = scene;
@@ -78149,7 +77872,7 @@ if (typeof module === 'object') {
   };
 }
 
-},{}],157:[function(_dereq_,module,exports){
+},{}],151:[function(_dereq_,module,exports){
 (function (global){
 var THREE = global.THREE = _dereq_('three');
 
@@ -78177,8 +77900,6 @@ _dereq_('three/examples/js/loaders/GLTFLoader');  // THREE.GLTFLoader
 _dereq_('three/examples/js/loaders/OBJLoader');  // THREE.OBJLoader
 _dereq_('three/examples/js/loaders/MTLLoader');  // THREE.MTLLoader
 _dereq_('three/examples/js/loaders/ColladaLoader');  // THREE.ColladaLoader
-_dereq_('../../vendor/VRControls');  // THREE.VRControls
-_dereq_('../../vendor/VREffect'); // THREE.VREffect
 
 THREE.ColladaLoader.prototype.crossOrigin = 'anonymous';
 THREE.GLTFLoader.prototype.crossOrigin = 'anonymous';
@@ -78189,7 +77910,7 @@ module.exports = THREE;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../vendor/VRControls":187,"../../vendor/VREffect":188,"three":39,"three/examples/js/loaders/ColladaLoader":40,"three/examples/js/loaders/DRACOLoader":41,"three/examples/js/loaders/GLTFLoader":42,"three/examples/js/loaders/MTLLoader":43,"three/examples/js/loaders/OBJLoader":44}],158:[function(_dereq_,module,exports){
+},{"three":39,"three/examples/js/loaders/ColladaLoader":40,"three/examples/js/loaders/DRACOLoader":41,"three/examples/js/loaders/GLTFLoader":42,"three/examples/js/loaders/MTLLoader":43,"three/examples/js/loaders/OBJLoader":44}],152:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -78256,14 +77977,14 @@ function getMaterialData (data, materialData) {
   return materialData;
 }
 
-},{"../core/shader":118,"../lib/three":157,"../utils/":180}],159:[function(_dereq_,module,exports){
+},{"../core/shader":112,"../lib/three":151,"../utils/":174}],153:[function(_dereq_,module,exports){
 _dereq_('./flat');
 _dereq_('./standard');
 _dereq_('./sdf');
 _dereq_('./msdf');
 _dereq_('./ios10hls');
 
-},{"./flat":158,"./ios10hls":160,"./msdf":161,"./sdf":162,"./standard":163}],160:[function(_dereq_,module,exports){
+},{"./flat":152,"./ios10hls":154,"./msdf":155,"./sdf":156,"./standard":157}],154:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 
 /**
@@ -78298,7 +78019,7 @@ module.exports.Shader = registerShader('ios10hls', {
 });
 
 
-},{"../core/shader":118}],161:[function(_dereq_,module,exports){
+},{"../core/shader":112}],155:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 
 /**
@@ -78366,7 +78087,7 @@ module.exports.Shader = registerShader('msdf', {
   ].join('\n')
 });
 
-},{"../core/shader":118}],162:[function(_dereq_,module,exports){
+},{"../core/shader":112}],156:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 
 /**
@@ -78473,7 +78194,7 @@ module.exports.Shader = registerShader('sdf', {
   ].join('\n')
 });
 
-},{"../core/shader":118}],163:[function(_dereq_,module,exports){
+},{"../core/shader":112}],157:[function(_dereq_,module,exports){
 var registerShader = _dereq_('../core/shader').registerShader;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -78660,11 +78381,11 @@ function getMaterialData (data, materialData) {
   return materialData;
 }
 
-},{"../core/shader":118,"../lib/three":157,"../utils/":180}],164:[function(_dereq_,module,exports){
-var css = "html.a-fullscreen{bottom:0;left:0;position:fixed;right:0;top:0}html.a-fullscreen body{height:100%;margin:0;overflow:hidden;padding:0;width:100%}html.a-fullscreen .a-canvas{width:100%!important;height:100%!important;top:0!important;left:0!important;right:0!important;bottom:0!important;position:fixed!important}html:not(.a-fullscreen) .a-enter-vr{right:5px;bottom:5px}:-webkit-full-screen{background-color:transparent}.a-hidden{display:none!important}.a-canvas{height:100%;left:0;position:absolute;top:0;width:100%}.a-canvas.a-grab-cursor:hover{cursor:grab;cursor:-moz-grab;cursor:-webkit-grab}.a-inspector-loader{background-color:#ed3160;position:fixed;left:3px;top:3px;padding:6px 10px;color:#fff;text-decoration:none;font-size:12px;font-family:Roboto,sans-serif;text-align:center;z-index:99999;width:204px}@keyframes dots-1{from{opacity:0}25%{opacity:1}}@keyframes dots-2{from{opacity:0}50%{opacity:1}}@keyframes dots-3{from{opacity:0}75%{opacity:1}}@-webkit-keyframes dots-1{from{opacity:0}25%{opacity:1}}@-webkit-keyframes dots-2{from{opacity:0}50%{opacity:1}}@-webkit-keyframes dots-3{from{opacity:0}75%{opacity:1}}.a-inspector-loader .dots span{animation:dots-1 2s infinite steps(1);-webkit-animation:dots-1 2s infinite steps(1)}.a-inspector-loader .dots span:first-child+span{animation-name:dots-2;-webkit-animation-name:dots-2}.a-inspector-loader .dots span:first-child+span+span{animation-name:dots-3;-webkit-animation-name:dots-3}a-scene{display:block;position:relative;height:100%;width:100%}a-assets,a-scene audio,a-scene img,a-scene video{display:none}.a-enter-vr-modal,.a-orientation-modal{font-family:Consolas,Andale Mono,Courier New,monospace}.a-enter-vr-modal a{border-bottom:1px solid #fff;padding:2px 0;text-decoration:none;transition:.1s color ease-in}.a-enter-vr-modal a:hover{background-color:#fff;color:#111;padding:2px 4px;position:relative;left:-4px}.a-enter-vr{font-family:sans-serif,monospace;font-size:13px;width:100%;font-weight:200;line-height:16px;position:absolute;right:20px;bottom:20px}.a-enter-vr-button,.a-enter-vr-modal,.a-enter-vr-modal a{color:#fff}.a-enter-vr-button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20245.82%20141.73%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3Bfill-rule%3Aevenodd%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3Emask%3C%2Ftitle%3E%3Cpath%20class%3D%22a%22%20d%3D%22M175.56%2C111.37c-22.52%2C0-40.77-18.84-40.77-42.07S153%2C27.24%2C175.56%2C27.24s40.77%2C18.84%2C40.77%2C42.07S198.08%2C111.37%2C175.56%2C111.37ZM26.84%2C69.31c0-23.23%2C18.25-42.07%2C40.77-42.07s40.77%2C18.84%2C40.77%2C42.07-18.26%2C42.07-40.77%2C42.07S26.84%2C92.54%2C26.84%2C69.31ZM27.27%2C0C11.54%2C0%2C0%2C12.34%2C0%2C28.58V110.9c0%2C16.24%2C11.54%2C30.83%2C27.27%2C30.83H99.57c2.17%2C0%2C4.19-1.83%2C5.4-3.7L116.47%2C118a8%2C8%2C0%2C0%2C1%2C12.52-.18l11.51%2C20.34c1.2%2C1.86%2C3.22%2C3.61%2C5.39%2C3.61h72.29c15.74%2C0%2C27.63-14.6%2C27.63-30.83V28.58C245.82%2C12.34%2C233.93%2C0%2C218.19%2C0H27.27Z%22%2F%3E%3C%2Fsvg%3E) 50% 50%/70% 70% no-repeat rgba(0,0,0,.35);border:0;bottom:0;cursor:pointer;min-width:50px;min-height:30px;padding-right:5%;padding-top:4%;position:absolute;right:0;transition:background-color .05s ease;-webkit-transition:background-color .05s ease;z-index:9999}.a-enter-vr-button:active,.a-enter-vr-button:hover{background-color:#666}[data-a-enter-vr-no-webvr] .a-enter-vr-button{border-color:#666;opacity:.65}[data-a-enter-vr-no-webvr] .a-enter-vr-button:active,[data-a-enter-vr-no-webvr] .a-enter-vr-button:hover{background-color:rgba(0,0,0,.35);cursor:not-allowed}.a-enter-vr-modal{background-color:#666;border-radius:0;display:none;min-height:32px;margin-right:70px;padding:9px;width:280px;right:2%;position:absolute}.a-enter-vr-modal:after{border-bottom:10px solid transparent;border-left:10px solid #666;border-top:10px solid transparent;display:inline-block;content:'';position:absolute;right:-5px;top:5px;width:0;height:0}.a-enter-vr-modal a,.a-enter-vr-modal p{display:inline}.a-enter-vr-modal p{margin:0}.a-enter-vr-modal p:after{content:' '}[data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,[data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal{display:block}.a-orientation-modal{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E) center/50% 50% no-repeat rgba(244,244,244,1);bottom:0;font-size:14px;font-weight:600;left:0;line-height:20px;right:0;position:fixed;top:0;z-index:9999999}.a-orientation-modal:after{color:#666;content:\"Insert phone into Cardboard holder.\";display:block;position:absolute;text-align:center;top:70%;transform:translateY(-70%);width:100%}.a-orientation-modal button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E) no-repeat;border:none;height:50px;text-indent:-9999px;width:50px}.a-loader-title{background-color:rgba(0,0,0,.6);font-family:sans-serif,monospace;text-align:center;font-size:20px;height:50px;font-weight:300;line-height:50px;position:absolute;right:0;left:0;top:0;color:#fff}"; (_dereq_("browserify-css").createStyle(css, { "href": "src/style/aframe.css"})); module.exports = css;
-},{"browserify-css":5}],165:[function(_dereq_,module,exports){
-var css = ".rs-base{background-color:#333;color:#fafafa;border-radius:0;font:10px monospace;left:5px;line-height:1em;opacity:.85;overflow:hidden;padding:10px;position:fixed;top:5px;width:300px;z-index:10000}.rs-base div.hidden{display:none}.rs-base h1{color:#fff;cursor:pointer;font-size:1.4em;font-weight:300;margin:0 0 5px;padding:0}.rs-group{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column-reverse;flex-direction:column-reverse;margin-bottom:5px}.rs-group:last-child{margin-bottom:0}.rs-counter-base{align-items:center;display:-webkit-box;display:-webkit-flex;display:flex;height:10px;-webkit-justify-content:space-between;justify-content:space-between;margin:2px 0}.rs-counter-base.alarm{color:#b70000;text-shadow:0 0 0 #b70000,0 0 1px #fff,0 0 1px #fff,0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 3px #fff,0 0 4px #fff,0 0 4px #fff}.rs-counter-id{font-weight:300;-webkit-box-ordinal-group:0;-webkit-order:0;order:0;width:54px}.rs-counter-value{font-weight:300;-webkit-box-ordinal-group:1;-webkit-order:1;order:1;text-align:right;width:35px}.rs-canvas{-webkit-box-ordinal-group:2;-webkit-order:2;order:2}@media (min-width:480px){.rs-base{left:20px;top:20px}}"; (_dereq_("browserify-css").createStyle(css, { "href": "src/style/rStats.css"})); module.exports = css;
-},{"browserify-css":5}],166:[function(_dereq_,module,exports){
+},{"../core/shader":112,"../lib/three":151,"../utils/":174}],158:[function(_dereq_,module,exports){
+var css = "html.a-fullscreen{bottom:0;left:0;position:fixed;right:0;top:0}html.a-fullscreen body{height:100%;margin:0;overflow:hidden;padding:0;width:100%}html.a-fullscreen .a-canvas{width:100%!important;height:100%!important;top:0!important;left:0!important;right:0!important;bottom:0!important;position:fixed!important}html:not(.a-fullscreen) .a-enter-vr{right:5px;bottom:5px}:-webkit-full-screen{background-color:transparent}.a-hidden{display:none!important}.a-canvas{height:100%;left:0;position:absolute;top:0;width:100%}.a-canvas.a-grab-cursor:hover{cursor:grab;cursor:-moz-grab;cursor:-webkit-grab}.a-inspector-loader{background-color:#ed3160;position:fixed;left:3px;top:3px;padding:6px 10px;color:#fff;text-decoration:none;font-size:12px;font-family:Roboto,sans-serif;text-align:center;z-index:99999;width:204px}@keyframes dots-1{from{opacity:0}25%{opacity:1}}@keyframes dots-2{from{opacity:0}50%{opacity:1}}@keyframes dots-3{from{opacity:0}75%{opacity:1}}@-webkit-keyframes dots-1{from{opacity:0}25%{opacity:1}}@-webkit-keyframes dots-2{from{opacity:0}50%{opacity:1}}@-webkit-keyframes dots-3{from{opacity:0}75%{opacity:1}}.a-inspector-loader .dots span{animation:dots-1 2s infinite steps(1);-webkit-animation:dots-1 2s infinite steps(1)}.a-inspector-loader .dots span:first-child+span{animation-name:dots-2;-webkit-animation-name:dots-2}.a-inspector-loader .dots span:first-child+span+span{animation-name:dots-3;-webkit-animation-name:dots-3}a-scene{display:block;position:relative;height:100%;width:100%}a-assets,a-scene audio,a-scene img,a-scene video{display:none}.a-enter-vr-modal,.a-orientation-modal{font-family:Consolas,Andale Mono,Courier New,monospace}.a-enter-vr-modal a{border-bottom:1px solid #fff;padding:2px 0;text-decoration:none;transition:.1s color ease-in}.a-enter-vr-modal a:hover{background-color:#fff;color:#111;padding:2px 4px;position:relative;left:-4px}.a-enter-vr{font-family:sans-serif,monospace;font-size:13px;width:100%;font-weight:200;line-height:16px;position:absolute;right:20px;bottom:20px}.a-enter-vr-button,.a-enter-vr-modal,.a-enter-vr-modal a{color:#fff}.a-enter-vr-button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20245.82%20141.73%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3Bfill-rule%3Aevenodd%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ctitle%3Emask%3C%2Ftitle%3E%3Cpath%20class%3D%22a%22%20d%3D%22M175.56%2C111.37c-22.52%2C0-40.77-18.84-40.77-42.07S153%2C27.24%2C175.56%2C27.24s40.77%2C18.84%2C40.77%2C42.07S198.08%2C111.37%2C175.56%2C111.37ZM26.84%2C69.31c0-23.23%2C18.25-42.07%2C40.77-42.07s40.77%2C18.84%2C40.77%2C42.07-18.26%2C42.07-40.77%2C42.07S26.84%2C92.54%2C26.84%2C69.31ZM27.27%2C0C11.54%2C0%2C0%2C12.34%2C0%2C28.58V110.9c0%2C16.24%2C11.54%2C30.83%2C27.27%2C30.83H99.57c2.17%2C0%2C4.19-1.83%2C5.4-3.7L116.47%2C118a8%2C8%2C0%2C0%2C1%2C12.52-.18l11.51%2C20.34c1.2%2C1.86%2C3.22%2C3.61%2C5.39%2C3.61h72.29c15.74%2C0%2C27.63-14.6%2C27.63-30.83V28.58C245.82%2C12.34%2C233.93%2C0%2C218.19%2C0H27.27Z%22%2F%3E%3C%2Fsvg%3E) 50% 50%/70% 70% no-repeat rgba(0,0,0,.35);border:0;bottom:0;cursor:pointer;min-width:50px;min-height:30px;padding-right:5%;padding-top:4%;position:absolute;right:0;transition:background-color .05s ease;-webkit-transition:background-color .05s ease;z-index:9999}.a-enter-vr-button:active,.a-enter-vr-button:hover{background-color:#666}[data-a-enter-vr-no-webvr] .a-enter-vr-button{border-color:#666;opacity:.65}[data-a-enter-vr-no-webvr] .a-enter-vr-button:active,[data-a-enter-vr-no-webvr] .a-enter-vr-button:hover{background-color:rgba(0,0,0,.35);cursor:not-allowed}.a-enter-vr-modal{background-color:#666;border-radius:0;display:none;min-height:32px;margin-right:70px;padding:9px;width:280px;right:2%;position:absolute}.a-enter-vr-modal:after{border-bottom:10px solid transparent;border-left:10px solid #666;border-top:10px solid transparent;display:inline-block;content:'';position:absolute;right:-5px;top:5px;width:0;height:0}.a-enter-vr-modal a,.a-enter-vr-modal p{display:inline}.a-enter-vr-modal p{margin:0}.a-enter-vr-modal p:after{content:' '}[data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,[data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal{display:block}.a-orientation-modal{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E) center/50% 50% no-repeat rgba(244,244,244,1);bottom:0;font-size:14px;font-weight:600;left:0;line-height:20px;right:0;position:fixed;top:0;z-index:9999999}.a-orientation-modal:after{color:#666;content:\"Insert phone into Cardboard holder.\";display:block;position:absolute;text-align:center;top:70%;transform:translateY(-70%);width:100%}.a-orientation-modal button{background:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E) no-repeat;border:none;height:50px;text-indent:-9999px;width:50px}.a-loader-title{background-color:rgba(0,0,0,.6);font-family:sans-serif,monospace;text-align:center;font-size:20px;height:50px;font-weight:300;line-height:50px;position:absolute;right:0;left:0;top:0;color:#fff}"; (_dereq_("browserify-css").createStyle(css, { "href": "src\\style\\aframe.css"})); module.exports = css;
+},{"browserify-css":5}],159:[function(_dereq_,module,exports){
+var css = ".rs-base{background-color:#333;color:#fafafa;border-radius:0;font:10px monospace;left:5px;line-height:1em;opacity:.85;overflow:hidden;padding:10px;position:fixed;top:5px;width:300px;z-index:10000}.rs-base div.hidden{display:none}.rs-base h1{color:#fff;cursor:pointer;font-size:1.4em;font-weight:300;margin:0 0 5px;padding:0}.rs-group{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column-reverse;flex-direction:column-reverse;margin-bottom:5px}.rs-group:last-child{margin-bottom:0}.rs-counter-base{align-items:center;display:-webkit-box;display:-webkit-flex;display:flex;height:10px;-webkit-justify-content:space-between;justify-content:space-between;margin:2px 0}.rs-counter-base.alarm{color:#b70000;text-shadow:0 0 0 #b70000,0 0 1px #fff,0 0 1px #fff,0 0 2px #fff,0 0 2px #fff,0 0 3px #fff,0 0 3px #fff,0 0 4px #fff,0 0 4px #fff}.rs-counter-id{font-weight:300;-webkit-box-ordinal-group:0;-webkit-order:0;order:0;width:54px}.rs-counter-value{font-weight:300;-webkit-box-ordinal-group:1;-webkit-order:1;order:1;text-align:right;width:35px}.rs-canvas{-webkit-box-ordinal-group:2;-webkit-order:2;order:2}@media (min-width:480px){.rs-base{left:20px;top:20px}}"; (_dereq_("browserify-css").createStyle(css, { "href": "src\\style\\rStats.css"})); module.exports = css;
+},{"browserify-css":5}],160:[function(_dereq_,module,exports){
 var constants = _dereq_('../constants/');
 var registerSystem = _dereq_('../core/system').registerSystem;
 
@@ -78938,7 +78659,7 @@ function removeDefaultCamera (sceneEl) {
   sceneEl.removeChild(defaultCamera);
 }
 
-},{"../constants/":99,"../core/system":119}],167:[function(_dereq_,module,exports){
+},{"../constants/":94,"../core/system":113}],161:[function(_dereq_,module,exports){
 var geometries = _dereq_('../core/geometry').geometries;
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
@@ -79078,7 +78799,7 @@ function toBufferGeometry (geometry, doBuffer) {
   return bufferGeometry;
 }
 
-},{"../core/geometry":109,"../core/system":119,"../lib/three":157}],168:[function(_dereq_,module,exports){
+},{"../core/geometry":103,"../core/system":113,"../lib/three":151}],162:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 
@@ -79106,7 +78827,7 @@ module.exports.System = registerSystem('gltf-model', {
   }
 });
 
-},{"../core/system":119,"../lib/three":157}],169:[function(_dereq_,module,exports){
+},{"../core/system":113,"../lib/three":151}],163:[function(_dereq_,module,exports){
 _dereq_('./camera');
 _dereq_('./geometry');
 _dereq_('./gltf-model');
@@ -79115,7 +78836,7 @@ _dereq_('./material');
 _dereq_('./shadow');
 _dereq_('./tracked-controls');
 
-},{"./camera":166,"./geometry":167,"./gltf-model":168,"./light":170,"./material":171,"./shadow":172,"./tracked-controls":173}],170:[function(_dereq_,module,exports){
+},{"./camera":160,"./geometry":161,"./gltf-model":162,"./light":164,"./material":165,"./shadow":166,"./tracked-controls":167}],164:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var bind = _dereq_('../utils/bind');
 var constants = _dereq_('../constants/');
@@ -79201,7 +78922,7 @@ module.exports.System = registerSystem('light', {
   }
 });
 
-},{"../constants/":99,"../core/system":119,"../utils/bind":174}],171:[function(_dereq_,module,exports){
+},{"../constants/":94,"../core/system":113,"../utils/bind":168}],165:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 var utils = _dereq_('../utils/');
@@ -79606,7 +79327,7 @@ function fixVideoAttributes (videoEl) {
   return videoEl;
 }
 
-},{"../core/system":119,"../lib/three":157,"../utils/":180,"../utils/material":181}],172:[function(_dereq_,module,exports){
+},{"../core/system":113,"../lib/three":151,"../utils/":174,"../utils/material":176}],166:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var THREE = _dereq_('../lib/three');
 
@@ -79654,7 +79375,7 @@ module.exports.System = registerSystem('shadow', {
   }
 });
 
-},{"../core/system":119,"../lib/three":157}],173:[function(_dereq_,module,exports){
+},{"../core/system":113,"../lib/three":151}],167:[function(_dereq_,module,exports){
 var registerSystem = _dereq_('../core/system').registerSystem;
 var utils = _dereq_('../utils');
 
@@ -79716,7 +79437,7 @@ module.exports.System = registerSystem('tracked-controls', {
   }
 });
 
-},{"../core/system":119,"../utils":180}],174:[function(_dereq_,module,exports){
+},{"../core/system":113,"../utils":174}],168:[function(_dereq_,module,exports){
 /**
  * Faster version of Function.prototype.bind
  * @param {Function} fn - Function to wrap.
@@ -79733,7 +79454,7 @@ module.exports = function bind (fn, ctx/* , arg1, arg2 */) {
   })(Array.prototype.slice.call(arguments, 2));
 };
 
-},{}],175:[function(_dereq_,module,exports){
+},{}],169:[function(_dereq_,module,exports){
 /* global THREE */
 var debug = _dereq_('./debug');
 var extend = _dereq_('object-assign');
@@ -79831,7 +79552,7 @@ module.exports.toVector3 = function (vec3) {
   return new THREE.Vector3(vec3.x, vec3.y, vec3.z);
 };
 
-},{"./debug":176,"object-assign":26}],176:[function(_dereq_,module,exports){
+},{"./debug":170,"object-assign":26}],170:[function(_dereq_,module,exports){
 (function (process){
 var debugLib = _dereq_('debug');
 var extend = _dereq_('object-assign');
@@ -79928,7 +79649,7 @@ module.exports = debug;
 
 }).call(this,_dereq_('_process'))
 
-},{"_process":6,"debug":10,"object-assign":26}],177:[function(_dereq_,module,exports){
+},{"_process":6,"debug":10,"object-assign":26}],171:[function(_dereq_,module,exports){
 (function (process){
 var vrDisplay;
 
@@ -80021,13 +79742,6 @@ module.exports.isLandscape = function () {
 };
 
 /**
- * Check if device is iOS and older than version 10.
- */
-module.exports.isIOSOlderThan10 = function (userAgent) {
-  return /(iphone|ipod|ipad).*os.(7_|8_|9_)/i.test(userAgent);
-};
-
-/**
  * Check if running in a browser or spoofed browser (bundler).
  * We need to check a node api that isn't mocked on either side.
  * `require` and `module.exports` are mocked in browser by bundlers.
@@ -80067,7 +79781,7 @@ module.exports.PolyfillControls = function PolyfillControls (object) {
 
 }).call(this,_dereq_('_process'))
 
-},{"_process":6}],178:[function(_dereq_,module,exports){
+},{"_process":6}],172:[function(_dereq_,module,exports){
 /**
  * Split a delimited component property string (e.g., `material.color`) to an object
  * containing `component` name and `property` name. If there is no delimiter, just return the
@@ -80129,7 +79843,7 @@ module.exports.setComponentProperty = function (el, name, value, delimiter) {
   el.setAttribute(name, value);
 };
 
-},{}],179:[function(_dereq_,module,exports){
+},{}],173:[function(_dereq_,module,exports){
 module.exports = function forceCanvasResizeSafariMobile (canvasEl) {
   var width = canvasEl.style.width;
   var height = canvasEl.style.height;
@@ -80145,7 +79859,7 @@ module.exports = function forceCanvasResizeSafariMobile (canvasEl) {
   }, 200);
 };
 
-},{}],180:[function(_dereq_,module,exports){
+},{}],174:[function(_dereq_,module,exports){
 /* global location */
 
 /* Centralized place to reference utilities since utils is exposed to the user. */
@@ -80472,7 +80186,15 @@ module.exports.findAllScenes = function (el) {
 // Must be at bottom to avoid circular dependency.
 module.exports.srcLoader = _dereq_('./src-loader');
 
-},{"./bind":174,"./coordinates":175,"./debug":176,"./device":177,"./entity":178,"./forceCanvasResizeSafariMobile":179,"./material":181,"./object-pool":182,"./split":183,"./src-loader":184,"./styleParser":185,"./tracked-controls":186,"deep-assign":12,"object-assign":26}],181:[function(_dereq_,module,exports){
+},{"./bind":168,"./coordinates":169,"./debug":170,"./device":171,"./entity":172,"./forceCanvasResizeSafariMobile":173,"./material":176,"./object-pool":177,"./split":178,"./src-loader":179,"./styleParser":180,"./tracked-controls":181,"deep-assign":12,"object-assign":26}],175:[function(_dereq_,module,exports){
+/**
+ * Check if device is iOS and older than version 10.
+ */
+module.exports = function isIOSOlderThan10 (userAgent) {
+  return /(iphone|ipod|ipad).*os.(7_|8_|9_)/i.test(userAgent);
+};
+
+},{}],176:[function(_dereq_,module,exports){
 var THREE = _dereq_('../lib/three');
 
 var HLS_MIMETYPES = ['application/x-mpegurl', 'application/vnd.apple.mpegurl'];
@@ -80627,7 +80349,7 @@ module.exports.isHLS = function (src, type) {
   return false;
 };
 
-},{"../lib/three":157}],182:[function(_dereq_,module,exports){
+},{"../lib/three":151}],177:[function(_dereq_,module,exports){
 /*
   Adapted deePool by Kyle Simpson.
   MIT License: http://getify.mit-license.org
@@ -80707,7 +80429,7 @@ function clearObject (obj) {
 }
 module.exports.clearObject = clearObject;
 
-},{}],183:[function(_dereq_,module,exports){
+},{}],178:[function(_dereq_,module,exports){
 /**
  * String split with cached result.
  */
@@ -80724,7 +80446,7 @@ module.exports.split = (function () {
   };
 })();
 
-},{}],184:[function(_dereq_,module,exports){
+},{}],179:[function(_dereq_,module,exports){
 /* global Image, XMLHttpRequest */
 var debug = _dereq_('./debug');
 
@@ -80883,7 +80605,7 @@ module.exports = {
   validateCubemapSrc: validateCubemapSrc
 };
 
-},{"./debug":176}],185:[function(_dereq_,module,exports){
+},{"./debug":170}],180:[function(_dereq_,module,exports){
 /**
  * Utils for parsing style-like strings (e.g., "primitive: box; width: 5; height: 4.5").
  * Some code adapted from `style-attr` (https://github.com/joshwnj/style-attr)
@@ -81036,7 +80758,7 @@ function styleStringify (obj) {
 
 function upperCase (str) { return str[1].toUpperCase(); }
 
-},{}],186:[function(_dereq_,module,exports){
+},{}],181:[function(_dereq_,module,exports){
 var DEFAULT_HANDEDNESS = _dereq_('../constants').DEFAULT_HANDEDNESS;
 var AXIS_LABELS = ['x', 'y', 'z', 'w'];
 var NUM_HANDS = 2;  // Number of hands in a pair. Should always be 2.
@@ -81216,1990 +80938,7 @@ module.exports.onButtonEvent = function (id, evtName, component, hand) {
   }
 };
 
-},{"../constants":99}],187:[function(_dereq_,module,exports){
-/**
- * @author dmarcos / https://github.com/dmarcos
- * @author mrdoob / http://mrdoob.com
- */
-
-THREE.VRControls = function ( object, onError ) {
-
-  var scope = this;
-
-  var vrDisplay, vrDisplays;
-
-  var standingMatrix = new THREE.Matrix4();
-
-  var frameData = null;
-
-  if ( 'VRFrameData' in window ) {
-
-    frameData = new window.VRFrameData();
-
-  }
-
-  window.addEventListener('vrdisplayconnect', function (evt) { vrDisplay = evt.display; });
-  window.addEventListener('vrdisplaydisconnect', function () { vrDisplay = undefined });
-
-  function gotVRDisplays( displays ) {
-
-    vrDisplays = displays;
-
-    if ( displays.length > 0 ) {
-
-      vrDisplay = displays[ 0 ];
-
-    } else {
-
-      if ( onError ) onError( 'VR input not available.' );
-
-    }
-
-  }
-
-  if ( navigator.getVRDisplays ) {
-
-    navigator.getVRDisplays().then( gotVRDisplays ).catch ( function () {
-
-      console.warn( 'THREE.VRControls: Unable to get VR Displays' );
-
-    } );
-
-  }
-
-  // the Rift SDK returns the position in meters
-  // this scale factor allows the user to define how meters
-  // are converted to scene units.
-
-  this.scale = 1;
-
-  // If true will use "standing space" coordinate system where y=0 is the
-  // floor and x=0, z=0 is the center of the room.
-  this.standing = true;
-
-  // Distance from the users eyes to the floor in meters. Used when
-  // standing=true but the VRDisplay doesn't provide stageParameters.
-  this.userHeight = 1.6;
-
-  this.getVRDisplay = function () {
-
-    return vrDisplay;
-
-  };
-
-  this.setVRDisplay = function ( value ) {
-
-    vrDisplay = value;
-
-  };
-
-  this.getVRDisplays = function () {
-
-    console.warn( 'THREE.VRControls: getVRDisplays() is being deprecated.' );
-    return vrDisplays;
-
-  };
-
-  this.getStandingMatrix = function () {
-
-    return standingMatrix;
-
-  };
-
-  this.update = function () {
-
-    if ( vrDisplay ) {
-
-      var pose;
-
-      if ( vrDisplay.getFrameData ) {
-
-        vrDisplay.getFrameData( frameData );
-        pose = frameData.pose;
-
-      } else if ( vrDisplay.getPose ) {
-
-        pose = vrDisplay.getPose();
-
-      }
-
-      if ( pose.orientation !== null ) {
-
-        object.quaternion.fromArray( pose.orientation );
-
-      }
-
-      if ( pose.position !== null ) {
-
-        object.position.fromArray( pose.position );
-
-      } else {
-
-        object.position.set( 0, 0, 0 );
-
-      }
-
-      if ( this.standing ) {
-
-        if ( vrDisplay.stageParameters ) {
-
-          object.updateMatrix();
-
-          standingMatrix.fromArray( vrDisplay.stageParameters.sittingToStandingTransform );
-          object.applyMatrix( standingMatrix );
-
-        } else {
-
-          object.position.setY( object.position.y + this.userHeight );
-
-        }
-
-      }
-
-      object.position.multiplyScalar( scope.scale );
-
-    }
-
-  };
-
-  this.resetPose = function () {
-
-    if ( vrDisplay ) {
-
-      vrDisplay.resetPose();
-
-    }
-
-  };
-
-  this.resetSensor = function () {
-
-    console.warn( 'THREE.VRControls: .resetSensor() is now .resetPose().' );
-    this.resetPose();
-
-  };
-
-  this.zeroSensor = function () {
-
-    console.warn( 'THREE.VRControls: .zeroSensor() is now .resetPose().' );
-    this.resetPose();
-
-  };
-
-  this.dispose = function () {
-
-    vrDisplay = null;
-
-  };
-
-};
-
-},{}],188:[function(_dereq_,module,exports){
-/**
- * @author dmarcos / https://github.com/dmarcos
- * @author mrdoob / http://mrdoob.com
- *
- * WebVR Spec: http://mozvr.github.io/webvr-spec/webvr.html
- *
- * Firefox: http://mozvr.com/downloads/
- * Chromium: https://webvr.info/get-chrome
- *
- */
-
-THREE.VREffect = function( renderer, onError ) {
-
-  var vrDisplay, vrDisplays;
-  var eyeTranslationL = new THREE.Vector3();
-  var eyeTranslationR = new THREE.Vector3();
-  var renderRectL, renderRectR;
-
-  var frameData = null;
-
-  if ( 'VRFrameData' in window ) {
-
-    frameData = new window.VRFrameData();
-
-  }
-
-  window.addEventListener('vrdisplayconnect', function (evt) { vrDisplay = evt.display; });
-  window.addEventListener('vrdisplaydisconnect', function (evt) {
-    var f;
-    
-    scope.exitPresent();
-    // Cancels current request animation frame.
-    f = scope.cancelAnimationFrame();
-    vrDisplay = undefined;
-    // Resumes the request animation frame.
-    scope.requestAnimationFrame(f);
-  });
-
-  function gotVRDisplays( displays ) {
-
-    vrDisplays = displays;
-
-    if ( displays.length > 0 ) {
-
-      vrDisplay = displays[ 0 ];
-
-    } else {
-
-      if ( onError ) onError( 'HMD not available' );
-
-    }
-
-  }
-
-  if ( navigator.getVRDisplays ) {
-
-    navigator.getVRDisplays().then( gotVRDisplays ).catch( function() {
-
-      console.warn( 'THREE.VREffect: Unable to get VR Displays' );
-
-    } );
-
-  }
-
-  //
-
-  this.isPresenting = false;
-
-  var scope = this;
-
-  var rendererSize = renderer.getSize();
-  var rendererUpdateStyle = false;
-  var rendererPixelRatio = renderer.getPixelRatio();
-
-  this.getVRDisplay = function() {
-
-    return vrDisplay;
-
-  };
-
-  this.setVRDisplay = function( value ) {
-
-    vrDisplay = value;
-
-  };
-
-  this.getVRDisplays = function() {
-
-    console.warn( 'THREE.VREffect: getVRDisplays() is being deprecated.' );
-    return vrDisplays;
-
-  };
-
-  this.setSize = function( width, height, updateStyle ) {
-
-    rendererSize = { width: width, height: height };
-    rendererUpdateStyle = updateStyle;
-
-    if ( scope.isPresenting ) {
-      var eyeParamsL = vrDisplay.getEyeParameters( 'left' );
-      renderer.setPixelRatio( 1 );
-      renderer.setSize( eyeParamsL.renderWidth * 2, eyeParamsL.renderHeight, false );
-
-    } else {
-
-      renderer.setPixelRatio( rendererPixelRatio );
-      renderer.setSize( width, height, updateStyle );
-
-    }
-
-  };
-
-  // VR presentation
-
-  var canvas = renderer.domElement;
-  var defaultLeftBounds = [ 0.0, 0.0, 0.5, 1.0 ];
-  var defaultRightBounds = [ 0.5, 0.0, 0.5, 1.0 ];
-
-  function onVRDisplayPresentChange() {
-
-    var wasPresenting = scope.isPresenting;
-    scope.isPresenting = vrDisplay !== undefined && vrDisplay.isPresenting;
-
-    if ( scope.isPresenting ) {
-
-      var eyeParamsL = vrDisplay.getEyeParameters( 'left' );
-      var eyeWidth = eyeParamsL.renderWidth;
-      var eyeHeight = eyeParamsL.renderHeight;
-
-      if ( ! wasPresenting ) {
-
-        rendererPixelRatio = renderer.getPixelRatio();
-        rendererSize = renderer.getSize();
-
-        renderer.setPixelRatio( 1 );
-        renderer.setSize( eyeWidth * 2, eyeHeight, false );
-
-      }
-
-    } else if ( wasPresenting ) {
-
-      renderer.setPixelRatio( rendererPixelRatio );
-      renderer.setSize( rendererSize.width, rendererSize.height, rendererUpdateStyle );
-
-    }
-
-  }
-
-  window.addEventListener( 'vrdisplaypresentchange', onVRDisplayPresentChange, false );
-
-  this.setFullScreen = function( boolean ) {
-
-    return new Promise( function( resolve, reject ) {
-
-      if ( vrDisplay === undefined ) {
-
-        reject( new Error( 'No VR hardware found.' ) );
-        return;
-
-      }
-
-      if ( scope.isPresenting === boolean ) {
-
-        resolve();
-        return;
-
-      }
-
-      if ( boolean ) {
-
-        resolve( vrDisplay.requestPresent( [ { source: canvas } ] ) );
-
-      } else {
-
-        resolve( vrDisplay.exitPresent() );
-
-      }
-
-    } );
-
-  };
-
-  this.requestPresent = function() {
-
-    return this.setFullScreen( true );
-
-  };
-
-  this.exitPresent = function() {
-
-    return this.setFullScreen( false );
-
-  };
-
-  this.requestAnimationFrame = function( f ) {
-
-    var f = scope.f = f || scope.f;
-
-    if (!f) { return; }
-
-    if ( vrDisplay !== undefined ) {
-      return vrDisplay.requestAnimationFrame( f );
-    } else {
-
-      return window.requestAnimationFrame( f );
-
-    }
-
-  };
-
-  this.cancelAnimationFrame = function( h ) {
-
-    var f = scope.f;
-
-    scope.f = undefined;
-
-    if ( vrDisplay !== undefined ) {
-
-      vrDisplay.cancelAnimationFrame( h );
-
-    } else {
-
-      window.cancelAnimationFrame( h );
-
-    }
-
-    return f;
-  };
-
-  this.submitFrame = function() {
-
-    if ( vrDisplay !== undefined && scope.isPresenting ) {
-
-      vrDisplay.submitFrame();
-
-    }
-
-  };
-
-  this.autoSubmitFrame = true;
-
-  // render
-
-  var cameraL = new THREE.PerspectiveCamera();
-  cameraL.layers.enable( 1 );
-
-  var cameraR = new THREE.PerspectiveCamera();
-  cameraR.layers.enable( 2 );
-
-  this.render = function( scene, camera, renderTarget, forceClear ) {
-
-    if ( vrDisplay && scope.isPresenting ) {
-
-      var autoUpdate = scene.autoUpdate;
-      var currentOnAfterRender = scene.onAfterRender;
-      scene.onAfterRender = function () {};
-
-      if ( autoUpdate ) {
-
-        scene.updateMatrixWorld();
-        scene.autoUpdate = false;
-
-      }
-
-      var eyeParamsL = vrDisplay.getEyeParameters( 'left' );
-      var eyeParamsR = vrDisplay.getEyeParameters( 'right' );
-
-      eyeTranslationL.fromArray( eyeParamsL.offset );
-      eyeTranslationR.fromArray( eyeParamsR.offset );
-
-      if ( Array.isArray( scene ) ) {
-
-        console.warn( 'THREE.VREffect.render() no longer supports arrays. Use object.layers instead.' );
-        scene = scene[ 0 ];
-
-      }
-
-      // When rendering we don't care what the recommended size is, only what the actual size
-      // of the backbuffer is.
-      var size = renderer.getSize();
-      var layers = vrDisplay.getLayers();
-      var leftBounds;
-      var rightBounds;
-
-      if ( layers.length ) {
-
-        var layer = layers[ 0 ];
-
-        leftBounds = layer.leftBounds !== null && layer.leftBounds.length === 4 ? layer.leftBounds : defaultLeftBounds;
-        rightBounds = layer.rightBounds !== null && layer.rightBounds.length === 4 ? layer.rightBounds : defaultRightBounds;
-
-      } else {
-
-        leftBounds = defaultLeftBounds;
-        rightBounds = defaultRightBounds;
-
-      }
-
-      renderRectL = {
-        x: Math.round( size.width * leftBounds[ 0 ] ),
-        y: Math.round( size.height * leftBounds[ 1 ] ),
-        width: Math.round( size.width * leftBounds[ 2 ] ),
-        height: Math.round( size.height * leftBounds[ 3 ] )
-      };
-      renderRectR = {
-        x: Math.round( size.width * rightBounds[ 0 ] ),
-        y: Math.round( size.height * rightBounds[ 1 ] ),
-        width: Math.round( size.width * rightBounds[ 2 ] ),
-        height: Math.round( size.height * rightBounds[ 3 ] )
-      };
-
-      if ( renderTarget ) {
-
-        renderer.setRenderTarget( renderTarget );
-        renderTarget.scissorTest = true;
-
-      } else {
-
-        renderer.setRenderTarget( null );
-        renderer.setScissorTest( true );
-
-      }
-
-      if ( renderer.autoClear || forceClear ) {
-        renderer.clear();
-      }
-
-      if ( camera.parent === null ) camera.updateMatrixWorld();
-
-      camera.matrixWorld.decompose( cameraL.position, cameraL.quaternion, cameraL.scale );
-
-      cameraR.position.copy(cameraL.position);
-      cameraR.quaternion.copy(cameraL.quaternion);
-      cameraR.scale.copy(cameraL.scale);
-
-      cameraL.translateOnAxis( eyeTranslationL, cameraL.scale.x );
-      cameraR.translateOnAxis( eyeTranslationR, cameraR.scale.x );
-
-      if ( vrDisplay.getFrameData ) {
-
-        vrDisplay.depthNear = camera.near;
-        vrDisplay.depthFar = camera.far;
-
-        vrDisplay.getFrameData( frameData );
-
-        cameraL.projectionMatrix.elements = frameData.leftProjectionMatrix;
-        cameraR.projectionMatrix.elements = frameData.rightProjectionMatrix;
-
-      } else {
-
-        cameraL.projectionMatrix = fovToProjection( eyeParamsL.fieldOfView, true, camera.near, camera.far );
-        cameraR.projectionMatrix = fovToProjection( eyeParamsR.fieldOfView, true, camera.near, camera.far );
-
-      }
-
-      // render left eye
-      if ( renderTarget ) {
-
-        renderTarget.viewport.set( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-        renderTarget.scissor.set( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-
-      } else {
-
-        renderer.setViewport( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-        renderer.setScissor( renderRectL.x, renderRectL.y, renderRectL.width, renderRectL.height );
-
-      }
-
-      renderer.render( scene, cameraL, renderTarget, forceClear );
-
-      // render right eye
-      if ( renderTarget ) {
-
-        renderTarget.viewport.set( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-        renderTarget.scissor.set( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-
-      } else {
-
-        renderer.setViewport( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-        renderer.setScissor( renderRectR.x, renderRectR.y, renderRectR.width, renderRectR.height );
-
-      }
-
-      renderer.render( scene, cameraR, renderTarget, forceClear );
-
-      if ( renderTarget ) {
-
-        renderTarget.viewport.set( 0, 0, size.width, size.height );
-        renderTarget.scissor.set( 0, 0, size.width, size.height );
-        renderTarget.scissorTest = false;
-        renderer.setRenderTarget( null );
-
-      } else {
-
-        renderer.setViewport( 0, 0, size.width, size.height );
-        renderer.setScissorTest( false );
-
-      }
-
-      if ( autoUpdate ) {
-
-        scene.autoUpdate = true;
-
-      }
-
-      if ( scope.autoSubmitFrame ) {
-
-        scope.submitFrame();
-
-      }
-
-      return;
-
-    }
-
-    // Regular render mode if not HMD
-    renderer.render( scene, camera, renderTarget, forceClear );
-
-  };
-
-  this.dispose = function() {
-
-    window.removeEventListener( 'vrdisplaypresentchange', onVRDisplayPresentChange, false );
-
-  };
-
-  this.getDrawingBufferSize = function () {
-    if (this.isPresentig) { this.resize(); }
-    return renderer.getDrawingBufferSize();
-  }
-
-  this.getClearColor = function () {
-    return renderer.getClearColor();
-  }
-
-  this.getClearAlpha = function () {
-    return renderer.getClearAlpha();
-  }
-
-  this.setClearColor = function (color) {
-    return renderer.setClearColor(color);
-  }
-
-  //
-
-  function fovToNDCScaleOffset( fov ) {
-
-    var pxscale = 2.0 / ( fov.leftTan + fov.rightTan );
-    var pxoffset = ( fov.leftTan - fov.rightTan ) * pxscale * 0.5;
-    var pyscale = 2.0 / ( fov.upTan + fov.downTan );
-    var pyoffset = ( fov.upTan - fov.downTan ) * pyscale * 0.5;
-    return { scale: [ pxscale, pyscale ], offset: [ pxoffset, pyoffset ] };
-
-  }
-
-  function fovPortToProjection( fov, rightHanded, zNear, zFar ) {
-
-    rightHanded = rightHanded === undefined ? true : rightHanded;
-    zNear = zNear === undefined ? 0.01 : zNear;
-    zFar = zFar === undefined ? 10000.0 : zFar;
-
-    var handednessScale = rightHanded ? - 1.0 : 1.0;
-
-    // start with an identity matrix
-    var mobj = new THREE.Matrix4();
-    var m = mobj.elements;
-
-    // and with scale/offset info for normalized device coords
-    var scaleAndOffset = fovToNDCScaleOffset( fov );
-
-    // X result, map clip edges to [-w,+w]
-    m[ 0 * 4 + 0 ] = scaleAndOffset.scale[ 0 ];
-    m[ 0 * 4 + 1 ] = 0.0;
-    m[ 0 * 4 + 2 ] = scaleAndOffset.offset[ 0 ] * handednessScale;
-    m[ 0 * 4 + 3 ] = 0.0;
-
-    // Y result, map clip edges to [-w,+w]
-    // Y offset is negated because this proj matrix transforms from world coords with Y=up,
-    // but the NDC scaling has Y=down (thanks D3D?)
-    m[ 1 * 4 + 0 ] = 0.0;
-    m[ 1 * 4 + 1 ] = scaleAndOffset.scale[ 1 ];
-    m[ 1 * 4 + 2 ] = - scaleAndOffset.offset[ 1 ] * handednessScale;
-    m[ 1 * 4 + 3 ] = 0.0;
-
-    // Z result (up to the app)
-    m[ 2 * 4 + 0 ] = 0.0;
-    m[ 2 * 4 + 1 ] = 0.0;
-    m[ 2 * 4 + 2 ] = zFar / ( zNear - zFar ) * - handednessScale;
-    m[ 2 * 4 + 3 ] = ( zFar * zNear ) / ( zNear - zFar );
-
-    // W result (= Z in)
-    m[ 3 * 4 + 0 ] = 0.0;
-    m[ 3 * 4 + 1 ] = 0.0;
-    m[ 3 * 4 + 2 ] = handednessScale;
-    m[ 3 * 4 + 3 ] = 0.0;
-
-    mobj.transpose();
-    return mobj;
-
-  }
-
-  function fovToProjection( fov, rightHanded, zNear, zFar ) {
-
-    var DEG2RAD = Math.PI / 180.0;
-
-    var fovPort = {
-      upTan: Math.tan( fov.upDegrees * DEG2RAD ),
-      downTan: Math.tan( fov.downDegrees * DEG2RAD ),
-      leftTan: Math.tan( fov.leftDegrees * DEG2RAD ),
-      rightTan: Math.tan( fov.rightDegrees * DEG2RAD )
-    };
-
-    return fovPortToProjection( fovPort, rightHanded, zNear, zFar );
-
-  }
-
-};
-
-},{}],189:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- *
- * Full-screen textured quad shader
- */
-
-THREE.CopyShader = {
-
-  uniforms: {
-
-    "tDiffuse": { value: null },
-    "opacity":  { value: 1.0 }
-
-  },
-
-  vertexShader: [
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vUv = uv;",
-      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
-    "}"
-
-  ].join( "\n" ),
-
-  fragmentShader: [
-
-    "uniform float opacity;",
-
-    "uniform sampler2D tDiffuse;",
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vec4 texel = texture2D( tDiffuse, vUv );",
-      "gl_FragColor = opacity * texel;",
-
-    "}"
-
-  ].join( "\n" )
-
-};
-
-},{}],190:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- */
-
-THREE.EffectComposer = function ( renderer, renderTarget, effect ) {
-
-  this.renderer = renderer;
-
-  window.addEventListener('vrdisplaypresentchange' , this.resize.bind(this));
-
-  this.effect = effect;
-
-  if ( renderTarget === undefined ) {
-
-    var parameters = {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBAFormat,
-      stencilBuffer: false
-    };
-
-    var size = renderer.getDrawingBufferSize();
-    renderTarget = new THREE.WebGLRenderTarget( size.width, size.height, parameters );
-    renderTarget.texture.name = 'EffectComposer.rt1';
-
-  }
-
-  this.renderTarget1 = renderTarget;
-  this.renderTarget2 = renderTarget.clone();
-  this.renderTarget2.texture.name = 'EffectComposer.rt2';
-
-  this.writeBuffer = this.renderTarget1;
-  this.readBuffer = this.renderTarget2;
-
-  this.passes = [];
-
-  // dependencies
-
-  if ( THREE.CopyShader === undefined ) {
-
-    console.error( 'THREE.EffectComposer relies on THREE.CopyShader' );
-
-  }
-
-  if ( THREE.ShaderPass === undefined ) {
-
-    console.error( 'THREE.EffectComposer relies on THREE.ShaderPass' );
-
-  }
-
-  this.copyPass = new THREE.ShaderPass( THREE.CopyShader );
-
-};
-
-Object.assign( THREE.EffectComposer.prototype, {
-
-  swapBuffers: function () {
-
-    var tmp = this.readBuffer;
-    this.readBuffer = this.writeBuffer;
-    this.writeBuffer = tmp;
-
-  },
-
-  addPass: function ( pass ) {
-
-    this.passes.push( pass );
-    var size = this.renderer.getDrawingBufferSize();
-    pass.setSize( size.width, size.height );
-
-  },
-
-  insertPass: function ( pass, index ) {
-
-    this.passes.splice( index, 0, pass );
-
-  },
-
-  render: function ( delta ) {
-
-    var maskActive = false;
-
-    var pass, i, il = this.passes.length;
-
-    for ( i = 0; i < il; i ++ ) {
-
-      pass = this.passes[ i ];
-
-      if ( pass.enabled === false ) continue;
-
-      if (pass.renderToScreen) {
-        pass.render( this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive );
-      } else {
-        pass.render( this.effect, this.writeBuffer, this.readBuffer, delta, maskActive );
-      }
-
-      if ( pass.needsSwap ) {
-
-        if ( maskActive ) {
-
-          var context = this.renderer.context;
-
-          context.stencilFunc( context.NOTEQUAL, 1, 0xffffffff );
-
-          this.copyPass.render( this.renderer, this.writeBuffer, this.readBuffer, delta );
-
-          context.stencilFunc( context.EQUAL, 1, 0xffffffff );
-
-        }
-
-        this.swapBuffers();
-
-      }
-
-      if ( THREE.MaskPass !== undefined ) {
-
-        if ( pass instanceof THREE.MaskPass ) {
-
-          maskActive = true;
-
-        } else if ( pass instanceof THREE.ClearMaskPass ) {
-
-          maskActive = false;
-
-        }
-
-      }
-
-    }
-
-  },
-
-  reset: function ( renderTarget ) {
-
-    if ( renderTarget === undefined ) {
-
-      var size = this.renderer.getDrawingBufferSize();
-
-      renderTarget = this.renderTarget1.clone();
-      renderTarget.setSize( size.width, size.height );
-
-    }
-
-    this.renderTarget1.dispose();
-    this.renderTarget2.dispose();
-    this.renderTarget1 = renderTarget;
-    this.renderTarget2 = renderTarget.clone();
-
-    this.writeBuffer = this.renderTarget1;
-    this.readBuffer = this.renderTarget2;
-
-  },
-
-  setSize: function ( width, height ) {
-
-    this.renderTarget1.setSize( width, height );
-    this.renderTarget2.setSize( width, height );
-
-    for ( var i = 0; i < this.passes.length; i ++ ) {
-
-      this.passes[ i ].setSize( width, height );
-
-    }
-
-  },
-
-  resize: function ( ) {
-
-    var rendererSize = this.renderer.getDrawingBufferSize();
-    this.setSize( rendererSize.width, rendererSize.height );
-
-  }
-
-} );
-
-
-THREE.Pass = function () {
-
-  // if set to true, the pass is processed by the composer
-  this.enabled = true;
-
-  // if set to true, the pass indicates to swap read and write buffer after rendering
-  this.needsSwap = true;
-
-  // if set to true, the pass clears its buffer before rendering
-  this.clear = false;
-
-  // if set to true, the result of the pass is rendered to screen
-  this.renderToScreen = false;
-
-};
-
-Object.assign( THREE.Pass.prototype, {
-
-  setSize: function ( width, height ) {},
-
-  render: function ( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-    console.error( 'THREE.Pass: .render() must be implemented in derived pass.' );
-
-  }
-
-} );
-
-},{}],191:[function(_dereq_,module,exports){
-/**
- * @author bhouston / http://clara.io/
- *
- * Luminosity
- * http://en.wikipedia.org/wiki/Luminosity
- */
-
-THREE.LuminosityHighPassShader = {
-
-  shaderID: "luminosityHighPass",
-
-  uniforms: {
-
-    "tDiffuse": { type: "t", value: null },
-    "luminosityThreshold": { type: "f", value: 1.0 },
-    "smoothWidth": { type: "f", value: 1.0 },
-    "defaultColor": { type: "c", value: new THREE.Color( 0x000000 ) },
-    "defaultOpacity":  { type: "f", value: 0.0 }
-
-  },
-
-  vertexShader: [
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vUv = uv;",
-
-      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
-    "}"
-
-  ].join("\n"),
-
-  fragmentShader: [
-
-    "uniform sampler2D tDiffuse;",
-    "uniform vec3 defaultColor;",
-    "uniform float defaultOpacity;",
-    "uniform float luminosityThreshold;",
-    "uniform float smoothWidth;",
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vec4 texel = texture2D( tDiffuse, vUv );",
-
-      "vec3 luma = vec3( 0.299, 0.587, 0.114 );",
-
-      "float v = dot( texel.xyz, luma );",
-
-      "vec4 outputColor = vec4( defaultColor.rgb, defaultOpacity );",
-
-      "float alpha = smoothstep( luminosityThreshold, luminosityThreshold + smoothWidth, v );",
-
-      "gl_FragColor = mix( outputColor, texel, alpha );",
-
-    "}"
-
-  ].join("\n")
-
-};
-
-},{}],192:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- */
-
-THREE.RenderPass = function ( scene, camera, overrideMaterial, clearColor, clearAlpha ) {
-
-  THREE.Pass.call( this );
-
-  this.scene = scene;
-  this.camera = camera;
-
-  this.overrideMaterial = overrideMaterial;
-
-  this.clearColor = clearColor;
-  this.clearAlpha = ( clearAlpha !== undefined ) ? clearAlpha : 0;
-
-  this.clear = true;
-  this.clearDepth = false;
-  this.needsSwap = false;
-
-};
-
-THREE.RenderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype ), {
-
-  constructor: THREE.RenderPass,
-
-  render: function ( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-    var oldAutoClear = renderer.autoClear;
-    renderer.autoClear = false;
-
-    this.scene.overrideMaterial = this.overrideMaterial;
-
-    var oldClearColor, oldClearAlpha;
-
-    if ( this.clearColor ) {
-
-      oldClearColor = renderer.getClearColor().getHex();
-      oldClearAlpha = renderer.getClearAlpha();
-
-      renderer.setClearColor( this.clearColor, this.clearAlpha );
-
-    }
-
-    if ( this.clearDepth ) {
-
-      renderer.clearDepth();
-
-    }
-
-    renderer.render( this.scene, this.camera, this.renderToScreen ? null : readBuffer, this.clear );
-
-    if ( this.clearColor ) {
-
-      renderer.setClearColor( oldClearColor, oldClearAlpha );
-
-    }
-
-    this.scene.overrideMaterial = null;
-    renderer.autoClear = oldAutoClear;
-  }
-
-} );
-
-},{}],193:[function(_dereq_,module,exports){
-'use strict';
-
-/**
- * Screen-space ambient occlusion pass.
- *
- * Has the following parameters
- *  - radius
- *    - Ambient occlusion shadow radius (numeric value).
- *  - onlyAO
- *    - Display only ambient occlusion result (boolean value).
- *  - aoClamp
- *    - Ambient occlusion clamp (numeric value).
- *  - lumInfluence
- *    - Pixel luminosity influence in AO calculation (numeric value).
- * 
- * To output to screen set renderToScreens true
- *
- * @author alteredq / http://alteredqualia.com/
- * @author tentone
- * @class SSAOPass
- */
-THREE.SSAOPass = function ( scene, camera, width, height ) {
-
-  if ( THREE.SSAOShader === undefined) {
-
-    console.warn( 'THREE.SSAOPass depends on THREE.SSAOShader' );
-    return new THREE.ShaderPass();
-
-  }
-
-  THREE.ShaderPass.call( this, THREE.SSAOShader );
-
-  this.width = ( width !== undefined ) ? width : 512;
-  this.height = ( height !== undefined ) ? height : 256;
-
-  this.renderToScreen = false;
-
-  this.camera2 = camera;
-  this.scene2 = scene;
-
-  //Depth material
-  this.depthMaterial = new THREE.MeshDepthMaterial();
-  this.depthMaterial.depthPacking = THREE.RGBADepthPacking;
-  this.depthMaterial.blending = THREE.NoBlending;
-
-  //Depth render target
-  this.depthRenderTarget = new THREE.WebGLRenderTarget( this.width, this.height, { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter } );
-  //this.depthRenderTarget.texture.name = 'SSAOShader.rt';
-  
-  //Shader uniforms
-  this.uniforms[ 'tDepth' ].value = this.depthRenderTarget.texture;
-  this.uniforms[ 'size' ].value.set( this.width, this.height );
-  this.uniforms[ 'cameraNear' ].value = this.camera2.near;
-  this.uniforms[ 'cameraFar' ].value = this.camera2.far;
-
-  this.uniforms[ 'radius' ].value = 4;
-  this.uniforms[ 'onlyAO' ].value = false;
-  this.uniforms[ 'aoClamp' ].value = 0.25;
-  this.uniforms[ 'lumInfluence' ].value = 0.7;
-
-  //Setters and getters for uniforms
-  var self = this;
-  Object.defineProperties(this, {
-
-    radius: {
-      get: function() { return this.uniforms[ 'radius' ].value; },
-      set: function( value ) { this.uniforms[ 'radius' ].value = value; }
-    },
-
-    onlyAO: {
-      get: function() { return this.uniforms[ 'onlyAO' ].value; },
-      set: function( value ) { this.uniforms[ 'onlyAO' ].value = value; }
-    },
-
-    aoClamp: {
-      get: function() { return this.uniforms[ 'aoClamp' ].value; },
-      set: function( value ) { this.uniforms[ 'aoClamp' ].value = value; }
-    },
-
-    lumInfluence: {
-      get: function() { return this.uniforms[ 'lumInfluence' ].value; },
-      set: function( value ) { this.uniforms[ 'lumInfluence' ].value = value; }
-    },
-
-  });
-}
-
-THREE.SSAOPass.prototype = Object.create( THREE.ShaderPass.prototype );
-
-/**
- * Render using this pass.
- * 
- * @method render
- * @param {WebGLRenderer} renderer
- * @param {WebGLRenderTarget} writeBuffer Buffer to write output.
- * @param {WebGLRenderTarget} readBuffer Input buffer.
- * @param {Number} delta Delta time in milliseconds.
- * @param {Boolean} maskActive Not used in this pass.
- */
-THREE.SSAOPass.prototype.render = function( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-  //Render depth into depthRenderTarget
-  this.scene2.overrideMaterial = this.depthMaterial;
-  
-  renderer.render( this.scene2, this.camera2, this.depthRenderTarget, true );
-  
-  this.scene2.overrideMaterial = null;
-
-
-  //SSAO shaderPass
-  THREE.ShaderPass.prototype.render.call( this, renderer, writeBuffer, readBuffer, delta, maskActive );
-
-};
-
-/**
- * Change scene to be renderer by this render pass.
- *
- * @method setScene
- * @param {Scene} scene
- */
-THREE.SSAOPass.prototype.setScene = function(scene) {
-  
-  this.scene2 = scene;
-
-};
-
-/**
- * Set camera used by this render pass.
- *
- * @method setCamera
- * @param {Camera} camera
- */
-THREE.SSAOPass.prototype.setCamera = function( camera ) {
-
-  this.camera2 = camera;
-
-  this.uniforms[ 'cameraNear' ].value = this.camera2.near;
-  this.uniforms[ 'cameraFar' ].value = this.camera2.far;
-
-};
-
-/**
- * Set resolution of this render pass.
- * 
- * @method setSize
- * @param {Number} width
- * @param {Number} height
- */
-THREE.SSAOPass.prototype.setSize = function( width, height ) {
-
-  this.width = width;
-  this.height = height;
-
-  this.uniforms[ 'size' ].value.set( this.width, this.height );
-  this.depthRenderTarget.setSize( this.width, this.height );
-
-};
-
-},{}],194:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- *
- * Screen-space ambient occlusion shader
- * - ported from
- *   SSAO GLSL shader v1.2
- *   assembled by Martins Upitis (martinsh) (http://devlog-martinsh.blogspot.com)
- *   original technique is made by ArKano22 (http://www.gamedev.net/topic/550699-ssao-no-halo-artifacts/)
- * - modifications
- * - modified to use RGBA packed depth texture (use clear color 1,1,1,1 for depth pass)
- * - refactoring and optimizations
- */
-
-THREE.SSAOShader = {
-
-  uniforms: {
-
-    "tDiffuse":     { value: null },
-    "tDepth":       { value: null },
-    "size":         { value: new THREE.Vector2( 512, 512 ) },
-    "cameraNear":   { value: 1 },
-    "cameraFar":    { value: 100 },
-    "radius":       { value: 32 },
-    "onlyAO":       { value: 0 },
-    "aoClamp":      { value: 0.25 },
-    "lumInfluence": { value: 0.7 }
-
-  },
-
-  vertexShader: [
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vUv = uv;",
-
-      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
-    "}"
-
-  ].join( "\n" ),
-
-  fragmentShader: [
-
-    "uniform float cameraNear;",
-    "uniform float cameraFar;",
-    "#ifdef USE_LOGDEPTHBUF",
-      "uniform float logDepthBufFC;",
-    "#endif",
-
-    "uniform float radius;",     // ao radius
-    "uniform bool onlyAO;",      // use only ambient occlusion pass?
-
-    "uniform vec2 size;",        // texture width, height
-    "uniform float aoClamp;",    // depth clamp - reduces haloing at screen edges
-
-    "uniform float lumInfluence;",  // how much luminance affects occlusion
-
-    "uniform sampler2D tDiffuse;",
-    "uniform sampler2D tDepth;",
-
-    "varying vec2 vUv;",
-
-    // "#define PI 3.14159265",
-    "#define DL 2.399963229728653",  // PI * ( 3.0 - sqrt( 5.0 ) )
-    "#define EULER 2.718281828459045",
-
-    // user variables
-
-    "const int samples = 64;",     // ao sample count
-
-    "const bool useNoise = true;",      // use noise instead of pattern for sample dithering
-    "const float noiseAmount = 0.0004;", // dithering amount
-
-    "const float diffArea = 0.4;",   // self-shadowing reduction
-    "const float gDisplace = 0.4;",  // gauss bell center
-
-
-    // RGBA depth
-
-    "#include <packing>",
-
-    // generating noise / pattern texture for dithering
-
-    "vec2 rand( const vec2 coord ) {",
-
-      "vec2 noise;",
-
-      "if ( useNoise ) {",
-
-        "float nx = dot ( coord, vec2( 12.9898, 78.233 ) );",
-        "float ny = dot ( coord, vec2( 12.9898, 78.233 ) * 2.0 );",
-
-        "noise = clamp( fract ( 43758.5453 * sin( vec2( nx, ny ) ) ), 0.0, 1.0 );",
-
-      "} else {",
-
-        "float ff = fract( 1.0 - coord.s * ( size.x / 2.0 ) );",
-        "float gg = fract( coord.t * ( size.y / 2.0 ) );",
-
-        "noise = vec2( 0.25, 0.75 ) * vec2( ff ) + vec2( 0.75, 0.25 ) * gg;",
-
-      "}",
-
-      "return ( noise * 2.0  - 1.0 ) * noiseAmount;",
-
-    "}",
-
-    "float readDepth( const in vec2 coord ) {",
-
-      "float cameraFarPlusNear = cameraFar + cameraNear;",
-      "float cameraFarMinusNear = cameraFar - cameraNear;",
-      "float cameraCoef = 2.0 * cameraNear;",
-
-      "#ifdef USE_LOGDEPTHBUF",
-
-        "float logz = unpackRGBAToDepth( texture2D( tDepth, coord ) );",
-        "float w = pow(2.0, (logz / logDepthBufFC)) - 1.0;",
-        "float z = (logz / w) + 1.0;",
-
-      "#else",
-
-        "float z = unpackRGBAToDepth( texture2D( tDepth, coord ) );",
-
-      "#endif",
-
-      "return cameraCoef / ( cameraFarPlusNear - z * cameraFarMinusNear );",
-
-
-    "}",
-
-    "float compareDepths( const in float depth1, const in float depth2, inout int far ) {",
-
-      "float garea = 8.0;",                         // gauss bell width
-      "float diff = ( depth1 - depth2 ) * 100.0;",  // depth difference (0-100)
-
-      // reduce left bell width to avoid self-shadowing
-
-      "if ( diff < gDisplace ) {",
-
-        "garea = diffArea;",
-
-      "} else {",
-
-        "far = 1;",
-
-      "}",
-
-      "float dd = diff - gDisplace;",
-      "float gauss = pow( EULER, -2.0 * ( dd * dd ) / ( garea * garea ) );",
-      "return gauss;",
-
-    "}",
-
-    "float calcAO( float depth, float dw, float dh ) {",
-
-      "vec2 vv = vec2( dw, dh );",
-
-      "vec2 coord1 = vUv + radius * vv;",
-      "vec2 coord2 = vUv - radius * vv;",
-
-      "float temp1 = 0.0;",
-      "float temp2 = 0.0;",
-
-      "int far = 0;",
-      "temp1 = compareDepths( depth, readDepth( coord1 ), far );",
-
-      // DEPTH EXTRAPOLATION
-
-      "if ( far > 0 ) {",
-
-        "temp2 = compareDepths( readDepth( coord2 ), depth, far );",
-        "temp1 += ( 1.0 - temp1 ) * temp2;",
-
-      "}",
-
-      "return temp1;",
-
-    "}",
-
-    "void main() {",
-
-      "vec2 noise = rand( vUv );",
-      "float depth = readDepth( vUv );",
-
-      "float tt = clamp( depth, aoClamp, 1.0 );",
-
-      "float w = ( 1.0 / size.x ) / tt + ( noise.x * ( 1.0 - noise.x ) );",
-      "float h = ( 1.0 / size.y ) / tt + ( noise.y * ( 1.0 - noise.y ) );",
-
-      "float ao = 0.0;",
-
-      "float dz = 1.0 / float( samples );",
-      "float l = 0.0;",
-      "float z = 1.0 - dz / 2.0;",
-
-      "for ( int i = 0; i <= samples; i ++ ) {",
-
-        "float r = sqrt( 1.0 - z );",
-
-        "float pw = cos( l ) * r;",
-        "float ph = sin( l ) * r;",
-        "ao += calcAO( depth, pw * w, ph * h );",
-        "z = z - dz;",
-        "l = l + DL;",
-
-      "}",
-
-      "ao /= float( samples );",
-      "ao = 1.0 - ao;",
-
-      "vec3 color = texture2D( tDiffuse, vUv ).rgb;",
-
-      "vec3 lumcoeff = vec3( 0.299, 0.587, 0.114 );",
-      "float lum = dot( color.rgb, lumcoeff );",
-      "vec3 luminance = vec3( lum );",
-
-      "vec3 final = vec3( color * mix( vec3( ao ), vec3( 1.0 ), luminance * lumInfluence ) );",  // mix( color * ao, white, luminance )
-
-      "if ( onlyAO ) {",
-
-        "final = vec3( mix( vec3( ao ), vec3( 1.0 ), luminance * lumInfluence ) );",  // ambient occlusion only
-
-      "}",
-
-      "gl_FragColor = vec4( final, 1.0 );",
-
-    "}"
-
-  ].join( "\n" )
-
-};
-
-},{}],195:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- *
- * Sepia tone shader
- * based on glfx.js sepia shader
- * https://github.com/evanw/glfx.js
- */
-
-THREE.SepiaShader = {
-
-  uniforms: {
-
-    "tDiffuse": { value: null },
-    "amount":   { value: 1.0 }
-
-  },
-
-  vertexShader: [
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vUv = uv;",
-      "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
-    "}"
-
-  ].join( "\n" ),
-
-  fragmentShader: [
-
-    "uniform float amount;",
-
-    "uniform sampler2D tDiffuse;",
-
-    "varying vec2 vUv;",
-
-    "void main() {",
-
-      "vec4 color = texture2D( tDiffuse, vUv );",
-      "vec3 c = color.rgb;",
-
-      "color.r = dot( c, vec3( 1.0 - 0.607 * amount, 0.769 * amount, 0.189 * amount ) );",
-      "color.g = dot( c, vec3( 0.349 * amount, 1.0 - 0.314 * amount, 0.168 * amount ) );",
-      "color.b = dot( c, vec3( 0.272 * amount, 0.534 * amount, 1.0 - 0.869 * amount ) );",
-
-      "gl_FragColor = vec4( min( vec3( 1.0 ), color.rgb ), color.a );",
-
-    "}"
-
-  ].join( "\n" )
-
-};
-
-},{}],196:[function(_dereq_,module,exports){
-/**
- * @author alteredq / http://alteredqualia.com/
- */
-
-THREE.ShaderPass = function ( shader, textureID ) {
-
-  THREE.Pass.call( this );
-
-  this.textureID = ( textureID !== undefined ) ? textureID : "tDiffuse";
-
-  if ( shader instanceof THREE.ShaderMaterial ) {
-
-    this.uniforms = shader.uniforms;
-
-    this.material = shader;
-
-  } else if ( shader ) {
-
-    this.uniforms = THREE.UniformsUtils.clone( shader.uniforms );
-
-    this.material = new THREE.ShaderMaterial( {
-
-      defines: Object.assign( {}, shader.defines ),
-      uniforms: this.uniforms,
-      vertexShader: shader.vertexShader,
-      fragmentShader: shader.fragmentShader
-
-    } );
-
-  }
-
-  this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-  this.scene = new THREE.Scene();
-
-  this.quad = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), null );
-  this.quad.frustumCulled = false; // Avoid getting clipped
-  this.scene.add( this.quad );
-
-};
-
-THREE.ShaderPass.prototype = Object.assign( Object.create( THREE.Pass.prototype ), {
-
-  constructor: THREE.ShaderPass,
-
-  render: function( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-    if ( this.uniforms[ this.textureID ] ) {
-
-      this.uniforms[ this.textureID ].value = readBuffer.texture;
-
-    }
-
-    this.quad.material = this.material;
-
-    if ( this.renderToScreen ) {
-
-      renderer.render( this.scene, this.camera );
-
-    } else {
-
-      renderer.render( this.scene, this.camera, writeBuffer, this.clear );
-
-    }
-
-  }
-
-} );
-
-},{}],197:[function(_dereq_,module,exports){
-/**
- * @author spidersharma / http://eduperiment.com/
- * 
- * Inspired from Unreal Engine
- * https://docs.unrealengine.com/latest/INT/Engine/Rendering/PostProcessEffects/Bloom/
- */
-THREE.UnrealBloomPass = function ( resolution, strength, radius, threshold ) {
-
-  THREE.Pass.call( this );
-
-  this.strength = ( strength !== undefined ) ? strength : 1;
-  this.radius = radius;
-  this.threshold = threshold;
-  this.resolution = ( resolution !== undefined ) ? new THREE.Vector2( resolution.x, resolution.y ) : new THREE.Vector2( 256, 256 );
-
-  // render targets
-  var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBAFormat };
-  this.renderTargetsHorizontal = [];
-  this.renderTargetsVertical = [];
-  this.nMips = 5;
-  var resx = Math.round( this.resolution.x / 2 );
-  var resy = Math.round( this.resolution.y / 2 );
-
-  this.renderTargetBright = new THREE.WebGLRenderTarget( resx, resy, pars );
-  this.renderTargetBright.texture.name = "UnrealBloomPass.bright";
-  this.renderTargetBright.texture.generateMipmaps = false;
-
-  for ( var i = 0; i < this.nMips; i ++ ) {
-
-    var renderTarget = new THREE.WebGLRenderTarget( resx, resy, pars );
-
-    renderTarget.texture.name = "UnrealBloomPass.h" + i;
-    renderTarget.texture.generateMipmaps = false;
-
-    this.renderTargetsHorizontal.push( renderTarget );
-
-    var renderTarget = new THREE.WebGLRenderTarget( resx, resy, pars );
-
-    renderTarget.texture.name = "UnrealBloomPass.v" + i;
-    renderTarget.texture.generateMipmaps = false;
-
-    this.renderTargetsVertical.push( renderTarget );
-
-    resx = Math.round( resx / 2 );
-
-    resy = Math.round( resy / 2 );
-
-  }
-
-  // luminosity high pass material
-
-  if ( THREE.LuminosityHighPassShader === undefined )
-    console.error( "THREE.UnrealBloomPass relies on THREE.LuminosityHighPassShader" );
-
-  var highPassShader = THREE.LuminosityHighPassShader;
-  this.highPassUniforms = THREE.UniformsUtils.clone( highPassShader.uniforms );
-
-  this.highPassUniforms[ "luminosityThreshold" ].value = threshold;
-  this.highPassUniforms[ "smoothWidth" ].value = 0.01;
-
-  this.materialHighPassFilter = new THREE.ShaderMaterial( {
-    uniforms: this.highPassUniforms,
-    vertexShader: highPassShader.vertexShader,
-    fragmentShader: highPassShader.fragmentShader,
-    defines: {}
-  } );
-
-  // Gaussian Blur Materials
-  this.separableBlurMaterials = [];
-  var kernelSizeArray = [ 3, 5, 7, 9, 11 ];
-  var resx = Math.round( this.resolution.x / 2 );
-  var resy = Math.round( this.resolution.y / 2 );
-
-  for ( var i = 0; i < this.nMips; i ++ ) {
-
-    this.separableBlurMaterials.push( this.getSeperableBlurMaterial( kernelSizeArray[ i ] ) );
-
-    this.separableBlurMaterials[ i ].uniforms[ "texSize" ].value = new THREE.Vector2( resx, resy );
-
-    resx = Math.round( resx / 2 );
-
-    resy = Math.round( resy / 2 );
-
-  }
-
-  // Composite material
-  this.compositeMaterial = this.getCompositeMaterial( this.nMips );
-  this.compositeMaterial.uniforms[ "blurTexture1" ].value = this.renderTargetsVertical[ 0 ].texture;
-  this.compositeMaterial.uniforms[ "blurTexture2" ].value = this.renderTargetsVertical[ 1 ].texture;
-  this.compositeMaterial.uniforms[ "blurTexture3" ].value = this.renderTargetsVertical[ 2 ].texture;
-  this.compositeMaterial.uniforms[ "blurTexture4" ].value = this.renderTargetsVertical[ 3 ].texture;
-  this.compositeMaterial.uniforms[ "blurTexture5" ].value = this.renderTargetsVertical[ 4 ].texture;
-  this.compositeMaterial.uniforms[ "bloomStrength" ].value = strength;
-  this.compositeMaterial.uniforms[ "bloomRadius" ].value = 0.1;
-  this.compositeMaterial.needsUpdate = true;
-
-  var bloomFactors = [ 1.0, 0.8, 0.6, 0.4, 0.2 ];
-  this.compositeMaterial.uniforms[ "bloomFactors" ].value = bloomFactors;
-  this.bloomTintColors = [ new THREE.Vector3( 1, 1, 1 ), new THREE.Vector3( 1, 1, 1 ), new THREE.Vector3( 1, 1, 1 ),
-               new THREE.Vector3( 1, 1, 1 ), new THREE.Vector3( 1, 1, 1 ) ];
-  this.compositeMaterial.uniforms[ "bloomTintColors" ].value = this.bloomTintColors;
-
-  // copy material
-  if ( THREE.CopyShader === undefined ) {
-
-    console.error( "THREE.BloomPass relies on THREE.CopyShader" );
-
-  }
-
-  var copyShader = THREE.CopyShader;
-
-  this.copyUniforms = THREE.UniformsUtils.clone( copyShader.uniforms );
-  this.copyUniforms[ "opacity" ].value = 1.0;
-
-  this.materialCopy = new THREE.ShaderMaterial( {
-    uniforms: this.copyUniforms,
-    vertexShader: copyShader.vertexShader,
-    fragmentShader: copyShader.fragmentShader,
-    blending: THREE.AdditiveBlending,
-    depthTest: false,
-    depthWrite: false,
-    transparent: true
-  } );
-
-  this.enabled = true;
-  this.needsSwap = false;
-
-  this.oldClearColor = new THREE.Color();
-  this.oldClearAlpha = 1;
-
-  this.camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-  this.scene = new THREE.Scene();
-
-  this.basic = new THREE.MeshBasicMaterial();
-
-  this.quad = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2, 2 ), null );
-  this.quad.frustumCulled = false; // Avoid getting clipped
-  this.scene.add( this.quad );
-
-};
-
-THREE.UnrealBloomPass.prototype = Object.assign( Object.create( THREE.Pass.prototype ), {
-
-  constructor: THREE.UnrealBloomPass,
-
-  dispose: function () {
-
-    for ( var i = 0; i < this.renderTargetsHorizontal.length; i ++ ) {
-
-      this.renderTargetsHorizontal[ i ].dispose();
-
-    }
-
-    for ( var i = 0; i < this.renderTargetsVertical.length; i ++ ) {
-
-      this.renderTargetsVertical[ i ].dispose();
-
-    }
-
-    this.renderTargetBright.dispose();
-
-  },
-
-  setSize: function ( width, height ) {
-
-    var resx = Math.round( width / 2 );
-    var resy = Math.round( height / 2 );
-
-    this.renderTargetBright.setSize( resx, resy );
-
-    for ( var i = 0; i < this.nMips; i ++ ) {
-
-      this.renderTargetsHorizontal[ i ].setSize( resx, resy );
-      this.renderTargetsVertical[ i ].setSize( resx, resy );
-
-      this.separableBlurMaterials[ i ].uniforms[ "texSize" ].value = new THREE.Vector2( resx, resy );
-
-      resx = Math.round( resx / 2 );
-      resy = Math.round( resy / 2 );
-
-    }
-
-  },
-
-  render: function ( renderer, writeBuffer, readBuffer, delta, maskActive ) {
-
-    this.oldClearColor.copy( renderer.getClearColor() );
-    this.oldClearAlpha = renderer.getClearAlpha();
-    var oldAutoClear = renderer.autoClear;
-    renderer.autoClear = false;
-
-    renderer.setClearColor( new THREE.Color( 0, 0, 0 ), 0 );
-
-    if ( maskActive ) renderer.context.disable( renderer.context.STENCIL_TEST );
-
-    // Render input to screen
-
-    if ( this.renderToScreen ) {
-
-      this.quad.material = this.basic;
-      this.basic.map = readBuffer.texture;
-
-      renderer.render( this.scene, this.camera, undefined, true );
-
-    }
-
-    // 1. Extract Bright Areas
-
-    this.highPassUniforms[ "tDiffuse" ].value = readBuffer.texture;
-    this.highPassUniforms[ "luminosityThreshold" ].value = this.threshold;
-    this.quad.material = this.materialHighPassFilter;
-
-    renderer.render( this.scene, this.camera, this.renderTargetBright, true );
-
-    // 2. Blur All the mips progressively
-
-    var inputRenderTarget = this.renderTargetBright;
-
-    for ( var i = 0; i < this.nMips; i ++ ) {
-
-      this.quad.material = this.separableBlurMaterials[ i ];
-
-      this.separableBlurMaterials[ i ].uniforms[ "colorTexture" ].value = inputRenderTarget.texture;
-      this.separableBlurMaterials[ i ].uniforms[ "direction" ].value = THREE.UnrealBloomPass.BlurDirectionX;
-      renderer.render( this.scene, this.camera, this.renderTargetsHorizontal[ i ], true );
-
-      this.separableBlurMaterials[ i ].uniforms[ "colorTexture" ].value = this.renderTargetsHorizontal[ i ].texture;
-      this.separableBlurMaterials[ i ].uniforms[ "direction" ].value = THREE.UnrealBloomPass.BlurDirectionY;
-      renderer.render( this.scene, this.camera, this.renderTargetsVertical[ i ], true );
-
-      inputRenderTarget = this.renderTargetsVertical[ i ];
-
-    }
-
-    // Composite All the mips
-
-    this.quad.material = this.compositeMaterial;
-    this.compositeMaterial.uniforms[ "bloomStrength" ].value = this.strength;
-    this.compositeMaterial.uniforms[ "bloomRadius" ].value = this.radius;
-    this.compositeMaterial.uniforms[ "bloomTintColors" ].value = this.bloomTintColors;
-
-    renderer.render( this.scene, this.camera, this.renderTargetsHorizontal[ 0 ], true );
-
-    // Blend it additively over the input texture
-
-    this.quad.material = this.materialCopy;
-    this.copyUniforms[ "tDiffuse" ].value = this.renderTargetsHorizontal[ 0 ].texture;
-
-    if ( maskActive ) renderer.context.enable( renderer.context.STENCIL_TEST );
-
-
-    if ( this.renderToScreen ) {
-
-      renderer.render( this.scene, this.camera, undefined, false );
-
-    } else {
-
-      renderer.render( this.scene, this.camera, readBuffer, false );
-
-    }
-
-    // Restore renderer settings
-
-    renderer.setClearColor( this.oldClearColor, this.oldClearAlpha );
-    renderer.autoClear = oldAutoClear;
-
-  },
-
-  getSeperableBlurMaterial: function ( kernelRadius ) {
-
-    return new THREE.ShaderMaterial( {
-
-      defines: {
-        "KERNEL_RADIUS": kernelRadius,
-        "SIGMA": kernelRadius
-      },
-
-      uniforms: {
-        "colorTexture": { value: null },
-        "texSize": { value: new THREE.Vector2( 0.5, 0.5 ) },
-        "direction": { value: new THREE.Vector2( 0.5, 0.5 ) }
-      },
-
-      vertexShader:
-        "varying vec2 vUv;\n\
-        void main() {\n\
-          vUv = uv;\n\
-          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\
-        }",
-
-      fragmentShader:
-        "#include <common>\
-        varying vec2 vUv;\n\
-        uniform sampler2D colorTexture;\n\
-        uniform vec2 texSize;\
-        uniform vec2 direction;\
-        \
-        float gaussianPdf(in float x, in float sigma) {\
-          return 0.39894 * exp( -0.5 * x * x/( sigma * sigma))/sigma;\
-        }\
-        void main() {\n\
-          vec2 invSize = 1.0 / texSize;\
-          float fSigma = float(SIGMA);\
-          float weightSum = gaussianPdf(0.0, fSigma);\
-          vec3 diffuseSum = texture2D( colorTexture, vUv).rgb * weightSum;\
-          for( int i = 1; i < KERNEL_RADIUS; i ++ ) {\
-            float x = float(i);\
-            float w = gaussianPdf(x, fSigma);\
-            vec2 uvOffset = direction * invSize * x;\
-            vec3 sample1 = texture2D( colorTexture, vUv + uvOffset).rgb;\
-            vec3 sample2 = texture2D( colorTexture, vUv - uvOffset).rgb;\
-            diffuseSum += (sample1 + sample2) * w;\
-            weightSum += 2.0 * w;\
-          }\
-          gl_FragColor = vec4(diffuseSum/weightSum, 1.0);\n\
-        }"
-    } );
-
-  },
-
-  getCompositeMaterial: function ( nMips ) {
-
-    return new THREE.ShaderMaterial( {
-
-      defines: {
-        "NUM_MIPS": nMips
-      },
-
-      uniforms: {
-        "blurTexture1": { value: null },
-        "blurTexture2": { value: null },
-        "blurTexture3": { value: null },
-        "blurTexture4": { value: null },
-        "blurTexture5": { value: null },
-        "dirtTexture": { value: null },
-        "bloomStrength": { value: 1.0 },
-        "bloomFactors": { value: null },
-        "bloomTintColors": { value: null },
-        "bloomRadius": { value: 0.0 }
-      },
-
-      vertexShader:
-        "varying vec2 vUv;\n\
-        void main() {\n\
-          vUv = uv;\n\
-          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\
-        }",
-
-      fragmentShader:
-        "varying vec2 vUv;\
-        uniform sampler2D blurTexture1;\
-        uniform sampler2D blurTexture2;\
-        uniform sampler2D blurTexture3;\
-        uniform sampler2D blurTexture4;\
-        uniform sampler2D blurTexture5;\
-        uniform sampler2D dirtTexture;\
-        uniform float bloomStrength;\
-        uniform float bloomRadius;\
-        uniform float bloomFactors[NUM_MIPS];\
-        uniform vec3 bloomTintColors[NUM_MIPS];\
-        \
-        float lerpBloomFactor(const in float factor) { \
-          float mirrorFactor = 1.2 - factor;\
-          return mix(factor, mirrorFactor, bloomRadius);\
-        }\
-        \
-        void main() {\
-          gl_FragColor = bloomStrength * ( lerpBloomFactor(bloomFactors[0]) * vec4(bloomTintColors[0], 1.0) * texture2D(blurTexture1, vUv) + \
-                           lerpBloomFactor(bloomFactors[1]) * vec4(bloomTintColors[1], 1.0) * texture2D(blurTexture2, vUv) + \
-                           lerpBloomFactor(bloomFactors[2]) * vec4(bloomTintColors[2], 1.0) * texture2D(blurTexture3, vUv) + \
-                           lerpBloomFactor(bloomFactors[3]) * vec4(bloomTintColors[3], 1.0) * texture2D(blurTexture4, vUv) + \
-                           lerpBloomFactor(bloomFactors[4]) * vec4(bloomTintColors[4], 1.0) * texture2D(blurTexture5, vUv) );\
-        }"
-    } );
-
-  }
-
-} );
-
-THREE.UnrealBloomPass.BlurDirectionX = new THREE.Vector2( 1.0, 0.0 );
-THREE.UnrealBloomPass.BlurDirectionY = new THREE.Vector2( 0.0, 1.0 );
-
-},{}],198:[function(_dereq_,module,exports){
+},{"../constants":94}],182:[function(_dereq_,module,exports){
 window.glStats = function () {
 
     var _rS = null;
@@ -83460,7 +81199,7 @@ if (typeof module === 'object') {
   };
 }
 
-},{}],199:[function(_dereq_,module,exports){
+},{}],183:[function(_dereq_,module,exports){
 // performance.now() polyfill from https://gist.github.com/paulirish/5438650
 'use strict';
 
@@ -83915,7 +81654,7 @@ if (typeof module === 'object') {
   module.exports = window.rStats;
 }
 
-},{}],200:[function(_dereq_,module,exports){
+},{}],184:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -83977,7 +81716,7 @@ Util.isLandscapeMode = function() {
 
 module.exports = Util;
 
-},{}],201:[function(_dereq_,module,exports){
+},{}],185:[function(_dereq_,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -84053,6 +81792,6 @@ function getWakeLock() {
 
 module.exports = getWakeLock();
 
-},{"./util.js":200}]},{},[155])(155)
+},{"./util.js":184}]},{},[149])(149)
 });
 //# sourceMappingURL=aframe-master.js.map
