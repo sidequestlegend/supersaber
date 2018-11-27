@@ -69396,12 +69396,15 @@ _dereq_('../../../../vendor/effects/GlowPass');
 
 registerEffect('glow', {
   schema: {
-    radius: {default: 0.01}
+    intensity: {default: 1.0, min: 0.0, max: 10.0},
+    radius: {default: 0.01},
+    renderDepth: {default: true},
+    threshold: {default: 0.001, min: 0.0, max: 1.0}
   },
   initPass: function () {
     var data = this.data;
     var size = this.el.renderer.getDrawingBufferSize();
-    this.pass = new THREE.GlowPass(size, data.radius);
+    this.pass = new THREE.GlowPass(size, data.radius, data.intensity, data.threshold, data.renderDepth);
   },
 
   update: function () {
@@ -69409,6 +69412,9 @@ registerEffect('glow', {
     var pass = this.pass;
     if (!pass) { return; }
     pass.radius = data.radius;
+    pass.intensity = data.intensity;
+    pass.threshold = data.threshold;
+    pass.renderDepth = data.renderDepth;
   }
 });
 
@@ -75133,7 +75139,8 @@ var proto = {
 
   initEffectComposer: function () {
     var sceneEl = this.el;
-    var effectComposer = sceneEl.effectComposer = new THREE.EffectComposer(sceneEl.renderer, undefined, sceneEl.effect);
+    var renderDepth = this.data['renderDepth'] || false;
+    var effectComposer = sceneEl.effectComposer = new THREE.EffectComposer(sceneEl.renderer, undefined, sceneEl.effect, renderDepth);
     var renderPass = new THREE.RenderPass(sceneEl.object3D, sceneEl.camera);
     effectComposer.addPass(renderPass);
     lastEffectInitialized = renderPass;
@@ -78068,7 +78075,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-11-23, Commit #1c8896a60)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-11-27, Commit #dc9d1708c)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -81927,68 +81934,145 @@ THREE.CopyColorShader = {
   uniforms: {
 
     "tDiffuse": { value: null },
+    "tDepth": { value: null },
     "dilation": { value: null },
+    "threshold": { value: null },
 
   },
 
   vertexShader: [
-
     "varying vec2 vUv;",
-
     "void main() {",
-
       "vUv = uv;",
       "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
     "}"
-
   ].join( "\n" ),
 
   fragmentShader: [
-
-    "const float color_threshold = 0.5;",
     "const vec4 RED = vec4(1.0, 0.0, 0.0, 1.0);",
     "const vec4 BLUE = vec4(0.0, 0.0, 1.0, 1.0);",
     "const vec4 BLACK = vec4(vec3(0.0), 1.0);",
+    "const float NEAR = 0.001;",
+    "const float FAR = 1.0;",
     "uniform float amount;",
     "uniform sampler2D tDiffuse;",
+    "uniform sampler2D tDepth;",
     "uniform float dilation;",
+    "uniform float threshold;",
     "varying vec2 vUv;",
 
-    "bool isBlue(vec4 c) {",
-      "return c.r < color_threshold && c.g < color_threshold && c.b > 1.0 - color_threshold;",
+    "float normalizeDepth( const in float z) {",
+      "float d =  ( NEAR * FAR ) / ( ( FAR - NEAR ) * z - FAR );",
+      "return ( d + NEAR ) / ( NEAR - FAR );",
     "}",
 
-    "bool isRed(vec4 c) {",
-      "return c.r > 1.0 - color_threshold && c.g < color_threshold && c.b < color_threshold;",
+    "float isNotColor(vec4 c, vec4 col) {",
+      "return step(threshold, distance(c, col));",
     "}",
 
     "vec4 dilate(vec2 uv, vec4 original){",
       "uv = clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0));",
       "vec4 color = texture2D(tDiffuse, uv);",
-      "if (isBlue(color)) color = BLUE;",
-      "else if (isRed(color)) color = RED;",
-      "else color = BLACK;",
+      "float isNotBlue = isNotColor(color, BLUE);",
+      "float isNotRed = isNotColor(color, RED);",
+      "color = mix(BLUE, color, isNotBlue);",
+      "color = mix(RED, color, isNotRed);",
+      "color = mix(color, BLACK, isNotRed * isNotBlue);",
       "return max(original, color);",
     "}",
 
     "void main() {",
-      "float W = dilation;",
-      "vec4 color = vec4(0.0);",
+      "vec4 color = vec4(0.0, 0.0, 0.0, 1.0);",
       "color = dilate(vUv, color);",
+      "float W = dilation;",
 
-      "if (!isBlue(color) && !isRed(color)) {",
+      "if (color == BLACK) {",
+        "vec2 uv = vec2(vUv.x - W, vUv.y);",
+        "float depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x - W * depth, vUv.y), color);",
+        "uv = vec2(vUv.x + W, vUv.y);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x + W * depth, vUv.y), color);",
+        "uv = vec2(vUv.x, vUv.y - W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x, vUv.y - W * depth), color);",
+        "uv = vec2(vUv.x, vUv.y + W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x, vUv.y + W * depth), color);",
+
+        "uv = vec2(vUv.x - W, vUv.y - W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x - W * depth, vUv.y - W * depth), color);",
+        "uv = vec2(vUv.x + W, vUv.y + W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x + W * depth, vUv.y + W * depth), color);",
+        "uv = vec2(vUv.x + W, vUv.y - W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x + W * depth, vUv.y - W * depth), color);",
+        "uv = vec2(vUv.x - W, vUv.y + W);",
+        "depth = 1.0 - normalizeDepth(texture2D(tDepth, uv).x);",
+        "color = dilate(vec2(vUv.x - W * depth, vUv.y + W * depth), color);",
+      "}",
+      //"gl_FragColor = vec4(vec3(depth), 1.0);",
+      "gl_FragColor = color;",
+
+    "}"
+
+  ].join( "\n" ),
+
+
+  fragmentShaderNoDepth: [
+    "const vec4 RED = vec4(1.0, 0.0, 0.0, 1.0);",
+    "const vec4 BLUE = vec4(0.0, 0.0, 1.0, 1.0);",
+    "const vec4 BLACK = vec4(vec3(0.0), 1.0);",
+    "const float NEAR = 0.001;",
+    "const float FAR = 1.0;",
+    "uniform float amount;",
+    "uniform sampler2D tDiffuse;",
+    "uniform float dilation;",
+    "uniform float threshold;",
+    "varying vec2 vUv;",
+
+    "float isNotColor(vec4 c, vec4 col) {",
+      "return step(threshold, distance(c, col));",
+    "}",
+
+    "vec4 dilate(vec2 uv, vec4 original){",
+      "uv = clamp(uv, vec2(0.0, 0.0), vec2(1.0, 1.0));",
+      "vec4 color = texture2D(tDiffuse, uv);",
+      "float isNotBlue = isNotColor(color, BLUE);",
+      "float isNotRed = isNotColor(color, RED);",
+      "color = mix(BLUE, color, isNotBlue);",
+      "color = mix(RED, color, isNotRed);",
+      "color = mix(color, BLACK, isNotRed * isNotBlue);",
+      "return max(original, color);",
+    "}",
+
+    "void main() {",
+      "vec4 color = vec4(0.0, 0.0, 0.0, 1.0);",
+      "color = dilate(vUv, color);",
+      "float W = dilation;",
+
+      "if (color == BLACK) {",
+        "vec2 uv = vec2(vUv.x - W, vUv.y);",
         "color = dilate(vec2(vUv.x - W, vUv.y), color);",
+        "uv = vec2(vUv.x + W, vUv.y);",
         "color = dilate(vec2(vUv.x + W, vUv.y), color);",
+        "uv = vec2(vUv.x, vUv.y - W);",
         "color = dilate(vec2(vUv.x, vUv.y - W), color);",
+        "uv = vec2(vUv.x, vUv.y + W);",
         "color = dilate(vec2(vUv.x, vUv.y + W), color);",
 
+        "uv = vec2(vUv.x - W, vUv.y - W);",
         "color = dilate(vec2(vUv.x - W, vUv.y - W), color);",
+        "uv = vec2(vUv.x + W, vUv.y + W);",
         "color = dilate(vec2(vUv.x + W, vUv.y + W), color);",
+        "uv = vec2(vUv.x + W, vUv.y - W);",
         "color = dilate(vec2(vUv.x + W, vUv.y - W), color);",
+        "uv = vec2(vUv.x - W, vUv.y + W);",
         "color = dilate(vec2(vUv.x - W, vUv.y + W), color);",
       "}",
-
+      //"gl_FragColor = vec4(vec3(depth), 1.0);",
       "gl_FragColor = color;",
 
     "}"
@@ -82047,10 +82131,10 @@ THREE.CopyShader = {
  * @author alteredq / http://alteredqualia.com/
  */
 
-THREE.EffectComposer = function ( renderer, renderTarget, effect ) {
+THREE.EffectComposer = function ( renderer, renderTarget, effect, renderDepth ) {
 
   this.renderer = renderer;
-  
+
   window.addEventListener('vrdisplaypresentchange' , this.resize.bind(this));
 
   this.effect = effect;
@@ -82067,7 +82151,9 @@ THREE.EffectComposer = function ( renderer, renderTarget, effect ) {
     var size = renderer.getDrawingBufferSize();
     renderTarget = new THREE.WebGLRenderTarget( size.width, size.height, parameters );
     renderTarget.texture.name = 'EffectComposer.rt1';
-
+    if (renderDepth) {
+      renderTarget.depthTexture = new THREE.DepthTexture();
+    }
   }
 
   this.renderTarget1 = renderTarget;
@@ -82197,7 +82283,7 @@ Object.assign( THREE.EffectComposer.prototype, {
   },
 
   setSize: function ( width, height ) {
-    
+
     this.renderTarget1.setSize( width, height );
     this.renderTarget2.setSize( width, height );
 
@@ -82248,11 +82334,14 @@ Object.assign( THREE.Pass.prototype, {
 } );
 
 },{}],194:[function(_dereq_,module,exports){
-THREE.GlowPass = function ( resolution, radius ) {
+THREE.GlowPass = function ( resolution, radius, intensity, threshold, useDepth ) {
 
   THREE.Pass.call( this );
 
   this.radius = radius;
+  this.intensity = intensity;
+  this.threshold = threshold;
+  this.useDepth = useDepth;
 
   this.scene = new THREE.Scene();
 
@@ -82281,7 +82370,7 @@ THREE.GlowPass = function ( resolution, radius ) {
   this.copyColorShaderMaterial = new THREE.ShaderMaterial({
     uniforms: this.copyColorUniforms,
     vertexShader: copyColorShader.vertexShader,
-    fragmentShader: copyColorShader.fragmentShader,
+    fragmentShader: useDepth ? copyColorShader.fragmentShader : copyColorShader.fragmentShaderNoDepth,
     blending: THREE.NoBlending,
     depthTest: false,
     depthWrite: false,
@@ -82317,10 +82406,16 @@ THREE.GlowPass.prototype = Object.assign( Object.create( THREE.Pass.prototype ),
 
     this.quad.material = this.copyColorShaderMaterial;
     this.copyColorUniforms["dilation"].value = this.radius;
+    this.copyColorUniforms["threshold"].value = this.threshold;
     this.copyColorUniforms["tDiffuse"].value = readBuffer.texture;
+    if (this.useDepth) {
+      this.copyColorUniforms["tDepth"].value = readBuffer.depthTexture;
+    }
     renderer.render(this.scene, this.camera, this.colorTarget, false);
 
     this.quad.material = this.glowShaderMaterial;
+    this.glowUniforms["intensity"].value = this.intensity;
+    this.glowUniforms["threshold"].value = this.threshold;
     this.glowUniforms["tInput"].value = readBuffer.texture;
     this.glowUniforms["tMask"].value = this.colorTarget.texture;
 
@@ -82354,43 +82449,36 @@ THREE.GlowShader = {
   uniforms: {
     "tInput": { type: "t", value: null },
     "tMask": { type: "t", value: null },
+    "intensity": { type: "f", value: null },
+    "threshold": { type: "f", value: null },
   },
 
   vertexShader: [
-
     "varying vec2 vUv;",
-
     "void main() {",
-
       "vUv = uv;",
       "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
     "}"
-
   ].join( "\n" ),
 
   fragmentShader: [
-
-    "const float color_threshold = 0.001;",
-
     "const vec4 RED = vec4(1.0, 0.0, 0.0, 1.0);",
-
     "const vec4 BLUE = vec4(0.0, 0.0, 1.0, 1.0);",
-
     "const vec4 BLACK = vec4(0.0);",
-
     "const vec4 WHITE = vec4(1.0);",
     "uniform sampler2D tInput;",
     "uniform sampler2D tMask;",
+    "uniform float intensity;",
+    "uniform float threshold;",
     "varying vec2 vUv;",
-    "const int c_samplesX = 10;",
-    "const int c_samplesY = 10;",
+    "const int c_samplesX = 5;",
+    "const int c_samplesY = 5;",
     "const float c_textureSize = 512.0;",
     "const float c_pixelSize = (1.0 / c_textureSize);",
-    "const int   c_halfSamplesX = c_samplesX / 2;",
-    "const int   c_halfSamplesY = c_samplesY / 2;",
+    "const int c_halfSamplesX = c_samplesX / 2;",
+    "const int c_halfSamplesY = c_samplesY / 2;",
 
-    "vec4 boxBlur (in vec2 uv)",
+    "vec4 boxBlur (in vec2 uv, in sampler2D tex)",
     "{",
         "int c_distX = c_halfSamplesX + 1;",
         "int c_distY = c_halfSamplesY + 1;",
@@ -82402,32 +82490,19 @@ THREE.GlowShader = {
         "{",
           "for (int ix = -c_halfSamplesX; ix <= c_halfSamplesX; ++ix)",
             "{",
-                "if (abs(float(iy)) <= float(c_distY) && abs(float(ix)) <= float(c_distX))",
-                "{",
-                    "vec2 offset = vec2(ix, iy) * c_pixelSize;",
-                    "ret += texture2D(tMask, uv + offset) * c_pixelWeight;",
-                "}",
+                "vec2 offset = vec2(ix, iy) * c_pixelSize;",
+                "ret += texture2D(tex, uv + offset) * c_pixelWeight;",
             "}",
         "}",
         "return ret;",
     "}",
 
-    "float isBlue(vec4 c) {",
-      "return c.r < color_threshold && c.g < color_threshold && c.b > 1.0 - color_threshold ? 1.0 : 0.0;",
-    "}",
-
-    "float isRed(vec4 c) {",
-      "return c.r > 1.0 - color_threshold && c.g < color_threshold && c.b < color_threshold ? 1.0 : 0.0;",
-    "}",
-
     "void main() {",
-
-      // WHITE
       "vec4 color = texture2D(tInput, vUv);",
-      "vec4 blur = boxBlur(vUv);",
-      "color = mix(color, WHITE, isRed(color));",
-      "color = mix(color, WHITE, isBlue(color));",
-      "color += blur;",
+      "vec4 blur = boxBlur(vUv, tMask);",
+      "color = mix(WHITE, color, step(threshold, distance(color, RED)));",
+      "color = mix(WHITE, color, step(threshold, distance(color, BLUE)));",
+      "color += blur * intensity;",
       "gl_FragColor = vec4(color.rgb, 1.0);",
 
     "}"
