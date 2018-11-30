@@ -1,6 +1,6 @@
 AFRAME.registerShader('floorShader', {
   schema: {
-    src: {type: 'map', is: 'uniform'},
+    color: {type: 'vec3', is: 'uniform', default: {x: 0, y: 0, z: 0}},
     normalMap: {type: 'map', is: 'uniform'},
     envMap: {type: 'map', is: 'uniform'},
     hitRight: {type: 'vec3', is: 'uniform', default: {x: 0, y: 1, z: 0}},
@@ -21,7 +21,7 @@ AFRAME.registerShader('floorShader', {
   fragmentShader: `
     varying vec2 uvs;
     varying vec3 worldPos;
-    uniform sampler2D src;
+    uniform vec3 color;
     uniform sampler2D normalMap;
     uniform sampler2D envMap;
     uniform vec3 hitRight;
@@ -33,9 +33,12 @@ AFRAME.registerShader('floorShader', {
 
     void main() {
       vec2 p = uvs.xy - 0.5;
+      float border = smoothstep(0.49, 0.495, abs(p.x)) + smoothstep(0.49, 0.495, abs(p.y));
       p*= 4.0;
 
-      vec3 col = texture2D(src, uvs).xyz;
+      vec3 col = color;
+      vec3 col2 = color;
+      vec4 outColor;
 
       col += drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
       col += drawCircle(worldPos, hitRight, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
@@ -48,7 +51,11 @@ AFRAME.registerShader('floorShader', {
       vec3 reflectVec = normalize(reflect(normalize(worldPos - cameraPosition), normal));
       //vec3 reflectView = normalize((viewMatrix * vec4(reflectVec, 0.0)).xyz + vec3(0.0, 0.0, 1.0));
 
-      gl_FragColor = vec4(texture2D(envMap, reflectVec.xy * vec2(0.3, 1.0) + vec2(0.75, -cameraPosition.z * 0.05)).xyz * 0.08 + col, 0.9 + col.x);
+      col2 = texture2D(envMap, reflectVec.xy * vec2(0.3, 1.0) + vec2(0.75, -cameraPosition.z * 0.05)).xyz * 0.08 + col;
+
+      outColor = smoothstep(vec4(col2, 0.9 + col.x), vec4(1.0), vec4(border));
+
+      gl_FragColor = outColor;
     }
   `
 });

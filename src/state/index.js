@@ -64,7 +64,7 @@ AFRAME.registerState({
     leaderboardQualified: false,
     leaderboardNames: '',
     leaderboardScores: '',
-    menuActive: true,  // Main menu active.
+    menuActive: false,  // Main menu active.
     menuDifficulties: [],  // List of strings of available difficulties for selected.
     menuSelectedChallenge: {  // Currently selected challenge in the main menu.
       author: '',

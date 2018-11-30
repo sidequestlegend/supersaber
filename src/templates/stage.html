@@ -25,6 +25,7 @@
 
 <a-sky
   id="sky"
+  visible="false"
   mixin="gameoverAnimation bgAnimation"
   animation__gameover="property: components.material.material.color; type: color; to: #301000; startEvents: gameover"
   geometry="segmentsHeight: 16; segmentsWidth: 32"
@@ -37,12 +38,14 @@
   proxy-event="event: audioanalyserbeat; to: #logolight"></a-entity>
 
 <a-entity id="stage">
+
   <a-entity id="backglow"
+    visible="false"
     mixin="gameoverAnimation bgAnimation"
     animation__gameover="property: components.material.material.opacity; to: 0.2; startEvents: gameover"
     obj-model="obj: #backglowObj"
     material="transparent: true; color: #f00; src: #backglowTexture; opacity: 0.7"
-    position="0 0 -50"
+    position="0 0 -60"
     scale="20 20 20"></a-entity>
 
   <a-entity id="twister" position="0 0 -35" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
@@ -52,15 +55,14 @@
     audio-columns="analyser: #audioAnalyser; height: 28; mirror: 18; scale: 9; thickness: 0.6; separation: 0.55"
     position="0 -19 5"></a-entity>
 
+<!--
   <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101" visible="false"></a-mixin>
   <a-entity id="stageCorridor" buffer-geometry-merger material="shader: flat; flatShading: true; vertexColors: vertex">
-    <!-- Corridor. -->
     <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85"></a-entity>
     <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="1.9 -9.97 -7"></a-entity>
     <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="-1.9 -9.97 -7"></a-entity>
     <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="1.9 -1 -31.85"></a-entity>
     <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="-1.9 -1 -31.85"></a-entity>
-    <!-- Corridor handrail. -->
     <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="3.5 -10 -7"></a-entity>
     <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
   </a-entity>
@@ -80,6 +82,16 @@
     id="stageNeon"
     mixin="neonAnimation"
     obj-model="obj: #stageNeonObj"></a-entity>
+-->
+  <a-entity
+    id="stageobj"
+    obj-model="obj: #stageObj"
+    materials="name: stageNormal"></a-entity>
+  <a-entity
+    id="stageadditiveobj"
+    obj-model="obj: #stageAdditiveObj"
+    material="shader: flat; color: #f00; src: #atlasImg; transparent: true; blending: additive; depthWrite: false; fog: false"></a-entity>
+
 
   <!-- Lasers left. -->
   <a-entity id="leftStageLasers" bind__stage-lasers="enabled: isPlaying">
@@ -100,13 +112,12 @@
   <a-mixin
     id="smoke"
     mixin="gameoverAnimation"
-    additive
     animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameover"
     animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true"
-    geometry="primitive: cylinder; height: 30"
-    material="src: #smokeTexture; repeat: 2 1; side: double; fog: true; shader: flat; transparent: true; color: #111"></a-mixin>
-  <a-entity id="smoke1" mixin="smoke" geometry="radius: 10" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
-  <a-entity id="smoke2" mixin="smoke" geometry="radius: 20" position="0 1.8 0" animation__rotate="dur: 243000"></a-entity>
+    obj-model="obj:#smokeObj"
+    material="src: #atlasImg; fog: false; shader: flat; transparent: true"></a-mixin>
+  <a-entity id="smoke1" mixin="smoke" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
+  <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.25 0.8 1.25" animation__rotate="dur: 243000"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
@@ -124,13 +135,15 @@
     <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" material="color: #e81e23" logoflicker="delay: 1200" bind__logoflicker="active: menuActive || isVictory"></a-entity>
   </a-entity>
 
+    <!-- material="color: #030303" -->
   <a-entity
     id="floor"
     data-saber-particles
     geometry="primitive: plane; width: 3; height: 3"
-    material="shader: floorShader; src: #floorImg; normalMap: #floorNormalsImg; envMap: #floorEnvImg; hitRight: -999 0 0; hitLeft: -999 0 0"
     rotation="-90 0 0"
     raycastable-game
+    rotation="-90 0 0"
+    material="shader: floorShader; color: #f33; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
     stepback></a-entity>
 
   <a-entity

@@ -13,9 +13,20 @@
 <a-asset-item id="mineBrokenObj" src="assets/models/minebroken.obj"></a-asset-item>
 <a-asset-item id="mineParticlesJSON" src="assets/models/mineparticles.json"></a-asset-item>
 <a-asset-item id="saberParticlesJSON" src="assets/models/sabercut.json"></a-asset-item>
+<!--
 <a-asset-item id="stageNeonObj" src="assets/models/neons.obj"></a-asset-item>
 <a-asset-item id="tunnelObj" src="assets/models/tunnel.obj"></a-asset-item>
 <a-asset-item id="tunnelNeonObj" src="assets/models/tunnelneon.obj"></a-asset-item>
+-->
+<a-asset-item id="stageObj" src="assets/models/stage.obj"></a-asset-item>
+<a-asset-item id="stageAdditiveObj" src="assets/models/stageadditive.obj"></a-asset-item>
+<a-asset-item id="stepbackObj" src="assets/models/stepback.obj"></a-asset-item>
+<a-asset-item id="missObj" src="assets/models/miss.obj"></a-asset-item>
+<a-asset-item id="wrongObj" src="assets/models/wrong.obj"></a-asset-item>
+<a-asset-item id="smokeObj" src="assets/models/smoke.obj"></a-asset-item>
+<a-asset-item id="audiocolumnObj" src="assets/models/audiocolumn.obj"></a-asset-item>
+
+
 <a-asset-item id="tutorial1Obj" src="assets/models/tutorial1.obj"></a-asset-item>
 <a-asset-item id="tutorial2Obj" src="assets/models/tutorial2.obj"></a-asset-item>
 <a-asset-item id="tutorial3Obj" src="assets/models/tutorial3.obj"></a-asset-item>
@@ -33,31 +44,29 @@
 <audio id="hitSound{{ i }}right" src="assets/sounds/hit{{ i }}right.ogg"></audio>
 {% endfor %}
 
+<img id="skyTexture" src="assets/img/sky.jpg">
 <img id="backglowTexture" src="assets/img/backglow.png">
 <img id="cursorMeshImg" src="assets/models/laser/laser.png">
 <img id="downIconImg" src="assets/img/downIcon.png">
 <img id="envmapTexture" src="assets/img/envMap.png">
 <img id="envmapWallTexture" src="assets/img/envmapwall.jpg">
-<img id="floorImg" src="assets/img/floor.png">
+<img id="neonImg" src="assets/img/neon.png">
 <img id="gridImg" src="assets/img/grid.png">
 <img id="playImg" src="assets/img/play.png">
-<img id="skyTexture" src="assets/img/sky.jpg">
 <img id="sliceImg" src="assets/img/slice.png">
 <img id="slicebtnImg" src="assets/img/slicebtn.png">
-<img id="smokeTexture" src="assets/img/smoke.png">
 <img id="beamImg" src="assets/img/beam.png">
 <img id="wrongImg" src="assets/img/wrong.png">
 <img id="missImg" src="assets/img/miss.png">
 <img id="noiseTexture" src="assets/img/noise.png">
-<img id="neonImg" src="assets/img/neon.png">
 <img id="sparkImg" src="assets/img/spark.png">
 <img id="spark2Img" src="assets/img/spark2.png">
-<img id="stepbackImg" src="assets/img/stepback.png">
 <img id="soundboxingImg" src="assets/img/soundboxing.png">
 <img id="genresImg" src="assets/img/genres.png">
 <img id="tutorialImg" src="assets/img/tutorial.png">
 <img id="floorEnvImg" src="assets/img/floorenv.jpg">
 <img id="floorNormalsImg" src="assets/img/floornormals.png">
+<img id="atlasImg" src="assets/img/atlas.png">
 
 <a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
 <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
@@ -119,15 +128,15 @@
 
 <a-mixin
   id="beatWrong"
-  geometry="primitive: plane; height: 0.3; width: 0.3"
-  material="shader: flat; transparent: true; src: #wrongImg"
+  obj-model="obj: #wrongObj"
+  material="shader: flat; transparent: true; src: #atlasImg"
   visible="false"
   animation__posz="property: object3D.position.z; to: -8; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"
   animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatwrong; easing: easeOutQuart; dur: 4000"></a-mixin>
 
 <a-mixin id="beatMiss"
-  geometry="primitive: plane; height: 0.25; width: 0.5"
-  material="shader: flat; transparent: true; src: #missImg"
+  obj-model="obj: #missObj"
+  material="shader: flat; transparent: true; src: #atlasImg"
   visible="false"
   animation__posz="property: object3D.position.z; to: -8; startEvents: beatmiss; easing: easeOutQuart; dur: 4000"
   animation__alpha="property: components.material.material.opacity; from: 1; to: 0; startEvents: beatmiss; easing: easeOutQuart; dur: 4000"></a-mixin>

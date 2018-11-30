@@ -1,9 +1,5 @@
-/**
- * 72 values per box.
- * Divided by 3 (x, y, z) is 24 vertices.
- * 6 vertices per side of the cube (2 faces per side).
- */
-const NUM_VALUES_PER_BOX = 72;
+
+const NUM_VALUES_PER_BOX = 90;
 
 /**
  * Column bars moving in sync to the audio via audio analyser.
@@ -19,6 +15,10 @@ AFRAME.registerComponent('audio-columns', {
   },
 
   init: function () {
+    var objData = document.getElementById('audiocolumnObj').data;
+    var loader = new THREE.OBJLoader();
+    var columnGeometry = loader.parse(objData).children[0].geometry;
+
     this.analyser = this.data.analyser.components.audioanalyser;
 
     // Number of levels is half the FFT size.
@@ -29,7 +29,7 @@ AFRAME.registerComponent('audio-columns', {
     let zPosition = 0;
     for (let i = 0; i < this.frequencyBinCount; i++) {
       for (let side = 0; side < 2; side++) {
-        const box = new THREE.BoxBufferGeometry();
+        const box = columnGeometry.clone();
         this.initBox(box, side === 0 ? 1 : -1, zPosition);
         geometries.push(box);
         // Move Z back.
@@ -38,7 +38,7 @@ AFRAME.registerComponent('audio-columns', {
     }
 
     this.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(geometries);
-    const mesh = new THREE.Mesh(this.geometry, this.el.sceneEl.systems.materials.black);
+    const mesh = new THREE.Mesh(this.geometry, this.el.sceneEl.systems.materials.stageNormal);
     this.el.setObject3D('mesh', mesh);
   },
 
@@ -63,8 +63,8 @@ AFRAME.registerComponent('audio-columns', {
     // Set position and scale of box via vertices.
     for (let v = 0; v < box.attributes.position.array.length; v += 3) {
       // Apply thickness to X and Z.
-      box.attributes.position.array[v] *= data.thickness;
-      box.attributes.position.array[v + 2] *= data.thickness;
+      //box.attributes.position.array[v] *= data.thickness;
+      //box.attributes.position.array[v + 2] *= data.thickness;
 
       // Apply zPosition.
       box.attributes.position.array[v + 2] += zPosition;

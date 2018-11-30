@@ -17,6 +17,7 @@
     <audio id="introSong" src="assets/sounds/introSong.ogg" loop></audio>
 
     <a-scene
+    stats
       mixin="gameoverAnimation fogAnimation"
       bind__beat-loader="challengeId: challenge.id; difficulty: menuSelectedChallenge.difficulty; isPlaying: isPlaying; menuSelectedChallengeId: menuSelectedChallenge.id"
       bind__gameover="isGameOver: isGameOver"
@@ -224,9 +225,9 @@
       <a-entity
         id="stepback"
         class="overlay"
-        geometry="primitive: plane; width: 0.5; height: 0.25;"
+        obj-model="obj: #stepbackObj"
         position="0 1.6 -1.55"
-        material="shader: flat; src: #stepbackImg; transparent: true; opacity: 0"></a-entity>
+        material="shader: flat; src: #atlasImg; transparent: true; opacity: 0"></a-entity>
 
       {% if not IS_PRODUCTION %}
         <a-entity
