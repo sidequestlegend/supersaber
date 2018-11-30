@@ -8,6 +8,7 @@ AFRAME.registerComponent('stage-colors', {
   },
 
   init: function () {
+    /*
     this.neonRed = new THREE.Color(0xff9999);
     this.neonBlue = new THREE.Color(0x9999ff);
     this.defaultRed = new THREE.Color(0xff0000);
@@ -52,26 +53,31 @@ AFRAME.registerComponent('stage-colors', {
     this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
 
     this.el.addEventListener('cleargame', this.resetColors.bind(this));
+    */
   },
 
   update: function (oldData) {
-    this.updateColors(this.data.color);
+   // this.updateColors(this.data.color);
   },
 
   setColor: function (target, code) {
-    const mesh = this.targets[target].getObject3D('mesh');
+  /*  const mesh = this.targets[target].getObject3D('mesh');
     if (mesh) { mesh.material.opacity = 1; }
     this.targets[target].emit('color' + this.colorCodes[code], null, false);
+  */
   },
 
   resetColors: function () {
+  /*
     this.updateColors('blue');
     for (let target in this.targets) {
       this.targets[target].emit('colorblue', null, false);
     }
+    */
   },
 
   updateColors: function (color) {
+  /*
     const red = color === 'red';
 
     // Init or reset.
@@ -95,4 +101,5 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
   }
+  */
 });

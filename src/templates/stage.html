@@ -22,6 +22,7 @@
   animation__colorbluefade="property: components.fog.el.object3D.fog.color; type: color; from: #3398CA; to: #007cb9; dur: 500; easing: linear; startEvents: colorbluefade"
   animation__colorred="property: components.fog.el.object3D.fog.color; type: color; to: #b90000; dur: 5; easing: linear; startEvents: colorred"
   animation__colorredfade="property: components.fog.el.object3D.fog.color; type: color; from: #ff0000; to: #b90000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
+<!--
 
 <a-sky
   id="sky"
@@ -30,7 +31,7 @@
   animation__gameover="property: components.material.material.color; type: color; to: #301000; startEvents: gameover"
   geometry="segmentsHeight: 16; segmentsWidth: 32"
   material="src: #skyTexture"></a-sky>
-
+-->
 <a-entity
   id="audioAnalyser"
   bind__audioanalyser="beatDetectionThrottle: menuActive && 5000 || 1000"
@@ -38,7 +39,7 @@
   proxy-event="event: audioanalyserbeat; to: #logolight"></a-entity>
 
 <a-entity id="stage">
-
+<!--
   <a-entity id="backglow"
     visible="false"
     mixin="gameoverAnimation bgAnimation"
@@ -47,7 +48,7 @@
     material="transparent: true; color: #f00; src: #backglowTexture; opacity: 0.7"
     position="0 0 -60"
     scale="20 20 20"></a-entity>
-
+-->
   <a-entity id="twister" position="0 0 -35" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
 
   <a-entity

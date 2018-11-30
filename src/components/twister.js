@@ -1,3 +1,5 @@
+const NUM_VALUES_PER_SEGMENT = 75;
+
 AFRAME.registerComponent('twister', {
   schema: {
     enabled: {default: false},
@@ -12,47 +14,44 @@ AFRAME.registerComponent('twister', {
   init: function () {
     this.currentTwist = 0;
     this.animate = false;
-    this.zoomProgress = 0;
+    this.geometry = null;
   },
 
   pulse: function (twist) {
     if (!this.data.enabled) { return; }
+    console.log('PULSE');
     if (twist == 0) { twist = 0.03 + Math.random() * 0.25; }
     else twist = Math.min(twist * 0.4, 0.4);
     twist *= Math.random() < 0.5 ? -1 : 1; // random direction
     this.el.setAttribute('twister', {twist: twist});
   },
 
-  zoom: function () {
-    if (!this.data.enabled) { return; }
-    this.zoomProgress = 0.01;
-    this.animate = true;
-  },
-
   update: function (oldData) {
     var radius = 6;
-    var segment;
-    var lastSegment;
+    var segments = [];
 
     if (Math.abs(this.data.twist - this.currentTwist) > 0.001) {
       this.animate = true;
       return;
     }
 
-    this.clearSegments();
-    lastSegment = this.el.object3D;
+    this.clear();
 
     for (var i = 0; i < this.data.count; i++) {
-      segment = this.createSegment(radius);
-      segment.position.y = this.data.positionIncrement;
-      lastSegment.add(segment);
-      lastSegment = segment;
+      let segment = this.createSegment(radius);
+      segment.translate(0, this.data.positionIncrement * i, 0);
+      segments.push(segment);
       radius += this.data.radiusIncrement;
     }
+    this.geometry = THREE.BufferGeometryUtils.mergeBufferGeometries(segments);
+    var material = this.el.sceneEl.systems.materials.stageNormal;
+    var mesh = new THREE.Mesh(this.geometry, material);
+    this.el.object3D.add(mesh);
   },
 
   createSegment: function (radius) {
     const R = this.data.thickness;
+    var geometry;
     var points = [
       new THREE.Vector2(radius - R, R),
       new THREE.Vector2(radius - R, -R),
@@ -60,40 +59,50 @@ AFRAME.registerComponent('twister', {
       new THREE.Vector2(radius + R, R),
       new THREE.Vector2(radius - R, R)
     ];
-    var material = this.el.sceneEl.systems.materials.black;
-    var geometry = new THREE.LatheBufferGeometry(points, this.data.vertices);
-    var segment = new THREE.Mesh(geometry, material);
-    return segment;
+    geometry = new THREE.LatheBufferGeometry(points, this.data.vertices);
+    // move uvs to a specific point in atlas.png
+    for (let i = 0; i < geometry.attributes.uv.array.length; i += 2) {
+      geometry.attributes.uv.array[i] = 0.77;
+      geometry.attributes.uv.array[i + 1] = 0.001;
+    }
+    return geometry;
   },
 
-  clearSegments: function () {
+  clear: function () {
     this.el.object3D.remove(this.el.object3D.children[0]);
+    if (this.geometry) this.geometry.dispose();
+    this.geometry = new THREE.BufferGeometry();
   },
 
   tick: function (time, delta) {
     if (!this.animate) { return; }
+
+    var posArray = this.geometry.attributes.position.array;
+    var rotation;
+    var x, y;
+    var sin, cos;
+
     delta *= 0.001;
 
+    // TODO: FIX ROTATIONS!! (before they where absolute, now relative)
     this.currentTwist += (this.data.twist - this.currentTwist) * delta;
+    rotation = 0.01;
 
-    var child = this.el.object3D.children[0];
-    var zoom = this.zoomProgress ? Math.sin(this.zoomProgress * Math.PI) * 0.4 : 0;
-
-    while (child) {
-      child.rotation.y = this.currentTwist;
-      child.position.y = this.data.positionIncrement + zoom;
-      child = child.children[0];
-    }
-
-    if (this.zoomProgress > 0) {
-      this.zoomProgress += delta;
-      if (this.zoomProgress >= 1) {
-        this.zoomProgress = 0;
+    for (var s = 0; s < this.data.count; s++) {
+      for (var i = 0; i < NUM_VALUES_PER_SEGMENT; i += 3) {
+        cos = Math.cos(rotation);
+        sin = Math.sin(rotation);
+        x = posArray[s * NUM_VALUES_PER_SEGMENT + i];
+        y = posArray[s * NUM_VALUES_PER_SEGMENT + i + 2];
+        posArray[s * NUM_VALUES_PER_SEGMENT + i] = x * cos - y * sin;
+        posArray[s * NUM_VALUES_PER_SEGMENT + i + 2] = y * cos + x * sin;
       }
+      rotation *= 1.05;
     }
-    if (Math.abs(this.data.twist - this.currentTwist) < 0.001 && this.zoomProgress == 0){
+    this.geometry.attributes.position.needsUpdate = true;
+
+    if (Math.abs(this.data.twist - this.currentTwist) < 0.001){
       this.animate = false;
     }
-
   }
 });
