@@ -25,6 +25,7 @@
 <a-asset-item id="wrongObj" src="assets/models/wrong.obj"></a-asset-item>
 <a-asset-item id="smokeObj" src="assets/models/smoke.obj"></a-asset-item>
 <a-asset-item id="audiocolumnObj" src="assets/models/audiocolumn.obj"></a-asset-item>
+<!--<a-asset-item id="wallglowObj" src="assets/models/wallglow.obj"></a-asset-item>-->
 
 <a-asset-item id="tutorial1Obj" src="assets/models/tutorial1.obj"></a-asset-item>
 <a-asset-item id="tutorial2Obj" src="assets/models/tutorial2.obj"></a-asset-item>
@@ -122,7 +123,7 @@
   id="wall"
   data-saber-particles
   geometry
-  material="shader: wallShader; tex: #noiseTexture; env: #envmapWallTexture; repeat: 2 2; transparent: true; side: double"
+  material="shader: wallShader; transparent: true; side: double;"
   wall></a-mixin>
 
 <a-mixin

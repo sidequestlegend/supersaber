@@ -2,8 +2,6 @@
 AFRAME.registerShader('wallShader', {
   schema: {
     iTime: {type: 'time', is: 'uniform'},
-    tex: {type: 'map', is: 'uniform'},
-    env: {type: 'map', is: 'uniform'},
     hitRight: {type: 'vec3', is: 'uniform', default: {x: 0, y: 1, z: 0}},
     hitLeft: {type: 'vec3', is: 'uniform', default: {x: 0, y: 0, z: 0}}
   },
@@ -22,78 +20,89 @@ AFRAME.registerShader('wallShader', {
   `,
 
   fragmentShader: `
-    // based on https://www.shadertoy.com/view/ldlXRS
     varying vec2 uvs;
     varying vec3 nrml;
     varying vec3 worldPos;
     uniform float iTime;
-    uniform sampler2D tex;
-    uniform sampler2D env;
+    //uniform sampler2D env;
     uniform vec3 hitRight;
     uniform vec3 hitLeft;
 
-    #define time iTime/1000.0*0.15
-    #define tau 6.2831853
+    #define SEED 19.1254
+    #define time (3.0 + iTime)/1000.0 * 0.15
 
-    mat2 makem2(in float theta){float c = cos(theta);float s = sin(theta);return mat2(c,-s,s,c);}
-    float noise( in vec2 x ){return texture2D(tex, x*.007).x;}
-
-    float fbm(in vec2 p) {
-      float z=2.;
-      float rz = 0.;
-      vec2 bp = p;
-      for (float i= 1.;i < 6.;i++)
-      {
-        rz+= abs((noise(p)-0.5)*2.)/z;
-        z = z*2.;
-        p = p*2.;
-      }
-      return rz;
-    }
-
-    float dualfbm(in vec2 p) {
-      vec2 p2 = p*.4;
-      vec2 basis = vec2(fbm(p2-time*1.6),fbm(p2+time*1.7));
-      basis = (basis-.5)*.2;
-      p += basis;
-
-      return fbm(p*makem2(time*0.2));
+    float noise(vec3 uv) {
+      return fract(sin(uv.x*123243. + uv.y*424. + uv.z*642. + SEED) * 1524.);
     }
 
     vec3 drawCircle(vec3 p, vec3 center, float radius, float edgeWidth, vec3 color) {
-      return color*(1.0-smoothstep(radius, radius+edgeWidth, length(p-center)));
+      return color * (1.0 - smoothstep(radius, radius + edgeWidth, length(p - center)));
     }
+
+    float smoothNoise(vec3 uvw, float frec){
+      vec3 luvw = vec3(smoothstep(0.0, 1.0, fract(uvw.xy * frec)), fract(uvw.z * frec));
+      vec3 id = floor(uvw * frec);
+      float blt = noise(id);
+      float brt = noise(id + vec3(1.0, 0.0, 0.0));
+      float tlt = noise(id + vec3(0.0, 1.0, 0.0));
+      float trt = noise(id + vec3(1.0, 1.0, 0.0));
+
+      float blb = noise(id + vec3(0.0, 0.0, 1.0));
+      float brb = noise(id + vec3(1.0, 0.0, 1.0));
+      float tlb = noise(id + vec3(0.0, 1.0, 1.0));
+      float trb = noise(id + vec3(1.0, 1.0, 1.0));
+
+      float a = mix(blt, brt, luvw.x);
+      float b = mix(tlt, trt, luvw.x);
+      float c = mix(a, b, luvw.y);
+
+      float d = mix(blb, brb, luvw.x);
+      float e = mix(tlb, trb, luvw.x);
+      float f = mix(d, e, luvw.y);
+
+      return mix(c, f, luvw.z);
+    }
+
+
 
     void main() {
+      vec2 uv1 = uvs.xy-0.5;
+      float angle = time / 10.0;
+      vec2 uv;
+      uv.x = uv1.x * cos(angle) - uv1.y * sin(angle);
+      uv.y = uv1.y * cos(angle) + uv1.x * sin(angle);
+      uv.x += sin(uv.y * 2.7 + time / 1.7) * 0.2;
+      uv.y += sin(uv.x * 3.1 + time / 2.4) * 0.3;
 
-      vec2 p = uvs.xy-0.5;// / iResolution.xy-0.5;
-      vec2 pp = p;
-      p*= 4.0;
+      float w, r, bg;
+      r = smoothNoise(vec3(uv + worldPos.x, time / 2.0), 3.0) * 0.65;
+      r += smoothNoise(vec3(uv, time / 6.0), 8.0) * 0.3;
+      r += smoothNoise(vec3(uv, time / 14.0), 50.0) * 0.04;
 
-      float rz = dualfbm(p)*5.0;
+      bg = smoothstep(0.5, 1.0, r) + smoothstep(0.5, 0.0, r);
+      r = smoothstep(0.4, 0.50, r) - smoothstep(0.50, 0.6, r);
+      w = smoothstep(0.97, 1.0, r);
 
-      p += time * 20.0;
-      rz *= pow(abs(cos(p.x*.2) + sin(p.y*1.4)*0.1), .4);
 
-      vec3 col = vec3(0.2,0.0,0.0) / rz;
-      col.g = smoothstep(0.6, 1.0, col.r);
-      col.b = smoothstep(0.6, 1.0, col.r);
+      r += smoothstep(0.44, 0.50, abs(uv1.x));
+      r += smoothstep(0.44, 0.50, abs(uv1.y));
 
-      col += smoothstep(0.48, 0.495, abs(pp.x));
-      col += smoothstep(0.48, 0.495, abs(pp.y));
+      w += smoothstep(0.49, 0.498, abs(uv1.x));
+      w += smoothstep(0.49, 0.498, abs(uv1.y));
 
-      col += drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
-      col += drawCircle(worldPos, hitRight, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
-      col += drawCircle(worldPos, hitLeft, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
-      col += drawCircle(worldPos, hitLeft, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
+      w *= 0.9;
+      bg *= 0.5;
 
-      //gl_FragColor = vec4(col, 1.0);
+      vec3 col = vec3(r * 0.8 + w, w + 0.1, w + 0.13);
 
-      // add environment reflection
-      vec3 reflectVec = normalize(reflect(normalize(worldPos - cameraPosition), normalize(nrml + col)));
-      vec3 reflectView = normalize( ( viewMatrix * vec4( reflectVec, 0.0 ) ).xyz + vec3( 0.0, 0.0, 1.0 ) );
+      vec3 hit;
+      hit = drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
+      hit += drawCircle(worldPos, hitRight, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
+      hit += drawCircle(worldPos, hitLeft, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
+      hit += drawCircle(worldPos, hitLeft, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
 
-      gl_FragColor = vec4(texture2D(env, reflectView.xy * 0.5 + 0.5).xyz * 0.05 + col, 0.9 + col.x);
+      gl_FragColor = vec4(col + hit, 0.7 + w + hit.x);
     }
-  `
+`
+
 });

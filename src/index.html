@@ -52,9 +52,9 @@
       play-sound__victory="sound: #victorySong; event: victory"
       search
       stage-colors="color: blue"
-      fog="color: #a00; density: 0.035; type: exponential"
       vr-mode-ui="enterVRButton: #vrButton"
       tutorial-2d>
+      <!-- fog="color: #a00; density: 0.035; type: exponential" -->
 
       <a-assets timeout="10000">
         {% include './assets.html' %}
@@ -79,6 +79,11 @@
       {% include './templates/gameMenu.html' %}
       {% include './templates/victory.html' %}
       {% include './templates/leaderboard.html' %}
+
+<!--
+  <a-entity id="testwall" geometry="width: 0.3; height: 1; depth: 1.5;" position="-1 1.6 -1" material="shader: wallShader; env: #envmapWallTexture; fog: false; transparent: true; side: double"></a-entity>
+  <a-entity id="testwallglow" visible = "false" obj-model="obj: #wallglowObj" position="-1 1.6 -1" scale="0.3 1.0 1.5" material="shader: flat; blending: additive; depthTest: false; src: #atlasImg; fog: false; transparent: true;"></a-entity>
+-->
 
       <!-- super cut fx rings -->
       {% for i in range(1, 5) %}
