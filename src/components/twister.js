@@ -81,12 +81,14 @@ AFRAME.registerComponent('twister', {
     var rotation;
     var x, y;
     var sin, cos;
+    var diff;
 
     delta *= 0.001;
 
-    // TODO: FIX ROTATIONS!! (before they where absolute, now relative)
-    this.currentTwist += (this.data.twist - this.currentTwist) * delta;
-    rotation = 0.01;
+    diff = (this.data.twist - this.currentTwist) * delta;
+
+    this.currentTwist += diff;
+    rotation = diff * 3.0;
 
     for (var s = 0; s < this.data.count; s++) {
       for (var i = 0; i < NUM_VALUES_PER_SEGMENT; i += 3) {
