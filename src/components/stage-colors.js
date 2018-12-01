@@ -100,6 +100,6 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
-  }
   */
+  }
 });
