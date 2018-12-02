@@ -11,18 +11,13 @@ AFRAME.registerComponent('cursor-laser', {
 
   init: function () {
     const el = this.el;
-    const box = new THREE.Box3();
-    const size = new THREE.Vector3();
-
-    this.currentLength = undefined;
-    this.originalSize = undefined;
+    this.saberEl = this.el.closest('.saber');
 
     // Calculate size to position beam at tip of controller.
-    box.setFromObject(el.getObject3D('mesh'));
-    box.getSize(size);
-    el.object3D.position.z = -0.3;
-    this.originalSize = size.y;
-    this.currentLength = size.y;
+    const geometry = this.el.getAttribute('geometry');
+    el.object3D.position.z = -1 * geometry.height / 2;
+    this.originalSize = geometry.height;
+    this.currentLength = geometry.height;
   },
 
   update: function () {
@@ -34,7 +29,7 @@ AFRAME.registerComponent('cursor-laser', {
 
     if (!this.data.enabled) { return; }
 
-    const cursor = el.parentNode.components.cursor;
+    const cursor = this.saberEl.components.cursor;
     if (!cursor) { return; }
 
     // Toggle beam.
@@ -50,7 +45,7 @@ AFRAME.registerComponent('cursor-laser', {
     }
 
     // Set appropriate length of beam on intersection.
-    const intersection = el.parentNode.components.raycaster.intersections[0];
+    const intersection = this.saberEl.components.raycaster.intersections[0];
     if (!intersection) { return; }
     el.object3D.scale.x = 1;
     el.object3D.position.z = (-intersection.distance / 2);

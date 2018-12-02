@@ -22,7 +22,6 @@
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
       bind__leaderboard="isVictory: isVictory; menuSelectedChallengeId: menuSelectedChallenge.id; challengeId: challenge.id"
-      bind__overlay="enabled: !isPlaying"
       bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
       bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
       animation__gameover="property: object3D.background; type: color; to: #750000; startEvents: gameover"
@@ -32,11 +31,9 @@
       debug-controller
       debug-song-time
       debug-state
-      effect-bloom="strength: 1"
       gpu-preloader
       leaderboard="apiKey: AIzaSyBCnpzND3eN37CBSu1bSYfaKQoe6yD3SnY; authDomain: supersaberrr.firebaseapp.com; databaseURL: https://supersaberrr.firebaseio.com; projectId: supersaberrr; storageBucket: supersaberrr.appspot.com; messagingSenderId: 172125624222"
       loading-screen="backgroundColor: #000;"
-      overlay="objects: .overlay"
       pool__beat-arrow-blue="mixin: arrowBlueBeat; size: 10; container: #beatContainer"
       pool__beat-arrow-red="mixin: arrowRedBeat; size: 10; container: #beatContainer"
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
@@ -157,48 +154,52 @@
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
             trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
-              id="{{ hand }}Laser"
-              bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
-              geometry="primitive: cylinder; height: 1; radius: 0.005"
-              material="color: {{ beamColor }}; shader: flat"
-              rotation="-90 0 0"></a-entity>
-
-            <a-entity class="saberContainer" rotation="90 0 0">
+              id="saberLengthOffset"
+              bind__position="controllerType === 'oculus-touch-controls' && '0 0 0.025' || '0 0 0.06'">
               <a-entity
-                class="bladeContainer"
-                bind__visible="isPlaying"
-                animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
-                scale="0.001 0.001 0.001">
-                <a-entity
-                  class="blade blade{{ hand }}"
-                  geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
-                  material="shader: flat; color: {{ bladeColor }}"
-                  raycastable-game
-                  position="0 -0.55 0"></a-entity>
-              </a-entity>
-              <a-entity
-                class="saberHandle"
-                geometry="primitive: box; height: 0.2; depth: 0.025; width: 0.025"
-                material="shader: flat; color: #151515">
-                <a-entity
-                  class="highlightTop"
-                  geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: {{ bladeColor }}"
-                  position="0 0 0.0125"></a-entity>
-                <a-entity
-                  class="highlightBottom"
-                  geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: {{ bladeColor }}"
-                  position="0 0 -0.0125"></a-entity>
-              </a-entity>
-            </a-entity>
+                id="{{ hand }}Laser"
+                bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
+                geometry="primitive: cylinder; height: 1; radius: 0.005"
+                material="color: {{ beamColor }}; shader: flat"
+                rotation="-90 0 0"></a-entity>
 
-            <a-entity
-              class="fakeGlow"
-              fake-glow="color: {{ beamColor }}"
-              position="0 0.01 0"
-              rotation="90 0 0"
-              bind__visible="!isPlaying">
+              <a-entity class="saberContainer" rotation="90 0 0">
+                <a-entity
+                  class="bladeContainer"
+                  bind__visible="isPlaying"
+                  animation="property: scale; from: 0 0 0; to: 1 1 1; dur: 750; easing: linear; startEvents: drawblade"
+                  scale="0.001 0.001 0.001">
+                  <a-entity
+                    class="blade blade{{ hand }}"
+                    geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
+                    material="shader: flat; color: {{ bladeColor }}"
+                    raycastable-game
+                    position="0 -0.55 0"></a-entity>
+                </a-entity>
+                <a-entity
+                  class="saberHandle"
+                  geometry="primitive: box; height: 0.2; depth: 0.025; width: 0.025"
+                  material="shader: flat; color: #151515">
+                  <a-entity
+                    class="highlightTop"
+                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                    material="shader: flat; color: {{ bladeColor }}"
+                    position="0 0 0.0125"></a-entity>
+                  <a-entity
+                    class="highlightBottom"
+                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                    material="shader: flat; color: {{ bladeColor }}"
+                    position="0 0 -0.0125"></a-entity>
+                </a-entity>
+              </a-entity>
+
+              <a-entity
+                class="fakeGlow"
+                fake-glow="color: {{ beamColor }}"
+                position="0 0.01 0"
+                rotation="90 0 0"
+                bind__visible="!isPlaying">
+              </a-entity>
             </a-entity>
           </a-entity>
 

@@ -46,6 +46,7 @@ AFRAME.registerState({
       songName: '',
       songSubName: ''
     },
+    controllerType: '',
     damage: 0,
     genre: '',
     genres: require('../constants/genres'),
@@ -160,6 +161,10 @@ AFRAME.registerState({
     beatloaderstart: (state) => {
       state.challenge.isBeatsPreloaded = false;
       state.challenge.isLoading = true;
+    },
+
+    controllerconnected: (state, payload) => {
+      state.controllerType = payload.name;
     },
 
     /**
