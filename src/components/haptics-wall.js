@@ -5,7 +5,7 @@ AFRAME.registerComponent('haptics-wall', {
   init: function () {
     const el = this.el;
     this.isHittingWall = false;
-    el.setAttribute('haptics__wall', {dur: 50, force: 0.025});
+    el.setAttribute('haptics__wall', {dur: 50, force: 0.1});
 
     this.checkIfHittingWall = this.checkIfHittingWall.bind(this);
     el.addEventListener('mouseenter', this.checkIfHittingWall);
@@ -15,7 +15,7 @@ AFRAME.registerComponent('haptics-wall', {
   },
 
   /**
-   * On aabb-collider event, check if we are still hitting a wall.
+   * On raycaster event, check if we are still hitting a wall.
    */
   checkIfHittingWall: function () {
     const intersectedEls = this.el.components.raycaster__game.intersectedEls;
