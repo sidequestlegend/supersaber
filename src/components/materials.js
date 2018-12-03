@@ -1,4 +1,5 @@
-const stageShaders = require('../../assets/shaders/stage.js')
+const stageNormalShaders = require('../../assets/shaders/stageNormal.js')
+const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js')
 
 AFRAME.registerSystem('materials', {
   init: function () {
@@ -8,13 +9,27 @@ AFRAME.registerSystem('materials', {
 
     this.stageNormal = new THREE.ShaderMaterial({
       uniforms: {
-        color: {value: new THREE.Vector3(0, 0, 0) },
+        redColor: {value: new THREE.Vector3(1, 0, 0) },
+        blueColor: {value: new THREE.Vector3(0, 0, 1) },
         fogColor: {value: new THREE.Vector3(0, 0.48, 0.72) },
         src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
       },
-      vertexShader: stageShaders.vertexShader,
-      fragmentShader: stageShaders.fragmentShader,
+      vertexShader: stageNormalShaders.vertexShader,
+      fragmentShader: stageNormalShaders.fragmentShader,
       fog: false,
+      transparent: true
+    });
+
+    this.stageAdditive = new THREE.ShaderMaterial({
+      uniforms: {
+        redColor: {value: new THREE.Vector3(1, 0, 0) },
+        blueColor: {value: new THREE.Vector3(0, 0, 1) },
+        src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
+      },
+      vertexShader: stageAdditiveShaders.vertexShader,
+      fragmentShader: stageAdditiveShaders.fragmentShader,
+      fog: false,
+      blending: THREE.AdditiveBlending,
       transparent: true
     });
   }
@@ -27,6 +42,7 @@ AFRAME.registerComponent('materials', {
   },
 
   update: function () {
+    if (this.data.name === "") return;
     var mesh;
     var material = this.system[this.data.name];
     if (!material) {
@@ -42,10 +58,11 @@ AFRAME.registerComponent('materials', {
     }
   },
 
-  applyMaterial: function (obj, material) {
+  applyMaterial: function (obj) {
     var material = this.system[this.data.name];
+    if (obj['detail']) { obj = obj.detail.model; }
     if (this.data.recursive) {
-      obj.detail.model.traverse(o => {
+      obj.traverse(o => {
         if (o.type === 'Mesh') {
           o.material = material;
         }

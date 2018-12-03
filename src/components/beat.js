@@ -6,7 +6,6 @@ const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
 const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
 const BEAT_WARMUP_ROTATION_TIME = 750;
 const ONCE = {once: true};
-const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 
 const SCORE_POOL = {
   OK : 'pool__beatscoreok',
@@ -50,8 +49,10 @@ AFRAME.registerComponent('beat', {
   },
 
   signModels: {
-    arrow: 'arrowObjTemplate',
-    dot: 'dotObjTemplate'
+    arrowred: 'arrowRedObjTemplate',
+    arrowblue: 'arrowBlueObjTemplate',
+    dotred: 'dotRedObjTemplate',
+    dotblue: 'dotBlueObjTemplate'
   },
 
   orientations: [180, 0, 270, 90, 225, 135, 315, 45, 0],
@@ -273,8 +274,8 @@ AFRAME.registerComponent('beat', {
         }, ONCE);
       }
     } else {
-      signEl.setAttribute('material', SIGN_MATERIAL);
-      this.setObjModelFromTemplate(signEl, this.signModels[this.data.type]);
+      signEl.setAttribute('materials', {name: 'stageAdditive'});
+      this.setObjModelFromTemplate(signEl, this.signModels[this.data.type + this.data.color]);
     }
   },
 
@@ -628,6 +629,7 @@ AFRAME.registerComponent('beat', {
 
   returnToPool: function (force) {
     if (!this.backToPool && !force) { return; }
+    console.log('returning ' + this.poolName + ' to pool');
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 
