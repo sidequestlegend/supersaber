@@ -216,21 +216,18 @@ AFRAME.registerComponent('beat-loader', {
     const beatObj = {};
 
     return function (noteInfo) {
-      var beatEl;
-      var color;
       const data = this.data;
 
-      // if (Math.random() < 0.8) noteInfo._type = 3; // just to DEBUG MINES!
+      // if (Math.random() < 0.8) { noteInfo._type = 3; } // To debug mines.
+      const type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
 
-      var type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
-
-      color = noteInfo._type === 0 ? 'red' : 'blue';
+      let color = noteInfo._type === 0 ? 'red' : 'blue';
       if (noteInfo._type === 3) {
         type = 'mine';
         color = undefined;
       }
 
-      beatEl = this.requestBeat(type, color);
+      const beatEl = this.requestBeat(type, color);
       if (!beatEl) { return; }
 
       // Apply sword offset. Blocks arrive on beat in front of the user.
@@ -250,25 +247,30 @@ AFRAME.registerComponent('beat-loader', {
     };
   })(),
 
-  generateWall: function (wallInfo) {
-    var el = this.el.sceneEl.components.pool__wall.requestEntity();
-    const data = this.data;
-    var speed = this.data.beatSpeed;
+  generateWall: (function () {
     const wallObj = {};
 
-    if (!el) { return; }
+    return function (wallInfo) {
+      const el = this.el.sceneEl.components.pool__wall.requestEntity();
 
-    const durationSeconds = 60 * (wallInfo._duration / this.bpm);
-    wallObj.anticipationPosition = -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
-    wallObj.durationSeconds = durationSeconds;
-    wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
-    wallObj.speed = speed;
-    wallObj.warmupPosition = -data.beatWarmupTime * data.beatWarmupSpeed;
-    wallObj.width = wallInfo._width;
-    el.setAttribute('wall', wallObj);
-    el.components.wall.updatePosition();
-    el.play();
-  },
+      if (!el) { return; }
+
+      const data = this.data;
+      const speed = this.data.beatSpeed;
+
+      const durationSeconds = 60 * (wallInfo._duration / this.bpm);
+      wallObj.anticipationPosition =
+        -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
+      wallObj.durationSeconds = durationSeconds;
+      wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
+      wallObj.speed = speed;
+      wallObj.warmupPosition = -data.beatWarmupTime * data.beatWarmupSpeed;
+      wallObj.width = wallInfo._width;
+      el.setAttribute('wall', wallObj);
+      el.components.wall.updatePosition();
+      el.play();
+    };
+  })(),
 
   generateEvent: function (event) {
     switch(event._type) {
