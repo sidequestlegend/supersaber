@@ -52,17 +52,6 @@ AFRAME.registerComponent('wall', {
   tock: function (time, timeDelta) {
     const data = this.data;
     const position = this.el.object3D.position;
-    if (this.intersecting) {
-      var int;
-      if (this.saberHit['rightHand'].active) {
-        int = this.saberHit['rightHand'].raycaster.getIntersection(this.el);
-        if (int) { this.material.uniforms.hitRight.value = int.point; }
-      }
-      if (this.saberHit['leftHand'].active) {
-        int = this.saberHit['leftHand'].raycaster.getIntersection(this.el);
-        if (int) { this.material.uniforms.hitLeft.value = int.point; }
-      }
-    }
 
     // Move.
     if (position.z < data.anticipationPosition) {
