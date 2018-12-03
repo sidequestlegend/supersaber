@@ -126,10 +126,11 @@
 
   <a-entity
     id="floor"
+    data-saber-particles
     geometry="primitive: plane; width: 3; height: 3"
     material="shader: floorShader; src: #floorImg; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
     rotation="-90 0 0"
-    bind__saber-intersection="active: isPlaying"
+    raycastable-game
     stepback></a-entity>
 
   <a-entity

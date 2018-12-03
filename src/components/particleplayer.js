@@ -326,6 +326,7 @@ AFRAME.registerComponent('particleplayer', {
     particleSystem.mesh.rotation.copy(rotation);
     particleSystem.time = 0;
     this.resetParticles(particleSystem);
+    return particleSystem;
   },
 
   doLoop: function (particleSystem) {

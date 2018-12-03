@@ -5,7 +5,7 @@ AFRAME.registerComponent('haptics-wall', {
   init: function () {
     const el = this.el;
     this.isHittingWall = false;
-    el.setAttribute('haptics__wall', {dur: 50, force: 0.1});
+    el.setAttribute('haptics__wall', {dur: 50, force: 0.075});
 
     this.checkIfHittingWall = this.checkIfHittingWall.bind(this);
     el.addEventListener('mouseenter', this.checkIfHittingWall);
