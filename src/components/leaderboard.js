@@ -69,6 +69,7 @@ AFRAME.registerComponent('leaderboard', {
     const state = this.el.sceneEl.systems.state.state;
     if (!state.isVictory) { return; }
     const scoreData = {
+      accuracy: state.score.accuracy,
       challengeId: state.challenge.id,
       score: state.score.score,
       username: this.username,
