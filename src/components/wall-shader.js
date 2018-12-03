@@ -93,7 +93,7 @@ AFRAME.registerShader('wallShader', {
       w *= 0.9;
       bg *= 0.5;
 
-      vec3 col = vec3(r * 0.8 + w, w + 0.1, w + 0.13);
+      vec3 col = vec3(r * 0.8 + w, w + 0.05, w + 0.08);
 
       vec3 hit;
       hit = drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
