@@ -511,8 +511,6 @@ AFRAME.registerState({
     } else {
       state.loadingText = '';
     }
-
-    state.isPlaying = true;
   }
 });
 
