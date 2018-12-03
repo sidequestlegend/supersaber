@@ -219,7 +219,7 @@ AFRAME.registerComponent('beat-loader', {
       const data = this.data;
 
       // if (Math.random() < 0.8) { noteInfo._type = 3; } // To debug mines.
-      const type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
+      let type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
 
       let color = noteInfo._type === 0 ? 'red' : 'blue';
       if (noteInfo._type === 3) {
