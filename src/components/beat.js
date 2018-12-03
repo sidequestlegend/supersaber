@@ -672,7 +672,7 @@ AFRAME.registerComponent('beat', {
         }
 
         // Notify for haptics.
-        this.el.emit(`beatcollide${this.hitHand}`, null, true);
+        this.el.emit(`beatcollide${hand}`, null, true);
 
         // Sound.
         this.el.parentNode.components['beat-hit-sound'].playSound(
@@ -688,7 +688,7 @@ AFRAME.registerComponent('beat', {
 
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
         // Notify for haptics.
-        this.el.emit(`beatcollide${this.hitHand}`, null, true);
+        this.el.emit(`beatcollide${hand}`, null, true);
 
         // Sound.
         this.el.parentNode.components['beat-hit-sound'].playSound(this.el);
