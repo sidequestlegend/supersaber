@@ -20,7 +20,7 @@
 <a-asset-item id="tunnelObj" src="assets/models/tunnel.obj"></a-asset-item>
 <a-asset-item id="tunnelNeonObj" src="assets/models/tunnelneon.obj"></a-asset-item>
 -->
-<a-asset-item id="stageObj" src="assets/models/stage.obj"></a-asset-item>
+<a-asset-item id="stageNormalObj" src="assets/models/stagenormal.obj"></a-asset-item>
 <a-asset-item id="stageAdditiveObj" src="assets/models/stageadditive.obj"></a-asset-item>
 <a-asset-item id="stepbackObj" src="assets/models/stepback.obj"></a-asset-item>
 <a-asset-item id="missObj" src="assets/models/miss.obj"></a-asset-item>
@@ -150,5 +150,22 @@
   animation__mouseenter1="property: components.slice9.material.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
   animation__mouseleave1="property: components.slice9.material.color; type: color; from: #FFF; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
   animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150">
-</a-mixin>
+  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"></a-mixin>
+
+
+<a-mixin id="bgColorAnimation"
+  animation__bgcoloroff="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: #111; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__bgcolorblue="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: bgcolorblue"
+  animation__bgcolorbluefade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: bgcolorbluefade"
+  animation__bgcolorred="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: #fc0000; dur: 5; easing: linear; startEvents: bgcolorred"
+  animation__bgcolorredfade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: bgcolorredfade"
+  ></a-mixin>
+
+
+<a-mixin id="tunnelColorAnimation"
+  animation__tunnelcoloroff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #111; dur: 500; easing: linear; startEvents: tunnelcoloroff"
+  animation__tunnelcolorblue="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: tunnelcolorblue"
+  animation__tunnelcolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: tunnelcolorbluefade"
+  animation__tunnelcolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #fc0000; dur: 5; easing: linear; startEvents: tunnelcolorred"
+  animation__tunnelcolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: tunnelcolorredfade"
+  ></a-mixin>

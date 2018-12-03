@@ -8,20 +8,6 @@
   animation__colorred="property: components.material.material.color; type: color; to: #FFAAAA; dur: 5; easing: linear; startEvents: colorred"
   animation__colorredfade="property: components.material.material.color; type: color; from: #FEE; to: #ffAAAA; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 
-<a-mixin id="bgAnimation"
-  material="shader: flat; fog: false"
-  animation__coloroff="property: components.material.material.color; type: color; to: #111; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.material.material.color; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.material.material.color; type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.material.material.color; type: color; to: #fc0000; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.material.material.color; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
-
-<a-mixin id="fogAnimation"
-  animation__coloroff="property: components.fog.el.object3D.fog.color; type: color; to: #010101; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.fog.el.object3D.fog.color; type: color; to: #007cb9; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.fog.el.object3D.fog.color; type: color; from: #3398CA; to: #007cb9; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.fog.el.object3D.fog.color; type: color; to: #b90000; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.fog.el.object3D.fog.color; type: color; from: #ff0000; to: #b90000; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 <!--
 
 <a-sky
@@ -87,7 +73,8 @@
 -->
   <a-entity
     id="stageobj"
-    obj-model="obj: #stageObj"
+    mixin="gameoverAnimation"
+    obj-model="obj: #stageNormalObj"
     materials="name: stageNormal"></a-entity>
   <a-entity
     id="stageadditiveobj"

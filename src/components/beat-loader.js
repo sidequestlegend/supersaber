@@ -281,38 +281,36 @@ AFRAME.registerComponent('beat-loader', {
   generateEvent: function (event) {
     switch(event._type) {
       case 0:
-        this.stageColors.setColor('fog', event._value);
-        this.stageColors.setColor('sky', event._value);
-        this.stageColors.setColor('backglow', event._value);
+        this.stageColors.setColor('bg', event._value);
         break;
       case 1:
-        this.stageColors.setColor('tunnelNeon', event._value);
+        this.stageColors.setColor('tunnel', event._value);
         break;
-      case 2:
+      case 200:
         this.stageColors.setColor('leftStageLaser0', event._value);
         this.stageColors.setColor('leftStageLaser1', event._value);
         this.stageColors.setColor('leftStageLaser2', event._value);
         break;
-      case 3:
+      case 300:
         this.stageColors.setColor('rightStageLaser0', event._value);
         this.stageColors.setColor('rightStageLaser1', event._value);
         this.stageColors.setColor('rightStageLaser2', event._value);
         break;
-      case 4:
+      case 400:
         this.stageColors.setColor('floor', event._value);
         this.stageColors.setColor('stageNeon', event._value);
         break;
-      case 8:
+      case 800:
         this.twister.components.twister.pulse(event._value);
         break;
-      case 9:
+      case 900:
         // zoom was a bit disturbing
         this.twister.components.twister.pulse(event._value);
         break;
-      case 12:
+      case 1200:
         this.leftStageLasers.components['stage-lasers'].pulse(event._value);
         break;
-      case 13:
+      case 1300:
         this.rightStageLasers.components['stage-lasers'].pulse(event._value);
         break;
     }

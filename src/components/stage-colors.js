@@ -1,14 +1,35 @@
 function $ (id) { return document.getElementById(id); };
 
 AFRAME.registerComponent('stage-colors', {
-  dependencies: ['background', 'fog'],
+  dependencies: ['background'],
 
   schema: {
     color: {default: 'blue', oneOf: ['blue', 'red']}
   },
 
   init: function () {
-    /*
+    this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
+    this.el.addEventListener('cleargame', this.resetColors.bind(this));
+  },
+
+  update: function (oldData) {
+    this.updateColors(this.data.color);
+  },
+
+  setColor: function (target, code) {
+    this.el.emit(`${target}color${this.colorCodes[code]}`, null, false);
+  },
+
+  resetColors: function () {
+    this.updateColors('blue');
+    this.el.emit('bgcolorblue', null, false);
+  },
+
+  updateColors: function (color) {
+  }
+
+/*
+  init: function () {
     this.neonRed = new THREE.Color(0xff9999);
     this.neonBlue = new THREE.Color(0x9999ff);
     this.defaultRed = new THREE.Color(0xff0000);
@@ -31,13 +52,10 @@ AFRAME.registerComponent('stage-colors', {
       envMap: this.mineEnvMap[this.data.color]
     });
     this.sky = document.getElementById('sky');
-    this.backglow = document.getElementById('backglow');
     this.auxColor = new THREE.Color();
 
     this.targets = {};
-    ['fog',
-     'sky',
-     'backglow',
+    ['stageNormal',
      'tunnelNeon',
      'leftStageLaser0',
      'leftStageLaser1',
@@ -47,47 +65,33 @@ AFRAME.registerComponent('stage-colors', {
      'rightStageLaser2',
      'floor',
      'stageNeon'].forEach(id => {
-        this.targets[id] = id == 'fog' ? this.el.sceneEl : document.getElementById(id);
+        this.targets[id] = document.getElementById(id);
      });
 
     this.colorCodes = ['off', 'blue', 'blue', 'bluefade', '', 'red', 'red', 'redfade'];
 
     this.el.addEventListener('cleargame', this.resetColors.bind(this));
-    */
   },
 
   update: function (oldData) {
-   // this.updateColors(this.data.color);
+    this.updateColors(this.data.color);
   },
 
   setColor: function (target, code) {
-  /*  const mesh = this.targets[target].getObject3D('mesh');
+    const mesh = this.targets[target].getObject3D('mesh');
     if (mesh) { mesh.material.opacity = 1; }
     this.targets[target].emit('color' + this.colorCodes[code], null, false);
-  */
   },
 
   resetColors: function () {
-  /*
     this.updateColors('blue');
     for (let target in this.targets) {
       this.targets[target].emit('colorblue', null, false);
     }
-    */
   },
 
   updateColors: function (color) {
-  /*
     const red = color === 'red';
-
-    // Init or reset.
-    try {
-      this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
-    } catch (e) {
-      this.backglow.addEventListener('object3dset', () => {
-        this.backglow.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
-      });
-    }
 
     this.sky.getObject3D('mesh').material.color.set(red ? '#f10' : '#00acfc');
     this.el.sceneEl.object3D.background.set(red ? '#770100' : '#15252d');
@@ -100,6 +104,7 @@ AFRAME.registerComponent('stage-colors', {
     this.mineMaterial.emissive = this.mineEmission[red ? 'red' : 'blue'];
     this.mineMaterial.envMap = this.mineEnvMap[red ? 'red' : 'blue'];
     this.mineMaterial.needsUpdate = true;
-  */
   }
+
+  */
 });
