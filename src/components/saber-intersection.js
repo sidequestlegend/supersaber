@@ -1,5 +1,4 @@
 AFRAME.registerComponent('saber-intersection', {
-  dependencies: ['raycaster__game'],
   schema: {
     active: {default: true}
   },
