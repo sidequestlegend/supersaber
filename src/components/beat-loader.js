@@ -1,6 +1,9 @@
 import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
 import utils from '../utils';
 
+let skipDebug = AFRAME.utils.getUrlParameter('skip') || 0;
+skipDebug = parseInt(skipDebug, 10);
+
 /**
  * Load beat data (all the beats and such).
  */
@@ -156,7 +159,7 @@ AFRAME.registerComponent('beat-loader', {
   tick: function (time, delta) {
     if (!this.data.isPlaying || !this.data.challengeId || !this.beatData) { return; }
 
-    const prevBeatsTime = this.beatsTime;
+    const prevBeatsTime = this.beatsTime + skipDebug;
     if (this.beatsPreloadTime === undefined) {
       // Get current song time.
       const song = this.el.components.song;
@@ -170,7 +173,7 @@ AFRAME.registerComponent('beat-loader', {
 
     // Load in stuff scheduled between the last timestamp and current timestamp.
     // Beats.
-    const beatsTime = this.beatsTime;
+    const beatsTime = this.beatsTime + skipDebug;
     const bpm = this.beatData._beatsPerMinute;
     const msPerBeat = 1000 * 60 / this.beatData._beatsPerMinute;
     const notes = this.beatData._notes;
@@ -219,10 +222,13 @@ AFRAME.registerComponent('beat-loader', {
       const data = this.data;
 
       // if (Math.random() < 0.8) { noteInfo._type = 3; } // To debug mines.
+      let color;
       let type = noteInfo._cutDirection === 8 ? 'dot' : 'arrow';
-
-      let color = noteInfo._type === 0 ? 'red' : 'blue';
-      if (noteInfo._type === 3) {
+      if (noteInfo._type === 0) {
+        color = 'red';
+      } else if (noteInfo._type === 1) {
+        color = 'blue';
+      } else {
         type = 'mine';
         color = undefined;
       }
@@ -263,11 +269,11 @@ AFRAME.registerComponent('beat-loader', {
         -data.beatAnticipationTime * data.beatSpeed - this.swordOffset;
       wallObj.durationSeconds = durationSeconds;
       wallObj.horizontalPosition = this.horizontalPositionsHumanized[wallInfo._lineIndex];
+      wallObj.isCeiling = wallInfo._type === 1;
       wallObj.speed = speed;
       wallObj.warmupPosition = -data.beatWarmupTime * data.beatWarmupSpeed;
       wallObj.width = wallInfo._width;
       el.setAttribute('wall', wallObj);
-      el.components.wall.updatePosition();
       el.play();
     };
   })(),
