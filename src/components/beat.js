@@ -26,7 +26,7 @@ AFRAME.registerComponent('beat', {
     cutDirection: {default: 'down'},
     debug: {default: false},
     horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
-    size: {default: 0.35},
+    size: {default: 0.40},
     speed: {default: 1.0},
     type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
     verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']},
@@ -75,8 +75,8 @@ AFRAME.registerComponent('beat', {
   },
 
   verticalPositions: {
-    bottom: 1.00,
-    middle: 1.35,
+    bottom: 0.70,
+    middle: 1.20,
     top: 1.70
   },
 
