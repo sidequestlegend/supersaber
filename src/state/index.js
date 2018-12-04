@@ -450,30 +450,30 @@ AFRAME.registerState({
 
       // Percentage is score divided by total possible score.
       const totalBeats = state.score.beatsMissed + state.score.beatsHit;
-      const accuracy = (state.score / (totalBeats * 110)) * 100;
+      const accuracy = (state.score.score / (totalBeats * 110)) * 100;
       state.score.accuracy = accuracy;
 
       if (accuracy === 1) {
         state.score.rank = 'S';
-      } else if (accuracy >= .98) {
+      } else if (accuracy >= 98) {
         state.score.rank = 'A+';
-      } else if (accuracy >= .93) {
+      } else if (accuracy >= 93) {
         state.score.rank = 'A';
-      } else if (accuracy >= .9) {
+      } else if (accuracy >= 90) {
         state.score.rank = 'A-';
-      } else if (accuracy >= .88) {
+      } else if (accuracy >= 88) {
         state.score.rank = 'B+';
-      } else if (accuracy >= .83) {
+      } else if (accuracy >= 83) {
         state.score.rank = 'B';
-      } else if (accuracy >= .8) {
+      } else if (accuracy >= 80) {
         state.score.rank = 'B-';
-      } else if (accuracy >= .78) {
+      } else if (accuracy >= 78) {
         state.score.rank = 'C+';
-      } else if (accuracy >= .73) {
+      } else if (accuracy >= 73) {
         state.score.rank = 'C';
-      } else if (accuracy >= .7) {
+      } else if (accuracy >= 70) {
         state.score.rank = 'C-';
-      } else if (accuracy >= .60) {
+      } else if (accuracy >= 60) {
         state.score.rank = 'D';
       } else {
         state.score.rank = 'F';
@@ -483,8 +483,8 @@ AFRAME.registerState({
     },
 
     victoryfake: function (state) {
-      state.score.accuracy = '12.34%';
-      state.score.rank = 'F';
+      state.score.accuracy = '74.99';
+      state.score.rank = 'C';
     },
 
     wallhitstart: function (state) {
