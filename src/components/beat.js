@@ -11,7 +11,7 @@ const SIGN_MATERIAL = {shader: 'flat', color: '#88f'};
 const SCORE_POOL = {
   OK : 'pool__beatscoreok',
   GOOD : 'pool__beatscoregood',
-  EXCELLENT : 'pool__beatscoreexcellent',
+  GREAT : 'pool__beatscoregreat',
   SUPER : 'pool__beatscoresuper'
 };
 
@@ -753,7 +753,7 @@ AFRAME.registerComponent('beat', {
     let beatScorePool;
     if (score < 60) { beatScorePool = SCORE_POOL.OK; }
     else if (score < 80) { beatScorePool = SCORE_POOL.GOOD; }
-    else if (score < 100) { beatScorePool = SCORE_POOL.EXCELLENT; }
+    else if (score < 100) { beatScorePool = SCORE_POOL.GREAT; }
     else {
       beatScorePool = SCORE_POOL.SUPER;
 
