@@ -1,4 +1,3 @@
-
 <a-entity
   id="leaderboard"
   class="overlay accuracyTextCounterSubscribe"
@@ -12,7 +11,7 @@
   <a-entity
     mixin="slice"
     id="leaderboardBackground"
-    slice9="left: 70; width: 1.3; height: 1.55; opacity: 0.9"></a-entity>
+    slice9="left: 70; width: 1.8; height: 1.55; opacity: 0.9"></a-entity>
 
   <a-entity
     id="leaderboardChallengeImage"
@@ -34,16 +33,16 @@
     mixin="font"
     bind__text="value: leaderboardNames"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: center; width: 0.9; anchor: left; color: #00acfc; wrapCount: 20; lineHeight: 53;"
-    position="-0.53 -0.16 0.001"></a-entity>
+    text="baseline: center; width: 1.2; anchor: left; color: #00acfc; wrapCount: 28; lineHeight: 53;"
+    position="-0.7 -0.16 0.001"></a-entity>
 
   <a-entity
     id="leaderboardScores"
     mixin="font"
     bind__text="value: leaderboardScores"
     bind__visible="!leaderboardQualified && !leaderboardEmpty"
-    text="baseline: center; align: right; width: 0.9; anchor: right; color: #fff; wrapCount: 20; lineHeight: 53;"
-    position="0.53 -0.16 0.001"></a-entity>
+    text="baseline: center; align: right; width: 1.2; anchor: right; color: #fff; wrapCount: 28; lineHeight: 53;"
+    position="0.7 -0.16 0.001"></a-entity>
 
   <a-entity
     id="leaderboardEmpty"

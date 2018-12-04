@@ -286,7 +286,7 @@ AFRAME.registerState({
       for (let i = 0; i < payload.scores.length; i++) {
         let score = payload.scores[i];
         state.leaderboard.push(score);
-        state.leaderboardNames += `${score.username}\n`;
+        state.leaderboardNames += `${score.username} (${score.accuracy || 0}%)\n`;
         state.leaderboardScores += `${score.score}\n`;
       }
     },
@@ -304,7 +304,7 @@ AFRAME.registerState({
       state.leaderboardScores = '';
       for (let i = 0; i < NUM_LEADERBOARD_DISPLAY; i++) {
         let score = state.leaderboard[i];
-        state.leaderboardNames += `${score.username}\n`;
+        state.leaderboardNames += `${score.username} (${score.accuracy || 0}%)\n`;
         state.leaderboardScores += `${score.score}\n`;
       }
     },
