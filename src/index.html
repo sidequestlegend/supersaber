@@ -68,12 +68,14 @@
       <a-entity id="mineObjTemplate" obj-model="obj: #mineObj" visible="false"></a-entity>
       <a-entity id="cursorLaser" obj-model="obj: #laserObj" visible="false"></a-entity>
 
+
+      {% include './templates/stage.html' %}
+
       <a-entity
         id="beatContainer"
         bind__pause="isPaused: !isPlaying"
         beat-hit-sound></a-entity>
 
-      {% include './templates/stage.html' %}
       {% include './templates/loading.html' %}
       {% include './templates/score.html' %}
       {% include './templates/menu.html' %}
