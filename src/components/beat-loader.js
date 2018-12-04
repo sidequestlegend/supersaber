@@ -8,8 +8,8 @@ AFRAME.registerComponent('beat-loader', {
   dependencies: ['stage-colors'],
 
   schema: {
-    beatAnticipationTime: {default: 2.0},
-    beatSpeed: {default: 4.0},
+    beatAnticipationTime: {default: 1.1},
+    beatSpeed: {default: 8.0},
     beatWarmupTime: {default: BEAT_WARMUP_TIME / 1000},
     beatWarmupSpeed: {default: BEAT_WARMUP_SPEED},
     challengeId: {type: 'string'},  // If clicked play.

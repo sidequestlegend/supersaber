@@ -14,7 +14,7 @@ AFRAME.registerComponent('beams', {
     const materialOptions = {
       color: 0xaa3333,
       map: new THREE.TextureLoader().load('assets/img/beam.png'),
-      transparent: true,
+      transparent: false,
       blending: THREE.AdditiveBlending
     };
     const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
