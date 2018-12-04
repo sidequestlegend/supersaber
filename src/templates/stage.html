@@ -1,3 +1,4 @@
+<!--
 <a-mixin id="stageLaser" obj-model="obj:#laserNeonObj" material="depthWrite: false; transparent: true; shader: flat; fog: false; color: #00a; src: #neonImg;"></a-mixin>
 
 <a-mixin id="neonAnimation"
@@ -8,7 +9,6 @@
   animation__colorred="property: components.material.material.color; type: color; to: #FFAAAA; dur: 5; easing: linear; startEvents: colorred"
   animation__colorredfade="property: components.material.material.color; type: color; from: #FEE; to: #ffAAAA; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
 
-<!--
 
 <a-sky
   id="sky"
@@ -36,12 +36,6 @@
     position="0 0 -60"
     scale="20 20 20"></a-entity>
 -->
-  <a-entity id="twister" position="0 0 -35" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
-
-  <a-entity
-    id="audioColumns"
-    audio-columns="analyser: #audioAnalyser; height: 28; mirror: 18; scale: 9; thickness: 0.6; separation: 0.55"
-    position="0 -19 5"></a-entity>
 
 <!--
   <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101" visible="false"></a-mixin>
@@ -71,32 +65,39 @@
     mixin="neonAnimation"
     obj-model="obj: #stageNeonObj"></a-entity>
 -->
+
+  <a-entity
+    id="audioColumns"
+    audio-columns="analyser: #audioAnalyser; height: 28; mirror: 18; scale: 9; thickness: 0.6; separation: 0.55"
+    position="0 -19 5"></a-entity>
+
   <a-entity
     id="stageobj"
     mixin="gameoverAnimation"
     obj-model="obj: #stageNormalObj"
     materials="name: stageNormal"></a-entity>
-  <a-entity
-    id="stageadditiveobj"
-    obj-model="obj: #stageAdditiveObj"
-    materials="name: stageAdditive"></a-entity>
-
 
   <!-- Lasers left. -->
   <a-entity id="leftStageLasers" bind__stage-lasers="enabled: isPlaying">
-    <a-entity id="leftStageLaser0" mixin="stageLaser neonAnimation" position=" -6 2.3 -40"></a-entity>
-    <a-entity id="leftStageLaser1" mixin="stageLaser neonAnimation" position="-10 0 -38"></a-entity>
-    <a-entity id="leftStageLaser2" mixin="stageLaser neonAnimation" position="-14 -3 -36"></a-entity>
+    <a-entity obj-model="obj: #leftLaserObj" materials="name: stageAdditive" position="-6 2.3 -41"></a-entity>
+    <a-entity obj-model="obj: #leftLaserObj" materials="name: stageAdditive" position="-10 0 -40"></a-entity>
+    <a-entity obj-model="obj: #leftLaserObj" materials="name: stageAdditive" position="-14 -3 -39"></a-entity>
   </a-entity>
 
   <!-- Lasers right. -->
   <a-entity id="rightStageLasers" bind__stage-lasers="enabled: isPlaying">
-    <a-entity id="rightStageLaser0" mixin="stageLaser neonAnimation" position=" 6 4 -40"></a-entity>
-    <a-entity id="rightStageLaser1" mixin="stageLaser neonAnimation" position="10 2 -38"></a-entity>
-    <a-entity id="rightStageLaser2" mixin="stageLaser neonAnimation" position="14 -1.5 -36"></a-entity>
+    <a-entity obj-model="obj: #rightLaserObj" materials="name: stageAdditive" position="6 4 -38"></a-entity>
+    <a-entity obj-model="obj: #rightLaserObj" materials="name: stageAdditive" position="10 2 -37"></a-entity>
+    <a-entity obj-model="obj: #rightLaserObj" materials="name: stageAdditive" position="14 -1.5 -36"></a-entity>
   </a-entity>
 
   <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
+  <a-entity id="twister" position="0 0 -35" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
+
+  <a-entity
+    id="stageadditiveobj"
+    obj-model="obj: #stageAdditiveObj"
+    materials="name: stageAdditive"></a-entity>
 
   <a-mixin
     id="smoke"
@@ -104,7 +105,7 @@
     animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameover"
     animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true"
     obj-model="obj:#smokeObj"
-    material="src: #atlasImg; fog: false; shader: flat; transparent: true"></a-mixin>
+    material="src: #atlasImg; fog: false; shader: flat; transparent: true;"></a-mixin>
   <a-entity id="smoke1" mixin="smoke" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
   <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.25 0.8 1.25" animation__rotate="dur: 243000"></a-entity>
 
@@ -145,3 +146,4 @@
     rotation="-45 0 0">
   </a-entity>
 </a-entity>
+f

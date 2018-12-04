@@ -18,7 +18,7 @@
 
     <a-scene
     stats
-      mixin="gameoverAnimation fogAnimation bgColorAnimation tunnelColorAnimation"
+      mixin="gameoverAnimation fogAnimation bgColorAnimation tunnelColorAnimation leftLaserColorAnimation rightLaserColorAnimation"
       bind__beat-loader="challengeId: challenge.id; difficulty: menuSelectedChallenge.difficulty; isPlaying: isPlaying; menuSelectedChallengeId: menuSelectedChallenge.id"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"

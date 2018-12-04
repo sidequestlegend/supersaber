@@ -286,31 +286,27 @@ AFRAME.registerComponent('beat-loader', {
       case 1:
         this.stageColors.setColor('tunnel', event._value);
         break;
-      case 200:
-        this.stageColors.setColor('leftStageLaser0', event._value);
-        this.stageColors.setColor('leftStageLaser1', event._value);
-        this.stageColors.setColor('leftStageLaser2', event._value);
+      case 2:
+        this.stageColors.setColor('leftlaser', event._value);
         break;
-      case 300:
-        this.stageColors.setColor('rightStageLaser0', event._value);
-        this.stageColors.setColor('rightStageLaser1', event._value);
-        this.stageColors.setColor('rightStageLaser2', event._value);
+      case 3:
+        this.stageColors.setColor('rightlaser', event._value);
         break;
       case 400:
         this.stageColors.setColor('floor', event._value);
         this.stageColors.setColor('stageNeon', event._value);
         break;
-      case 800:
+      case 8:
         this.twister.components.twister.pulse(event._value);
         break;
-      case 900:
+      case 9:
         // zoom was a bit disturbing
         this.twister.components.twister.pulse(event._value);
         break;
-      case 1200:
+      case 12:
         this.leftStageLasers.components['stage-lasers'].pulse(event._value);
         break;
-      case 1300:
+      case 13:
         this.rightStageLasers.components['stage-lasers'].pulse(event._value);
         break;
     }

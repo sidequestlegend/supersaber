@@ -629,7 +629,6 @@ AFRAME.registerComponent('beat', {
 
   returnToPool: function (force) {
     if (!this.backToPool && !force) { return; }
-    console.log('returning ' + this.poolName + ' to pool');
     this.el.sceneEl.components[this.poolName].returnEntity(this.el);
   },
 

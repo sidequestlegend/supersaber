@@ -8,7 +8,7 @@
 <a-asset-item id="logobackObj" src="assets/models/logoback.obj"></a-asset-item>
 <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
 <a-asset-item id="laserObj" src="assets/models/laser/laser.obj"></a-asset-item>
-<a-asset-item id="laserNeonObj" src="assets/models/laserneon.obj"></a-asset-item>
+<!--<a-asset-item id="laserNeonObj" src="assets/models/laserneon.obj"></a-asset-item>-->
 <a-asset-item id="logoSparksJSON" src="assets/models/logosparks.json"></a-asset-item>
 <a-asset-item id="sparksJSON" src="assets/models/sparks.json"></a-asset-item>
 <a-asset-item id="mineObj" src="assets/models/mine.obj"></a-asset-item>
@@ -27,6 +27,9 @@
 <a-asset-item id="wrongObj" src="assets/models/wrong.obj"></a-asset-item>
 <a-asset-item id="smokeObj" src="assets/models/smoke.obj"></a-asset-item>
 <a-asset-item id="audiocolumnObj" src="assets/models/audiocolumn.obj"></a-asset-item>
+<a-asset-item id="leftLaserObj" src="assets/models/leftlaser.obj"></a-asset-item>
+<a-asset-item id="rightLaserObj" src="assets/models/rightlaser.obj"></a-asset-item>
+
 <!--<a-asset-item id="wallglowObj" src="assets/models/wallglow.obj"></a-asset-item>-->
 
 <a-asset-item id="tutorial1Obj" src="assets/models/tutorial1.obj"></a-asset-item>
@@ -153,6 +156,8 @@
   animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"></a-mixin>
 
 
+<!-- stage, neons, etc animations launched from beat-loader events -->
+
 <a-mixin id="bgColorAnimation"
   animation__bgcoloroff="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: #111; dur: 500; easing: linear; startEvents: bgcoloroff"
   animation__bgcolorblue="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: bgcolorblue"
@@ -161,11 +166,26 @@
   animation__bgcolorredfade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: bgcolorredfade"
   ></a-mixin>
 
-
 <a-mixin id="tunnelColorAnimation"
   animation__tunnelcoloroff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #111; dur: 500; easing: linear; startEvents: tunnelcoloroff"
   animation__tunnelcolorblue="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #00acfc; dur: 5; easing: linear; startEvents: tunnelcolorblue"
   animation__tunnelcolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: #5FCCFF; to: #00acfc; dur: 500; easing: linear; startEvents: tunnelcolorbluefade"
   animation__tunnelcolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: #fc0000; dur: 5; easing: linear; startEvents: tunnelcolorred"
   animation__tunnelcolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: #FF4343; to: #fc0000; dur: 500; easing: linear; startEvents: tunnelcolorredfade"
+  ></a-mixin>
+
+<a-mixin id="leftLaserColorAnimation"
+  animation__leftlasercoloroff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.leftLaser.value; type: color; to: #000; dur: 500; easing: linear; startEvents: leftlasercoloroff"
+  animation__leftlasercolorblue="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.leftLaser.value; type: color; to: #00f; dur: 5; easing: linear; startEvents: leftlasercolorblue"
+  animation__leftlasercolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.leftLaser.value; type: color; from: #aaf; to: #00f; dur: 500; easing: linear; startEvents: leftlasercolorbluefade"
+  animation__leftlasercolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.leftLaser.value; type: color; to: #f00; dur: 5; easing: linear; startEvents: leftlasercolorred"
+  animation__leftlasercolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.leftLaser.value; type: color; from: #faa; to: #f00; dur: 500; easing: linear; startEvents: leftlasercolorredfade"
+  ></a-mixin>
+
+<a-mixin id="rightLaserColorAnimation"
+  animation__rightlasercoloroff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; to: #000; dur: 500; easing: linear; startEvents: rightlasercoloroff"
+  animation__rightlasercolorblue="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; to: #00f; dur: 5; easing: linear; startEvents: rightlasercolorblue"
+  animation__rightlasercolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; from: #aaf; to: #00f; dur: 500; easing: linear; startEvents: rightlasercolorbluefade"
+  animation__rightlasercolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; to: #f00; dur: 5; easing: linear; startEvents: rightlasercolorred"
+  animation__rightlasercolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; from: #faa; to: #f00; dur: 500; easing: linear; startEvents: rightlasercolorredfade"
   ></a-mixin>
