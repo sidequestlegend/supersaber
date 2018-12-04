@@ -449,7 +449,8 @@ AFRAME.registerState({
       state.isVictory = true;
 
       // Percentage is score divided by total possible score.
-      const accuracy = state.score / (state.score.beatsMissed + state.score.beatsHit) * 110;
+      const totalBeats = state.score.beatsMissed + state.score.beatsHit;
+      const accuracy = (state.score / (totalBeats * 110)) * 100;
       state.score.accuracy = accuracy;
 
       if (accuracy === 1) {
