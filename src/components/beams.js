@@ -7,27 +7,9 @@ AFRAME.registerComponent('beams', {
   },
 
   init: function () {
+    this.beams = [];
     this.currentRed = 0;
     this.currentBlue = 0;
-
-    // Material.
-    const materialOptions = {
-      color: 0xaa3333,
-      map: new THREE.TextureLoader().load('assets/img/beam.png'),
-      transparent: false,
-      blending: THREE.AdditiveBlending
-    };
-    const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    materialOptions.color = 0x4444cc;
-    const blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    this.texture = materialOptions.map;
-
-    // Beam pools.
-    const geometry = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
-    this.beams = [];
-    this.redBeams = this.createBeamPool(geometry, redMaterial);
-    this.blueBeams = this.createBeamPool(geometry, blueMaterial);
-
     this.clearBeams = this.clearBeams.bind(this);
     this.el.sceneEl.addEventListener('cleargame', this.clearBeams);
   },
@@ -38,6 +20,25 @@ AFRAME.registerComponent('beams', {
         this.beams[i].visible = this.data.isPlaying;
       }
     }
+  },
+
+  play: function () {
+    // Material.
+    const materialOptions = {
+      color: 0xaa3333,
+      map: new THREE.TextureLoader().load('assets/img/beam.png'),
+      transparent: true,
+      blending: THREE.AdditiveBlending
+    };
+    const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
+    materialOptions.color = 0x4444cc;
+    const blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
+    this.texture = materialOptions.map;
+
+    // Beam pools.
+    const geometry = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
+    this.redBeams = this.createBeamPool(geometry, redMaterial);
+    this.blueBeams = this.createBeamPool(geometry, blueMaterial);
   },
 
   /**

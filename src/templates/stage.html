@@ -95,6 +95,8 @@
     <a-entity id="rightStageLaser2" mixin="stageLaser neonAnimation" position="14 -1.5 -36"></a-entity>
   </a-entity>
 
+  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
+
   <a-mixin
     id="smoke"
     mixin="gameoverAnimation"
@@ -105,8 +107,6 @@
     material="src: #smokeTexture; repeat: 2 1; side: double; fog: true; shader: flat; transparent: true; color: #111"></a-mixin>
   <a-entity id="smoke1" mixin="smoke" geometry="radius: 10" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
   <a-entity id="smoke2" mixin="smoke" geometry="radius: 20" position="0 1.8 0" animation__rotate="dur: 243000"></a-entity>
-
-  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
