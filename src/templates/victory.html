@@ -20,11 +20,11 @@
     bind__animation="enabled: isVictory"
     bind__victory-rank="rank: score.rank"
     scale="0 0 0"
-    position="0 0.2 0.125"
+    position="0 0.15 0.25"
     animation__rotation="property: object3D.rotation.y; from: 0; to: -360; loop: true; easing: linear; dur: 5000; startEvents: textcounterdone"
     animation__scale="property: scale; from: 0 0 0; to: 1 1 1; loop: false; easing: easeOutQuad; dur: 300; startEvents: textcounterdone"
     play-sound="sound: #victorySound; event: textcounterdone"
-    text="wrapCount: 2; align: center; baseline: top; width: 0.82; side: double"></a-entity>
+    text="wrapCount: 3; align: center; baseline: center; width: 0.82; side: double"></a-entity>
 
   <a-entity
     id="victoryInfoAccuracy"

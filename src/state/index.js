@@ -224,7 +224,7 @@ AFRAME.registerState({
       state.score.beatsHit = 125;
       state.score.beatsMissed = 125;
       state.score.maxCombo = 123;
-      state.score.rank = 'B';
+      state.score.rank = 'C';
       state.score.score = 9001;
       computeBeatsText(state);
     },
@@ -453,10 +453,8 @@ AFRAME.registerState({
       const accuracy = (state.score.score / (totalBeats * 110)) * 100;
       state.score.accuracy = accuracy;
 
-      if (accuracy === 1) {
+      if (accuracy >= 95) {
         state.score.rank = 'S';
-      } else if (accuracy >= 98) {
-        state.score.rank = 'A+';
       } else if (accuracy >= 93) {
         state.score.rank = 'A';
       } else if (accuracy >= 90) {
