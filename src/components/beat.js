@@ -252,8 +252,8 @@ AFRAME.registerComponent('beat', {
     if (!blockEl) { return; }
 
     blockEl.setAttribute('material', {
-      metalness: 0.6,
-      roughness: 0.12,
+      metalness: 0.9,
+      roughness: 0.10,
       sphericalEnvMap: '#envmapTexture',
       color: this.materialColor[this.data.color]
     });
