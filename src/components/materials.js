@@ -1,15 +1,12 @@
-const stageNormalShaders = require('../../assets/shaders/stageNormal.js')
-const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js')
+const stageNormalShaders = require('../../assets/shaders/stageNormal.js');
+const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js');
+const COLORS = require('../constants/colors.js');
 
 AFRAME.registerSystem('materials', {
   init: function () {
-    this.black = new THREE.MeshLambertMaterial({color: 0x000000, flatShading: true});
-    this.default = new THREE.MeshLambertMaterial({color: 0xff0000, flatShading: true});
-    this.neon = new THREE.MeshBasicMaterial({color: 0x9999ff, fog: false});
-
     this.stageNormal = new THREE.ShaderMaterial({
       uniforms: {
-        color: {value: new THREE.Vector3(0, 0.48, 0.72)},
+        color: {value: new THREE.Color(COLORS.BG_BLUE)},
         src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
       },
       vertexShader: stageNormalShaders.vertexShader,
@@ -20,10 +17,10 @@ AFRAME.registerSystem('materials', {
 
     this.stageAdditive = new THREE.ShaderMaterial({
       uniforms: {
-        tunnelNeon: {value: new THREE.Vector3(0, 0, 1)},
-        floorNeon: {value: new THREE.Vector3(0, 0, 1)},
-        leftLaser: {value: new THREE.Vector3(0, 0, 1)},
-        rightLaser: {value: new THREE.Vector3(0, 0, 1)},
+        tunnelNeon: {value: new THREE.Color(COLORS.NEON_BLUE)},
+        floorNeon: {value: new THREE.Color(COLORS.NEON_BLUE)},
+        leftLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
+        rightLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
       },
       vertexShader: stageAdditiveShaders.vertexShader,

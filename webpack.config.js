@@ -5,6 +5,7 @@ var htmlMinify = require('html-minifier').minify;
 var ip = require('ip');
 var path = require('path');
 var webpack = require('webpack');
+const COLORS = require('./src/constants/colors.js');
 
 // Set up templating.
 var nunjucks = Nunjucks.configure(path.resolve(__dirname, 'src'), {
@@ -14,6 +15,7 @@ nunjucks.addGlobal('DEBUG_AFRAME', !!process.env.DEBUG_AFRAME);
 nunjucks.addGlobal('DEBUG_KEYBOARD', !!process.env.DEBUG_KEYBOARD);
 nunjucks.addGlobal('HOST', ip.address());
 nunjucks.addGlobal('IS_PRODUCTION', process.env.NODE_ENV === 'production');
+nunjucks.addGlobal('COLORS', COLORS);
 
 // Initial Nunjucks render.
 fs.writeFileSync('index.html', nunjucks.render('index.html'));
