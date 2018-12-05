@@ -63,8 +63,8 @@ AFRAME.registerComponent('debug-beat-loader', {
     this.beatLoader.bpm = 90;
     this.beatLoader.generateWall({
       _lineIndex: this.beatLoader.positionHumanized[wallInfo.position].index,
-      _width: 2,
-      _duration: 3 
+      _width: 1,
+      _duration: 3
     });
   },
 
@@ -191,7 +191,7 @@ AFRAME.registerComponent('debug-beat-loader', {
     }
 
     function setBeatButton(text, containerEl) {
-      var buttonEl = addButton('Set Beat', parentDiv, function () { 
+      var buttonEl = addButton('Set Beat', parentDiv, function () {
         var color = self.selectedBeat.type !== 'mine' ? ' ' + self.selectedBeat.color : '';
         var orientation = self.selectedBeat.type !== 'arrow' ? '' : ' ' + self.selectedBeat.orientation;
         self.selectedBeat = {

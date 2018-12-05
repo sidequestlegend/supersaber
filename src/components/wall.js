@@ -3,6 +3,7 @@ import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../consta
 // So wall does not clip the stage ground.
 const RAISE_Y_OFFSET = 0.1;
 
+const WALL_THICKNESS = 0.50;
 const CEILING_THICKNESS = 1.5;
 const CEILING_HEIGHT = 1.4 + CEILING_THICKNESS / 2;
 
@@ -36,6 +37,7 @@ AFRAME.registerComponent('wall', {
   update: function () {
     const el = this.el;
     const data = this.data;
+    const width = data.width * WALL_THICKNESS;
 
     const halfDepth = data.durationSeconds * data.speed / 2;
 
@@ -46,20 +48,22 @@ AFRAME.registerComponent('wall', {
         data.anticipationPosition + data.warmupPosition - halfDepth
       );
       el.object3D.scale.set(
-        data.width,
+        width,
         CEILING_THICKNESS,
         data.durationSeconds * data.speed
       );
       return;
     }
 
+    // Box geometry is constructed from the local 0,0,0 growing in the positive and negative
+    // x and z axis. We have to shift by half width and depth to be positioned correctly.
     el.object3D.position.set(
-      this.horizontalPositions[data.horizontalPosition],
+      this.horizontalPositions[data.horizontalPosition] + width / 2  - 0.25,
       data.height + RAISE_Y_OFFSET,
       data.anticipationPosition + data.warmupPosition - halfDepth
     );
     el.object3D.scale.set(
-      data.width * 0.30,
+      width,
       2.5,
       data.durationSeconds * data.speed
     );
