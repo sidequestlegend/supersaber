@@ -18,7 +18,7 @@
 
     <a-scene
     stats
-      mixin="gameoverAnimation fogAnimation bgColorAnimation tunnelColorAnimation leftLaserColorAnimation rightLaserColorAnimation"
+      mixin="gameoverAnimation bgColorAnimation tunnelColorAnimation leftLaserColorAnimation rightLaserColorAnimation textGlowColorAnimation"
       bind__beat-loader="challengeId: challenge.id; difficulty: menuSelectedChallenge.difficulty; isPlaying: isPlaying; menuSelectedChallengeId: menuSelectedChallenge.id"
       bind__gameover="isGameOver: isGameOver"
       bind__intro-song="isPlaying: menuActive && !menuSelectedChallenge.id; isSearching: isSearching"
@@ -26,7 +26,6 @@
       bind__song="challengeId: challenge.id; isPlaying: isPlaying; isBeatsPreloaded: challenge.isBeatsPreloaded; isGameOver: isGameOver; isVictory: isVictory"
       bind__song-preview-system="challengeId: challenge.id; isSearching: isSearching; isSongLoading: isSongLoading; selectedChallengeId: menuSelectedChallenge.id"
       animation__gameover="property: object3D.background; type: color; to: #750000; startEvents: gameover"
-      animation__gameoverfog="property: components.fog.el.object3D.fog.color; type: color; to: #330000; startEvents: gameover; dur: 500; easing: easeInQuad"
       console-shortcuts
       debug-beat-loader
       debug-controller
@@ -48,6 +47,10 @@
       proxy-event__cleargame1="event: gamemenuexit; as: cleargame; to: a-scene"
       proxy-event__cleargame2="event: gamemenurestart; as: cleargame; to: a-scene"
       play-sound__beatwrong="sound: #beatMissSound; event: beatwrong; volume: 0.4"
+      play-sound__beatwrong="sound: #beatMissSound; event: beatwrong; volume: 0.75"
+      proxy-event__pausegame="event: pausegame; as: textglowoff; to: a-scene"
+      proxy-event__resumegame="event: gamemenuresume; as: textglownormal; to: a-scene"
+      play-sound__victory="sound: #victorySong; event: victory"
       play-sound__crescendo="sound: #crescendo; event: victory; volume: 0.75"
       play-sound__victory="sound: #victorySong; event: victory"
       search
