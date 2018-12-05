@@ -21,6 +21,7 @@ AFRAME.registerSystem('materials', {
         floorNeon: {value: new THREE.Color(COLORS.NEON_BLUE)},
         leftLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         rightLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
+        textGlow: {value: new THREE.Color(COLORS.TEXT_OFF)},
         src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
       },
       vertexShader: stageAdditiveShaders.vertexShader,

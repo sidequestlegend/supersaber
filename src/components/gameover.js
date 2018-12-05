@@ -36,5 +36,6 @@ AFRAME.registerComponent('gameover', {
     for (let i = 0; i < this.gameOverEls.length; i++) {
       this.gameOverEls[i].emit('gameover', null, false);
     }
+    this.el.emit('textglowoff', null, false);
   }
 });

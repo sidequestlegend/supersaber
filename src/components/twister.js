@@ -19,7 +19,6 @@ AFRAME.registerComponent('twister', {
 
   pulse: function (twist) {
     if (!this.data.enabled) { return; }
-    console.log('PULSE');
     if (twist == 0) { twist = 0.03 + Math.random() * 0.25; }
     else twist = Math.min(twist * 0.4, 0.4);
     twist *= Math.random() < 0.5 ? -1 : 1; // random direction

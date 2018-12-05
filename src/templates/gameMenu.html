@@ -1,6 +1,6 @@
 <a-mixin
   id="gameMenuButton"
-  mixin="slice"
+  mixin="bigMenuButton"
   animation__mouseenter="property: components.slice9.material.color; type: color; from: #050505; to: #067197; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
   animation__mouseleave="property: components.slice9.material.color; type: color; from: #067197; to: #050505; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
   slice9="width: 1; height: 0.27; padding: 0.04"></a-mixin>
@@ -9,7 +9,7 @@
   id="gameMenuButtonText"
   mixin="font"
   position="0 -0.07 0.01"
-  text="align: center; wrapCount: 17; color: #F0F0F0"></a-mixin>
+  text="align: center; wrapCount: 17; color: #FFF"></a-mixin>
 
 <!-- Titles. -->
 <a-entity id="inGameMenuTitles" position="0 1.7 -2.3">

@@ -28,6 +28,7 @@ AFRAME.registerComponent('score-texts', {
       for (let i = 0; i < this.textEls.length; i++) {
         this.textEls[i].components['animation__fadein'].beginAnimation();
       }
+      this.el.sceneEl.emit('textglownormal', null, false);
     }
 
     // Started loading.
@@ -35,6 +36,7 @@ AFRAME.registerComponent('score-texts', {
       for (let i = 0; i < this.textEls.length; i++) {
         this.textEls[i].components.text.material.uniforms.opacity.value = 0;
       }
+      this.el.sceneEl.emit('textglowoff', null, false);
     }
   }
 });

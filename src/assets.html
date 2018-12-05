@@ -73,7 +73,7 @@
 <img id="floorNormalsImg" src="assets/img/floornormals.png">
 <img id="atlasImg" src="assets/img/atlas.png">
 
-<a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.7; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
+<a-mixin id="slice" slice9="color: #050505; transparent: true; opacity: 0.9; src: #sliceImg; left: 50; right: 52; top: 50; bottom: 52; padding: 0.18"></a-mixin>
 <a-mixin id="font" text="font: assets/fonts/Teko-Bold.json; shader: msdf; letterSpacing: 1"></a-mixin>
 <a-mixin id="superKeyboardTextInput" mixin="font"></a-mixin>
 
@@ -90,7 +90,7 @@
 <a-mixin
   id="beatScore"
   mixin="font"
-  text="opacity: 0; wrapCount: 19; color: #AAA; width: 1.5"
+  text="opacity: 0; wrapCount: 19; color: #FFF; width: 1.5"
   animation__opacityin="property: components.text.material.uniforms.opacity.value; from: .5; to: 1; dur: 500; startEvents: beatscorestart"
   animation__opacityout="property: components.text.material.uniforms.opacity.value; from: 1; to: 0; dur: 500; delay: 700; startEvents: beatscorestart"
   animation__motionz="property: object3D.position.z; from: -2; to: -6; dur: 500; easing: easeOutQuart; startEvents: beatscorestart"
@@ -149,11 +149,11 @@
 <a-mixin
   id="bigMenuButton"
   mixin="slice"
-  slice9="src: #slicebtnImg; color: #999; width: 1; left: 70; top: 70; height: 0.2; padding: 0.1"
-  animation__mouseenter1="property: components.slice9.material.color; type: color; from: #999; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave1="property: components.slice9.material.color; type: color; from: #FFF; to: #999; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
-  animation__mouseenter2="property: scale; from: 1 1 1; to: 1.1 1.1 1.1; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
-  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.1 1.1 1.1; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"></a-mixin>
+  slice9="src: #slicebtnImg; color: #999; width: 1; right:  52;  bottom:  47; left: 77; top: 73; height: 0.22; padding: 0.1"
+  animation__mouseenter1="property: components.slice9.material.color; type: color; from: #CCC; to: #FFF; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"
+  animation__mouseleave1="property: components.slice9.material.color; type: color; from: #FFF; to: #CCC; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+  animation__mouseenter2="property: scale; from: 1 1 1; to: 1.04 1.04 1.04; startEvents: mouseenter; pauseEvents: mouseleave; dur: 80"
+  animation__mouseleave2="property: scale; to: 1 1 1; from: 1.04 1.04 1.04; startEvents: mouseleave; pauseEvents: mouseenter; dur: 80"></a-mixin>
 
 
 <!-- stage, neons, etc animations launched from beat-loader events -->
@@ -188,4 +188,11 @@
   animation__rightlasercolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; from: {{ COLORS.NEON_BRIGHTBLUE }}; to: {{ COLORS.NEON_BLUE }}; dur: 500; easing: linear; startEvents: rightlasercolorbluefade"
   animation__rightlasercolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; to: {{ COLORS.NEON_RED }}; dur: 5; easing: linear; startEvents: rightlasercolorred"
   animation__rightlasercolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.rightLaser.value; type: color; from: {{ COLORS.NEON_BRIGHTRED }}; to: {{ COLORS.NEON_RED }}; dur: 500; easing: linear; startEvents: rightlasercolorredfade"
+  ></a-mixin>
+
+
+<a-mixin id="textGlowColorAnimation"
+  animation__textglowoff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.textGlow.value; type: color; to: {{ COLORS.TEXT_OFF }}; dur: 5; easing: easeInOutCubic; startEvents: textglowoff"
+  animation__textglownormal="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.textGlow.value; type: color; to: {{ COLORS.TEXT_NORMAL }}; dur: 750; easing: easeInOutCubic; delay: 100; startEvents: textglownormal"
+  animation__textglowbold="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.textGlow.value; type: color; from: {{ COLORS.TEXT_BOLD }}; to: {{ COLORS.TEXT_NORMAL }}; dur: 500; easing: easeInOutCubic; startEvents: textglowbold"
   ></a-mixin>
