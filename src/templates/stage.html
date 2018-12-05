@@ -102,12 +102,12 @@
   <a-mixin
     id="smoke"
     mixin="gameoverAnimation"
-    animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameover"
+    animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameoverDISABLE"
     animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true"
     obj-model="obj:#smokeObj"
-    material="src: #atlasImg; fog: false; shader: flat; transparent: true; depthWrite: false"></a-mixin>
+    material="src: #atlasImg; shader: flat; transparent: true; depthWrite: false"></a-mixin>
   <a-entity id="smoke1" mixin="smoke" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
-  <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.09 0.8 1.09" animation__rotate="dur: 243000"></a-entity>
+ <!-- <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.09 0.8 1.09" animation__rotate="dur: 243000"></a-entity>-->
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
