@@ -54,6 +54,23 @@ AFRAME.registerSystem('materials', {
       fog: false,
       transparent: true
     });
+
+    this.mineMaterialred = new THREE.MeshStandardMaterial({
+      roughness: 0.38,
+      metalness: 0.48,
+      color: new THREE.Color(COLORS.MINE_RED),
+      emissive: new THREE.Color(COLORS.MINE_RED_EMISSION),
+      envMap: new THREE.TextureLoader().load('assets/img/mineenviro-red.jpg')
+    });
+
+    this.mineMaterialblue = new THREE.MeshStandardMaterial({
+      roughness: 0.38,
+      metalness: 0.48,
+      color: new THREE.Color(COLORS.MINE_BLUE),
+      emissive: new THREE.Color(COLORS.MINE_BLUE_EMISSION),
+      envMap: new THREE.TextureLoader().load('assets/img/mineenviro-blue.jpg')
+    });
+
   }
 });
 

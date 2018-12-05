@@ -1,4 +1,5 @@
 import {BEAT_WARMUP_OFFSET, BEAT_WARMUP_SPEED, BEAT_WARMUP_TIME} from '../constants/beat';
+const COLORS = require('../constants/colors.js');
 
 const auxObj3D = new THREE.Object3D();
 const collisionZThreshold = -1.65;
@@ -33,13 +34,13 @@ AFRAME.registerComponent('beat', {
   },
 
   materialColor: {
-    blue: '#08083E',
-    red: '#290404'
+    blue: COLORS.BEAT_BLUE,
+    red: COLORS.BEAT_RED
   },
 
   cutColor: {
-    blue: '#b3dcff',
-    red: '#ffb3ca'
+    blue: '#fff',
+    red: '#fff'
   },
 
   models: {
@@ -267,10 +268,10 @@ AFRAME.registerComponent('beat', {
     if (this.data.type === 'mine') {
       const model = blockEl.getObject3D('mesh');
       if (model) {
-        model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+        model.material = this.el.sceneEl.systems.materials['mineMaterial' + this.data.color];
       } else {
         blockEl.addEventListener('model-loaded', () => {
-          model.material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+          model.material = this.el.sceneEl.systems.materials['mineMaterial' + this.data.color];
         }, ONCE);
       }
     } else {
@@ -332,7 +333,7 @@ AFRAME.registerComponent('beat', {
   initMineFragments: function () {
     var fragment;
     var fragments = this.el.sceneEl.systems['mine-fragments-loader'].fragments.children;
-    var material = this.el.sceneEl.components['stage-colors'].mineMaterial;
+    var material = this.el.sceneEl.systems.materials['mineMaterial' + this.data.color];
 
     this.randVec = new THREE.Vector3(
       Math.random() * Math.PI,
