@@ -155,6 +155,7 @@ AFRAME.registerState({
     },
 
     beatloaderpreloadfinish: (state) => {
+      if (state.menuActive) { return; }  // Cancelled.
       state.challenge.isBeatsPreloaded = true;
     },
 
@@ -202,6 +203,7 @@ AFRAME.registerState({
      * ?debugstate=loading
      */
     debugloading: state => {
+      DEBUG_CHALLENGE.id = '-1';
       Object.assign(state.menuSelectedChallenge, DEBUG_CHALLENGE);
       Object.assign(state.challenge, DEBUG_CHALLENGE);
       state.menuActive = false;
@@ -425,6 +427,14 @@ AFRAME.registerState({
 
     songfetchfinish: (state) => {
       state.isSongFetching = false;
+    },
+
+    songloadcancel: state => {
+      state.challenge.isBeatsPreloaded = false;
+      state.challenge.isLoading = false;
+      state.isSongLoading = false;
+      state.isSongFetching = false;
+      state.menuActive = true;
     },
 
     songloadfinish: (state) => {
