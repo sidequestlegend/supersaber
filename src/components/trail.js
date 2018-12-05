@@ -34,6 +34,7 @@ AFRAME.registerComponent('trail', {
       side: THREE.DoubleSide,
       vertexColors: THREE.VertexColors,
       transparent: true,
+      blending: THREE.AdditiveBlending,
       vertexShader: [
         'varying vec4 vColor;',
         'attribute vec4 vertexColor;',

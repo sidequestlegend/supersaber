@@ -172,12 +172,12 @@
             <a-entity
               id="saberLengthOffset"
               bind__position="controllerType === 'oculus-touch-controls' && '0 0 0.025' || '0 0 0.06'">
-              <a-entity
-                id="{{ hand }}Laser"
-                bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
-                geometry="primitive: cylinder; height: 1; radius: 0.005"
-                material="color: {{ beamColor }}; shader: flat"
-                rotation="-90 0 0"></a-entity>
+
+            <a-entity id="{{ hand }}Laser"
+              bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
+              geometry="primitive: cylinder; height: 1; radius: 0.005"
+              material="color: {{ beamColor }}; shader: flat"
+              rotation="-90 0 0"></a-entity>
 
               <a-entity class="saberContainer" rotation="90 0 0">
                 <a-entity
@@ -187,27 +187,17 @@
                   scale="0.001 0.001 0.001">
                   <a-entity
                     class="blade blade{{ hand }}"
-                    {% if hand === 'right' %}data-saber-particles{% endif %}
                     geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
-                    material="shader: flat; color: {{ bladeColor }}"
+                    material="shader: flat; color: #fff"
                     raycastable-game
                     position="0 -0.55 0"></a-entity>
-                </a-entity>
-                <a-entity
-                  class="saberHandle"
-                  geometry="primitive: box; height: 0.2; depth: 0.025; width: 0.025"
-                  material="shader: flat; color: #151515">
                   <a-entity
-                    class="highlightTop"
-                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                    material="shader: flat; color: {{ bladeColor }}"
-                    position="0 0 0.0125"></a-entity>
-                  <a-entity
-                    class="highlightBottom"
-                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                    material="shader: flat; color: {{ bladeColor }}"
-                    position="0 0 -0.0125"></a-entity>
+                    class="saberglow"
+                    obj-model="obj: #saberGlowObj"
+                    material="shader: flat; color: {{ bladeColor }}; blending: additive; opacity: 0.08"
+                    position="0 -0.55 0"></a-entity>
                 </a-entity>
+              </a-entity>
               </a-entity>
 
               <a-entity
@@ -230,8 +220,8 @@
             scale="1.3 1.3 1.3"></a-entity>
         {% endmacro %}
 
-        {{ saber('left', 'right', '#FFA8A8', 'pink') }}
-        {{ saber('right', 'left', '#78AAFF', 'cyan') }}
+        {{ saber('left', 'right', '#f00', 'pink') }}
+        {{ saber('right', 'left', '#00f', 'cyan') }}
       </a-entity>
 
       <a-entity
