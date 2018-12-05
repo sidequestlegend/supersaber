@@ -1,5 +1,6 @@
 const stageNormalShaders = require('../../assets/shaders/stageNormal.js');
 const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js');
+const flatShaders = require('../../assets/shaders/flat.js');
 const COLORS = require('../constants/colors.js');
 
 AFRAME.registerSystem('materials', {
@@ -26,6 +27,29 @@ AFRAME.registerSystem('materials', {
       },
       vertexShader: stageAdditiveShaders.vertexShader,
       fragmentShader: stageAdditiveShaders.fragmentShader,
+      blending: THREE.AdditiveBlending,
+      fog: false,
+      transparent: true
+    });
+
+    this.logo = new THREE.ShaderMaterial({
+      uniforms: {
+        src: {value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)},
+      },
+      vertexShader: flatShaders.vertexShader,
+      fragmentShader: flatShaders.fragmentShader,
+      depthTest: false,
+      fog: false,
+      transparent: true
+    });
+
+    this.logoadditive = new THREE.ShaderMaterial({
+      uniforms: {
+        src: {value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)},
+      },
+      vertexShader: flatShaders.vertexShader,
+      fragmentShader: flatShaders.fragmentShader,
+      depthTest: false,
       blending: THREE.AdditiveBlending,
       fog: false,
       transparent: true

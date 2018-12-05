@@ -33,8 +33,7 @@ AFRAME.registerComponent('logoflicker', {
       this.sparkPositions[Math.floor(Math.random() * this.sparkPositions.length)],
       false);
 
-    this.timeout = setTimeout(this.setOn,
-               50 + Math.floor(Math.random() * 100));
+    this.timeout = setTimeout(this.setOn, 50);
   },
 
   setOn: function () {
