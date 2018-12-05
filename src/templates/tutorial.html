@@ -5,24 +5,27 @@
   rotation="0 60 0"
   scale="0.7 0.7 0.7"
   bind__visible="menuActive">
-  <a-entity position="0 0.32 0.001" geometry-merger="preserveOriginal: false" material="shader: flat; color: #ffffff">
-    <a-entity position="-1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
-    <a-entity position="0 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
-    <a-entity position="1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
+
+  <a-entity id="tutorialHeaders" position="0 -0.1 0">
+    <a-entity id="tutorialNumberRings" position="0 0.32 0.001" geometry-merger="preserveOriginal: false" material="shader: flat; color: #ffffff">
+      <a-entity position="-1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
+      <a-entity position="0 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
+      <a-entity position="1.17 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
+    </a-entity>
+
+    <a-entity mixin="font" text="align: center; value: 1 2 3; baseline: top; wrapCount: 50; letterSpacing: 180; width: 3" position="0 0.27 0"></a-entity>
+    <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: SLICE THE BEATS\nMIND COLOR AND DIRECTION!; wrapCount: 30" position="-1.17 0.1 0"></a-entity>
+    <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: DODGE WALLS,\nAVOID CUTTING MINES; wrapCount: 28" position="0 0.1 0"></a-entity>
+    <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: LONGER SWING,\nMORE POINTS!; wrapCount: 28" position="1.17 0.1 0"></a-entity>
   </a-entity>
-  <a-entity mixin="font" text="align: center; value: 1 2 3; baseline: top; wrapCount: 50; letterSpacing: 180; width: 3" position="0 0.27 0"></a-entity>
-  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: SLICE THE BEATS\nMIND COLOR AND DIRECTION!; wrapCount: 30" position="-1.17 0.1 0"></a-entity>
-  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: DODGE WALLS,\nAVOID CUTTING MINES; wrapCount: 28" position="0 0.1 0"></a-entity>
-  <a-entity mixin="font" text="baseline: top; lineHeight: 50; align: center; value: LONGER SWING,\nMORE POINTS!; wrapCount: 28" position="1.17 0.1 0"></a-entity>
 
   <a-entity
     obj-model="obj: #tutorial3Obj"
     material="side: double; shader: flat; transparent: true; src: #tutorialImg"
-    position="1.1 -0.45 0.2"
+    position="1.1 -0.55 0.2"
     scale="0.9 0.9 0.9"
     bind__animation="enabled: menuActive"
-    animation="property: object3D.rotation.y; from: -60; to: -10; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"
-    ></a-entity>
+    animation="property: object3D.rotation.y; from: -60; to: -10; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"></a-entity>
 </a-entity>
 
 <a-entity id="tutorialBloom"
@@ -33,50 +36,50 @@
   <a-entity
     mixin="font"
     text="align: center; value: HOW TO PLAY; color: #aaa; wrapCount: 30; width: 3"
-    position="0 0.6 0"></a-entity>
+    position="0 0.4 0"></a-entity>
 
-  <a-entity mixin="slice" slice9="left: 70; width: 0.9; height: 1.1; padding: 0.12; opacity: 0.9" position="-1.17 -0.05 -0.01"></a-entity>
-  <a-entity mixin="slice" slice9="left: 70; width: 0.9; height: 1.1; padding: 0.12; opacity: 0.9" position="0 -0.05 -0.01"></a-entity>
-  <a-entity mixin="slice" slice9="left: 70; width: 0.9; height: 1.1; padding: 0.12; opacity: 0.9" position="1.17 -0.05 -0.01"></a-entity>
+  <a-entity mixin="slice" slice9="left: 70; width: 3.3; height: 1.6; padding: 0.12; opacity: 0.9" position="0 0 -0.01"></a-entity>
 
   <a-entity
+    id="tutorial1"
     obj-model="obj: #tutorial1Obj"
     material="side: double; shader: flat; transparent: true; src: #tutorialImg"
-    position="-1.1 -0.45 0.2"
+    position="-1.1 -0.55 0.2"
     scale="0.9 0.9 0.9"
     bind__animation="enabled: menuActive"
-    animation="property: object3D.rotation.y; from: -20; to: 55; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"
-    ></a-entity>
+    animation="property: object3D.rotation.y; from: -20; to: 55; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"></a-entity>
 
   <a-entity position="0 -0.2 0.2" scale="1.1 1.1 1.1">
     <a-entity
-      geometry="width: 0.3; height: 0.04; depth: 0.3"
+      id="tutorial3"
       bind__animation="enabled: menuActive"
+      geometry="width: 0.3; height: 0.04; depth: 0.3"
       animation="property: object3D.position.z; from: -0.5; to: -0.1; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
       material="shader: wallShader; tex: #noiseTexture; repeat: 1 2; transparent: true"></a-entity>
+
     <a-entity
+      bind__animation="enabled: menuActive"
       obj-model="obj: #mineObj"
       scale="0.2 0.2 0.2"
       position="-0.04 -0.07 0.03"
-      bind__animation="enabled: menuActive"
       animation="property: object3D.position.z; from: -0.24; to: 0.1; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
-      material="emissive: #080808; color: #222; roughness: 0.38; metalness: 0.7;"
-      ></a-entity>
+      material="emissive: #080808; color: #222; roughness: 0.38; metalness: 0.7;"></a-entity>
+
     <a-entity
+      bind__animation="enabled: menuActive"
       obj-model="obj: #mineObj"
       scale="0.2 0.2 0.2"
       position="-0.09 -0.18 0.01"
-      bind__animation="enabled: menuActive"
       animation="property: object3D.position.z; from: -0.25; to: -0.04; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
-      material="emissive: #080808; color: #222; roughness: 0.38; metalness: 0.7;"
-      ></a-entity>
+      material="emissive: #080808; color: #222; roughness: 0.38; metalness: 0.7;"></a-entity>
+
     <a-entity
+      id="tutorial2"
+      bind__animation="enabled: menuActive"
       obj-model="obj: #tutorial2Obj"
       material="side: double; shader: flat; transparent: true; src: #tutorialImg"
-      bind__animation="enabled: menuActive"
       animation="property: object3D.position.x; from: -0.05; to: 0.098; dur: 2000; easing: linear; loop: true; easing: easeInOutCubic"
-      position="0.098 -0.26 0"
-      scale="0.9 0.9 0.9"
-      ></a-entity>
+      position="0.098 -0.36 0"
+      scale="0.9 0.9 0.9"></a-entity>
   </a-entity>
 </a-entity>
