@@ -46,7 +46,7 @@
     animation__mouseleave="property: components.slice9.material.opacity; from: 0.3; to: 0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
     mixin="slice"
     raycaster-target="width: 1; height: 0.32"
-    slice9="width: 0.8; color: #067197; height: 0.130; padding: 0.03; opacity: 0"></a-mixin>
+    slice9="width: 0.8; color: {{ COLORS.UI_ACCENT }}; height: 0.130; padding: 0.03; opacity: 0"></a-mixin>
 
   <a-entity
     id="searchPrevPage"
@@ -86,7 +86,7 @@
         bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.id !== item.id"
         bind-toggle__raycastable="menuActive"
         geometry="primitive: plane; width: 1.1; height: 0.2"
-        material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
+        material="shader: flat; color: {{ COLORS.UI_ACCENT }}; transparent: true; opacity: 0.0"
         position="0 -0.13 -0.002"
         play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
         animation__mouseenter="property: components.material.material.opacity; from: 0.0; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150; delay: 1"
@@ -178,7 +178,7 @@
                 bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
                 geometry="primitive: plane; width: 0.4; height: 0.2"
-                material="shader: flat; color: #067197; transparent: true; opacity: 0.0"
+                material="shader: flat; color:  {{ COLORS.UI_ACCENT }}; transparent: true; opacity: 0.0"
                 position="0 -0.005 0"
                 play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
                 animation__mouseenter="property: components.material.material.opacity; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150"

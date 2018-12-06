@@ -23,22 +23,22 @@ AFRAME.registerComponent('beams', {
   },
 
   play: function () {
-    // Material.
-    const materialOptions = {
-      color: 0xaa3333,
-      map: new THREE.TextureLoader().load('assets/img/beam.png'),
-      transparent: true,
-      blending: THREE.AdditiveBlending
-    };
-    const redMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    materialOptions.color = 0x4444cc;
-    const blueMaterial = new THREE.MeshBasicMaterial(materialOptions);
-    this.texture = materialOptions.map;
-
     // Beam pools.
-    const geometry = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
-    this.redBeams = this.createBeamPool(geometry, redMaterial);
-    this.blueBeams = this.createBeamPool(geometry, blueMaterial);
+    //const geometry = new THREE.PlaneBufferGeometry(0.4, 50).translate(0, 25, 0);
+
+    var objData;
+    var loader;
+    var redGeometry, blueGeometry;
+
+    var loader = new THREE.OBJLoader();
+    objData = document.getElementById('redbeamObj').data;
+    redGeometry = loader.parse(objData).children[0].geometry;
+
+    objData = document.getElementById('bluebeamObj').data;
+    blueGeometry = loader.parse(objData).children[0].geometry;
+
+    this.redBeams = this.createBeamPool(redGeometry, this.el.sceneEl.systems.materials.stageAdditive);
+    this.blueBeams = this.createBeamPool(blueGeometry, this.el.sceneEl.systems.materials.stageAdditive);
   },
 
   /**

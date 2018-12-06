@@ -91,7 +91,6 @@
     <a-entity obj-model="obj: #rightLaserObj" materials="name: stageAdditive" position="14 -1.5 -36"></a-entity>
   </a-entity>
 
-  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
   <a-entity id="twister" position="0 0 -35" rotation="90 0 0" bind__twister="enabled: isPlaying"></a-entity>
 
   <a-entity
@@ -109,9 +108,12 @@
   <a-entity id="smoke1" mixin="smoke" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
  <!-- <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.09 0.8 1.09" animation__rotate="dur: 243000"></a-entity>-->
 
+  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
+
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
   <a-entity id="logo" bind__visible="menuActive || isVictory" position="0 6 -7.5" rotation="90 0 0">
+    <a-entity id="logoGodraysObj" obj-model="obj: #logoGodraysObj" materials="name: logoadditive"></a-entity>
     <a-entity id="logoObj" obj-model="obj: #logoObj" materials="name: logo"></a-entity>
     <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" materials="name: logo" logoflicker="delay: 1200" bind__logoflicker="active: menuActive || isVictory"></a-entity>
     <a-entity id="logoGlowObj" obj-model="obj: #logoGlowObj" materials="name: logoadditive"></a-entity>
@@ -121,12 +123,10 @@
     <!-- material="color: #030303" -->
   <a-entity
     id="floor"
-    data-saber-particles
     geometry="primitive: plane; width: 3; height: 3"
     rotation="-90 0 0"
-    raycastable-game
-    rotation="-90 0 0"
     material="shader: floorShader; color: #f33; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
+    bind__saber-intersection="active: isPlaying"
     stepback></a-entity>
 
   <a-entity
@@ -139,4 +139,3 @@
     rotation="-45 0 0">
   </a-entity>
 </a-entity>
-f

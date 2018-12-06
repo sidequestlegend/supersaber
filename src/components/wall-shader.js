@@ -1,3 +1,8 @@
+const COLORS = require('../constants/colors.js');
+
+const WALL_COLOR = new THREE.Color(COLORS.NEON_RED);
+const WALL_BG = new THREE.Color(COLORS.SKY_RED);
+
 
 AFRAME.registerShader('wallShader', {
   schema: {
@@ -63,7 +68,8 @@ AFRAME.registerShader('wallShader', {
       return mix(c, f, luvw.z);
     }
 
-
+    #define WALL_COLOR vec3(${WALL_COLOR.r}, ${WALL_COLOR.g}, ${WALL_COLOR.b})
+    #define WALL_BG vec3(${WALL_BG.r}, ${WALL_BG.g}, ${WALL_BG.b})
 
     void main() {
       vec2 uv1 = uvs.xy-0.5;
@@ -93,7 +99,10 @@ AFRAME.registerShader('wallShader', {
       w *= 0.9;
       bg *= 0.5;
 
-      vec3 col = vec3(r * 0.8 + w, w + 0.05, w + 0.08);
+      vec3 COL = WALL_COLOR;
+      vec3 BG = WALL_BG * 0.1;
+
+      vec3 col = vec3(r * COL.r + w + BG.r, r * COL.g + w + BG.g, r * COL.b + w + BG.b);
 
       vec3 hit;
       hit = drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));

@@ -34,8 +34,10 @@
 <a-asset-item id="logoObj" src="assets/models/logo.obj"></a-asset-item>
 <a-asset-item id="logofrontUObj" src="assets/models/logofront-u.obj"></a-asset-item>
 <a-asset-item id="logoGlowObj" src="assets/models/logoglow.obj"></a-asset-item>
+<a-asset-item id="logoGodraysObj" src="assets/models/logogodrays.obj"></a-asset-item>
 <a-asset-item id="saberGlowObj" src="assets/models/saberglow.obj"></a-asset-item>
-
+<a-asset-item id="redbeamObj" src="assets/models/redbeam.obj"></a-asset-item>
+<a-asset-item id="bluebeamObj" src="assets/models/bluebeam.obj"></a-asset-item>
 
 
 <!--<a-asset-item id="wallglowObj" src="assets/models/wallglow.obj"></a-asset-item>-->
@@ -44,7 +46,6 @@
 <a-asset-item id="tutorial2Obj" src="assets/models/tutorial2.obj"></a-asset-item>
 <a-asset-item id="tutorial3Obj" src="assets/models/tutorial3.obj"></a-asset-item>
 
-<audio id="beatMissSound" src="assets/sounds/miss.ogg"></audio>
 <audio id="confirmSound" src="assets/sounds/beatHit.ogg"></audio>
 <audio id="hoverSound" src="assets/sounds/hover.ogg"></audio>
 <audio id="victorySound" src="assets/sounds/victory.ogg"></audio>
@@ -68,7 +69,7 @@
 <img id="playImg" src="assets/img/play.png">
 <img id="sliceImg" src="assets/img/slice.png">
 <img id="slicebtnImg" src="assets/img/slicebtn.png">
-<img id="beamImg" src="assets/img/beam.png">
+<!--<img id="beamImg" src="assets/img/beam.png">-->
 <img id="wrongImg" src="assets/img/wrong.png">
 <img id="missImg" src="assets/img/miss.png">
 <img id="noiseTexture" src="assets/img/noise.png">
@@ -117,10 +118,10 @@
   mixin="beatScore"
   text="value: GOOD; color: #A8E3FF"></a-mixin>
 <a-mixin
-  id="beatScoreGreat"
-  score-beat="type: great"
+  id="beatScoreExcellent"
+  score-beat="type: excellent"
   mixin="beatScore"
-  text="value: GREAT; wrapCount: 16; color: #60CCFF"></a-mixin>
+  text="value: EXCELLENT; wrapCount: 16; color: #60CCFF"></a-mixin>
 <a-mixin
   id="beatScoreSuper"
   score-beat="type: super"
@@ -135,10 +136,11 @@
 
 <a-mixin
   id="wall"
-  data-saber-particles
   geometry
   material="shader: wallShader; transparent: true; side: double;"
-  wall></a-mixin>
+  wall
+  saber-intersection
+  ></a-mixin>
 
 <a-mixin
   id="beatWrong"
@@ -168,11 +170,16 @@
 <!-- stage, neons, etc animations launched from beat-loader events -->
 
 <a-mixin id="bgColorAnimation"
-  animation__bgcoloroff="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: {{ COLORS.BG_OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
-  animation__bgcolorblue="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: {{ COLORS.BG_BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
-  animation__bgcolorbluefade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; from: {{ COLORS.BG_BRIGHTBLUE }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
-  animation__bgcolorred="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; to: {{ COLORS.BG_RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
-  animation__bgcolorredfade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.color.value; type: color; from: {{ COLORS.BG_BRIGHTBLUE }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"
+  animation__bgcoloroff="isRawProperty: true; property: systems.materials.stageNormal.uniforms.backglowColor.value; type: color; to: {{ COLORS.BG_OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__bgcolorblue="isRawProperty: true; property: systems.materials.stageNormal.uniforms.backglowColor.value; type: color; to: {{ COLORS.BG_BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
+  animation__bgcolorbluefade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.backglowColor.value; type: color; from: {{ COLORS.BG_BRIGHTBLUE }}; to: {{ COLORS.BG_BLUE }}; dur: 500; easing: linear; startEvents: bgcolorbluefade"
+  animation__bgcolorred="isRawProperty: true; property: systems.materials.stageNormal.uniforms.backglowColor.value; type: color; to: {{ COLORS.BG_RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
+  animation__bgcolorredfade="isRawProperty: true; property: systems.materials.stageNormal.uniforms.backglowColor.value; type: color; from: {{ COLORS.BG_BRIGHTRED }}; to: {{ COLORS.BG_RED }}; dur: 500; easing: linear; startEvents: bgcolorredfade"
+
+
+  animation__skycoloroff="isRawProperty: true; property: systems.materials.stageNormal.uniforms.skyColor.value; type: color; to: {{ COLORS.SKY_OFF }}; dur: 500; easing: linear; startEvents: bgcoloroff"
+  animation__skycolorblue="isRawProperty: true; property: systems.materials.stageNormal.uniforms.skyColor.value; type: color; to: {{ COLORS.SKY_BLUE }}; dur: 5; easing: linear; startEvents: bgcolorblue"
+  animation__skycolorred="isRawProperty: true; property: systems.materials.stageNormal.uniforms.skyColor.value; type: color; to: {{ COLORS.SKY_RED }}; dur: 5; easing: linear; startEvents: bgcolorred"
   ></a-mixin>
 
 <a-mixin id="tunnelColorAnimation"
@@ -181,6 +188,14 @@
   animation__tunnelcolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: {{ COLORS.NEON_BRIGHTBLUE }}; to: {{ COLORS.NEON_BLUE }}; dur: 500; easing: linear; startEvents: tunnelcolorbluefade"
   animation__tunnelcolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; to: {{ COLORS.NEON_RED }}; dur: 5; easing: linear; startEvents: tunnelcolorred"
   animation__tunnelcolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.tunnelNeon.value; type: color; from: {{ COLORS.NEON_BRIGHTRED }}; to: {{ COLORS.NEON_RED }}; dur: 500; easing: linear; startEvents: tunnelcolorredfade"
+  ></a-mixin>
+
+<a-mixin id="floorColorAnimation"
+  animation__floorcoloroff="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.floorNeon.value; type: color; to: {{ COLORS.NEON_OFF }}; dur: 500; easing: linear; startEvents: floorcoloroff"
+  animation__floorcolorblue="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.floorNeon.value; type: color; to: {{ COLORS.NEON_BLUE }}; dur: 5; easing: linear; startEvents: floorcolorblue"
+  animation__floorcolorbluefade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.floorNeon.value; type: color; from: {{ COLORS.NEON_BRIGHTBLUE }}; to: {{ COLORS.NEON_BLUE }}; dur: 500; easing: linear; startEvents: floorcolorbluefade"
+  animation__floorcolorred="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.floorNeon.value; type: color; to: {{ COLORS.NEON_RED }}; dur: 5; easing: linear; startEvents: floorcolorred"
+  animation__floorcolorredfade="isRawProperty: true; property: systems.materials.stageAdditive.uniforms.floorNeon.value; type: color; from: {{ COLORS.NEON_BRIGHTRED }}; to: {{ COLORS.NEON_RED }}; dur: 500; easing: linear; startEvents: floorcolorredfade"
   ></a-mixin>
 
 <a-mixin id="leftLaserColorAnimation"

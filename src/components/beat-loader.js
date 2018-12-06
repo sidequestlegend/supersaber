@@ -292,9 +292,8 @@ AFRAME.registerComponent('beat-loader', {
       case 3:
         this.stageColors.setColor('rightlaser', event._value);
         break;
-      case 400:
+      case 4:
         this.stageColors.setColor('floor', event._value);
-        this.stageColors.setColor('stageNeon', event._value);
         break;
       case 8:
         this.twister.components.twister.pulse(event._value);

@@ -23,6 +23,10 @@ AFRAME.registerComponent('stage-colors', {
   resetColors: function () {
     this.updateColors('blue');
     this.el.emit('bgcolorblue', null, false);
+    this.el.emit('tunnelcolorred', null, false);
+    this.el.emit('floorcolorred', null, false);
+    this.el.emit('leftlasercolorblue', null, false);
+    this.el.emit('rightlasercolorblue', null, false);
   },
 
   updateColors: function (color) {

@@ -7,7 +7,8 @@ AFRAME.registerSystem('materials', {
   init: function () {
     this.stageNormal = new THREE.ShaderMaterial({
       uniforms: {
-        color: {value: new THREE.Color(COLORS.BG_BLUE)},
+        skyColor: {value: new THREE.Color(COLORS.SKY_BLUE)},
+        backglowColor: {value: new THREE.Color(COLORS.BG_BLUE)},
         src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
       },
       vertexShader: stageNormalShaders.vertexShader,
@@ -18,8 +19,8 @@ AFRAME.registerSystem('materials', {
 
     this.stageAdditive = new THREE.ShaderMaterial({
       uniforms: {
-        tunnelNeon: {value: new THREE.Color(COLORS.NEON_BLUE)},
-        floorNeon: {value: new THREE.Color(COLORS.NEON_BLUE)},
+        tunnelNeon: {value: new THREE.Color(COLORS.NEON_RED)},
+        floorNeon: {value: new THREE.Color(COLORS.NEON_RED)},
         leftLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         rightLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         textGlow: {value: new THREE.Color(COLORS.TEXT_OFF)},

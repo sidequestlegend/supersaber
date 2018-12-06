@@ -258,7 +258,7 @@ AFRAME.registerComponent('beat', {
       roughness: 0.10,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.27,
+      emissiveIntensity: 0.17,
       color: this.materialColor[this.data.color]
     });
     this.setObjModelFromTemplate(blockEl, this.models[this.data.type]);
@@ -372,7 +372,7 @@ AFRAME.registerComponent('beat', {
       roughness: 0.12,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.27,
+      emissiveIntensity: 0.17,
       color: this.materialColor[this.data.color],
       side: 'double'
     });
@@ -391,7 +391,7 @@ AFRAME.registerComponent('beat', {
       roughness: 0.12,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.27,
+      emissiveIntensity: 0.17,
       color: this.materialColor[this.data.color],
       side: 'double'
     });
