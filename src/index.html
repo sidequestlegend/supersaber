@@ -197,9 +197,22 @@
                     material="shader: flat; color: {{ bladeColor }}; blending: additive; opacity: 0.08"
                     position="0 -0.55 0"></a-entity>
                 </a-entity>
+                <a-entity
+                  class="saberHandle"
+                  geometry="primitive: box; height: 0.2; depth: 0.025; width: 0.025"
+                  material="shader: flat; color: #151515">
+                  <a-entity
+                    class="highlightTop"
+                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                    material="shader: flat; color: {{ bladeColor }}"
+                    position="0 0 0.0125"></a-entity>
+                  <a-entity
+                    class="highlightBottom"
+                    geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
+                    material="shader: flat; color: {{ bladeColor }}"
+                    position="0 0 -0.0125"></a-entity>
+                </a-entity>
               </a-entity>
-              </a-entity>
-
               <a-entity
                 class="fakeGlow"
                 fake-glow="color: {{ beamColor }}"
