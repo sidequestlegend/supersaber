@@ -808,14 +808,14 @@ AFRAME.registerComponent('beat', {
       }
 
       rightCutNormal.copy(this.rightCutPlane.normal)
-                    .multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+                    .multiplyScalar((this.data.speed / 4) * (timeDelta / 500));
       rightCutNormal.y = 0;  // Y handled by gravity.
       this.partRightEl.object3D.position.add(rightCutNormal);
       this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
       rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
 
       leftCutNormal.copy(this.leftCutPlane.normal)
-                   .multiplyScalar((this.data.speed / 2) * (timeDelta / 500));
+                   .multiplyScalar((this.data.speed / 4) * (timeDelta / 500));
       leftCutNormal.y = 0;  // Y handled by gravity.
       this.partLeftEl.object3D.position.add(leftCutNormal);
       this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
