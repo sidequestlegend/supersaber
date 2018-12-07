@@ -5,21 +5,35 @@ let i = 0;
  * three.js renderer by default will not upload textures from non-visible entities.
  */
 AFRAME.registerComponent('gpu-preloader', {
+  dependencies: ['materials'],
+
   play: function () {
     this.preloadMineEnvMaps();
 
     setTimeout(() => {
-      this.preloadBeamMap();
+      this.preloadAtlas();
+      this.preloadLogo();
+      //this.prelodBeamMap();
       this.preloadBeatEnvMap();
       this.preloadCutParticles();
       this.preloadKeyboard();
-      this.preloadMissMap();
+      //this.preloadMissMap();
       this.preloadPlayButton();
       this.preloadSearchPrevPage();
       //this.preloadWallMap();
-      this.preloadWrongMap();
+      //this.preloadWrongMap();
       this.preloadGenres();
     }, 1000);
+  },
+
+  preloadAtlas: function () {
+    const stage = document.querySelector('#stageObj');
+    this.preloadTexture(stage.getObject3D('mesh').children[0].material.uniforms.src.value);
+  },
+
+  preloadLogo: function () {
+    const logo = document.querySelector('#logoBody');
+    this.preloadTexture(logo.getObject3D('mesh').children[0].material.uniforms.src.value);
   },
 
   preloadBeamMap: function () {

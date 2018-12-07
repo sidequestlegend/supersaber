@@ -4,6 +4,7 @@ module.exports = {
   BLUE: '#08bfa2',
 
   UI_ACCENT: '#08bfa2',
+  UI_ACCENT2: '#f01978',
 
   SKY_OFF: '#297547',
   SKY_BLUE: '#840d42',

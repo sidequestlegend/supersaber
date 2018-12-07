@@ -37,5 +37,6 @@ AFRAME.registerComponent('gameover', {
       this.gameOverEls[i].emit('gameover', null, false);
     }
     this.el.emit('textglowoff', null, false);
+    this.el.emit('bgcolorgameover', null, false);
   }
 });

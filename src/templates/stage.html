@@ -72,7 +72,7 @@
     position="0 -19 5"></a-entity>
 
   <a-entity
-    id="stageobj"
+    id="stageObj"
     mixin="gameoverAnimation"
     obj-model="obj: #stageNormalObj"
     materials="name: stageNormal"></a-entity>
@@ -114,7 +114,7 @@
 
   <a-entity id="logo" bind__visible="menuActive || isVictory" position="0 6 -7.5" rotation="90 0 0">
     <a-entity id="logoGodraysObj" obj-model="obj: #logoGodraysObj" materials="name: logoadditive"></a-entity>
-    <a-entity id="logoObj" obj-model="obj: #logoObj" materials="name: logo"></a-entity>
+    <a-entity id="logoBody" obj-model="obj: #logoObj" materials="name: logo"></a-entity>
     <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" materials="name: logo" logoflicker="delay: 1200" bind__logoflicker="active: menuActive || isVictory"></a-entity>
     <a-entity id="logoGlowObj" obj-model="obj: #logoGlowObj" materials="name: logoadditive"></a-entity>
   </a-entity>
