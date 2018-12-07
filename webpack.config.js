@@ -13,6 +13,7 @@ var nunjucks = Nunjucks.configure(path.resolve(__dirname, 'src'), {
 });
 nunjucks.addGlobal('DEBUG_AFRAME', !!process.env.DEBUG_AFRAME);
 nunjucks.addGlobal('DEBUG_KEYBOARD', !!process.env.DEBUG_KEYBOARD);
+nunjucks.addGlobal('DEBUG_INSPECTOR', !!process.env.DEBUG_INSPECTOR);
 nunjucks.addGlobal('HOST', ip.address());
 nunjucks.addGlobal('IS_PRODUCTION', process.env.NODE_ENV === 'production');
 nunjucks.addGlobal('COLORS', COLORS);

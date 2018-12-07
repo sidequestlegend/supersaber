@@ -111,15 +111,15 @@
     id="menuBackground"
     bind-toggle__raycastable="menuActive || genreMenuOpen || isSearching"
     mixin="slice"
-    slice9="left: 70; width: 2.5; height: 1.55; opacity: 0.9"
+    slice9="left: 70; width: 2.9; height: 1.55; opacity: 0.9"
     position="0 0 -0.005"></a-entity>
 
   <a-entity id="mainMenu" bind__visible="!genreMenuOpen">
     <a-entity id="searchResultsContainer" position="0 0 0.001"
       class="menuAnimation"
       bind__menu-slide-animation="isSearching: isSearching; menuSelectedChallengeId: menuSelectedChallenge.id"
-      animation__menuleft="property: object3D.position.x; to: -0.59; dur: 200; easing: easeOutCubic; autoplay: false"
-      animation__menuright="property: object3D.position.x; from: -0.59; to: 0; dur: 200; easing: easeOutCubic; autoplay: false">
+      animation__menuleft="property: object3D.position.x; to: -0.79; dur: 200; easing: easeOutCubic; autoplay: false"
+      animation__menuright="property: object3D.position.x; from: -0.79; to: 0; dur: 200; easing: easeOutCubic; autoplay: false">
 
       <a-entity id="divisorA"
         position="0.566 0 -0.0025"
@@ -132,7 +132,6 @@
       <a-entity id="soundboxingLink"
         bind__visible="!menuSelectedChallenge.id && !isSearching && !genre"
         position="0.9 -0.5 0.01">
-
         <a-entity id="soundboxingButton"
           link="href: https://webvr.soundboxing.co/; on: click"
           geometry="primitive:plane; width: 0.38; height: 0.19;"
@@ -302,8 +301,8 @@
   id="keyboard"
   class="overlay"
   bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: isSearching"
-  super-keyboard="label: Search from over 6000 songs!; inputColor: #fff; labelColor: #FFF; width: 1.2; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
-  position="0.6 1.1 -1.999"
+  super-keyboard="label: SEARCH FROM OVER 6000 SONGS; inputColor: #fff; labelColor: #FFF; width: 1.5; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
+  position="0.55 0.95 -1.85"
   keyboard-raycastable="condition: isSearching"
   search
   proxy-event__dismiss="event: superkeyboarddismiss; to: a-scene; as: keyboardclose"
