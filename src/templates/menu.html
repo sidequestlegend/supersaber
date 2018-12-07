@@ -86,12 +86,12 @@
         bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.id !== item.id"
         bind-toggle__raycastable="menuActive"
         geometry="primitive: plane; width: 1.1; height: 0.2"
-        material="shader: flat; color: {{ COLORS.UI_ACCENT }}; transparent: true; opacity: 0.0"
+        material="shader: flat; color: {% endraw %}{{ COLORS.UI_ACCENT }}{% raw %}; transparent: true; opacity: 0.0"
         position="0 -0.13 -0.002"
         play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
-        animation__mouseenter="property: components.material.material.opacity; from: 0.0; to: 1.0; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150; delay: 1"
+        animation__mouseenter="property: components.material.material.opacity; from: 0.0; to: 0.3; startEvents: mouseenter; pauseEvents: mouseleave; dur: 150; delay: 1"
         animation__mouseentervisible="property: visible; from: false; to: true; startEvents: mouseenter; pauseEvents: mouseleave; dur: 1"
-        animation__mouseleave="property: components.material.material.opacity; from: 1.0; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
+        animation__mouseleave="property: components.material.material.opacity; from: 0.3; to: 0.0; startEvents: mouseleave; pauseEvents: mouseenter; dur: 150"
         animation__mouseleavevisible="property: visible; from: true; to: false; startEvents: mouseleave; pauseEvents: mouseenter; dur: 160"
         visible="false"></a-entity>
       </a-entity>
