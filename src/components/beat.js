@@ -254,11 +254,11 @@ AFRAME.registerComponent('beat', {
     if (!blockEl) { return; }
 
     blockEl.setAttribute('material', {
-      metalness: 0.9,
-      roughness: 0.10,
+      metalness: 0.7,
+      roughness: 0.1,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.17,
+      emissiveIntensity: 0.05,
       color: this.materialColor[this.data.color]
     });
     this.setObjModelFromTemplate(blockEl, this.models[this.data.type]);
@@ -368,11 +368,11 @@ AFRAME.registerComponent('beat', {
     }
 
     partLeftEl.setAttribute('material', {
-      metalness: 0.8,
-      roughness: 0.12,
+      metalness: 0.7,
+      roughness: 0.1,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.17,
+      emissiveIntensity: 0.05,
       color: this.materialColor[this.data.color],
       side: 'double'
     });
@@ -387,11 +387,11 @@ AFRAME.registerComponent('beat', {
     this.setObjModelFromTemplate(cutLeftEl, this.models.dot);
 
     partRightEl.setAttribute('material', {
-      metalness: 0.8,
-      roughness: 0.12,
+      metalness: 0.7,
+      roughness: 0.1,
       sphericalEnvMap: '#envmapTexture',
       emissive: this.materialColor[this.data.color],
-      emissiveIntensity: 0.17,
+      emissiveIntensity: 0.05,
       color: this.materialColor[this.data.color],
       side: 'double'
     });
