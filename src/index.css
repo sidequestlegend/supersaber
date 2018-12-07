@@ -31,13 +31,13 @@ html {
   animation: loaderTitle 1s infinite alternate;
   color: rgba(0,0,0,0);
   background: none;
-  background-image: url('../assets/img/loadingLogo.png');
-  height: 21.2vh;
+  background-image: url('../assets/img/loadingLogo.jpg');
+  height: 36.2vh;
   background-repeat: no-repeat;
   background-position: center;
-  margin-top: 6vh;
+  margin-top: 0;
   background-size: contain;
-  margin-left: -4vh;
+  margin-left: -1vh;
 }
 
 @keyframes loaderTitle {
