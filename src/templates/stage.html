@@ -1,23 +1,3 @@
-<!--
-<a-mixin id="stageLaser" obj-model="obj:#laserNeonObj" material="depthWrite: false; transparent: true; shader: flat; fog: false; color: #00a; src: #neonImg;"></a-mixin>
-
-<a-mixin id="neonAnimation"
-  material="shader: flat; fog: false; color: #9999ff"
-  animation__coloroff="property: components.material.material.opacity; to: 0.1; dur: 500; easing: linear; startEvents: coloroff"
-  animation__colorblue="property: components.material.material.color; type: color; to: #AAAAFF; dur: 5; easing: linear; startEvents: colorblue"
-  animation__colorbluefade="property: components.material.material.color; type: color; from: #EEF; to: #AAAAff; dur: 500; easing: linear; startEvents: colorbluefade"
-  animation__colorred="property: components.material.material.color; type: color; to: #FFAAAA; dur: 5; easing: linear; startEvents: colorred"
-  animation__colorredfade="property: components.material.material.color; type: color; from: #FEE; to: #ffAAAA; dur: 500; easing: linear; startEvents: colorredfade"></a-mixin>
-
-
-<a-sky
-  id="sky"
-  visible="false"
-  mixin="gameoverAnimation bgAnimation"
-  animation__gameover="property: components.material.material.color; type: color; to: #301000; startEvents: gameover"
-  geometry="segmentsHeight: 16; segmentsWidth: 32"
-  material="src: #skyTexture"></a-sky>
--->
 <a-entity
   id="audioAnalyser"
   bind__audioanalyser="beatDetectionThrottle: menuActive && 5000 || 1000"
@@ -25,47 +5,6 @@
   proxy-event="event: audioanalyserbeat; to: #logolight"></a-entity>
 
 <a-entity id="stage">
-
-<!--
-  <a-entity id="backglow"
-    visible="false"
-    mixin="gameoverAnimation bgAnimation"
-    animation__gameover="property: components.material.material.opacity; to: 0.2; startEvents: gameover"
-    obj-model="obj: #backglowObj"
-    material="transparent: true; color: #f00; src: #backglowTexture; opacity: 0.7"
-    position="0 0 -60"
-    scale="20 20 20"></a-entity>
--->
-
-<!--
-  <a-mixin id="corridor" geometry="skipCache: true" vertex-colors-buffer="baseColor: #010101" visible="false"></a-mixin>
-  <a-entity id="stageCorridor" buffer-geometry-merger material="shader: flat; flatShading: true; vertexColors: vertex">
-    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 4.1" position="0 0 -31.85"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="1.9 -9.97 -7"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 20; depth: 0.3; width: 0.3" position="-1.9 -9.97 -7"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="1.9 -1 -31.85"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 0.3; depth: 50; width: 0.3" position="-1.9 -1 -31.85"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="3.5 -10 -7"></a-entity>
-    <a-entity mixin="corridor" geometry="height: 21.5; depth: 0.2; width: 0.2" position="-3.5 -10 -7"></a-entity>
-  </a-entity>
-
-  <a-entity
-    id="tunnel"
-    obj-model="obj: #tunnelObj"
-    material="shader: flat; flatShading: true; color: #010101"></a-entity>
-
-  <a-entity
-    id="tunnelNeon"
-    mixin="neonAnimation"
-    obj-model="obj: #tunnelNeonObj"
-    material="shader: flat; fog: false; transparent: true; color: #9999ff; src: #neonImg; depthWrite: false"></a-entity>
-
-  <a-entity
-    id="stageNeon"
-    mixin="neonAnimation"
-    obj-model="obj: #stageNeonObj"></a-entity>
--->
-
   <a-entity
     id="audioColumns"
     audio-columns="analyser: #audioAnalyser; height: 28; mirror: 18; scale: 9; thickness: 0.6; separation: 0.55"
@@ -98,15 +37,14 @@
     obj-model="obj: #stageAdditiveObj"
     materials="name: stageAdditive"></a-entity>
 
-  <a-mixin
+  <a-entity
     id="smoke"
     mixin="gameoverAnimation"
     animation__gameover="property: components.material.material.opacity; to: 0; startEvents: gameoverDISABLE"
-    animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true"
-    obj-model="obj:#smokeObj"
-    material="src: #atlasImg; shader: flat; transparent: true; depthWrite: false"></a-mixin>
-  <a-entity id="smoke1" mixin="smoke" position="0 1.4 0" animation__rotate="dur: 200000"></a-entity>
- <!-- <a-entity id="smoke2" mixin="smoke" position="0 1.8 0" scale="1.09 0.8 1.09" animation__rotate="dur: 243000"></a-entity>-->
+    animation__rotate="property: rotation; to: 0 360 0; easing: linear; loop: true; dur: 200000"
+    obj-model="obj: #smokeObj"
+    material="src: #atlasImg; shader: flat; transparent: true; depthWrite: false"
+    position="0 1.4 0"></a-entity>
 
   <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 
@@ -118,14 +56,14 @@
     <a-entity id="logoFrontU" obj-model="obj: #logofrontUObj" materials="name: logo" logoflicker="delay: 1200" bind__logoflicker="active: menuActive || isVictory"></a-entity>
     <a-entity id="logoGlowObj" obj-model="obj: #logoGlowObj" materials="name: logoadditive"></a-entity>
   </a-entity>
+
   <a-entity id="logosparks" bind__visible="menuActive || isVictory" particleplayer="src: #logoSparksJSON; scale: 1.4; pscale: 0.35; count: 10; interpolate: true; dur: 1000; on: logoflicker; animateScale: true; initialScale: 1.5 1.5 1.5; finalScale: 0.3 0.3 0.3" position="-2.8 5.5 -7.2"></a-entity>
 
-    <!-- material="color: #030303" -->
   <a-entity
     id="floor"
     geometry="primitive: plane; width: 3; height: 3"
     rotation="-90 0 0"
-    material="shader: floorShader; color: #f33; normalMap: #floorNormalsImg; envMap: #floorEnvImg"
+    material="shader: floorShader; color: #f33; normalMap: #floorNormalsImg; envMap: #floorEnvImg; hitLeft: -999 0 0; hitRight: -999 0 0"
     bind__saber-intersection="active: isPlaying"
     stepback></a-entity>
 
