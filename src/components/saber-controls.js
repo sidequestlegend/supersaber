@@ -6,8 +6,8 @@ AFRAME.registerComponent('saber-controls', {
     bladeEnabled: {default: false},
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
-    strokeMinSpeed: {default: 10000},
-    strokeMinAngle: {default: 5}
+    strokeMinSpeed: {default: 0.002},
+    strokeMinDuration: {default: 40}
   },
 
   init: function () {
@@ -28,7 +28,17 @@ AFRAME.registerComponent('saber-controls', {
     this.swinging = false;
     this.strokeCount = 0;
     this.distanceSamples = [];
+    this.deltaSamples = [];
+    this.startStrokePosition = new THREE.Vector3();
+    this.strokeDirectionVector = new THREE.Vector3();
+    this.strokeDirection = {
+      down: false,
+      left: false,
+      right: false,
+      up: false
+    };
     this.accumulatedDistance = 0;
+    this.accumulatedDelta = 0;
 
     el.addEventListener('controllerconnected', this.initSaber.bind(this));
 
@@ -57,8 +67,6 @@ AFRAME.registerComponent('saber-controls', {
     var distanceSamples = this.distanceSamples;
     var data = this.data;
     var directionChange;
-    var startSpeed;
-    var strokeMinSpeed = this.swinging ? startSpeed : this.data.strokeMinSpeed;
 
     // Tip of the blade position in world coordinates.
     this.bladeTipPosition.set(0, 0, -0.8);
@@ -76,26 +84,32 @@ AFRAME.registerComponent('saber-controls', {
     var anglePlaneXY = this.projectedBladeVector.copy(this.bladeTipPosition).projectOnPlane(this.xyPlaneNormal).angleTo(this.bladeVector);
 
     // Distance covered but the saber tip in one frame.
-    distance = this.bladeTipPreviousPosition.sub(this.bladeTipPosition).length() * 1000000;
+    distance = this.bladeTipPreviousPosition.sub(this.bladeTipPosition).length();
 
     // Sample distance of the last 5 frames.
     if (this.distanceSamples.length === 5) {
       this.accumulatedDistance -= this.distanceSamples.shift();
+      this.accumulatedDelta -= this.deltaSamples.shift();
     }
     this.distanceSamples.push(distance);
     this.accumulatedDistance += distance;
 
+    this.deltaSamples.push(delta);
+    this.accumulatedDelta += delta;
+
     // Filter out saber movements that are too slow. Too slow is considered wrong hit.
-    if (this.accumulatedDistance > this.data.strokeMinSpeed) {
-      // Saber has to move more than strokeMinAngle to consider a swing.
+    if (this.accumulatedDistance / this.accumulatedDelta > this.data.strokeMinSpeed) {
       // This filters out unintentional swings.
       if (!this.swinging) {
-        startSpeed = this.accumulatedDistance;
+        this.startStrokePosition.copy(this.bladeTipPosition);
         this.swinging = true;
+        this.strokeDuration = 0;
         this.maxAnglePlaneX = 0;
         this.maxAnglePlaneY = 0;
         this.maxAnglePlaneXY = 0;
       }
+      this.updateStrokeDirection();
+      this.strokeDuration += delta;
       const anglePlaneXIncreased = anglePlaneX > this.maxAnglePlaneX;
       const anglePlaneYIncreased = anglePlaneY > this.maxAnglePlaneY;
       const anglePlaneXYIncreased = anglePlaneXY > this.maxAnglePlaneXY;
@@ -104,8 +118,6 @@ AFRAME.registerComponent('saber-controls', {
       this.maxAnglePlaneXY = anglePlaneXYIncreased ? anglePlaneXY : this.maxAnglePlaneXY;
       if (!anglePlaneXIncreased && !anglePlaneYIncreased) { this.endStroke(); }
     } else {
-      // Stroke finishes. Reset swinging state.
-      this.swinging = false;
       this.endStroke();
     }
 
@@ -113,13 +125,26 @@ AFRAME.registerComponent('saber-controls', {
   },
 
   endStroke: function () {
-    this.el.emit('strokeend');
-    if (this.swinging) { return; }
+    if (!this.swinging || this.strokeDuration < this.data.strokeMinDuration) { return; }
+
+    this.swinging = false;
+    // Stroke finishes. Reset swinging state.
     this.accumulatedDistance = 0;
+    this.accumulatedDelta = 0;
     this.maxAnglePlaneX = 0;
     this.maxAnglePlaneY = 0;
     this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
+    for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
+  },
+
+  updateStrokeDirection: function () {
+    this.strokeDirectionVector.copy(this.bladeTipPosition).sub(this.startStrokePosition);
+    if (this.strokeDirectionVector.x === 0 && this.strokeDirectionVector.y === 0) { return; }
+    this.strokeDirection.right = this.strokeDirectionVector.x > 0;
+    this.strokeDirection.left = this.strokeDirectionVector.x < 0;
+    this.strokeDirection.up = this.strokeDirectionVector.y > 0;
+    this.strokeDirection.down = this.strokeDirectionVector.y < 0;
   },
 
   initSaber: function (evt) {
