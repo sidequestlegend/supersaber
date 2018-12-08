@@ -28,6 +28,10 @@ AFRAME.registerComponent('intro-song', {
     if (oldData.isPlaying && !this.data.isPlaying) { audio.pause(); }
   },
 
+  pause: function () {
+    this.audio.pause();
+  },
+
   play: function () {
     this.fadeInAudio();
   },
