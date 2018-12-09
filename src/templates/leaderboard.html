@@ -26,7 +26,7 @@
     mixin="font"
     bind__leaderboard-title="leaderboardQualified: leaderboardQualified"
     text="align: center; width: 2.5; value: LEADERBOARD"
-    position="0.04 0.540 0.001"></a-entity>
+    position="0.04 0.8383578205434512 0.001"></a-entity>
 
   <a-entity
     id="leaderboardNames"
@@ -54,17 +54,17 @@
   <a-entity
     id="leaderboardKeyboard"
     bind__super-keyboard="{% if not DEBUG_KEYBOARD %}hand: activeHand === 'left' && '#leftHand' || '#rightHand'; {% endif %}show: leaderboardQualified"
-    super-keyboard="label: Enter yourself to the leaderboard!; inputColor: #00acfc; labelColor: #575757; width: 1.1; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15"
+    super-keyboard="inputColor: #00acfc; hand: {{ DEBUG_KEYBOARD and '#mouseCursor' or '#rightHand' }}; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff; maxLength: 15; width: 1.5; label: NEW HIGH SCORE!\nENTER THE LEADERBOARD; labelColor: #FAFAFA"
     position="0 -0.1 0.02"
     proxy-event__change="event: superkeyboardchange; to: a-scene; as: leaderboardusername"
     keyboard-raycastable="condition: leaderboardQualified">
   </a-entity>
 
   <a-entity id="leaderboardSubmit"
-    position="0 -0.59 0.002"
+    position="0 -0.6269126075613061 0.002"
     mixin="bigMenuButton"
     bind__visible-raycastable="leaderboardQualified"
-    slice9="width: 0.8; height: 0.16"
+    slice9="width: 1.5; height: 0.24"
     proxy-event="event: click; to: a-scene; as: leaderboardsubmit">
     <a-entity mixin="font" text="align: center; color: #AAA; wrapCount: 26; value: SUBMIT HIGH SCORE" position="0 -0.055 0.01"></a-entity>
   </a-entity>
