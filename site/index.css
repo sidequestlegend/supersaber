@@ -1,0 +1,293 @@
+body {
+  background: url(assets/grid.jpg);
+  background-size: 1920px auto;
+  background-position: center 0px;
+  background-color: #03080c;
+  margin: 0;
+  font: 24px arial, sans-serif;
+  color: white;
+  line-height: 30px;
+}
+.laser {
+  position: absolute;
+  width: 100%;
+  height: 407px;
+  top: 510px;
+  background-image: url('assets/laser.png');
+  background-repeat: repeat-x;
+  background-size: contain;
+  z-index: -1;
+}
+#lightbox {
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999999;
+  opacity: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 3s;
+}
+#lightbox.opened {
+  display: flex;
+  opacity: 1;
+}
+#lightbox img {
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid #005a83;
+  box-shadow: 0 0 25px rgba(144, 226, 222, 0.6);
+}
+#all {
+  width: 95%;
+  min-width: 360px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.headerglow {
+  background-image: url('assets/supermediumheader.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.imgfill {
+  width: 100%;
+  max-width: 1000px;
+}
+#video {
+  border: 1px solid #90e2de;
+  width: 100%;
+  max-width: 1000px;
+  margin: 60px 0;
+  background: black;
+  box-shadow: 0 0 40px rgba(144, 226, 222, 0.8);
+}
+
+#video img {
+ width: 100%;
+ height: 100%;
+}
+b {
+  color: #fff;
+}
+a {
+  color: #4573D3;
+}
+a:hover {
+  color: #7EA8FF;
+}
+h1, h2, h3 {
+  font-family: 'Teko', sans-serif;
+  color: #fff;
+  margin: 0px 0 40px 0;
+}
+section {
+  margin: 120px 0;
+}
+.short {
+  margin-bottom: 9px;
+}
+.short+section {
+  margin-top: 70px;
+}
+a {
+  text-decoration: none;
+}
+h1 {
+  font-size: 57px;
+  font-weight: normal;
+  text-align: center;
+}
+h2 {
+  text-align: center;
+  font-size: 57px;
+  background: url('assets/h2.png');
+  background-position: center 0px;
+  background-repeat: no-repeat;
+  line-height: 173px;
+  color: #001927;
+  text-shadow: 0 0 2px #fff;
+  font-weight: bold;
+  margin: 0;
+  padding-top: 51px;
+}
+h2.other {
+  font-size: 50px;
+}
+
+.supermedium-h1 {
+  width: 400px;
+  min-width: 55%;
+  vertical-align: middle;
+  margin: 20px 0;
+}
+.cyan {
+  color: #68e0d3;
+}
+.pink {
+  color: #ff7abc;
+}
+.cyanglow {
+  text-shadow: 0 0 12px #68e0d3;
+}
+.pinkglow {
+  text-shadow: 0 0 12px #ff7abc;
+}
+.storebuttons {
+  text-align: justify;
+  display: flex;
+  justify-content: space-between;
+}
+footer .storebuttons {
+  width: 50%;
+  margin: 0 auto;
+  height: 70px;
+  overflow: hidden;
+}
+.storebuttons a {
+  display: inline-block;
+  width: 470px;
+  height: 137px;
+  background-image: url('assets/steam.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: transform 100ms, background-image 200ms;
+}
+.storebuttons a:hover {
+  background-image: url('assets/steamhover.png');
+  transform: scale(1.02, 1.02);
+}
+.storebuttons a:first-child {
+  background-image: url('assets/oculus.png');
+}
+.storebuttons a:first-child:hover {
+  background-image: url('assets/oculushover.png');
+}
+#intro img {
+  width: 160px;
+  vertical-align: bottom;
+}
+ul {
+  margin: 0;
+  padding-left: 40px;
+  list-style: url('assets/bullet.png');
+  list-style-position: outside;
+}
+li p {
+  vertical-align: middle;
+  display: inline-block;
+  height: 50px;
+}
+#features  {
+  display: flex;
+  justify-content: space-between;
+}
+#features>div {
+  width: 28%;
+  float: left;
+  text-align: center;
+}
+#features p {
+  margin: 0;
+}
+footer {
+  margin: 100px 0;
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+}
+.screenshots  {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.screenshots a {
+  width: 30%;
+}
+.screenshots img {
+  cursor: pointer;
+  border: 1px solid #005a83;
+  box-shadow: 0 0 18px rgba(144, 226, 222, 0.3);
+  width: 100%;
+  transition: box-shadow 120ms, border-color 120ms, transform 120ms;
+}
+.screenshots>img {
+  max-height: 300px;
+  width: 30%;
+}
+.screenshots img:hover {
+  box-shadow: 0 0 30px rgba(144, 226, 222, 0.8);
+  border-color: white;
+  transform: scale(1.02, 1.02);
+}
+
+h1 span {
+  display: block;
+}
+
+@media (max-width: 1070px)  {
+  body, body:before {
+    background-size: 200% auto;
+  }
+  .laser {
+    top: 45vw;
+  }
+  section {
+    margin: 10% 0;
+  }
+  #video {
+    margin: 5% auto;
+  }
+  .storebuttons a  {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 750px)  {
+  h2.other {
+    line-height: 1em;
+    padding-top: 90px;
+    padding-bottom: 10px;
+  }
+
+  footer .storebuttons {
+    width: 75%;
+  }
+}
+
+@media (max-width: 700px)  {
+  .screenshots, #features {
+    display: block;
+  }
+  .laser {
+    display: none;
+  }
+  #features>div {
+    float: none;
+    width: 100%;
+    margin: 10% 0;
+  }
+  h3 {
+    margin-bottom: 3%;
+  }
+  .screenshots>img, .screenshots>a {
+    display: block;
+    width: 100%;
+    margin: 5% 0;
+  }
+}
+
+@media (max-width: 400px)  {
+  body, body:before {
+    background-size: 800px auto;
+    background-position: -220px 0px;
+  }
+  .laser {
+    top: 80px;
+  }
+}
