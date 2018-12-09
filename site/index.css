@@ -298,3 +298,9 @@ h1 span {
 #credit {
   font-size: 16px;
 }
+
+#header,
+footer,
+.short h2 {
+  text-transform: uppercase;
+}
