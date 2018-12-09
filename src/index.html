@@ -169,7 +169,7 @@
             trail="color: {{ bladeColor }}; hand: {{ hand }}">
             <a-entity
               id="{{ hand }}Laser"
-              bind__cursor-laser="enabled: menuActive && activeHand === '{{ hand }}'"
+              bind__cursor-laser="enabled: !isPlaying && activeHand === '{{ hand }}'"
               geometry="primitive: cylinder; height: 1; radius: 0.005"
               material="color: {{ beamColor }}; shader: flat"
               rotation="-90 0 0"></a-entity>
