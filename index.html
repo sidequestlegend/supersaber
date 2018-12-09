@@ -33,12 +33,16 @@
     <div class="laser"></div>
     <div id="lightbox" onclick="closeLb()"><img src=""></div>
     <div id="all">
-      <img src="site/assets/supermedium-logo.png" class="imgfill headerglow">
+      <a href="https://supermedium.com"><img src="site/assets/supermedium-logo.png" class="imgfill headerglow"></a>
+
       <img src="site/assets/sslogo.png" class="imgfill">
+
       <h1>An open source clone of Beat Saber with 6000 songs</h1>
+
       <div id="video">
-        <img src="site/assets/sshot2.jpg">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/PKOPO4OqgYo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
+
       <section>
         <h1>
           <span class="cyan">Play now for free on </span><span class="pink"><img src="site/assets/supermedium.png" class="supermedium-h1"></span> <span class="pink">The&nbsp;Virtual&nbsp;Reality&nbsp;Browser</span>
@@ -51,12 +55,15 @@
       </section>
 
       <section>
-        <p id="intro">
-          <img src="site/assets/sslogosmall.png">lets you search and play community-created Beat Saber songs from Beat Saver. You can play it for free via Supermedium where it loads in seconds, and you don't need to install any mods!</p>
+        <div id="intro">
+          <p><img src="site/assets/sslogosmall.png">was created from the ground up to let you search and play from 6000+ community-created Beat Saber songs without having to install any mods.</p>
+          <p>We rebuilt Beat Saber entirely using <a href="https://aframe.io">A-Frame</a>, a VR web framework we built.
+          <p>And we <a href="https://github.com/supermedium/supersaber">open sourced the code</a> for the developer community to check out.</p>
+        </div>
         <div class="screenshots">
-          <img src="site/assets/sshot1.jpg">
-          <img src="site/assets/sshot2.jpg">
-          <img src="site/assets/sshot3.jpg">
+          <img src="site/assets/screenshots/supersaber12.jpg">
+          <img src="site/assets/screenshots/supersaber06.jpg">
+          <img src="site/assets/screenshots/supersaber13.jpg">
         </div>
       </section>
 
@@ -64,71 +71,66 @@
         <div id="features">
           <div>
             <h3 class="cyanglow">SLICE TO THE BEAT</h3>
-            <p>Just like in Beat Saber, swing your light sabers to the beat.</p>
+            <p>Just like in Beat Saber, slice and dice the music with light sabers.</p>
           </div>
           <div>
-            <h3 class="pinkglow">+2500 SONGS</h3>
-            <p>Play from over 2500 community songs sourced from beatsaver.com!</p>
+            <h3 class="pinkglow">+6000 SONGS</h3>
+            <p>Play from over 6000 community songs from <a href="https://beatsaver.com">BeatSaver</a>!</p>
           </div>
           <div>
             <h3 class="cyanglow">PLAY FOR FREE</h3>
-            <p>Super Saber instantly loads from start to finish in just seconds, no installs!</p>
+            <p>Loads in seconds. No mods, no installs, no wait times.</p>
           </div>
         </div>
         <div class="screenshots">
-          <img src="site/assets/sshot4.jpg">
-          <img src="site/assets/sshot5.jpg">
-          <img src="site/assets/sshot6.jpg">
+          <img src="site/assets/screenshots/supersaber07.jpg">
+          <img src="site/assets/screenshots/supersaber17.jpg">
+          <img src="site/assets/screenshots/supersaber11.jpg">
         </div>
       </section>
 
       <section class="short">
         <h2>How to Play</h2>
-        <ul>
-          <li><p>Have an HTC Vive or Oculus Rift</p></li>
-          <li><p>Install Supermedium from Steam or Oculus Store</p>
-          <li><p>Navigate to Super Saber from Supermedium</p></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2 class="other">Other VR Games from Supermedium</h2>
-        <div class="screenshots">
-          <a href="http://supermedium.com/" title="Sound Boxing"><img src="site/assets/game1.jpg"></a>
-          <a href="https://supermedium.github.io/supersays/src/" title="Super Says"><img src="site/assets/game2.jpg"></a>
-          <a href="https://supermedium.com/blog/oasis" title="Gunters of Oasis"><img src="site/assets/game3.jpg"></a>
-        </div>
+        <img src="site/assets/tutorial.png" width="100%">
+        <p style="text-align: center">Install Supermedium on a Vive or Rift and navigate to Super Saber!</p>
       </section>
 
       <footer>
-        <img src="site/assets/supermedium-logo.png" class="imgfill">
+        <a href="https://supermedium.com"><img src="site/assets/supermedium-logo.png" class="imgfill"></a>
         <div class="storebuttons">
           <a href="https://www.oculus.com/experiences/rift/1629560483789871/"></a>
           <a href="https://store.steampowered.com/app/803010/Supermedium__Virtual_Reality_Browser/"></a>
         </div>
-        <p>
+        <p id="credit">
           <br>
-          <b>Super Saber</b> is shamelessly based on <b>Beat Saber</b>, an original game from by the awesome team at <a href="http://www.hyperbolicmagnetism.com/">Hyperbolic Magnetism</a></p>
+          <b>Super Saber</b> is shamelessly based on <b>Beat Saber</b>, an original game from by the awesome team at <a href="http://www.hyperbolicmagnetism.com/"><b>Hyperbolic Magnetism</b>.</a>
+          <br>
+          Support them with a purchase!
+          <br>
+          Songs from the massive <a href="https://beatsaver.com"><b>BeatSaver</b></a> community.
+        </p>
       </footer>
     </div>
 
-    <script type="text/javascript">
-      var lb;
-      function setupLb () {
-        lb = document.getElementById('lightbox');
-        const sshots = document.querySelectorAll('.screenshots>img');
-        for (let i = 0; i < sshots.length; i++){
-          sshots[i].addEventListener('click', showImg);
+    <script>
+      (function () {
+        let lb;
+        function setupLb () {
+          lb = document.getElementById('lightbox');
+          const sshots = document.querySelectorAll('.screenshots>img');
+          for (let i = 0; i < sshots.length; i++){
+            sshots[i].addEventListener('click', showImg);
+          }
         }
-      }
-      function showImg (ev) {
-        lb.querySelector('img').src = ev.target.src;
-        lb.classList.add('opened');
-      }
-      function closeLb () {
-        lb.classList.remove('opened')
-      }
-      setupLb();
+        function showImg (ev) {
+          lb.querySelector('img').src = ev.target.src;
+          lb.classList.add('opened');
+        }
+        function closeLb () {
+          lb.classList.remove('opened')
+        }
+        setupLb();
+      })();
     </script>
   </body>
 </html>
