@@ -59,18 +59,20 @@ body {
   max-width: 1000px;
 }
 #video {
-  border: 1px solid #90e2de;
-  width: 100%;
-  max-width: 1000px;
-  margin: 60px 0;
   background: black;
+  border: 1px solid #90e2de;
   box-shadow: 0 0 40px rgba(144, 226, 222, 0.8);
+  height: 560px;
+  margin: 60px 0;
+  max-width: 1000px;
+  width: 100%;
 }
 
-#video img {
+#video iframe {
  width: 100%;
  height: 100%;
 }
+
 b {
   color: #fff;
 }
@@ -86,7 +88,7 @@ h1, h2, h3 {
   margin: 0px 0 40px 0;
 }
 section {
-  margin: 120px 0;
+  margin: 80px 0;
 }
 .short {
   margin-bottom: 9px;
@@ -100,6 +102,7 @@ a {
 h1 {
   font-size: 57px;
   font-weight: normal;
+  line-height: 57px;
   text-align: center;
 }
 h2 {
@@ -167,6 +170,9 @@ footer .storebuttons {
 .storebuttons a:first-child:hover {
   background-image: url('assets/oculushover.png');
 }
+#intro {
+  text-align: center;
+}
 #intro img {
   width: 160px;
   vertical-align: bottom;
@@ -195,7 +201,7 @@ li p {
   margin: 0;
 }
 footer {
-  margin: 100px 0;
+  margin: 80px 0;
   font-size: 14px;
   color: #aaa;
   text-align: center;
@@ -235,9 +241,6 @@ h1 span {
   }
   .laser {
     top: 45vw;
-  }
-  section {
-    margin: 10% 0;
   }
   #video {
     margin: 5% auto;
@@ -290,4 +293,14 @@ h1 span {
   .laser {
     top: 80px;
   }
+}
+
+#credit {
+  font-size: 16px;
+}
+
+#header,
+footer,
+.short h2 {
+  text-transform: uppercase;
 }
