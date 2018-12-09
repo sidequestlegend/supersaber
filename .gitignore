@@ -41,8 +41,8 @@ yarn.lock
 
 exports/
 *.sw*
-/index.html
 /build
 
 dump.rdb
 .ghpages
+play.html

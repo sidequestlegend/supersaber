@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
+    "deploy": "ghpages git@github.com:supermedium/supersaber.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
+    "predeploy": "shx mkdir -p .ghpages && cp -r index.html play.html assets build site vendor .ghpages",
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
@@ -26,8 +28,7 @@
     "ansi-html": "0.0.7",
     "autoprefixer": "^7.2.3",
     "babel": "6.23.0",
-    "babel-core": "6.24.1",
-    "babel-loader": "7.0.0",
+    "babel-core": "6.24.1", "babel-loader": "7.0.0",
     "babel-minify-webpack-plugin": "0.2.0",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-stage-0": "6.24.1",

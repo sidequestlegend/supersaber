@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Super Saber</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="Beat Saber clone in WebVR by Supermedium">
+    <meta name="keywords" content="vr, webvr, beat, saber, aframe, play, game">
+    <meta name="og:title" content="Super Saber">
+    <meta name="og:image" content="https://supermedium.com/supersaber/site/assets/hero.jpg">
+    <meta name="og:description" content="Beat Saber clone in WebVR by Supermedium">
+    <meta property="og:url" content="https://supermedium.com/supersaber/">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="https://supermedium.com/supersaber">
+    <meta name="twitter:creator" content="@supermediumvr">
+    <meta name="twitter:title" content="Super Saber">
+    <meta name="twitter:description" content="Beat Saber clone in WebVR by Supermedium">
+    <meta name="twitter:image" content="https://supermedium.com/supersaber/site/assets/hero.jpg">
+
+    <link rel="shortcut icon" href="site/assets/favicon.png" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+    <link href="site/index.css" rel="stylesheet">
+
+    <link rel="preload" href="site/assets/grid.jpg" as="image">
+    <link rel="preload" href="site/assets/sslogo.png" as="image">
+    <link rel="preload" href="site/assets/steamhover.png" as="image">
+    <link rel="preload" href="site/assets/oculushover.png" as="image">
+  </head>
+  <body>
+    <div class="laser"></div>
+    <div id="lightbox" onclick="closeLb()"><img src=""></div>
+    <div id="all">
+      <img src="site/assets/supermedium-logo.png" class="imgfill headerglow">
+      <img src="site/assets/sslogo.png" class="imgfill">
+      <h1>An open source clone of Beat Saber with 6000 songs</h1>
+      <div id="video">
+        <img src="site/assets/sshot2.jpg">
+      </div>
+      <section>
+        <h1>
+          <span class="cyan">Play now for free on </span><span class="pink"><img src="site/assets/supermedium.png" class="supermedium-h1"></span> <span class="pink">The&nbsp;Virtual&nbsp;Reality&nbsp;Browser</span>
+        </h1>
+
+        <div class="storebuttons">
+          <a href="https://www.oculus.com/experiences/rift/1629560483789871/"></a>
+          <a href="https://store.steampowered.com/app/803010/Supermedium__Virtual_Reality_Browser/"></a>
+        </div>
+      </section>
+
+      <section>
+        <p id="intro">
+          <img src="site/assets/sslogosmall.png">lets you search and play community-created Beat Saber songs from Beat Saver. You can play it for free via Supermedium where it loads in seconds, and you don't need to install any mods!</p>
+        <div class="screenshots">
+          <img src="site/assets/sshot1.jpg">
+          <img src="site/assets/sshot2.jpg">
+          <img src="site/assets/sshot3.jpg">
+        </div>
+      </section>
+
+      <section class="short">
+        <div id="features">
+          <div>
+            <h3 class="cyanglow">SLICE TO THE BEAT</h3>
+            <p>Just like in Beat Saber, swing your light sabers to the beat.</p>
+          </div>
+          <div>
+            <h3 class="pinkglow">+2500 SONGS</h3>
+            <p>Play from over 2500 community songs sourced from beatsaver.com!</p>
+          </div>
+          <div>
+            <h3 class="cyanglow">PLAY FOR FREE</h3>
+            <p>Super Saber instantly loads from start to finish in just seconds, no installs!</p>
+          </div>
+        </div>
+        <div class="screenshots">
+          <img src="site/assets/sshot4.jpg">
+          <img src="site/assets/sshot5.jpg">
+          <img src="site/assets/sshot6.jpg">
+        </div>
+      </section>
+
+      <section class="short">
+        <h2>How to Play</h2>
+        <ul>
+          <li><p>Have an HTC Vive or Oculus Rift</p></li>
+          <li><p>Install Supermedium from Steam or Oculus Store</p>
+          <li><p>Navigate to Super Saber from Supermedium</p></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="other">Other VR Games from Supermedium</h2>
+        <div class="screenshots">
+          <a href="http://supermedium.com/" title="Sound Boxing"><img src="site/assets/game1.jpg"></a>
+          <a href="https://supermedium.github.io/supersays/src/" title="Super Says"><img src="site/assets/game2.jpg"></a>
+          <a href="https://supermedium.com/blog/oasis" title="Gunters of Oasis"><img src="site/assets/game3.jpg"></a>
+        </div>
+      </section>
+
+      <footer>
+        <img src="site/assets/supermedium-logo.png" class="imgfill">
+        <div class="storebuttons">
+          <a href="https://www.oculus.com/experiences/rift/1629560483789871/"></a>
+          <a href="https://store.steampowered.com/app/803010/Supermedium__Virtual_Reality_Browser/"></a>
+        </div>
+        <p>
+          <br>
+          <b>Super Saber</b> is shamelessly based on <b>Beat Saber</b>, an original game from by the awesome team at <a href="http://www.hyperbolicmagnetism.com/">Hyperbolic Magnetism</a></p>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      var lb;
+      function setupLb () {
+        lb = document.getElementById('lightbox');
+        const sshots = document.querySelectorAll('.screenshots>img');
+        for (let i = 0; i < sshots.length; i++){
+          sshots[i].addEventListener('click', showImg);
+        }
+      }
+      function showImg (ev) {
+        lb.querySelector('img').src = ev.target.src;
+        lb.classList.add('opened');
+      }
+      function closeLb () {
+        lb.classList.remove('opened')
+      }
+      setupLb();
+    </script>
+  </body>
+</html>
