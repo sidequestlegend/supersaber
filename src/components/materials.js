@@ -1,15 +1,25 @@
-const stageNormalShaders = require('../../assets/shaders/stageNormal.js');
-const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js');
-const flatShaders = require('../../assets/shaders/flat.js');
 const COLORS = require('../constants/colors.js');
+const flatShaders = require('../../assets/shaders/flat.js');
+const stageAdditiveShaders = require('../../assets/shaders/stageAdditive.js');
+const stageNormalShaders = require('../../assets/shaders/stageNormal.js');
 
 AFRAME.registerSystem('materials', {
   init: function () {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', this.createMaterials.bind(this));
+    } else {
+      this.createMaterials();
+    }
+  },
+
+  createMaterials: function () {
     this.stageNormal = new THREE.ShaderMaterial({
       uniforms: {
         skyColor: {value: new THREE.Color(COLORS.SKY_BLUE)},
         backglowColor: {value: new THREE.Color(COLORS.BG_BLUE)},
-        src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
+        src: {
+          value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)
+        },
       },
       vertexShader: stageNormalShaders.vertexShader,
       fragmentShader: stageNormalShaders.fragmentShader,
@@ -24,7 +34,9 @@ AFRAME.registerSystem('materials', {
         leftLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         rightLaser: {value: new THREE.Color(COLORS.NEON_BLUE)},
         textGlow: {value: new THREE.Color(COLORS.TEXT_OFF)},
-        src: {value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)},
+        src: {
+          value: new THREE.TextureLoader().load(document.getElementById('atlasImg').src)
+        },
       },
       vertexShader: stageAdditiveShaders.vertexShader,
       fragmentShader: stageAdditiveShaders.fragmentShader,
@@ -35,7 +47,9 @@ AFRAME.registerSystem('materials', {
 
     this.logo = new THREE.ShaderMaterial({
       uniforms: {
-        src: {value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)},
+        src: {
+          value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)
+        },
       },
       vertexShader: flatShaders.vertexShader,
       fragmentShader: flatShaders.fragmentShader,
@@ -46,7 +60,9 @@ AFRAME.registerSystem('materials', {
 
     this.logoadditive = new THREE.ShaderMaterial({
       uniforms: {
-        src: {value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)},
+        src: {
+          value: new THREE.TextureLoader().load(document.getElementById('logotexImg').src)
+        },
       },
       vertexShader: flatShaders.vertexShader,
       fragmentShader: flatShaders.fragmentShader,
@@ -82,14 +98,15 @@ AFRAME.registerComponent('materials', {
   },
 
   update: function () {
-    if (this.data.name === "") return;
-    var mesh;
-    var material = this.system[this.data.name];
+    if (this.data.name === '') { return; }
+
+    const material = this.system[this.data.name];
     if (!material) {
       console.warn(`undefined material "${this.system[this.data.name]}"`);
       return;
     }
-    mesh = this.el.getObject3D('mesh');
+
+    const mesh = this.el.getObject3D('mesh');
     if (!mesh) {
       this.el.addEventListener('model-loaded', this.applyMaterial.bind(this));
     } else {
@@ -98,7 +115,7 @@ AFRAME.registerComponent('materials', {
   },
 
   applyMaterial: function (obj) {
-    var material = this.system[this.data.name];
+    const material = this.system[this.data.name];
     if (obj['detail']) { obj = obj.detail.model; }
     if (this.data.recursive) {
       obj.traverse(o => {
