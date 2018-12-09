@@ -4,13 +4,13 @@
   bind__animation="enabled: isVictory"
   bind__scale="isVictory && '0 0 0' || '1 1 1'"
   bind__visible="(!!menuSelectedChallenge.id || !!challenge.id) && (menuActive || isPaused || isVictory) && !genreMenuOpen"
-  position="2.2 1.1 -1.27"
+  position="2.365374194652176 1.1 -1.1952715561051024"
   rotation="0 -60 0"
   animation="property: scale; from: 0 0 0; to: 1 1 1; easing: easeOutBack; startEvents: textcounterdone">
 
   <a-entity
     mixin="slice"
-    id="leaderboardBackground"
+    id="leaderboardBackground" position="0 0 0"
     slice9="left: 70; width: 1.8; height: 1.55; opacity: 0.9"></a-entity>
 
   <a-entity

@@ -2,19 +2,19 @@
   id="tutorial"
   class="overlay"
   bind__visible="menuActive"
-  position="-2.2 1.2 -0.5"
+  position="-2.562914981163387 1.1992490239153386 -0.7075863128689148"
   rotation="0 60 0">
 
-  <a-entity id="tutorialSlice" mixin="slice" slice9="left: 70; width: 2.89; height: 1.52; padding: 0.12; opacity: 0.9" position="0 -0.1 -0.01"></a-entity>
+  <a-entity id="tutorialSlice" mixin="slice" slice9="left: 70; width: 2.89; height: 1.55; padding: 0.12; opacity: 0.9" position="0 -0.1 -0.01"></a-entity>
 
   <a-entity
     id="tutorialTitle"
     mixin="font"
     text="align: center; value: HOW TO PLAY; wrapCount: 40; width: 3"
-    position="0 0.379 0"></a-entity>
+    position="0 0.3675179894072369 0"></a-entity>
 
-  <a-entity id="tutorialHeaders" position="0 -0.1 0">
-    <a-entity id="tutorialNumberRings" position="0 0.32 0.001" geometry-merger="preserveOriginal: false" material="shader: flat; color: #ffffff">
+  <a-entity id="tutorialHeaders" position="0 -0.16845771906222043 0">
+    <a-entity id="tutorialNumberRings" position="-0.005380566597913005 0.32 0.001" geometry-merger="preserveOriginal: false" material="shader: flat; color: #ffffff">
       <a-entity position="-0.945 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
       <a-entity position="0 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
       <a-entity position="0.945 0 0" geometry="primitive: ring; radiusInner: 0.08; radiusOuter: 0.095; segmentsPhi: 1; segmentsTheta: 30; buffer: false"></a-entity>
@@ -27,15 +27,15 @@
   </a-entity>
 
   <a-entity
-    id="tutorial1"
+    id="tutorial1" rotation="0 53 0"
     obj-model="obj: #tutorial1Obj"
     material="side: double; shader: flat; transparent: true; src: #tutorialImg"
-    position="-0.87 -0.55 0.214"
+    position="-0.9266404441100646 -0.619548565735508 0.1979766167012594"
     scale="0.9 0.9 0.9"
     bind__animation="enabled: menuActive"
     animation="property: object3D.rotation.y; from: -20; to: 55; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"></a-entity>
 
-  <a-entity id="tutorial2" position="0 -0.2 0.2" scale="1.1 1.1 1.1">
+  <a-entity id="tutorial2" position="0.08708084277765313 -0.2810481479389482 0.2" scale="1.1 1.1 1.1">
     <a-entity
       id="tutorial2Wall"
       bind__animation="enabled: menuActive"
@@ -75,7 +75,7 @@
     id="tutorial3"
     obj-model="obj: #tutorial3Obj"
     material="side: double; shader: flat; transparent: true; src: #tutorialImg"
-    position="0.941 -0.55 0.13"
+    position="0.8923276842233437 -0.6076777409668934 0.12031891103762235"
     scale="0.6 0.9 0.9"
     bind__animation="enabled: menuActive"
     animation="property: object3D.rotation.y; from: -60; to: -10; dur: 5000; dir: alternate; easing: easeInOutCubic; loop: true"></a-entity>
