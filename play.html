@@ -5,7 +5,7 @@
     <meta name="description" content="Beat Saber on the VR Web with searchable and playable community songs from Beat Saver.">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
     
-      <script src="http://192.168.42.17:9000/dist/aframe-master.js"></script>
+      <script src="vendor/aframe-master.min.js"></script>
     
     <script src="build/build.js"></script>
   </head>
@@ -27,7 +27,7 @@
       debug-song-time
       debug-state
       gpu-preloader
-      inspector="url: http://localhost:3333/dist/aframe-inspector.js"
+      
       leaderboard="apiKey: AIzaSyBCnpzND3eN37CBSu1bSYfaKQoe6yD3SnY; authDomain: supersaberrr.firebaseapp.com; databaseURL: https://supersaberrr.firebaseio.com; projectId: supersaberrr; storageBucket: supersaberrr.appspot.com; messagingSenderId: 172125624222"
       loading-screen="backgroundColor: #000;"
       pool__beat-arrow-blue="mixin: arrowBlueBeat; size: 10; container: #beatContainer"
@@ -1021,7 +1021,7 @@
   </a-entity>
 
   <!-- Song info. -->
-  <a-entity id="gameMenuSongInfoContainer" position="0 -0.78354 0.15473" rotation="-20 0 0">
+  <a-entity id="gameMenuSongInfoContainer" position="0 -1.10421 0.15473" rotation="-20 0 0">
     <a-entity id="gameMenuSongBackground" mixin="slice" slice9="width: 1.5; height: 0.2; padding: 0.04" position="0 0 -0.03"></a-entity>
 
     <a-entity id="gameMenuSongImage"
@@ -1032,7 +1032,7 @@
 
     <a-entity id="gameMenuSongInfo">
       <a-entity id="gameMenuSongSubName" position="0 0.015 0"
-        mixin="font" text="wrapCount: 40; align: center; color: #08bfa2; width: 0" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+        mixin="font" text="wrapCount: 40; align: center; color: #f01978; width: 0" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
       <a-entity id="gameMenuSongName" position="0 -0.056 0"
         mixin="font" text="align: center; color: #08bfa2; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
@@ -1170,9 +1170,9 @@
   <a-entity
     id="leaderboardTitle"
     mixin="font"
-    bind__leaderboard-title="leaderboardQualified: leaderboardQualified"
     text="align: center; width: 2.5; value: LEADERBOARD"
-    position="0.04 0.55 0.001"></a-entity>
+    position="0.04 0.55 0.001"
+    bind__visible="!leaderboardQualified"></a-entity>
 
   <a-entity
     id="leaderboardNames"
@@ -1457,19 +1457,6 @@
         position="0 1.6 -1.55"
         material="shader: flat; src: #atlasImg; transparent: true; opacity: 0"></a-entity>
 
-      
-        <a-entity
-          id="mouseCursor"
-          bind__raycaster="enabled: !inVR"
-          mixin="raycaster"
-          cursor="rayOrigin: mouse"
-          raycaster="objects: [raycastable]"></a-entity>
-        <a-entity
-          id="mouseCursorMesh"
-          class="overlay"
-          mixin="cursorMesh"
-          cursor-mesh="cursorEl: #mouseCursor"
-          bind__cursor-mesh="active: menuActive"></a-entity>
       
     </a-scene>
 
