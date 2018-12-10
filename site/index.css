@@ -74,13 +74,14 @@ body {
 }
 
 b {
-  color: #fff;
+  color: #FAFAFA;
 }
 a {
-  color: #4573D3;
+  color: #fb82c9;
+  transition: color .1s;
 }
 a:hover {
-  color: #7EA8FF;
+  color: #ff66cc;
 }
 h1, h2, h3 {
   font-family: 'Teko', sans-serif;
