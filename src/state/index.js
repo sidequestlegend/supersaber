@@ -42,6 +42,7 @@ AFRAME.registerState({
       image: '',
       isLoading: false,
       isBeatsPreloaded: false,  // Whether we have passed the negative time.
+      numBeats: undefined,
       songDuration: 0,
       songName: '',
       songSubName: ''
@@ -83,7 +84,7 @@ AFRAME.registerState({
       songSubName: ''
     },
     score: {
-      accuracy: 0,
+      accuracy: 0,  // Out of 100.
       beatsHit: 0,
       beatsMissed: 0,
       beatsText: '',
@@ -138,16 +139,20 @@ AFRAME.registerState({
       } else {
         state.score.multiplier = 8;
       }
+
+      updateScoreAccuracy(state);
     },
 
     beatmiss: state => {
       state.score.beatsMissed++;
       takeDamage(state);
+      updateScoreAccuracy(state);
     },
 
     beatwrong: state => {
       state.score.beatsMissed++;
       takeDamage(state);
+      updateScoreAccuracy(state);
     },
 
     beatloaderfinish: (state, payload) => {
@@ -464,8 +469,7 @@ AFRAME.registerState({
       state.isVictory = true;
 
       // Percentage is score divided by total possible score.
-      const totalBeats = state.score.beatsMissed + state.score.beatsHit;
-      const accuracy = (state.score.score / (totalBeats * 110)) * 100;
+      const accuracy = (state.score.score / (state.challenge.numBeats * 110)) * 100;
       state.score.accuracy = accuracy;
 
       if (accuracy >= 95) {
@@ -631,4 +635,10 @@ function clearLeaderboard (state) {
 
 function updateMenuSongInfo (state, challenge) {
   state.menuSelectedChallenge.songInfoText = `By ${truncate(challenge.author, 12)} ${challenge.genre && challenge.genre !== 'Uncategorized' ? '/ ' + challenge.genre : ''}\n${challenge.downloads} Downloads\nUpvotes: ${challenge.upvotes} / Downvotes: ${challenge.downvotes}\n${formatSongLength(challenge.songDuration)} / ${challenge.numBeats[state.menuSelectedChallenge.difficulty]} beats`;
+}
+
+function updateScoreAccuracy (state) {
+  // Update live accuracy.
+  const currentNumBeats = state.score.beatsHit + state.score.beatsMissed;
+  state.score.accuracy = (state.score.score / (currentNumBeats * 110)) * 100;
 }
