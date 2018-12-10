@@ -47,7 +47,7 @@
   <a-entity
     id="leaderboardEmpty"
     mixin="font"
-    bind__visible="leaderboard.length === 0 && !leaderboardQualified"
+    bind__visible="leaderboard.length === 0 && !leaderboardQualified && !leaderboardLoading"
     text="align: center; color: #777; baseline: center; width: 1.6; value: No high scores. Be the first!"
     position="0 0 0.001"></a-entity>
 

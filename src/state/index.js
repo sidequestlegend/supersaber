@@ -291,6 +291,7 @@ AFRAME.registerState({
         state.leaderboardNames += `${score.username} (${score.accuracy || 0}%)\n`;
         state.leaderboardScores += `${score.score}\n`;
       }
+      state.leaderboardLoading = false;
     },
 
     leaderboardqualify: state => {
@@ -340,6 +341,7 @@ AFRAME.registerState({
       state.isSearching = false;
 
       clearLeaderboard(state);
+      state.leaderboardLoading = true;
     },
 
     menuchallengeunselect: state => {
@@ -349,8 +351,10 @@ AFRAME.registerState({
 
     menudifficultyselect: (state, difficulty) => {
       state.menuSelectedChallenge.difficulty = difficulty;
-      clearLeaderboard(state);
       updateMenuSongInfo(state, state.menuSelectedChallenge);
+
+      clearLeaderboard(state);
+      state.leaderboardLoading = true;
     },
 
     minehit: state => {
