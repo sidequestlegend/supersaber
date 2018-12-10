@@ -48,8 +48,8 @@ AFRAME.registerComponent('audio-columns', {
       let yScale = (this.data.height / 2) + this.analyser.levels[Math.floor(i / 2)] / 256.0 *
                    this.data.scale;
       if (isNaN(yScale)) { return; }
-      this.setBoxHeight(i, yScale);
-      this.setBoxHeight(i + 1, yScale);
+      this.setBoxHeight(this.frequencyBinCount * 2 - i - 1, yScale);
+      this.setBoxHeight(this.frequencyBinCount * 2 - i - 2, yScale);
       this.geometry.attributes.position.needsUpdate = true;
     }
   },
@@ -63,10 +63,9 @@ AFRAME.registerComponent('audio-columns', {
     // Set position and scale of box via vertices.
     for (let v = 0; v < box.attributes.position.array.length; v += 3) {
       // Apply thickness to X and Z.
-      //box.attributes.position.array[v] *= data.thickness;
-      //box.attributes.position.array[v + 2] *= data.thickness;
-
-      // Apply zPosition.
+      // box.attributes.position.array[v] *= data.thickness;
+      // box.attributes.position.array[v + 2] *= data.thickness;
+// Apply zPosition.
       box.attributes.position.array[v + 2] += zPosition;
 
       // Apply height to Y.
