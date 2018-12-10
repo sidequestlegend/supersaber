@@ -6,7 +6,7 @@
     "deploy": "ghpages git@github.com:supermedium/supersaber.git -p .ghpages && rm -rf .ghpages",
     "lint": "semistandard -v | snazzy",
     "lint:fix": "semistandard --fix",
-    "predeploy": "shx mkdir -p .ghpages && cp -r index.html play.html assets build site vendor .ghpages",
+    "predeploy": "npm run build && shx mkdir -p .ghpages && cp -r index.html play.html assets build site vendor .ghpages",
     "start": "webpack-dev-server --host 0.0.0.0 --progress --colors --hot --inline --port 3000"
   },
   "dependencies": {
