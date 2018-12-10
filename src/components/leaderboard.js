@@ -129,16 +129,3 @@ AFRAME.registerComponent('leaderboard', {
     }
   }
 });
-
-AFRAME.registerComponent('leaderboard-title', {
-  schema: {
-    leaderboardQualified: {default: false}
-  },
-
-  update: function () {
-    const value = this.data.leaderboardQualified
-      ? 'NEW HIGH SCORE!'
-      : 'LEADERBOARD';
-    this.el.setAttribute('text', 'value', value);
-  }
-});
