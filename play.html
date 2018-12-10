@@ -486,13 +486,12 @@
   bind__score-texts="isSongLoading: isSongLoading"
   bind__visible="isPlaying || isPaused">
 
-  <a-entity id="scoreTextContainer" position="0 0.01 -1.3">
+  <a-entity id="scoreTextContainer" position="0 0.01 -6.25017">
     <a-entity
       id="score"
       mixin="scoreText"
       bind__text="value: score.score"
-      text="width: 2"
-      rotation="-90 0 0">
+      text="width: 4; color: #888">
     </a-entity>
   </a-entity>
 
@@ -729,7 +728,7 @@
         material="shader: flat"
         position="0 0.42 0"></a-entity>
 
-      <a-entity id="menuSelectedChallengeInfo" position="0 0.058 0">
+      <a-entity id="menuSelectedChallengeInfoContainer" position="0 0.058 0">
         <a-entity
           id="menuSelectedChallengeSongAuthor"
           position="0 0.042 0"
@@ -740,7 +739,7 @@
           id="menuSelectedChallengeSongName"
           position="0 -0.059 0"
           mixin="font"
-          text="align: center; color: #FFF; wrapCount: 35; baseline: top; lineHeight: 36; width: 1.4"
+          text="align: center; color: #FFF; wrapCount: 31; baseline: top; lineHeight: 36; width: 1.4"
           bind__text="value: menuSelectedChallenge.songName"></a-entity>
         <a-entity
           id="menuSelectedChallengeInfo"
@@ -980,6 +979,7 @@
 <a-entity id="inGameMenuTitles" position="0 1.7 -2.3">
   <a-entity mixin="gameMenuButtonText" text="value: GAME OVER; color: #f01978; width: 4" bind__visible="isGameOver"></a-entity>
   <a-entity mixin="gameMenuButtonText" text="value: SONG CLEARED; color: #FFF; width: 4" bind__visible="isVictory" position="0 0.2 0"></a-entity>
+  <a-entity mixin="gameMenuButtonText" text="value: PAUSED; color: #08bfa2; width: 4" bind__visible="isPaused"></a-entity>
 </a-entity>
 
 <a-entity
@@ -1021,20 +1021,20 @@
   </a-entity>
 
   <!-- Song info. -->
-  <a-entity id="gameMenuSongInfoContainer" position="-1.56 -0.2 0.688" rotation="0 50 0">
-    <a-entity mixin="slice" slice9="width: 0.77; height: 0.72; padding: 0.04" position="0 0.25 -0.03"></a-entity>
+  <a-entity id="gameMenuSongInfoContainer" position="0 -0.78354 0.15473" rotation="-20 0 0">
+    <a-entity id="gameMenuSongBackground" mixin="slice" slice9="width: 1.5; height: 0.2; padding: 0.04" position="0 0 -0.03"></a-entity>
 
     <a-entity id="gameMenuSongImage"
       copy-texture="from: #menuSelectedChallengeImage"
       geometry="primitive: plane; buffer: false; skipCache: true; height: 0.3; width: 0.3"
       material="shader: flat"
-      position="0 0.382 0"></a-entity>
+      position="-0.8003 0.00849 0"></a-entity>
 
     <a-entity id="gameMenuSongInfo">
-      <a-entity class="gameMenuSongSubName" position="0 0.058 0"
-        mixin="font" text="wrapCount: 40; align: center; color: #08bfa2" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
-      <a-entity class="gameMenuSongName" position="0 -0.031 0"
-        mixin="font" text="align: center; color: #08bfa2; wrapCount: 22; baseline: top; lineHeight: 36; width: 0.81"
+      <a-entity id="gameMenuSongSubName" position="0 0.015 0"
+        mixin="font" text="wrapCount: 40; align: center; color: #08bfa2; width: 0" bind__text="value: menuSelectedChallenge.songSubName"></a-entity>
+      <a-entity id="gameMenuSongName" position="0 -0.056 0"
+        mixin="font" text="align: center; color: #08bfa2; wrapCount: 30; baseline: top; lineHeight: 36; width: 1.2"
         bind__text="value: menuSelectedChallenge.songName"></a-entity>
     </a-entity>
   </a-entity>
@@ -1193,7 +1193,7 @@
   <a-entity
     id="leaderboardEmpty"
     mixin="font"
-    bind__visible="leaderboard.length === 0 && !leaderboardQualified"
+    bind__visible="leaderboard.length === 0 && !leaderboardQualified && !leaderboardLoading"
     text="align: center; color: #777; baseline: center; width: 1.6; value: No high scores. Be the first!"
     position="0 0 0.001"></a-entity>
 
