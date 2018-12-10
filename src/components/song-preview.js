@@ -173,6 +173,7 @@ AFRAME.registerComponent('song-preview-system', {
     this.audio = this.audioStore[challengeId];
     audioanalyser.resumeContext();
     this.audio.currentTime = this.audio.dataset.previewStartTime;
+    this.audio.load();
     this.audio.play();
     this.fadeIn();
     this.updateAnalyser();
