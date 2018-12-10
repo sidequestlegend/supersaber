@@ -32,7 +32,7 @@ AFRAME.registerComponent('song-preview-system', {
           this.audio.currentTime < 1) {
         this.stopSong();
       } else {
-        this.fadeDown();
+        // this.fadeDown();
       }
       return;
     }
@@ -169,22 +169,21 @@ AFRAME.registerComponent('song-preview-system', {
   playSong: function (challengeId) {
     if (!challengeId) { return; }
 
-    const audioanalyser = this.analyserEl.components.audioanalyser;
     this.audio = this.audioStore[challengeId];
-    audioanalyser.resumeContext();
-    this.audio.currentTime = this.audio.dataset.previewStartTime;
     this.audio.load();
+    this.audio.volume = PREVIEW_VOLUME;
+    this.audio.currentTime = this.audio.dataset.previewStartTime;
+    this.analyserEl.setAttribute('audioanalyser', 'src', this.audio);
+
+    const audioanalyser = this.analyserEl.components.audioanalyser;
+    audioanalyser.resumeContext();
+
     this.audio.play();
-    this.fadeIn();
-    this.updateAnalyser();
+    // this.fadeIn();
 
     // Prefetch buffer for playing.
     if (audioanalyser.xhr) { audioanalyser.xhr.abort(); }
     audioanalyser.fetchAudioBuffer(utils.getS3FileUrl(challengeId, 'song.ogg'));
-  },
-
-  updateAnalyser: function () {
-    this.analyserEl.setAttribute('audioanalyser', 'src', this.audio);
   },
 
   /**
@@ -204,18 +203,6 @@ AFRAME.registerComponent('song-preview-system', {
     }
     if (!index) { return; }
     this.preloadQueue.splice(index, 1);
-  },
-
-  fadeIn: function () {
-    const context = this.analyserEl.components.audioanalyser.context;
-    const gainNode = this.analyserEl.components.audioanalyser.gainNode;
-    gainNode.gain.linearRampToValueAtTime(PREVIEW_VOLUME, context.currentTime + 1.5);
-  },
-
-  fadeDown: function () {
-    const context = this.analyserEl.components.audioanalyser.context;
-    const gainNode = this.analyserEl.components.audioanalyser.gainNode;
-    gainNode.gain.linearRampToValueAtTime(0.05, context.currentTime + 1.5);
   }
 });
 
