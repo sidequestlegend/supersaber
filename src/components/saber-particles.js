@@ -66,11 +66,13 @@ AFRAME.registerComponent('saber-particles', {
     if (!intersection) { return; }
 
     // Update intersection material if necessary.
+    /*
     if (this.intersectedEl.components.wall || this.intersectedEl.id === 'floor') {
       const uniform = this.data.hand === RIGHT ? HIT_RIGHT : HIT_LEFT;
       const material = this.intersectedEl.getObject3D('mesh').material;
       material.uniforms[uniform].value = intersection.point;
     }
+    */
 
     if (this.particleSystem && this.particleSystem.active) {
       // Update particle position.
