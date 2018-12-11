@@ -7,6 +7,7 @@ AFRAME.registerComponent('text-counter', {
   schema: {
     decimals: {default: 0},
     dur: {default: 2000, type: 'int'},
+    enabled: {default: false},
     emit: {default: false},
     prefix: {default: ''},
     suffix: {default: ''},
@@ -25,7 +26,7 @@ AFRAME.registerComponent('text-counter', {
   },
 
   tick: function (time, timeDelta) {
-    if (this.currentValue >= this.data.value) { return; }
+    if (!this.data.enabled || this.currentValue >= this.data.value) { return; }
 
     this.currentValue += this.data.value * (timeDelta / this.data.dur);
 
