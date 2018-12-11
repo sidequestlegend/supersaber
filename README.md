@@ -8,12 +8,12 @@ We are big fans of Beat Saber and what it has done for VR. As an homage, we
 built Super Saber with [A-Frame](https://aframe.io) and JavaScript to show that
 the Web is capable of great VR.
 
-<img src="https://user-images.githubusercontent.com/674727/49785956-0cefa400-fcd7-11e8-9320-d272ce5b41b7.jpg" height="190" width="32%">
-<img src="https://user-images.githubusercontent.com/674727/49785957-0cefa400-fcd7-11e8-94b2-7dd9abf9db9d.jpg" height="190" width="32%">
-<img src="https://user-images.githubusercontent.com/674727/49785958-0cefa400-fcd7-11e8-9fdb-c2ae754a0519.jpg" height="190" width="32%">
-<img src="https://user-images.githubusercontent.com/674727/49785959-0eb96780-fcd7-11e8-9b13-9e0ca704063f.png" height="190" width="32%">
-<img src="https://user-images.githubusercontent.com/674727/49786046-4cb68b80-fcd7-11e8-8e3c-4701c435fae0.jpg" height="190" width="32%">
-<img src="https://user-images.githubusercontent.com/674727/49786049-52ac6c80-fcd7-11e8-8805-0adc76606aaf.jpg" height="190" width="32%">
+<span><img src="https://user-images.githubusercontent.com/674727/49785956-0cefa400-fcd7-11e8-9320-d272ce5b41b7.jpg" height="190" width="32%"></span>
+<span><img src="https://user-images.githubusercontent.com/674727/49785957-0cefa400-fcd7-11e8-94b2-7dd9abf9db9d.jpg" height="190" width="32%"></span>
+<span><img src="https://user-images.githubusercontent.com/674727/49785958-0cefa400-fcd7-11e8-9fdb-c2ae754a0519.jpg" height="190" width="32%"></span>
+<span><img src="https://user-images.githubusercontent.com/674727/49785959-0eb96780-fcd7-11e8-9b13-9e0ca704063f.png" height="190" width="32%"></span>
+<span><img src="https://user-images.githubusercontent.com/674727/49786046-4cb68b80-fcd7-11e8-8e3c-4701c435fae0.jpg" height="190" width="32%"></span>
+<span><img src="https://user-images.githubusercontent.com/674727/49786049-52ac6c80-fcd7-11e8-8805-0adc76606aaf.jpg" height="190" width="32%"></span>
 
 **Play Super Saber now** for free on HTC Vive or Oculus Rift via
 **[Supermedium](https://supermedium.com)**, the browser for the VR Internet!
