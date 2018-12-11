@@ -30,7 +30,7 @@
   </head>
   <body>
     <div class="laser"></div>
-    <div id="lightbox" onclick="closeLb()"><img src=""></div>
+    <div id="lightbox"><img src=""></div>
     <div id="all">
       <img src="site/assets/sslogo.png" class="imgfill">
 
@@ -113,6 +113,7 @@
         let lb;
         function setupLb () {
           lb = document.getElementById('lightbox');
+          lb.addEventListener('click', closeLb);
           const sshots = document.querySelectorAll('.screenshots>img');
           for (let i = 0; i < sshots.length; i++){
             sshots[i].addEventListener('click', showImg);
