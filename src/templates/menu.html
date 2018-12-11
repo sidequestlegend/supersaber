@@ -176,7 +176,7 @@
                 bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseentervisible="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.difficulty !== item"
-                bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
+                bind-item__difficulty-background="enabled: menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
                 geometry="primitive: plane; width: 0.4; height: 0.2"
                 material="shader: flat; color:  {% endraw %}{{ COLORS.UI_ACCENT }}{% raw %}; transparent: true; opacity: 0.0"
                 position="0 -0.005 0"
