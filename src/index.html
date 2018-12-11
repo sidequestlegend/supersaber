@@ -147,7 +147,6 @@
 
       <a-entity
         id="controllerRig"
-        class="overlay"
         proxy-event="event: recentered; to: #cameraRig; captureBubbles: true; as: recenter">
         {% macro saber (hand, otherHand, bladeColor, beamColor) %}
           <a-entity id="{{ hand }}Hand"
@@ -227,7 +226,6 @@
 
           <a-entity
             id="{{ hand }}CursorMesh"
-            class="overlay"
             mixin="cursorMesh"
             bind__cursor-mesh="active: {{ hand }}RaycasterActive && !isPlaying"
             cursor-mesh="cursorEl: #{{ hand }}Hand"
@@ -241,7 +239,6 @@
 
       <a-entity
         id="stepback"
-        class="overlay"
         obj-model="obj: #stepbackObj"
         position="0 1.6 -1.55"
         material="shader: flat; src: #atlasImg; transparent: true; opacity: 0"></a-entity>
@@ -255,7 +252,6 @@
           raycaster="objects: [raycastable]"></a-entity>
         <a-entity
           id="mouseCursorMesh"
-          class="overlay"
           mixin="cursorMesh"
           cursor-mesh="cursorEl: #mouseCursor"
           bind__cursor-mesh="active: menuActive"></a-entity>
