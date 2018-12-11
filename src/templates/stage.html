@@ -37,6 +37,8 @@
     obj-model="obj: #stageAdditiveObj"
     materials="name: stageAdditive"></a-entity>
 
+  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
+
   <a-entity
     id="smoke"
     mixin="gameoverAnimation"
@@ -45,8 +47,6 @@
     obj-model="obj: #smokeObj"
     material="src: #atlasImg; shader: flat; transparent: true; depthWrite: false"
     position="0 1.4 0"></a-entity>
-
-  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
