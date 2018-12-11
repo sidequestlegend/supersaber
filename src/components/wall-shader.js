@@ -105,10 +105,10 @@ AFRAME.registerShader('wallShader', {
       vec3 col = vec3(r * COL.r + w + BG.r, r * COL.g + w + BG.g, r * COL.b + w + BG.b);
 
       vec3 hit;
-      hit = drawCircle(worldPos, hitRight, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
-      hit += drawCircle(worldPos, hitRight, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
-      hit += drawCircle(worldPos, hitLeft, 0.04, 0.05, vec3(1.0, 0.4, 0.4));
-      hit += drawCircle(worldPos, hitLeft, 0.02, 0.005, vec3(1.0, 1.0, 1.0));
+      hit = drawCircle(worldPos, hitRight, 0.04, 0.05, COL);
+      hit += drawCircle(worldPos, hitRight, 0.02, 0.03, vec3(0.7, 0.7, 0.7));
+      hit += drawCircle(worldPos, hitLeft, 0.04, 0.05, COL);
+      hit += drawCircle(worldPos, hitLeft, 0.02, 0.03, vec3(0.7, 0.7, 0.7));
 
       gl_FragColor = vec4(col + hit, 0.7 + w + hit.x);
     }
