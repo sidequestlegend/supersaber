@@ -127,6 +127,7 @@ AFRAME.registerComponent('beat', {
     this.onEndStroke = this.onEndStroke.bind(this);
 
     this.initBlock();
+    this.initColliders();
     if (this.data.type === 'mine') {
       this.initMineFragments();
     } else {
@@ -278,6 +279,37 @@ AFRAME.registerComponent('beat', {
     } else {
       signEl.setAttribute('materials', {name: 'stageAdditive'});
       this.setObjModelFromTemplate(signEl, this.signModels[this.data.type + this.data.color]);
+    }
+  },
+
+  initColliders: function () {
+    var data = this.data;
+    var hitColliderConfiguration;
+    var hitColliderEl;
+
+    if (this.data.type === 'dot' || this.data.type === 'mine') { return; }
+
+    // Hit colliders are 40% larger than the block.
+    hitColliderConfiguration = {
+      position: {x: 0, y: data.size / 2, z: 0},
+      size: {width: data.size * 1.4, height: data.size / 3.0, depth: data.size* 1.4}
+    };
+
+    hitColliderEl = this.hitColliderEl = document.createElement('a-entity');
+    hitColliderEl.setAttribute('geometry', {
+      primitive: 'box',
+      height: hitColliderConfiguration.size.height,
+      width: hitColliderConfiguration.size.width,
+      depth: hitColliderConfiguration.size.depth
+    });
+
+    hitColliderEl.object3D.position.copy(hitColliderConfiguration.position);
+    hitColliderEl.object3D.visible = false;
+    this.el.appendChild(hitColliderEl);
+
+    if (data.debug) {
+      hitColliderEl.object3D.visible = true;
+      hitColliderEl.setAttribute('material', 'color', 'purple');
     }
   },
 
@@ -625,6 +657,43 @@ AFRAME.registerComponent('beat', {
 
       const hand = saberEls[i].getAttribute('saber-controls').hand;
 
+      if (hitBoundingBox && saberBoundingBox.intersectsBox(hitBoundingBox)) {
+        if (saberEls[i].components['saber-controls'].swinging &&
+            this.data.color === saberColors[hand]) {
+          saberControls = saberEls[i].components['saber-controls'];
+          this.hitHand = hand;
+          this.hitSaberEl = saberEls[i];
+          this.hitSaberEl.addEventListener('strokeend', this.onEndStroke, ONCE);
+          if (cutDirection === 'up' || cutDirection === 'down') {
+            maxAngle = saberControls.maxAnglePlaneX;
+          } else if (cutDirection === 'left' || cutDirection === 'right') {
+            maxAngle = saberControls.maxAnglePlaneY;
+          } else {
+            maxAngle = saberControls.maxAnglePlaneXY;
+          }
+          this.angleBeforeHit = maxAngle;
+          saberControls.maxAnglePlaneX = 0;
+          saberControls.maxAnglePlaneY = 0;
+          saberControls.maxAnglePlaneXY = 0;
+        } else {
+          this.wrongHit(hand);
+        }
+
+        // Notify for haptics.
+        this.el.emit(`beatcollide${hand}`, null, true);
+
+        // Sound.
+        this.el.parentNode.components['beat-hit-sound'].playSound(
+          this.el, this.data.cutDirection);
+
+        if (this.data.type === 'mine') {
+          this.destroyMine();
+        } else {
+          this.destroyBeat(saberEls[i]);
+        }
+        break;
+      }
+
       if (saberBoundingBox.intersectsBox(beatBoundingBox)) {
         // Notify for haptics.
         this.el.emit(`beatcollide${hand}`, null, true);
@@ -640,35 +709,18 @@ AFRAME.registerComponent('beat', {
 
         this.destroyBeat(saberEls[i]);
 
-        if (saberEls[i].components['saber-controls'].swinging &&
+        if (this.data.type === 'dot' && saberEls[i].components['saber-controls'].swinging &&
             this.data.color === saberColors[hand]) {
           this.hitSaberEl = saberEls[i];
           this.hitSaberEl.addEventListener('strokeend', this.onEndStroke, ONCE);
           saberControls = saberEls[i].components['saber-controls'];
+          maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY,
+                              saberControls.maxAnglePlaneXY);
           this.hitHand = hand;
+          this.angleBeforeHit = maxAngle;
           saberControls.maxAnglePlaneX = 0;
           saberControls.maxAnglePlaneY = 0;
           saberControls.maxAnglePlaneXY = 0;
-
-          if (this.data.type === 'arrow') {
-            saberControls.updateStrokeDirection();
-            if (!saberControls.strokeDirection[this.data.cutDirection]) {
-              this.wrongHit(hand);
-              break;
-            }
-
-            if (cutDirection === 'up' || cutDirection === 'down') {
-              maxAngle = saberControls.maxAnglePlaneX;
-            } else if (cutDirection === 'left' || cutDirection === 'right') {
-            maxAngle = saberControls.maxAnglePlaneY;
-            } else {
-              maxAngle = saberControls.maxAnglePlaneXY;
-            }
-          } else {
-            maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY,
-                                saberControls.maxAnglePlaneXY);
-          }
-          this.angleBeforeHit = maxAngle;
 
         } else {
           this.wrongHit(hand);
