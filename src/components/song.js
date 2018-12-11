@@ -4,6 +4,9 @@ const GAME_OVER_LENGTH = 3.5;
 const ONCE = {once: true};
 const BASE_VOLUME = 0.75;
 
+let skipDebug = AFRAME.utils.getUrlParameter('skip');
+if (!!skipDebug) { skipDebug = parseInt(skipDebug) / 1000; }
+
 /**
  * Active challenge song / audio.
  *
@@ -210,7 +213,7 @@ AFRAME.registerComponent('song', {
     gain.setValueAtTime(BASE_VOLUME, this.context.currentTime);
     this.songStartTime = this.context.currentTime;
     this.source.onended = this.victory;
-    this.source.start();
+    this.source.start(0, skipDebug);
     this.isPlaying = true;
   },
 
