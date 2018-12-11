@@ -470,7 +470,8 @@ AFRAME.registerState({
 
       // Percentage is score divided by total possible score.
       const accuracy = (state.score.score / (state.challenge.numBeats * 110)) * 100;
-      state.score.accuracy = accuracy;
+      state.score.accuracy = isNaN(accuracy) ? 0 : accuracy;
+      state.score.score = isNaN(state.score.score) ? 0 : state.score.score;
 
       if (accuracy >= 95) {
         state.score.rank = 'S';
