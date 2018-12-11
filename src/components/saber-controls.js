@@ -7,7 +7,7 @@ AFRAME.registerComponent('saber-controls', {
     hand: {default: 'right', oneOf: ['left', 'right']},
     isPaused: {default: false},
     strokeMinSpeed: {default: 0.002},
-    strokeMinDuration: {default: 40}
+    strokeMinDuration: {default: 30}
   },
 
   init: function () {
@@ -137,6 +137,21 @@ AFRAME.registerComponent('saber-controls', {
     this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
     for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
+
+    var direction = 'DIRECTION '
+    if (this.strokeDirection.right) {
+      direction += 'RIGHT';
+    } else {
+      direction += 'LEFT';
+    }
+
+    if (this.strokeDirection.up) {
+      direction += ' TOP';
+    } else {
+      direction += ' BOTTOM';
+    }
+    console.log(direction);
+    this.el.emit('strokeend');
   },
 
   updateStrokeDirection: function () {
