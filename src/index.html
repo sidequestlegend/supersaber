@@ -196,7 +196,7 @@
                 <a-entity
                   class="saberglow"
                   obj-model="obj: #saberGlowObj"
-                  material="shader: flat; color: {{ bladeColor }}; blending: additive; opacity: 0.08"
+                  material="shader: flat; color: #ff70b5; blending: additive; opacity: 0.08"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity
@@ -206,19 +206,19 @@
                 <a-entity
                   class="highlightTop"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: {{ bladeColor }}"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 0.0125"></a-entity>
                 <a-entity
                   class="highlightBottom"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: {{ bladeColor }}"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 -0.0125"></a-entity>
               </a-entity>
             </a-entity>
 
             <a-entity
               class="fakeGlow"
-              fake-glow="color: {{ beamColor }}"
+              fake-glow="color: {{ hand == 'right' and COLORS.NEON_BRIGHTBLUE or COLORS.NEON_BRIGHTRED }}"
               position="0 0.01 0"
               rotation="90 0 0"
               bind__visible="!isPlaying">
