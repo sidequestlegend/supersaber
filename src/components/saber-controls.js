@@ -137,20 +137,6 @@ AFRAME.registerComponent('saber-controls', {
     this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
     for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
-
-    var direction = 'DIRECTION '
-    if (this.strokeDirection.right) {
-      direction += 'RIGHT';
-    } else {
-      direction += 'LEFT';
-    }
-
-    if (this.strokeDirection.up) {
-      direction += ' TOP';
-    } else {
-      direction += ' BOTTOM';
-    }
-    console.log(direction);
     this.el.emit('strokeend');
   },
 
