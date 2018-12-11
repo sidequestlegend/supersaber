@@ -77,6 +77,7 @@ AFRAME.registerComponent('wall', {
   play: function () {
     this.el.object3D.visible = true;
     this.el.setAttribute('data-collidable-head', '');
+    this.el.setAttribute('data-saber-particles', '');
     this.el.setAttribute('raycastable-game', '');
   },
 
