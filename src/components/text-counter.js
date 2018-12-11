@@ -16,6 +16,7 @@ AFRAME.registerComponent('text-counter', {
 
   init: function () {
     this.currentValue = 0;
+    this.hasCompleted = false;
     this.textValue = {value : ''};
   },
 
@@ -23,16 +24,18 @@ AFRAME.registerComponent('text-counter', {
     this.currentValue = 0;
     this.textValue.value = `${this.data.prefix}${this.decimals(0)}${this.data.suffix}`;
     this.el.setAttribute('text', this.textValue);
+    this.hasCompleted = false;
   },
 
   tick: function (time, timeDelta) {
-    if (!this.data.enabled || this.currentValue >= this.data.value) { return; }
+    if (!this.data.enabled || this.hasCompleted) { return; }
 
     this.currentValue += this.data.value * (timeDelta / this.data.dur);
 
     if (this.currentValue >= this.data.value) {
       this.currentValue = this.data.value;
       if (this.data.emit) { this.el.emit('textcounterdone', null, false); }
+      this.hasCompleted = true;
     }
 
     this.textValue.value =
