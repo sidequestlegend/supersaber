@@ -615,6 +615,7 @@ AFRAME.registerComponent('beat', {
       this.hitColliderEl.getObject3D('mesh'));
     const beatBoundingBox = this.beatBoundingBox.setFromObject(
       this.blockEl.getObject3D('mesh'));
+    var wrongHandHit;
 
     for (let i = 0; i < saberEls.length; i++) {
       let saberBoundingBox = saberEls[i].components['saber-controls'].boundingBox;
@@ -668,13 +669,15 @@ AFRAME.registerComponent('beat', {
             maxAngle = Math.max(saberControls.maxAnglePlaneX, saberControls.maxAnglePlaneY,
                                 saberControls.maxAnglePlaneXY);
           }
+          wrongHandHit = undefined;
           this.angleBeforeHit = maxAngle;
 
         } else {
-          this.wrongHit(hand);
+          wrongHandHit = hand;
         }
         break;
       }
+      if (wrongHandHit) { this.wrongHit(wrongHandHit); }
     }
   },
 
