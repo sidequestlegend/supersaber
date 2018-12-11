@@ -127,6 +127,8 @@ AFRAME.registerComponent('saber-controls', {
   endStroke: function () {
     if (!this.swinging || this.strokeDuration < this.data.strokeMinDuration) { return; }
     this.swinging = false;
+    this.el.emit('strokeend');
+
     // Stroke finishes. Reset swinging state.
     this.accumulatedDistance = 0;
     this.accumulatedDelta = 0;
@@ -135,7 +137,6 @@ AFRAME.registerComponent('saber-controls', {
     this.maxAnglePlaneXY = 0;
     for (let i = 0; i < this.distanceSamples.length; i++) { this.distanceSamples[i] = 0; }
     for (let i = 0; i < this.deltaSamples.length; i++) { this.deltaSamples[i] = 0; }
-    this.el.emit('strokeend');
   },
 
   updateStrokeDirection: function () {
