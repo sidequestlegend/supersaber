@@ -431,7 +431,6 @@
 
       <a-entity
   id="loadingSongInfoContainer"
-  class="overlay"
   bind__animation__scale="enabled: isSongLoading"
   bind__visible="isSongLoading"
   animation__scale="property: scale; from: 1 1 1; to: 1.05 1.05 1.05; dir: alternate; loop: true; dur: 1200; easing: easeInOutCubic"
@@ -572,7 +571,6 @@
 <!-- Menu container begins here. -->
 <a-entity
   id="menu"
-  class="overlay"
   bind__visible="menuActive"
   position="0 1.1 -2"
   visible="false">
@@ -837,7 +835,6 @@
 
 <a-entity
   id="keyboard"
-  class="overlay"
   bind__super-keyboard="hand: activeHand === 'left' && '#leftHand' || '#rightHand'; show: isSearching"
   super-keyboard="label: SEARCH FROM OVER 6000 SONGS; inputColor: #fff; labelColor: #FFF; width: 1.5; hand: #rightHand; imagePath: assets/img/keyboard/; font: assets/fonts/Teko-Bold.json; align: center; model: supersaber; keyColor: #fff; injectToRaycasterObjects: false; filters: allupper; keyHoverColor: #fff"
   position="0.55 0.95 -1.85"
@@ -895,7 +892,6 @@
 
       <a-entity
   id="tutorial"
-  class="overlay"
   bind__visible="menuActive"
   position="-2.562914981163387 1.1992490239153386 -0.7075863128689148"
   rotation="0 60 0">
@@ -998,7 +994,6 @@
 
 <a-entity
   id="gameMenu"
-  class="overlay"
   bind__visible="isGameOver || isPaused || isVictory"
   position="0 1.1 -2"
   play-sound="event: mouseenter; sound: #hoverSound; volume: 0.03"
@@ -1057,7 +1052,6 @@
       <!-- Victory. -->
 <a-entity
   id="victoryInfoContainer"
-  class="overlay"
   position="0 0.9 -2"
   bind__visible="isVictory">
 
@@ -1160,7 +1154,7 @@
 
       <a-entity
   id="leaderboard"
-  class="overlay accuracyTextCounterSubscribe"
+  class="accuracyTextCounterSubscribe"
   bind__animation="enabled: isVictory"
   bind__scale="isVictory && '0 0 0' || '1 1 1'"
   bind__visible="(!!menuSelectedChallenge.id || !!challenge.id) && (menuActive || isPaused || isVictory) && !genreMenuOpen"
@@ -1230,6 +1224,24 @@
   </a-entity>
 </a-entity>
 
+      <a-entity
+  id="news"
+  bind__visible="menuActive && !menuSelectedChallenge.id"
+  position="2.365374194652176 1.1 -1.1952715561051024"
+  rotation="0 -60 0">
+
+  <a-entity
+    id="newsBackground"
+    mixin="slice"
+    slice9="left: 70; width: 1.8; height: 1.55; opacity: 0.9"></a-entity>
+
+  <a-entity
+    id="newsText"
+    mixin="font"
+    text="align: center; color: #FAFAFA; baseline: center; width: 1.6; value: Super Saber has been released!\n\nWe're still ironing out some bugs\nsuch as diagonal hits counting as misses\nand to be able to auto-adjust to your height.\n\nThanks for checking it out! \nLet us know of any issues.\n\nsupermedium.com/discord"
+    position="0 -0.06621702172771315 0.001"></a-entity>
+</a-entity>
+
 
       <!-- super cut fx rings -->
       
@@ -1281,7 +1293,6 @@
 
       <a-entity
         id="controllerRig"
-        class="overlay"
         proxy-event="event: recentered; to: #cameraRig; captureBubbles: true; as: recenter">
         
 
@@ -1363,7 +1374,6 @@
 
           <a-entity
             id="leftCursorMesh"
-            class="overlay"
             mixin="cursorMesh"
             bind__cursor-mesh="active: leftRaycasterActive && !isPlaying"
             cursor-mesh="cursorEl: #leftHand"
@@ -1448,7 +1458,6 @@
 
           <a-entity
             id="rightCursorMesh"
-            class="overlay"
             mixin="cursorMesh"
             bind__cursor-mesh="active: rightRaycasterActive && !isPlaying"
             cursor-mesh="cursorEl: #rightHand"
@@ -1459,7 +1468,6 @@
 
       <a-entity
         id="stepback"
-        class="overlay"
         obj-model="obj: #stepbackObj"
         position="0 1.6 -1.55"
         material="shader: flat; src: #atlasImg; transparent: true; opacity: 0"></a-entity>
