@@ -6,6 +6,7 @@ const collisionZThreshold = -1.65;
 const BEAT_WARMUP_ROTATION_CHANGE = Math.PI / 5;
 const BEAT_WARMUP_ROTATION_OFFSET = 0.4;
 const BEAT_WARMUP_ROTATION_TIME = 750;
+const DESTROYED_SPEED = 1.0;
 const ONCE = {once: true};
 
 const SCORE_POOL = {
@@ -27,7 +28,7 @@ AFRAME.registerComponent('beat', {
     debug: {default: false},
     horizontalPosition: {default: 'middleleft', oneOf: ['left', 'middleleft', 'middleright', 'right']},
     size: {default: 0.40},
-    speed: {default: 1.0},
+    speed: {default: 8.0},
     type: {default: 'arrow', oneOf: ['arrow', 'dot', 'mine']},
     verticalPosition: {default: 'middle', oneOf: ['bottom', 'middle', 'top']},
     warmupPosition: {default: 0},
@@ -756,14 +757,14 @@ AFRAME.registerComponent('beat', {
       }
 
       rightCutNormal.copy(this.rightCutPlane.normal)
-                    .multiplyScalar((this.data.speed / 4) * (timeDelta / 500));
+                    .multiplyScalar(DESTROYED_SPEED * (timeDelta / 500));
       rightCutNormal.y = 0;  // Y handled by gravity.
       this.partRightEl.object3D.position.add(rightCutNormal);
       this.partRightEl.object3D.setRotationFromAxisAngle(this.rotationAxis, rightRotation);
       rightRotation = rightRotation >= 2 * Math.PI ? 0 : rightRotation + rotationStep;
 
       leftCutNormal.copy(this.leftCutPlane.normal)
-                   .multiplyScalar((this.data.speed / 4) * (timeDelta / 500));
+                   .multiplyScalar(DESTROYED_SPEED * (timeDelta / 500));
       leftCutNormal.y = 0;  // Y handled by gravity.
       this.partLeftEl.object3D.position.add(leftCutNormal);
       this.partLeftEl.object3D.setRotationFromAxisAngle(this.rotationAxis, leftRotation);
