@@ -1231,6 +1231,11 @@
 </a-entity>
 
 
+<!--
+  <a-entity id="testwall" geometry="width: 0.3; height: 1; depth: 1.5;" position="-1 1.6 -1" material="shader: wallShader; env: #envmapWallTexture; fog: false; transparent: true; side: double"></a-entity>
+  <a-entity id="testwallglow" visible = "false" obj-model="obj: #wallglowObj" position="-1 1.6 -1" scale="0.3 1.0 1.5" material="shader: flat; blending: additive; depthTest: false; src: #atlasImg; fog: false; transparent: true;"></a-entity>
+-->
+
       <!-- super cut fx rings -->
       
         <a-entity class="superCutFx" mixin="superCut"></a-entity>
@@ -1252,13 +1257,13 @@
 
       <a-entity
         id="saberParticles"
-        particleplayer="src: #saberParticlesJSON; interpolate: true; pscale: 0.55; dur: 800; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"></a-entity>
+        particleplayer="src: #saberParticlesJSON; pscale: 0.55; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"></a-entity>
       <a-entity
         id="mineParticles"
-        particleplayer="src: #mineParticlesJSON; pscale: 0.5; interpolate: true; scale: 1.4; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 3 1 1; finalScale: 0.2 0.2 1"></a-entity>
+        particleplayer="src: #mineParticlesJSON; pscale: 0.5; scale: 1.4; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 3 1 1; finalScale: 0.2 0.2 1"></a-entity>
       <a-entity
         id="sparkParticles"
-        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.5; on: explode; scale: 0.12; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
+        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.7; on: explode; scale: 0.1; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
 
       <a-mixin
         id="cursorMesh"
