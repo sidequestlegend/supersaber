@@ -25,6 +25,11 @@ the Web is capable of great VR.
   <img src="https://user-images.githubusercontent.com/674727/48661906-84127f00-ea2e-11e8-8cd9-6b98cf05eb85.png" width="33%">
 </a>
 
+Or [head directly to the play
+URL](https://supermedium.com/supersaber/play.html) if you have a
+WebVR-compatible browser with Vive or Rift. We recommend Supermedium though as
+it is not prone to regressions and is configured for performance.
+
 ## Development
 
 Super Saber is built with [A-Frame](https://aframe.io) (incl.
