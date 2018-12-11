@@ -126,8 +126,6 @@ AFRAME.registerComponent('saber-controls', {
 
   endStroke: function () {
     if (!this.swinging || this.strokeDuration < this.data.strokeMinDuration) { return; }
-
-    this.el.emit('strokeend');
     this.swinging = false;
     // Stroke finishes. Reset swinging state.
     this.accumulatedDistance = 0;
