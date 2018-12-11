@@ -1,0 +1,17 @@
+<a-entity
+  id="news"
+  bind__visible="menuActive && !menuSelectedChallenge.id"
+  position="2.365374194652176 1.1 -1.1952715561051024"
+  rotation="0 -60 0">
+
+  <a-entity
+    id="newsBackground"
+    mixin="slice"
+    slice9="left: 70; width: 1.8; height: 1.55; opacity: 0.9"></a-entity>
+
+  <a-entity
+    id="newsText"
+    mixin="font"
+    text="align: center; color: #FAFAFA; baseline: center; width: 1.6; value: Super Saber has been released!\n\nWe're still ironing out some bugs\nsuch as diagonal hits counting as misses\nand to be able to auto-adjust to your height.\n\nThanks for checking it out! \nLet us know of any issues.\n\nsupermedium.com/discord"
+    position="0 -0.06621702172771315 0.001"></a-entity>
+</a-entity>
