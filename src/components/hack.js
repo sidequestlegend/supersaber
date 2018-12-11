@@ -1,10 +1,10 @@
 AFRAME.registerComponent('hack', {
   play: function () {
-    setTimeout(() => {
-      this.el.sceneEl.exitVR();
-      setTimeout(() => {
+    const interval = setInterval(() => {
+      if (!this.el.sceneEl.is('vr-mode')) {
         this.el.sceneEl.enterVR();
-      }, 100);
-    }, 250);
+        clearInterval(interval);
+      }
+    }, 1000);
   }
 });
