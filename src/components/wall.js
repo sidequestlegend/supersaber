@@ -77,7 +77,7 @@ AFRAME.registerComponent('wall', {
   play: function () {
     this.el.object3D.visible = true;
     this.el.setAttribute('data-collidable-head', '');
-    this.el.setAttribute('raycastable-game');
+    this.el.setAttribute('raycastable-game', '');
   },
 
   tock: function (time, timeDelta) {
