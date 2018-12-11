@@ -49,10 +49,10 @@
       pool__beat-dot-blue="mixin: dotBlueBeat; size: 10; container: #beatContainer"
       pool__beat-dot-red="mixin: dotRedBeat; size: 10; container: #beatContainer"
       pool__beat-mine="mixin: mine; size: 12; container: #beatContainer"
-      pool__beatscoreok="mixin: beatScoreOk; size: 5; container: #beatContainer"
-      pool__beatscoregood="mixin: beatScoreGood; size: 5; container: #beatContainer"
-      pool__beatscoregreat="mixin: beatScoreGreat; size: 5; container: #beatContainer"
-      pool__beatscoresuper="mixin: beatScoreSuper; size: 5; container: #beatContainer"
+      pool__beatscoreok="mixin: beatScoreOk; size: 10; container: #beatContainer"
+      pool__beatscoregood="mixin: beatScoreGood; size: 10; container: #beatContainer"
+      pool__beatscoregreat="mixin: beatScoreGreat; size: 10; container: #beatContainer"
+      pool__beatscoresuper="mixin: beatScoreSuper; size: 10; container: #beatContainer"
       pool__wall="mixin: wall; size: 10; container: #beatContainer"
       proxy-event__cleargame1="event: gamemenuexit; as: cleargame; to: a-scene"
       proxy-event__cleargame2="event: gamemenurestart; as: cleargame; to: a-scene"
@@ -246,9 +246,7 @@
   id="wall"
   geometry
   material="shader: wallShader; transparent: true; side: double;"
-  wall
-  saber-intersection
-  ></a-mixin>
+  wall></a-mixin>
 
 <a-mixin
   id="beatWrong"
@@ -382,6 +380,8 @@
     obj-model="obj: #stageAdditiveObj"
     materials="name: stageAdditive"></a-entity>
 
+  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
+
   <a-entity
     id="smoke"
     mixin="gameoverAnimation"
@@ -390,8 +390,6 @@
     obj-model="obj: #smokeObj"
     material="src: #atlasImg; shader: flat; transparent: true; depthWrite: false"
     position="0 1.4 0"></a-entity>
-
-  <a-entity id="beams" bind__beams="isPlaying: isPlaying"></a-entity>
 
   <a-entity light="type: directional; intensity: 3" position="0 10 10"></a-entity>
 
@@ -406,10 +404,11 @@
 
   <a-entity
     id="floor"
+    data-saber-particles
     geometry="primitive: plane; width: 3; height: 3"
     rotation="-90 0 0"
-    material="shader: floorShader; color: #f33; normalMap: #floorNormalsImg; envMap: #floorEnvImg; hitLeft: -999 0 0; hitRight: -999 0 0"
-    bind__saber-intersection="active: isPlaying"
+    material="shader: floorShader; normalMap: #floorNormalsImg; envMap: #floorEnvImg; hitLeft: -999 0 0; hitRight: -999 0 0"
+    raycastable-game
     stepback></a-entity>
 
   <a-entity
@@ -505,7 +504,7 @@
       id="score"
       mixin="scoreText"
       bind__text="value: score.score"
-      text="width: 4; color: #888">
+      text="width: 4; color: #FAFAFA">
     </a-entity>
   </a-entity>
 
@@ -1231,11 +1230,6 @@
 </a-entity>
 
 
-<!--
-  <a-entity id="testwall" geometry="width: 0.3; height: 1; depth: 1.5;" position="-1 1.6 -1" material="shader: wallShader; env: #envmapWallTexture; fog: false; transparent: true; side: double"></a-entity>
-  <a-entity id="testwallglow" visible = "false" obj-model="obj: #wallglowObj" position="-1 1.6 -1" scale="0.3 1.0 1.5" material="shader: flat; blending: additive; depthTest: false; src: #atlasImg; fog: false; transparent: true;"></a-entity>
--->
-
       <!-- super cut fx rings -->
       
         <a-entity class="superCutFx" mixin="superCut"></a-entity>
@@ -1257,13 +1251,13 @@
 
       <a-entity
         id="saberParticles"
-        particleplayer="src: #saberParticlesJSON; pscale: 0.55; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"></a-entity>
+        particleplayer="src: #saberParticlesJSON; interpolate: true; pscale: 0.55; dur: 800; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 4 1 1; finalScale: 0.2 0.2 1"></a-entity>
       <a-entity
         id="mineParticles"
-        particleplayer="src: #mineParticlesJSON; pscale: 0.5; scale: 1.4; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 3 1 1; finalScale: 0.2 0.2 1"></a-entity>
+        particleplayer="src: #mineParticlesJSON; pscale: 0.5; interpolate: true; scale: 1.4; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 3 1 1; finalScale: 0.2 0.2 1"></a-entity>
       <a-entity
         id="sparkParticles"
-        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.7; on: explode; scale: 0.3; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
+        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.5; on: explode; scale: 0.12; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
 
       <a-mixin
         id="cursorMesh"
@@ -1271,7 +1265,7 @@
         sub-object="from: #cursorLaser; name: glow"></a-mixin>
 
       <!-- Player. -->
-      <a-entity id="cameraRig" bind__recenter="enabled: !isPlaying">
+      <a-entity id="cameraRig">
         <a-entity id="camera" position="0 1.6 0.5" camera look-controls wasd-controls>
           <a-entity
             id="cameraCollider"
@@ -1284,17 +1278,9 @@
         </a-entity>
       </a-entity>
 
-      <!--
-        We want the recenter transforms to apply to the controllers.
-        Overlay component reparents entity to different scene.
-        Thus need to add overlay to root-level container.
-        But cannot add overlay component to camera else camera would get reparented to wrong.
-        Thus we have a separate controller rig that matches the same transforms as cameraRig.
-      -->
       <a-entity
         id="controllerRig"
         class="overlay"
-        bind__recenter="enabled: !isPlaying"
         proxy-event="event: recentered; to: #cameraRig; captureBubbles: true; as: recenter">
         
 
@@ -1308,6 +1294,7 @@
             bind__raycaster="enabled: leftRaycasterActive"
             bind__raycaster-game="enabled: isPlaying"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
+            bind__saber-particles="enabled: isPlaying"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beatcollideleft; dur: 80; force: 0.2"
@@ -1316,6 +1303,7 @@
             haptics-wall
             raycaster="objects: [raycastable]; far: 5"
             raycaster__game="objects: [raycastable-game]:not(.bladeleft); far: 1; interval: 50"
+            saber-particles="hand: left"
             saber-controls="hand: left"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: left; controllerType: vive-controls"
@@ -1335,6 +1323,7 @@
                 scale="0.001 0.001 0.001">
                 <a-entity
                   class="blade bladeleft"
+                  
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: #fff"
                   raycastable-game
@@ -1390,6 +1379,7 @@
             bind__raycaster="enabled: rightRaycasterActive"
             bind__raycaster-game="enabled: isPlaying"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
+            bind__saber-particles="enabled: isPlaying"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beatcollideright; dur: 80; force: 0.2"
@@ -1398,6 +1388,7 @@
             haptics-wall
             raycaster="objects: [raycastable]; far: 5"
             raycaster__game="objects: [raycastable-game]:not(.bladeright); far: 1; interval: 50"
+            saber-particles="hand: right"
             saber-controls="hand: right"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: right; controllerType: vive-controls"
@@ -1417,6 +1408,7 @@
                 scale="0.001 0.001 0.001">
                 <a-entity
                   class="blade bladeright"
+                  data-saber-particles
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: #fff"
                   raycastable-game
