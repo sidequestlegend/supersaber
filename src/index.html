@@ -2,8 +2,20 @@
 <html>
   <head>
     <title>Super Saber</title>
-    <meta name="description" content="Beat Saber on the VR Web with searchable and playable community songs from Beat Saver.">
+    <meta name="description" content="A free and open source clone of Beat Saber with 6000+ community songs.">
+    <meta name="keywords" content="vr, webvr, beat, saber, aframe">
+    <meta name="og:title" content="Super Saber">
+    <meta name="og:image" content="https://supermedium.com/supersaber/site/assets/splash.jpg">
+    <meta name="og:description" content="A free and open source clone of Beat Saber with 6000+ community songs.">
+    <meta property="og:url" content="https://supermedium.com/supersaber/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="https://supermedium.com/supersaber">
+    <meta name="twitter:creator" content="@supermediumvr">
+    <meta name="twitter:title" content="Super Saber">
+    <meta name="twitter:description" content="A free and open source clone of Beat Saber with 6000+ community songs.">
+    <meta name="twitter:image" content="https://supermedium.com/supersaber/site/assets/splash.jpg">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
     {% if DEBUG_AFRAME %}
       <script src="http://{{ HOST }}:9000/dist/aframe-master.js"></script>
     {% elif IS_PRODUCTION %}
