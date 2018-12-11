@@ -753,6 +753,8 @@ AFRAME.registerComponent('beat', {
             fragment.visible = false;
           }
         }
+        this.returnToPoolTimer -= timeDelta;
+        this.backToPool = this.returnToPoolTimer <= 0;
         return;
       }
 
