@@ -518,7 +518,7 @@ AFRAME.registerState({
       !state.challenge.isLoading && !state.isSongLoading && !!state.challenge.id;
 
     const anyMenuOpen = state.menuActive || state.isPaused || state.isVictory ||
-                        state.isGameOver;
+                        state.isGameOver || state.isSongLoading || state.isSongFetching;
     state.leftRaycasterActive = anyMenuOpen && state.activeHand === 'left' && state.inVR;
     state.rightRaycasterActive = anyMenuOpen && state.activeHand === 'right' && state.inVR;
 
