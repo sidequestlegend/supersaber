@@ -1,13 +1,19 @@
 # supersaber
 
-Free and open source clone of Beat Saber that lets you play from over 6000
-community songs from [Beat Saver](https://beatsaver.com/) songs without having
-to install any mods.
+A free and open source clone of [Beat Saber](https://beatsaber.com) that lets
+you play over 6000 community songs from [Beat Saver](https://beatsaver.com/)
+songs without having to install any mods.
 
-Built with [A-Frame](https://aframe.io) and JavaScript on the Web so it loads
-in seconds without any installs!
+We are big fans of Beat Saber and what it has done for VR. As an homage, we
+built Super Saber with [A-Frame](https://aframe.io) and JavaScript to show that
+the Web is capable of great VR.
 
-![Supersaber](https://user-images.githubusercontent.com/674727/48661962-38140a00-ea2f-11e8-8078-6e98c123f57d.png)
+<img src="https://user-images.githubusercontent.com/674727/49785956-0cefa400-fcd7-11e8-9320-d272ce5b41b7.jpg" height="190" width="32%">
+<img src="https://user-images.githubusercontent.com/674727/49785957-0cefa400-fcd7-11e8-94b2-7dd9abf9db9d.jpg" height="190" width="32%">
+<img src="https://user-images.githubusercontent.com/674727/49785958-0cefa400-fcd7-11e8-9fdb-c2ae754a0519.jpg" height="190" width="32%">
+<img src="https://user-images.githubusercontent.com/674727/49785959-0eb96780-fcd7-11e8-9b13-9e0ca704063f.png" height="190" width="32%">
+<img src="https://user-images.githubusercontent.com/674727/49786046-4cb68b80-fcd7-11e8-8e3c-4701c435fae0.jpg" height="190" width="32%">
+<img src="https://user-images.githubusercontent.com/674727/49786049-52ac6c80-fcd7-11e8-8805-0adc76606aaf.jpg" height="190" width="32%">
 
 **Play Super Saber now** for free on HTC Vive or Oculus Rift via
 **[Supermedium](https://supermedium.com)**, the browser for the VR Internet!
@@ -21,7 +27,8 @@ in seconds without any installs!
 
 ## Development
 
-Built with [A-Frame](https://aframe.io) and JavaScript, from the creators of A-Frame!
+Super Saber is built with [A-Frame](https://aframe.io) (incl.
+[three.js](https://threejs.org) and JavaScript).
 
 ```
 npm install
@@ -45,13 +52,17 @@ assist HTML templating.
 | ?godmode      | Never die.              |
 | ?synctest     | Log beat timestamps.    |
 
-## Chat with Us
+## Contact
 
-Hi, we're the [Supermedium](https://supermedium.com) team! We'd love if you
-provide feedback, bug reports, and feature requests! A-Frame and the Web lets
-us iterate and deploy new features very quickly.
+We love'd if you provide feedback, bug reports, and feature requests! And trust
+us, there are bugs!
 
-<img src="https://user-images.githubusercontent.com/674727/48661968-4b26da00-ea2f-11e8-8dbc-6f00d509f490.png" width="50%">
-
+- [Supermedium](https://supermedium.com)
 - Hang out with us on [Discord](https://supermedium.com/discord/).
 - Follow us on [Twitter](https://twitter.com/supermediumvr)!
+- [Beat Saber Modding Discord](https://discordapp.com/invite/6JcXMq3)
+
+## Credits
+
+- [Beat Saber](https://beatsaber.com) from [Hyperbolic Magnetism](http://www.hyperbolicmagnetism.com/). Please support them with the purchase!
+- [BeatSaver](https://beatsaver.com), the community that created all the custom songs and beat maps.
