@@ -500,7 +500,7 @@
   bind__score-texts="isSongLoading: isSongLoading"
   bind__visible="isPlaying || isPaused">
 
-  <a-entity id="scoreTextContainer" position="0 0.01 -6.25017">
+  <a-entity id="scoreTextContainer" position="0 -0.3068215621073873 -6.25">
     <a-entity
       id="score"
       mixin="scoreText"
@@ -714,7 +714,7 @@
                 bind-item__animation__mouseleave="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseentervisible="enabled: menuSelectedChallenge.difficulty !== item"
                 bind-item__animation__mouseleavevisible="enabled: menuSelectedChallenge.difficulty !== item"
-                bind-toggle__raycastable="menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
+                bind-item__difficulty-background="enabled: menuActive && !!menuSelectedChallenge.id && menuSelectedChallenge.difficulty !== item"
                 geometry="primitive: plane; width: 0.4; height: 0.2"
                 material="shader: flat; color:  #08bfa2; transparent: true; opacity: 0.0"
                 position="0 -0.005 0"
@@ -1332,7 +1332,7 @@
                 <a-entity
                   class="saberglow"
                   obj-model="obj: #saberGlowObj"
-                  material="shader: flat; color: #850e3e; blending: additive; opacity: 0.08"
+                  material="shader: flat; color: #ff70b5; blending: additive; opacity: 0.08"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity
@@ -1342,19 +1342,19 @@
                 <a-entity
                   class="highlightTop"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: #850e3e"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 0.0125"></a-entity>
                 <a-entity
                   class="highlightBottom"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: #850e3e"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 -0.0125"></a-entity>
               </a-entity>
             </a-entity>
 
             <a-entity
               class="fakeGlow"
-              fake-glow="color: pink"
+              fake-glow="color: #ff70b5"
               position="0 0.01 0"
               rotation="90 0 0"
               bind__visible="!isPlaying">
@@ -1417,7 +1417,7 @@
                 <a-entity
                   class="saberglow"
                   obj-model="obj: #saberGlowObj"
-                  material="shader: flat; color: #256c43; blending: additive; opacity: 0.08"
+                  material="shader: flat; color: #ff70b5; blending: additive; opacity: 0.08"
                   position="0 -0.55 0"></a-entity>
               </a-entity>
               <a-entity
@@ -1427,19 +1427,19 @@
                 <a-entity
                   class="highlightTop"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: #256c43"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 0.0125"></a-entity>
                 <a-entity
                   class="highlightBottom"
                   geometry="primitive: box; height: 0.18; depth: 0.005; width: 0.005"
-                  material="shader: flat; color: #256c43"
+                  material="shader: flat; color: #FAFAFA"
                   position="0 0 -0.0125"></a-entity>
               </a-entity>
             </a-entity>
 
             <a-entity
               class="fakeGlow"
-              fake-glow="color: cyan"
+              fake-glow="color: #87c2ff"
               position="0 0.01 0"
               rotation="90 0 0"
               bind__visible="!isPlaying">
