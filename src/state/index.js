@@ -586,7 +586,7 @@ function takeDamage (state) {
     : 1;
   if (AFRAME.utils.getUrlParameter('godmode')) { return; }
   state.damage++;
-  checkGameOver(state);
+  // checkGameOver(state);
 }
 
 function checkGameOver (state) {
