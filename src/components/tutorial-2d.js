@@ -6,5 +6,6 @@ AFRAME.registerComponent('tutorial-2d', {
   play: function () {
     this.el.sceneEl.canvas.style.display = 'block';
     document.getElementById('tutorial2d').style.display = 'none';
+    document.getElementById('loadingText2d').style.display = 'none';
   }
 });
