@@ -128,7 +128,7 @@
         particleplayer="src: #mineParticlesJSON; pscale: 0.5; scale: 1.4; loop: false; on: explode; img: #sparkImg; count: 20%; animateScale: true; initialScale: 3 1 1; finalScale: 0.2 0.2 1"></a-entity>
       <a-entity
         id="sparkParticles"
-        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.7; on: explode; scale: 0.3; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
+        particleplayer="src: #sparksJSON; color: #fcc; pscale: 0.7; on: explode; scale: 0.1; loop: false; img: #spark2Img; dur: 700; count: 50%; animateScale: true; initialScale: 3 0.5 1; finalScale: 0.1 0.5 1"></a-entity>
 
       <a-mixin
         id="cursorMesh"
@@ -171,6 +171,7 @@
             bind__raycaster="enabled: {{ hand }}RaycasterActive"
             bind__raycaster-game="enabled: isPlaying"
             bind__saber-controls="bladeEnabled: isPlaying; isPaused: isPaused"
+            bind__saber-particles="enabled: isPlaying"
             bind__trail="enabled: isPlaying"
             haptics="events: mouseenter; dur: 35; force: 0.075"
             haptics__beat="eventsFrom: #beatContainer; events: beatcollide{{ hand }}; dur: 80; force: 0.2"
@@ -179,6 +180,7 @@
             haptics-wall
             raycaster="objects: [raycastable]; far: 5"
             raycaster__game="objects: [raycastable-game]:not(.blade{{ hand }}); far: 1; interval: 50"
+            saber-particles="hand: {{ hand }}"
             saber-controls="hand: {{ hand }}"
             thumb-controls
             thumb-controls-debug="enabled: false; hand: {{ hand }}; controllerType: vive-controls"
@@ -198,6 +200,7 @@
                 scale="0.001 0.001 0.001">
                 <a-entity
                   class="blade blade{{ hand }}"
+                  {% if hand === 'right' %}data-saber-particles{% endif %}
                   geometry="primitive: box; height: 0.9; depth: 0.02; width: 0.02"
                   material="shader: flat; color: #fff"
                   raycastable-game
