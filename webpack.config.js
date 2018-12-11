@@ -64,16 +64,12 @@ if (process.env.NODE_ENV === 'production') {
         keepFnName: true,
         keepClassName: true,
         tdz: true
-      },
-      {
-        sourceMap: 'source-map'
       }
     )
   );
 }
 
 module.exports = {
-  devtool: '#inline-source-map',
   devServer: {
     disableHostCheck: true
   },
