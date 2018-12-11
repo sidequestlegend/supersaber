@@ -127,6 +127,7 @@ AFRAME.registerState({
         state.score.maxCombo = state.score.combo;
       }
 
+      payload.score = isNaN(payload.score) ? 100 : payload.score;
       state.score.score += Math.floor(payload.score * state.score.multiplier);
 
       // Might be a math formula for this, but the multiplier system is easy reduced.
